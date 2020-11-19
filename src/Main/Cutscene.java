@@ -105,7 +105,9 @@ public class Cutscene {
 				soldier_npc.parado=true;
 				if(next) {
 					esvaziar();
-					cont=760;
+					Game.player.setX(760);
+					passo[0]=false;
+					passo[1]=true;
 				}
 				frames++;
 				if(frames==2) {
@@ -200,7 +202,9 @@ public class Cutscene {
 				if(next) {
 					esvaziar();
 					soldier_npc.setPos(-80,0);
-					soldier_npc.index=16;
+					soldier_npc.index=17;
+					passo[5]=false;
+					passo[6]=true;
 				}
 			}
 			if(passo[6]) {
@@ -219,7 +223,11 @@ public class Cutscene {
 				}
 				if(next) {
 					esvaziar();
-					soldier_npc.index=20;
+					soldier_npc.index=0;
+					soldier_npc.parado=true;
+					light_npc.index=4;
+					passo[6]=false;
+					passo[7]=true;
 				}
 			}
 			if(passo[7]) {
@@ -262,7 +270,9 @@ public class Cutscene {
 				}
 				if(next) {
 					esvaziar();
-					soldier_npc.index=8;
+					soldier_npc.index=7;
+					passo[9]=false;
+					passo[10]=true;
 				}
 			}
 			if(passo[10]) {
@@ -375,7 +385,10 @@ public class Cutscene {
 				}
 				if(next) {
 					esvaziar();
-					cont=600;
+					roux_npc.setPos(-170-600,4);
+					cont=0;
+					passo[16]=false;
+					passo[17]=true;
 				}
 			}
 			if(passo[17]) {
@@ -398,7 +411,11 @@ public class Cutscene {
 					}
 					if(next) {
 						esvaziar();
-						soldier_npc.index=4;					
+						soldier_npc.index=4;	
+						soldier_npc.parado=true;
+						Game.player.index=24;
+						passo[18]=false;
+						passo[19]=true;				
 					}
 					if(soldier_npc.index==4) {
 						soldier_npc.parado=true;
@@ -423,6 +440,9 @@ public class Cutscene {
 				if(next) {
 					esvaziar();
 					Game.player.index=27;
+					soldier_npc.parado=false;
+					passo[19]=false;
+					passo[20]=true;	
 				}
 			}
 			if(passo[20]) {
@@ -500,21 +520,31 @@ public class Cutscene {
 				if(next) {
 					esvaziar();
 					Pupkin_Boss.index=8;
+					cont=0;
+					passo[25]=false;
+					passo[26]=true;
 				}
 			}
 			if(passo[26]) {
 				frames++;
-				if(frames>=6) {
+				if(frames>=10) {
 					frames=0;
 					cont++;
-					Pupkin_Boss.aceso[cont]=true;
-					if(cont<4) {
-						for(int i=0; i<4;i++) {
-							Pupkin_Boss.aceso[i]=false;
-						}
+					if(cont==0) {
+						Pupkin_Boss.aceso[0]=true;
+					}
+					if(cont==1) {
+						Pupkin_Boss.aceso[1]=true;
+					}
+					if(cont==2) {
+						Pupkin_Boss.aceso[2]=true;
+					}
+					if(cont==3) {
+						Pupkin_Boss.aceso[3]=true;
+					}
+					if(cont==4) {
 						cont=0;
 						Game.player.setX(880);
-						Game.player.setY(330);
 						Game.player.index=32;
 						Game.player.parado=false;
 						passo[26]=false;
@@ -523,8 +553,28 @@ public class Cutscene {
 				}
 				if(next) {
 					esvaziar();
-					Game.player.index=29;
+					cont=0;
+					Pupkin_Boss.aceso[3]=true;
+					Game.player.setX(880);
+					Game.player.index=32;
+					Game.player.parado=false;
+					passo[26]=false;
+					passo[27]=true;
 				}
+			}
+			if(passo[27]) {
+				for(int i=0;i<4;i++) {
+					Pupkin_Boss.aceso[i]=false;
+				}
+				frames++;
+				if(frames>=20) {
+					frames=0;
+					Pupkin_Boss.index++;
+					if(Pupkin_Boss.index==11) {
+						Pupkin_Boss.index=8;
+					}
+				}
+//				avatar
 			}
 			
 

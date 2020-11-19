@@ -638,7 +638,11 @@ public class Player extends Entity{
 
 		
 		if(visivel) {
-			g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
+			if(index==32) {
+				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y+3, null);
+			}else {
+				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);				
+			}
 		}
 		
 		
