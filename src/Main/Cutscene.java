@@ -77,7 +77,7 @@ public class Cutscene {
 			
 			pisca=0;
 		}
-		buttonimg=Game.spritesheet.getSprite(Game.TILE_SIZE*5, 18*Game.TILE_SIZE, 10, 10);
+		buttonimg=Game.spritesheet.getSprite(Game.TILE_SIZE*5, 18*Game.TILE_SIZE, 16, 16);
 		for(int i=0;i<30;i++) {
 			for(int j=0;j<10;j++) {
 				icon[i][j]=Game.icones.getSprite(Game.TILE_SIZE*(i), Game.TILE_SIZE*j, Game.TILE_SIZE, Game.TILE_SIZE);
@@ -495,6 +495,7 @@ public class Cutscene {
 				}
 			}
 			if(passo[24]) {
+				soldier_npc.parado=true;
 				avatarL=0;
 				boxleft=true;
 				dialog="Eu..";
@@ -570,13 +571,212 @@ public class Cutscene {
 				if(frames>=20) {
 					frames=0;
 					Pupkin_Boss.index++;
-					if(Pupkin_Boss.index==11) {
-						Pupkin_Boss.index=8;
+					if(Pupkin_Boss.index==10) {
+						//fumaça=true;
+						passo[27]=false;
+						passo[28]=true;
 					}
 				}
-//				avatar
+				if(next) {
+					esvaziar();
+					Pupkin_Boss.index=10;
+					//fumaça=true;
+					passo[27]=false;
+					passo[28]=true;
+				}
 			}
-			
+			if(passo[28]) {
+				boxright=true;
+				avatarL=16;
+				avatarC=1;
+				dialog="Ja estava me irritando";
+				if(next) {
+					esvaziar();
+					passo[28]=false;
+					passo[29]=true;
+				}
+			}
+			if(passo[29]) {
+				frames++;
+				if(frames>=14) {
+					frames=0;
+					Pupkin_Boss.index++;
+					if(Pupkin_Boss.index==12) {
+						Pupkin_Boss.parado=true;
+						Pupkin_Boss.queimou=true;
+						passo[29]=false;
+						passo[30]=true;
+					}
+				}
+				if(next) {
+					Pupkin_Boss.parado=true;
+					Pupkin_Boss.queimou=true;
+					passo[29]=false;
+					passo[30]=true;
+				}
+			}
+			if(passo[30]) {
+				boxright=true;
+				avatarL=16;
+				avatarC=0;
+				dialog="Pare de perder tempo e ";
+				dialog2="vai atras da garota";
+				if(next) {
+					esvaziar();
+					soldier_npc.parado=false;
+					soldier_npc.index=9;
+					passo[30]=false;
+					passo[31]=true;
+				}
+			}
+			if(passo[31]) {
+				cont++;
+				soldier_npc.setPos(-80-(cont),0);
+				if(cont>=105) {
+					soldier_npc.index=10;
+					cont=0;
+					passo[31]=false;
+					passo[32]=true;
+				}
+				frames++;
+				if(frames>=10) {
+					frames=0;
+					soldier_npc.index++;
+					if(soldier_npc.index==17) {
+						soldier_npc.index=9;
+					}
+				}
+				if(next) {
+					esvaziar();
+					soldier_npc.index=10;
+					soldier_npc.setPos(-185,0);
+					cont=0;
+					passo[31]=false;
+					passo[32]=true;
+					
+				}
+			}
+			if(passo[32]) {
+				soldier_npc.dir=left_dir;
+				soldier_npc.setPos(-180,0);
+				soldier_npc.parado=true;
+				boxright=true;
+				avatarL=17;
+				dialog="Solta";
+				if(next) {
+					esvaziar();
+					passo[32]=false;
+					passo[33]=true;
+				}
+			}
+			if(passo[33]) {
+				boxleft=true;
+				avatarL=0;
+				avatarC=6;
+				dialog="Não";
+				if(next) {
+					esvaziar();
+					soldier_npc.index=17;
+					soldier_npc.dir=right_dir;
+					soldier_npc.parado=false;
+					passo[33]=false;
+					passo[34]=true;
+				}
+			}
+			if(passo[34]) {
+				boxright=true;
+				avatarL=17;
+				dialog="MANDEI SOLTAR";
+				frames++;
+				if(frames>=10) {
+					frames=0;
+					soldier_npc.index++;
+					if(soldier_npc.index==20) {
+						soldier_npc.index=18;
+					}
+				}
+				if(next) {
+					esvaziar();
+					passo[34]=false;
+					passo[35]=true;
+				}
+			}
+			if(passo[35]) {
+				boxleft=true;
+				avatarL=0;
+				avatarC=7;
+				dialog="";
+				frames++;
+				if(frames>=10) {
+					frames=0;
+					soldier_npc.index++;
+					if(soldier_npc.index==20) {
+						soldier_npc.index=18;
+					}
+				}
+				if(next) {
+					esvaziar();
+					soldier_npc.parado=true;
+					passo[35]=false;
+					passo[36]=true;
+				}
+			}
+			if(passo[36]) {
+				boxright=true;
+				avatarL=17;
+				dialog="Morto";
+				if(next) {
+					esvaziar();
+					soldier_npc.dir=left_dir;
+					soldier_npc.index=9;
+					Game.player.index=99+30;
+					soldier_npc.parado=false;
+					passo[36]=false;
+					passo[37]=true;
+				}
+			}
+			if(passo[37]) {
+				cont++;
+				soldier_npc.setPos(-180-cont,0);
+				frames++;
+				if(frames>=10) {
+					frames=0;
+					soldier_npc.index++;
+					if(soldier_npc.index==17) {
+						soldier_npc.index=9;
+					}
+					Game.player.index++;
+					if(Game.player.index==99+32) {
+						soldier_npc.parado=true;
+						passo[37]=false;
+						passo[38]=true;
+					}
+				}
+				if(next) {
+					esvaziar();
+					Game.player.index=99+32;
+					soldier_npc.parado=true;
+					soldier_npc.setPos(-180-14,0);
+					passo[37]=false;
+					passo[38]=true;
+				}
+			}
+			if(passo[38]) {
+				boxleft=true;
+				avatarL=0;
+				avatarC=8;
+				dialog="AAAAAAAAAAAAAAAAAAAH";
+				if(next) {
+					esvaziar();
+					Game.player.transformado=true;
+					Game.player.parado=true;
+					passo[38]=false;
+					passo[39]=true;
+				}
+			}
+			if(passo[39]) {
+				Game.player.transformado=true;
+			}
 
 
 		
@@ -628,7 +828,7 @@ public class Cutscene {
 			g.drawString(dialog3,offX-15-Game.TILE_SIZE*3+20,offY+60);
 			g.drawImage(icon[avatarL][avatarC],offX-Game.TILE_SIZE*4,offY,(int)(Game.TILE_SIZE),Game.TILE_SIZE, null);
 			if(button) {
-				g.drawImage(buttonimg,offX-20,offY+45,10,10, null);
+				g.drawImage(buttonimg,offX-20,offY+45,16,16, null);
 			}
 		}
 		if(boxright) {
@@ -637,7 +837,7 @@ public class Cutscene {
 			g.drawString(dialog3,offX2-15-Game.TILE_SIZE*3+20,offY2+60);
 			g.drawImage(icon[avatarL][avatarC],offX2,offY2,(int)(Game.TILE_SIZE),Game.TILE_SIZE, null);
 			if(button) {
-				g.drawImage(buttonimg,offX2-20,offY2+45,10,10, null);
+				g.drawImage(buttonimg,offX2-20,offY2+45,16,16, null);
 			}
 		}
 		

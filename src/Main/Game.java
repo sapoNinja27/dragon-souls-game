@@ -83,7 +83,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener{
 		bullets = new ArrayList<BulletShoot>();
 		
 		spritesheet = new Spritesheet("/spritesheet.png");
-		fundo = new Spritesheet("/cenario1.png");
 		icones = new Spritesheet("/icones.png");
 		player = new Player(0,0,TILE_SIZE,TILE_SIZE,Game.spritesheet.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
 		entities.add(player);

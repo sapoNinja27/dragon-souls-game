@@ -8,6 +8,9 @@ import World.Camera;
 
 public class Pupkin_Boss extends Entity {
 	public static int index;
+	int indexF;
+	public static boolean fumaça;
+	int framesFumacinha;
 	public static boolean queimou;
 	public static boolean parado;
 	private int framesParado = 0,maxFramesParado = 17,indexParado = 0, maxIndexParado=4;
@@ -16,6 +19,7 @@ public class Pupkin_Boss extends Entity {
 	public static int right_dir = 0,left_dir = 1;
 	public static int dir = right_dir;
 	BufferedImage img[]= new BufferedImage[19];
+	BufferedImage fumacinha[]= new BufferedImage[5];
 	private BufferedImage[] right= new BufferedImage[19];
 	private BufferedImage[] left= new BufferedImage[19];
 	BufferedImage fogo[]= new BufferedImage[19];
@@ -40,6 +44,9 @@ public class Pupkin_Boss extends Entity {
 //		}
 		
 		depth=7;
+		for(int i=0;i<5;i++) {
+			fumacinha[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*5+(16+16*i), 18*Game.TILE_SIZE, 16, 16);
+		}
 		for(int i=0; i<19;i++) {
 			right[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(8+3+i), 10*Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE*2);
 			Fright[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(8+i), (10+6)*Game.TILE_SIZE, Game.TILE_SIZE*2, Game.TILE_SIZE);
@@ -50,7 +57,14 @@ public class Pupkin_Boss extends Entity {
 				Fleft[i]=inverter(Fright[i]);
 			}
 		}
-		
+		framesFumacinha++;
+		if(framesFumacinha>=10) {
+			indexF++;
+			framesFumacinha=0;
+			if(indexF==3) {
+				indexF=0;
+			}
+		}
 		if(dir == left_dir) {
 			for(int i=0;i<18;i++) {
 				img[i]=left[i];
@@ -85,6 +99,9 @@ public class Pupkin_Boss extends Entity {
 	}
 	public void render(Graphics g) {
 		g.drawImage(img[index], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
+		if(fumaça) {
+			g.drawImage(fumacinha[indexF], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
+		}
 		if(aceso[0]) {
 			g.drawImage(fogo[0], this.getX()- Camera.x+px+15,this.getY()+py - Camera.y+15,5,5, null);
 		}

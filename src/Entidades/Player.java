@@ -84,7 +84,6 @@ public class Player extends Entity{
 	
 	public void tick() {
 		special=00;
-		transformado=false;
 		if(special>maxspecial) {
 			special=maxspecial;
 		}
@@ -384,7 +383,11 @@ public class Player extends Entity{
 		}else if(caiu_no_chao) {
 			index=index;
 		}else if(parado) {
-			index=indexParado;
+			if(!transformado) {
+				index=indexParado;
+			}else {
+				index=indexParado+99;
+			}
 		}else if(atacando) {
 			index=indexAtk;
 		}else if(atacando2) {
@@ -603,7 +606,7 @@ public class Player extends Entity{
 //		g2.draw(rect3);
 		//g.drawImage(Game.fundo.getSprite(0, 0,1000, 750), this.getX() - Camera.x-(1000/2),this.getY() - Camera.y-(750/2), null);
 		
-		if(leftPlayer[0]==null && leftPlayer[111]==null) {
+		if(leftPlayer[0]==null && leftPlayer[33*4-1]==null) {
 			for(int i=0;i<33*4;i++) {
 				leftPlayer[i]=inverter(rightPlayer[i]);
 			}
@@ -615,7 +618,7 @@ public class Player extends Entity{
 			}else{
 				pos=0;
 			}
-			for(int i=0;i<28*4;i++) {
+			for(int i=0;i<33*4;i++) {
 				direcao[i]=leftPlayer[i];
 			}
 		}else if(dir == right_dir) {
@@ -624,7 +627,7 @@ public class Player extends Entity{
 			}else{
 				pos=0;
 			}
-			for(int i=0;i<28*4;i++) {
+			for(int i=0;i<33*4;i++) {
 				direcao[i]=(rightPlayer[i]);
 			}
 		}
@@ -638,8 +641,8 @@ public class Player extends Entity{
 
 		
 		if(visivel) {
-			if(index==32) {
-				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y+3, null);
+			if(index==32 || index==99+30) {
+				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y+5, null);
 			}else {
 				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);				
 			}
