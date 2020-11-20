@@ -14,6 +14,7 @@ import Entidades.roux_npc;
 import Entidades.soldier_npc;
 
 public class Cutscene {
+	int fade;
 	int cont=0;
 	boolean button;
 	boolean flash;
@@ -46,6 +47,23 @@ public class Cutscene {
 		dialog="";
 		dialog2="";
 		dialog3="";
+	}
+	void fade(boolean go) {
+		int aux=0;
+		if(go) {
+			fade++;
+			if(fade>=30) {
+				fade=0;
+				go=false;
+				for(int i=0; i<100;i++) {
+					if(passo[i]) {
+						passo[i]=false;
+						aux=i+1;
+					}
+				}
+				passo[aux]=true;
+			}
+		}
 	}
 	public static void next() {
 		next=true;
