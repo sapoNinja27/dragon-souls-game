@@ -14,7 +14,7 @@ import Entidades.roux_npc;
 import Entidades.soldier_npc;
 
 public class Cutscene {
-	int fade;
+	int fade, aux;
 	int cont=0;
 	boolean button;
 	boolean flash;
@@ -49,19 +49,16 @@ public class Cutscene {
 		dialog3="";
 	}
 	void fade(boolean go) {
-		int aux=0;
 		if(go) {
 			fade++;
-			if(fade>=30) {
+			if(!passo[aux]) {
+				aux++;
+				fade(true);
+			}else {
 				fade=0;
+				passo[aux]=false;
 				go=false;
-				for(int i=0; i<100;i++) {
-					if(passo[i]) {
-						passo[i]=false;
-						aux=i+1;
-					}
-				}
-				passo[aux]=true;
+				passo[aux+1]=true;
 			}
 		}
 	}
@@ -101,6 +98,16 @@ public class Cutscene {
 				icon[i][j]=Game.icones.getSprite(Game.TILE_SIZE*(i), Game.TILE_SIZE*j, Game.TILE_SIZE, Game.TILE_SIZE);
 			}
 		}
+//		testes
+//		if(next) {
+//			for(int i=0; i<100;i++) {
+//				if(passo[i]) {
+//					System.out.println(i+" :"+passo[i]);
+//				}
+//			}
+//			next=false;
+//			fade(true);
+//		}
 		if(cena[0]) {
 			if(passo[0]) {
 //				Game.player.parado=true;
@@ -124,8 +131,7 @@ public class Cutscene {
 				if(next) {
 					esvaziar();
 					Game.player.setX(760);
-					passo[0]=false;
-					passo[1]=true;
+					fade(true);
 				}
 				frames++;
 				if(frames==2) {
@@ -134,8 +140,7 @@ public class Cutscene {
 					Game.player.setX(cont);
 					if(cont>=760) {
 						cont=760;
-						passo[0]=false;
-						passo[1]=true;
+						fade(true);
 					}
 				}
 			}
@@ -145,8 +150,7 @@ public class Cutscene {
 				dialog="Boa novato";
 				if(next) {
 					esvaziar();
-					passo[1]=false;
-					passo[2]=true;
+					fade(true);
 				}
 			}
 			if(passo[2]) {
@@ -155,8 +159,7 @@ public class Cutscene {
 				dialog="Agora só falta a garota";
 				if(next) {
 					esvaziar();
-					passo[2]=false;
-					passo[3]=true;
+					fade(true);
 				}
 			}
 			if(passo[3]) {
@@ -177,8 +180,7 @@ public class Cutscene {
 				dialog="Roux, fuja...";
 				if(next) {
 					esvaziar();
-					passo[3]=false;
-					passo[4]=true;
+					fade(true);
 				}
 				
 			}
@@ -200,8 +202,7 @@ public class Cutscene {
 				if(next) {
 					esvaziar();
 					soldier_npc.index=9;
-					passo[4]=false;
-					passo[5]=true;
+					fade(true);
 				}
 			}
 			if(passo[5]) {
@@ -213,16 +214,14 @@ public class Cutscene {
 					soldier_npc.index++;
 					if(soldier_npc.index>=16) {
 						soldier_npc.index=17;
-						passo[5]=false;
-						passo[6]=true;
+						fade(true);
 					}
 				}
 				if(next) {
 					esvaziar();
 					soldier_npc.setPos(-80,0);
 					soldier_npc.index=17;
-					passo[5]=false;
-					passo[6]=true;
+					fade(true);
 				}
 			}
 			if(passo[6]) {
@@ -235,8 +234,7 @@ public class Cutscene {
 						soldier_npc.index=0;
 						soldier_npc.parado=true;
 						light_npc.index=4;
-						passo[6]=false;
-						passo[7]=true;
+						fade(true);
 					}
 				}
 				if(next) {
@@ -244,8 +242,7 @@ public class Cutscene {
 					soldier_npc.index=0;
 					soldier_npc.parado=true;
 					light_npc.index=4;
-					passo[6]=false;
-					passo[7]=true;
+					fade(true);
 				}
 			}
 			if(passo[7]) {
@@ -255,8 +252,7 @@ public class Cutscene {
 				dialog="Light";
 				if(next) {
 					esvaziar();
-					passo[7]=false;
-					passo[8]=true;
+					fade(true);
 				}
 			}
 			if(passo[8]) {
@@ -268,8 +264,7 @@ public class Cutscene {
 					esvaziar();
 					soldier_npc.index=4;
 					soldier_npc.parado=false;
-					passo[8]=false;
-					passo[9]=true;
+					fade(true);
 				}
 			}
 			if(passo[9]) {
@@ -282,15 +277,13 @@ public class Cutscene {
 					soldier_npc.setPos(-80, 0);
 					if(soldier_npc.index>=8) {
 						soldier_npc.index=7;
-						passo[9]=false;
-						passo[10]=true;
+						fade(true);
 					}
 				}
 				if(next) {
 					esvaziar();
 					soldier_npc.index=7;
-					passo[9]=false;
-					passo[10]=true;
+					fade(true);
 				}
 			}
 			if(passo[10]) {
@@ -299,8 +292,7 @@ public class Cutscene {
 				dialog="Não vai";
 				if(next) {
 					esvaziar();
-					passo[10]=false;
-					passo[11]=true;
+					fade(true);
 				}
 			}
 			if(passo[11]) {
@@ -309,8 +301,7 @@ public class Cutscene {
 				dialog="Ela esta paralizada";
 				if(next) {
 					esvaziar();
-					passo[11]=false;
-					passo[12]=true;
+					fade(true);
 				}
 			}
 			if(passo[12]) {
@@ -320,8 +311,7 @@ public class Cutscene {
 				dialog="Mate";
 				if(next) {
 					esvaziar();
-					passo[12]=false;
-					passo[13]=true;
+					fade(true);
 				}
 			}
 			if(passo[13]) {
@@ -334,8 +324,7 @@ public class Cutscene {
 						Game.player.depth=5;
 						op=0f;
 						flash=false;
-						passo[13]=false;
-						passo[14]=true;
+						fade(true);
 					}
 					if(next) {
 						esvaziar();
@@ -343,8 +332,7 @@ public class Cutscene {
 						Game.player.depth=5;
 						op=0f;
 						flash=false;
-						passo[13]=false;
-						passo[14]=true;
+						fade(true);
 					}
 				}
 				
@@ -358,15 +346,13 @@ public class Cutscene {
 					frames=0;
 					Game.player.index=29;
 					soldier_npc.index=8;
-					passo[14]=false;
-					passo[15]=true;
+					fade(true);
 				}
 				if(next) {
 					esvaziar();
 					Game.player.index=29;
 					soldier_npc.index=8;
-					passo[14]=false;
-					passo[15]=true;
+					fade(true);
 				}
 			}
 			if(passo[15]) {
@@ -380,8 +366,7 @@ public class Cutscene {
 					cont=0;
 					roux_npc.index=4;
 					roux_npc.dir=left_dir;
-					passo[15]=false;
-					passo[16]=true;
+					fade(true);
 				}
 			}
 			if(passo[16]) {
