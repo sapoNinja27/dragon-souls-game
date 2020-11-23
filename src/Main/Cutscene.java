@@ -804,7 +804,6 @@ public class Cutscene {
 		g.setFont(new Font("arial", Font.BOLD, 13));
 		Graphics2D g2 = (Graphics2D) g;
 		
-
 		if(boxleft) {
 			Rectangle borda= new Rectangle(offX-Game.TILE_SIZE*3,offY, Game.TILE_SIZE*3, Game.TILE_SIZE-1);
 			g.setColor(Color.white);

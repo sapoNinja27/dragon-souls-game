@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -29,7 +30,7 @@ import Graficos.Spritesheet;
 import Graficos.UI;
 import World.World;
 
-public class Game extends Canvas implements Runnable,KeyListener,MouseListener{
+public class Game extends Canvas implements Runnable,KeyListener,MouseListener,MouseMotionListener{
 	public static int TILE_SIZE=64;
 	private static final long serialVersionUID = 1L;
 	public static JFrame frame;
@@ -47,7 +48,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener{
 	public static List<BulletShoot> bullets;
 	
 	public static Spritesheet spritesheet;
-	public static Spritesheet fundo;
+	public static Spritesheet Menu;
 	public static Spritesheet icones;
 	
 	public static World world;
@@ -63,7 +64,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener{
 	private int framesGameOver = 0;
 	private boolean restartGame = false;
 	public static Cutscene cen;
-	public Menu menu;
+	public static Menu menu;
 	public static int[] pixels;
 	public static int[] lightMap;
 	
@@ -71,6 +72,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener{
 		rand = new Random();
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos.
@@ -84,6 +86,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener{
 		
 		spritesheet = new Spritesheet("/spritesheet.png");
 		icones = new Spritesheet("/icones.png");
+		Menu = new Spritesheet("/Menu.png");
 		player = new Player(0,0,TILE_SIZE,TILE_SIZE,Game.spritesheet.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
 		entities.add(player);
 		world = new World("/level1.png");
@@ -183,7 +186,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener{
 		//Graphics2D g2 = (Graphics2D) g;
 		world.render(g);
 		if(gameState == "NORMAL") {
-			
 			Collections.sort(entities,Entity.nodeSorter);
 			for(int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -197,18 +199,18 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener{
 				cen.render(g);
 			}
 		}
-
+		if(gameState == "GAME_OVER") {
+			//menugover.render(g);
+		}else if(gameState == "MENU") {
+			menu.render(g);
+		}
 		/***/
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0,WIDTH*SCALE,HEIGHT*SCALE,null);
 		g.setFont(new Font("arial",Font.BOLD,20));
 		
-		if(gameState == "GAME_OVER") {
-			//menugover.render(g);
-		}else if(gameState == "MENU") {
-			menu.render(g);
-		}
+		
 		bs.show();
 	}
 	
@@ -232,7 +234,7 @@ public void run() {
 				delta--;				
 			}
 			if(System.currentTimeMillis() - timer >= 1000) {
-//				System.out.println("FPS:"+ frames);
+				System.out.println("FPS:"+ frames);
 				frames=0;
 				timer+=1000;
 			}
@@ -420,11 +422,14 @@ public void run() {
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseEntered(MouseEvent e) {
 		
 	}
-
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		menu.mx=e.getX()/2;
+		menu.my=e.getY()/2;
+	}
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -433,14 +438,19 @@ public void run() {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
-		
-		
+		menu.mx=e.getX()/2;
+		menu.my=e.getY()/2;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+//  nao
 		
 	}
 

@@ -18,6 +18,9 @@ public class Player extends Entity{
 	public boolean caindo, subindo,podepular,completou_pulo,saiu_do_chao,caiu_no_chao, atacando,dash,dashS,dashS2,transformado,
 	atacando2,atack2;
 	public int px;
+	public boolean tmpSocos[]=new boolean[3];
+	public boolean bloqueio[]=new boolean[3];
+	public boolean socoForte[]=new boolean[3];
 	public boolean right,up,left,down,parado,parando;
 	public int right_dir = 0,left_dir = 1;
 	public int dir = right_dir;
