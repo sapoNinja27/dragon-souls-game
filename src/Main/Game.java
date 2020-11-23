@@ -2,10 +2,14 @@ package Main;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -14,12 +18,14 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import Entidades.BulletShoot;
@@ -69,6 +75,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static int[] lightMap;
 	
 	public Game(){
+//		requestFocus();
 		rand = new Random();
 		addKeyListener(this);
 		addMouseListener(this);
@@ -97,10 +104,22 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	}
 	
 	public void initFrame(){
-		frame = new JFrame("Game #1");
+		frame = new JFrame("Black Pin");
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
+		Image imagem=null;
+		try {
+			imagem=ImageIO.read(getClass().getResource("/icon.png"));
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		Toolkit toolkit =Toolkit.getDefaultToolkit();
+		Image image= toolkit.getImage(getClass().getResource("/icon.png"));
+		Cursor c= toolkit.createCustomCursor(image, new Point(0,0), "img");
+		
+		frame.setIconImage(imagem);
+//		frame.setAlwaysOnTop(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -417,7 +436,7 @@ public void run() {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent e) {
 		
 	}
 
@@ -438,8 +457,9 @@ public void run() {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		menu.mx=e.getX()/2;
-		menu.my=e.getY()/2;
+		menu.mcx=e.getX()/2;
+		menu.mcy=e.getY()/2;
+		menu.clicou=true;
 	}
 
 	@Override

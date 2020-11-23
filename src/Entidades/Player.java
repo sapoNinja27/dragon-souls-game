@@ -21,6 +21,9 @@ public class Player extends Entity{
 	public boolean tmpSocos[]=new boolean[3];
 	public boolean bloqueio[]=new boolean[3];
 	public boolean socoForte[]=new boolean[3];
+	public boolean forca[]=new boolean[3];
+	public boolean habilidade[]=new boolean[3];
+	public boolean defesa[]=new boolean[3];
 	public boolean right,up,left,down,parado,parando;
 	public int right_dir = 0,left_dir = 1;
 	public int dir = right_dir;
