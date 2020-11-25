@@ -39,6 +39,7 @@ import World.World;
 public class Game extends Canvas implements Runnable,KeyListener,MouseListener,MouseMotionListener{
 	public static int TILE_SIZE=64;
 	private static final long serialVersionUID = 1L;
+	boolean savegame;
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
@@ -54,6 +55,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static List<BulletShoot> bullets;
 	
 	public static Spritesheet spritesheet;
+	public static Spritesheet fundo;
 	public static Spritesheet Menu;
 	public static Spritesheet icones;
 	
@@ -62,7 +64,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static Player player;
 	
 	public static Random rand;
-	
 	public UI ui;
 	
 	public static String gameState = "MENU";
@@ -94,6 +95,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		spritesheet = new Spritesheet("/spritesheet.png");
 		icones = new Spritesheet("/icones.png");
 		Menu = new Spritesheet("/Menu.png");
+		fundo = new Spritesheet("/fundo.png");
 		player = new Player(0,0,TILE_SIZE,TILE_SIZE,Game.spritesheet.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
 		entities.add(player);
 		world = new World("/level1.png");
@@ -104,7 +106,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	}
 	
 	public void initFrame(){
-		frame = new JFrame("Black Pin");
+		frame = new JFrame("Dragon Soul I");
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
@@ -147,6 +149,13 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	public void tick(){
 		if(gameState == "NORMAL") {
+			if(savegame) {
+				savegame=false;
+				String[] opt1= {"level"};
+				int[] opt2= {1};
+				menu.saveGame(opt1,opt2,0);
+				System.out.println("salvo");
+			}
 			if(cen.CcRun()) {
 				cen.tick();
 			}
@@ -329,7 +338,9 @@ public void run() {
 				}
 			}
 		}
-		
+		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
+			savegame=true;
+		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_W){
 			if(!cen.CcRun()) {
@@ -463,9 +474,11 @@ public void run() {
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mouseReleased(MouseEvent e) {
+		menu.mx=e.getX()/2;
+		menu.my=e.getY()/2;
+		menu.clicou=false;	
+		menu.soltou=true;
 	}
 
 	@Override

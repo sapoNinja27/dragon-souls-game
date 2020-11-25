@@ -5,25 +5,38 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import World.Camera;
+import World.World;
 
 public class Menu {
-	public String[] options = {"novo jogo","carregar jogo","sair"};
+	int posx=0,posy=0;
+	public String[] MenuPrincipal = {"Vazio","Jogar","Continuar","Opções","Sair","Volume","Efeitos","Musica","Idioma","Slot1","Slot2","Slot3"};
 	public String[] Menus = {"Habilidades","Atributos","Personagens","Opções"};
 	public String[] Habilidades = {"Vazio","Back","Next","Tempestade de Socos1","Tempestade de Socos2","Tempestade de Socos3",
 			"Bloquear1","Bloquear2","Bloquear3","Fortalecer1","Fortalecer2","Fortalecer3","Voltar","Sim","Não"};
 	public int currentOption=0;
 	int menus=0;
+	String slot1="Vazio.",slot2="Vazio.",slot3="Vazio.";
+	boolean load;
+	public static boolean saveExists=false;
+	public static boolean saveGame=false;
+	String idioma="Portugues";
+	int volume=0,volume2=0;
+	boolean sfx;
+	boolean mus;
 	boolean confirmacao;
 	public int maxOption = Habilidades.length - 1;
-	public boolean clicou;
+	public boolean clicou, soltou;
 	String golpe;
 	int nivel;
-	int opcoesx;
-	int opcoesy;
-	int atributosx;
-	int atributosy;
+	boolean opcoes;
 	int tmpsocosx1[] = { 54, 89, 123, 90, 54}; 
 	int tmpsocosy1[] = { 119, 119, 151, 185, 185 }; 
 	int bloqueiox1[] = { 54, 89, 123, 90, 54}; 
@@ -52,8 +65,86 @@ public class Menu {
 	public int mx,my, mcx,mcy;
 	public boolean pause = false;
 	
-	
+	public static void applySave(String str){
+		String[] spl=str.split("/");
+		for(int i=0; i< spl.length; i++) {
+			String[] spl2= spl[i].split(":");
+			switch(spl2[0]) {
+			case "level":
+				World.restartGame("level"+spl2[1]+".png");
+				Game.gameState="NORMAL";
+				break;
+			}
+		}
+	}
+	public static String loadGame(int encode) {
+		String line= "";
+		File file = new File("save.txt");
+		if(file.exists()) {
+			try {
+				String singleLine=null;
+				BufferedReader reader=new BufferedReader(new FileReader("save.txt"));
+				try {
+					while((singleLine=reader.readLine())!=null) {
+						String[] trans=singleLine.split(":");
+						char[] val=trans[1].toCharArray();
+						trans[1]="";
+						for(int i=0; i<val.length;i++) {
+							val[i]-=encode;
+							trans[1]+=val[i];
+						}
+						line+=trans[0];
+						line+=":";
+						line+=trans[1];
+						line+="/";
+					}
+				}catch(IOException e) {
+					
+				}
+			}catch(FileNotFoundException e) {
+				
+			}
+		}
+		return line;
+	}
+	public static void saveGame(String[] val1, int[] val2, int encode) {
+		BufferedWriter write =null;
+		try {
+			write=new BufferedWriter(new FileWriter("save.txt"));
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		for(int i=0; i< val1.length;i++) {
+			String current=val1[i];
+			current+=":";
+			char[] value = Integer.toString(val2[i]).toCharArray();
+			for(int n=0; n<value.length;n++) {
+				value[n]+=encode;
+				current+=value[n];
+			}
+			try {
+				write.write(current);
+				if(i<val1.length-1) {
+					write.newLine();
+				}
+			}catch(IOException e) {
+				
+			}
+			try {
+				write.flush();
+				write.close();
+			}catch(IOException e) {
+				
+			}
+		}
+	}
 	public void tick() {
+		File file=new File("save.txt");
+		if(file.exists()) {
+			saveExists=true;
+		}else {
+			saveExists=false;
+		}
 		for(int i=0;i<3;i++) {
 			fundo[i]=Game.Menu.getSprite(0+(900*i), 0, 900, 900);
 		}
@@ -68,443 +159,537 @@ public class Menu {
 		txt=Game.Menu.getSprite(0+(900*3), 0, 900, 900);
 		pontosH=6;
 		pontosA=6;
-		if(Menus[menus]=="Habilidades") {
-			if(confirmacao) {
-				if(clicou) {
-					clicou=false;
-					if(mcx>230 && mcx<230+40 && mcy>220 && mcy<220+20) {
-						currentOption=13;
-						pontosH--;
-						if(golpe=="tempestade de socos") {
-							Game.player.tmpSocos[nivel-1]=true;
-							confirmacao=false;
-						}else if(golpe=="bloquear") {
-							Game.player.bloqueio[nivel-1]=true;
-							confirmacao=false;
-						}else if(golpe=="fortalecer") {
-							Game.player.socoForte[nivel-1]=true;
-							confirmacao=false;
+		if(!pause) {
+			if(load) {
+				//pra dele tar file=new File("save.txt"); file.delete();
+				
+				slot1=String.valueOf(file);
+				if(soltou) {
+					soltou=false;
+					if(mx>720/3 && mx<720/3+100 && my>135 && my<135+20) {
+						if(file.exists()) {
+							String saver=loadGame(0);
+							applySave(saver);
 						}
-					}else if(mcx>370 && mcx<370+40 && mcy>220 && mcy<220+20) {
-						confirmacao=false;
+					}else if(mx>720/3 && mx<720/3+100 && my>185 && my<185+20) {
+						
+					}else if(mx>720/3 && mx<720/3+100 && my>235 && my<125+20) {
+						
+					}else if(mx>583 && mx<583+62 && my>314 && my<314+24) {
+						load=false;
+					}else  {
+						currentOption=0;
 					}
 				}else {
-					if(mx>230 && mx<230+40 && my>220 && my<220+20) {
-						currentOption=13;
-					}else if(mx>370 && mx<370+40 && my>220 && my<220+20) {
-						currentOption=14;
+					if(mx>720/3 && mx<720/3+100 && my>135 && my<135+20) {
+						currentOption=9;
+					}else if(mx>720/3 && mx<720/3+100 && my>185 && my<185+20) {
+						currentOption=10;
+					}else if(mx>720/3 && mx<720/3+100 && my>235 && my<235+20) {
+						currentOption=11;
+					}else  if(mx>583 && mx<583+62 && my>314 && my<314+24) {
+						currentOption=4;
 					}else {
 						currentOption=0;
 					}
 				}
 			}else {
-				if(clicou) {
-					clicou=false;
-					if(mcx>54 && mcx<123 && mcy>119 && mcy<185) {
-						//socos tempestade nv 1
-						currentOption=3;
-						if(!Game.player.tmpSocos[0]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="tempestade de socos";
-								nivel=1;
+				if(opcoes) {
+					if(soltou) {
+						soltou=false;
+						if(mx>583 && mx<583+62 && my>314 && my<314+24) {
+							opcoes=false;
+						}else if(mx>720/2 && mx<720/2+100 && my>85 && my<85+20) {
+							currentOption=5;
+							volume=volume2;
+							
+						}else if(mx>720/2 && mx<720/2+25 && my>135 && my<135+20) {
+							if(sfx) {
+								sfx=false;
+							}else {
+								sfx=true;
 							}
-						}
-					}else if(mcx>54+80 && mcx<123+80 && mcy>119 && mcy<185 && Game.player.tmpSocos[0]) {
-						//socos tempestade 2
-						currentOption=4;
-						if(!Game.player.tmpSocos[1]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="tempestade de socos";
-								nivel=2;
+						}else if(mx>720/2-2 && mx<720/2-2+29 && my>133+50 && my<133+50+24) {
+							if(mus) {
+								mus=false;
+							}else {
+								mus=true;
 							}
-						}
-					}else if(mcx>54+160 && mcx<123+160 && mcy>119 && mcy<185 && Game.player.tmpSocos[1]) {
-						//socos tempestade 3
-						currentOption=5;
-						if(!Game.player.tmpSocos[2]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="tempestade de socos";
-								nivel=3;
+						}else if(mx>720/3+100-10 && mx<720/3+100-10+80 && my>250-15 && my<250-15+20) {
+							if(idioma=="English") {
+								idioma="Portugues";
+							}else if(idioma=="Portugues") {
+								idioma="English";
 							}
+						}else {
+							currentOption=0;
 						}
-					}else if(mcx>54 && mcx<123 && mcy>119+80 && mcy<185+81) {
-						//bloquear 1
-						currentOption=6;
-						if(!Game.player.bloqueio[0]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="bloquear";
-								nivel=1;
-							}
-						}
-					}else if(mcx>54+80 && mcx<123+80 && mcy>119+80 && mcy<185+81 && Game.player.bloqueio[0]) {
-						//bloquear 2
-						currentOption=7;
-						if(!Game.player.bloqueio[1]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="bloquear";
-								nivel=2;
-							}
-						}
-					}else if(mcx>54+160 && mcx<123+160 && mcy>119+80 && mcy<185+81 && Game.player.bloqueio[1]) {
-						//bloquear 3
-						currentOption=8;
-						if(!Game.player.bloqueio[2]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="bloquear";
-								nivel=3;
-							}
-						}
-					}else if(mcx>54 && mcx<123 && mcy>119+161 && mcy<185+161) {
-						//fortalecer 1 
-						currentOption=9;
-						if(!Game.player.socoForte[0]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="fortalecer";
-								nivel=1;
-							}
-						}
-					}else if(mcx>54+80 && mcx<123+80 && mcy>119+161 && mcy<185+161 && Game.player.socoForte[0]) {
-						//fortalecer 2
-						currentOption=10;
-						if(!Game.player.socoForte[1]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="fortalecer";
-								nivel=2;
-							}
-						}
-					}else if(mcx>54+160 && mcx<123+160 && mcy>119+161 && mcy<185+161 && Game.player.socoForte[1]) {
-						//fortalecer  3
-						currentOption=11;
-						if(!Game.player.socoForte[2]) {
-							if(pontosH>0) {
-								confirmacao=true;
-								golpe="fortalecer";
-								nivel=3;
-							}
-						}
-					}else if(mcx>45 && mcx<70+45 && mcy>10 && mcy<30+10){
-						//opçoes
-						currentOption=1;
-						menus=3;
-					}else if(mcx>620 && mcx<75+620 && mcy>10 && mcy<30+10){
-						//atributos
-						menus=1;
-						currentOption=2;
-					}else if(mcx>615 && mcx<43+615 && mcy>315 && mcy<315+20){
-						pause=false;
-						Game.gameState = "NORMAL";
 					}else {
-						currentOption=0;
+
+						int x= volume;
+						if(mx>583 && mx<583+62 && my>314 && my<314+24) {
+							currentOption=4;
+						}else if(mx>720/2 && mx<720/2+100 && my>85 && my<85+20) {
+							currentOption=5;
+							volume2=mx-720/2;
+							
+						}else if(mx>720/2 && mx<720/2+25 && my>135 && my<135+20) {
+							currentOption=6;
+						}else if(mx>720/2-2 && mx<720/2-2+29 && my>133+50 && my<133+50+24) {
+							currentOption=7;
+						}else if(mx>720/3+100-10 && mx<720/3+100-10+80 && my>250-15 && my<250-15+20) {
+							currentOption=8;
+						}else {
+							currentOption=0;
+							volume=x;
+						}
 					}
+					
 				}else {
-					if(mx>54 && mx<123 && my>119 && my<185) {
-						//socos tempestade 1
-						currentOption=3;
-					}else if(mx>54+80 && mx<123+80 && my>119 && my<185 && Game.player.tmpSocos[0]) {
-						//socos tempestade 2
-						currentOption=4;
-					}else if(mx>54+160 && mx<123+160 && my>119 && my<185 && Game.player.tmpSocos[1]) {
-						//socos tempestade 3
-						currentOption=5;
-					}else if(mx>54 && mx<123 && my>119+80 && my<185+81) {
-						//bloquear1
-						currentOption=6;
-					}else if(mx>54+80 && mx<123+80 && my>119+80 && my<185+81 && Game.player.bloqueio[0]) {
-						//bloquear2
-						currentOption=7;
-					}else if(mx>54+160 && mx<123+160 && my>119+80 && my<185+81 && Game.player.bloqueio[1]) {
-						//bloquear3
-						currentOption=8;
-					}else if(mx>54 && mx<123 && my>119+161 && my<185+161) {
-						//fortalecer 1
-						currentOption=9;
-					}else if(mx>54+80 && mx<123+80 && my>119+161 && my<185+161 && Game.player.socoForte[0]) {
-						//fortalecer 2
-						currentOption=10;
-					}else if(mx>54+160 && mx<123+160 && my>119+161 && my<185+161 && Game.player.socoForte[1]) {
-						//fortalecer 3
-						currentOption=11;
-					}else if(mx>45 && mx<70+45 && my>10 && my<30+10){
-						//opçoes
-						currentOption=1;
-					}else if(mx>620 && mx<75+620 && my>10 && my<30+10){
-						//atributos
-						currentOption=2;
-					}else if(mx>615 && mx<43+615 && my>315 && my<315+20){
-						currentOption=12;
+					if(soltou) {
+						soltou=false;
+						if(mx>160 && mx<160+90 && my>250 && my<250+30) {
+							Game.gameState = "NORMAL";
+							Game.player.visivel=true;
+							Game.player.Hudvisivel=true;
+							Game.player.depth=7;
+			//				Game.cen.CenaStart(0);
+							pause = false;					
+						}
+						if(mx>263 && mx<263+90 && my>250 && my<250+30) {
+							load=true;
+						}
+						if(mx>366 && mx<366+90 && my>250 && my<250+30) {
+							opcoes=true;
+						}
+						if(mx>469 && mx<469+90 && my>250 && my<250+30) {
+							System.exit(1);
+						}else {
+							soltou=false;
+						}
+							
 					}else {
-						currentOption=0;
+						if(mx>160 && mx<160+90 && my>250 && my<250+30) {
+							currentOption=1;
+						}else if(mx>263 && mx<263+90 && my>250 && my<250+30) {
+							currentOption=2;
+						}else if(mx>366 && mx<366+90 && my>250 && my<250+30) {
+							currentOption=3;
+						}else if(mx>469 && mx<469+90 && my>250 && my<250+30) {
+							currentOption=4;
+						}else {
+							currentOption=0;
+						}
 					}
 				}
 			}
 			
-		}else if(Menus[menus]=="Atributos") {
-			if(confirmacao) {
-				if(clicou) {
-					clicou=false;
-					if(mcx>230 && mcx<230+40 && mcy>220 && mcy<220+20) {
-						currentOption=13;
-						pontosA--;
-						if(golpe=="força") {
-							Game.player.forca[nivel-1]=true;
-							confirmacao=false;
-						}else if(golpe=="habilidade") {
-							Game.player.habilidade[nivel-1]=true;
-							confirmacao=false;
-						}else if(golpe=="defesa") {
-							Game.player.defesa[nivel-1]=true;
+		}else {
+			if(Menus[menus]=="Habilidades") {
+				if(confirmacao) {
+					if(clicou) {
+						clicou=false;
+						if(mcx>230 && mcx<230+40 && mcy>220 && mcy<220+20) {
+							currentOption=13;
+							pontosH--;
+							if(golpe=="tempestade de socos") {
+								Game.player.tmpSocos[nivel-1]=true;
+								confirmacao=false;
+							}else if(golpe=="bloquear") {
+								Game.player.bloqueio[nivel-1]=true;
+								confirmacao=false;
+							}else if(golpe=="fortalecer") {
+								Game.player.socoForte[nivel-1]=true;
+								confirmacao=false;
+							}
+						}else if(mcx>370 && mcx<370+40 && mcy>220 && mcy<220+20) {
 							confirmacao=false;
 						}
-					}else if(mcx>370 && mcx<370+40 && mcy>220 && mcy<220+20) {
-						confirmacao=false;
+					}else {
+						if(mx>230 && mx<230+40 && my>220 && my<220+20) {
+							currentOption=13;
+						}else if(mx>370 && mx<370+40 && my>220 && my<220+20) {
+							currentOption=14;
+						}else {
+							currentOption=0;
+						}
 					}
 				}else {
-					if(mx>230 && mx<230+40 && my>220 && my<220+20) {
-						currentOption=13;
-					}else if(mx>370 && mx<370+40 && my>220 && my<220+20) {
-						currentOption=14;
+					if(clicou) {
+						clicou=false;
+						if(mcx>54 && mcx<123 && mcy>119 && mcy<185) {
+							//socos tempestade nv 1
+							currentOption=3;
+							if(!Game.player.tmpSocos[0]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="tempestade de socos";
+									nivel=1;
+								}
+							}
+						}else if(mcx>54+80 && mcx<123+80 && mcy>119 && mcy<185 && Game.player.tmpSocos[0]) {
+							//socos tempestade 2
+							currentOption=4;
+							if(!Game.player.tmpSocos[1]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="tempestade de socos";
+									nivel=2;
+								}
+							}
+						}else if(mcx>54+160 && mcx<123+160 && mcy>119 && mcy<185 && Game.player.tmpSocos[1]) {
+							//socos tempestade 3
+							currentOption=5;
+							if(!Game.player.tmpSocos[2]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="tempestade de socos";
+									nivel=3;
+								}
+							}
+						}else if(mcx>54 && mcx<123 && mcy>119+80 && mcy<185+81) {
+							//bloquear 1
+							currentOption=6;
+							if(!Game.player.bloqueio[0]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="bloquear";
+									nivel=1;
+								}
+							}
+						}else if(mcx>54+80 && mcx<123+80 && mcy>119+80 && mcy<185+81 && Game.player.bloqueio[0]) {
+							//bloquear 2
+							currentOption=7;
+							if(!Game.player.bloqueio[1]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="bloquear";
+									nivel=2;
+								}
+							}
+						}else if(mcx>54+160 && mcx<123+160 && mcy>119+80 && mcy<185+81 && Game.player.bloqueio[1]) {
+							//bloquear 3
+							currentOption=8;
+							if(!Game.player.bloqueio[2]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="bloquear";
+									nivel=3;
+								}
+							}
+						}else if(mcx>54 && mcx<123 && mcy>119+161 && mcy<185+161) {
+							//fortalecer 1 
+							currentOption=9;
+							if(!Game.player.socoForte[0]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="fortalecer";
+									nivel=1;
+								}
+							}
+						}else if(mcx>54+80 && mcx<123+80 && mcy>119+161 && mcy<185+161 && Game.player.socoForte[0]) {
+							//fortalecer 2
+							currentOption=10;
+							if(!Game.player.socoForte[1]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="fortalecer";
+									nivel=2;
+								}
+							}
+						}else if(mcx>54+160 && mcx<123+160 && mcy>119+161 && mcy<185+161 && Game.player.socoForte[1]) {
+							//fortalecer  3
+							currentOption=11;
+							if(!Game.player.socoForte[2]) {
+								if(pontosH>0) {
+									confirmacao=true;
+									golpe="fortalecer";
+									nivel=3;
+								}
+							}
+						}else if(mcx>45 && mcx<70+45 && mcy>10 && mcy<30+10){
+							//opçoes
+							currentOption=1;
+							menus=3;
+						}else if(mcx>620 && mcx<75+620 && mcy>10 && mcy<30+10){
+							//atributos
+							menus=1;
+							currentOption=2;
+						}else if(mcx>615 && mcx<43+615 && mcy>315 && mcy<315+20){
+							pause=false;
+							Game.gameState = "NORMAL";
+						}else {
+							currentOption=0;
+						}
 					}else {
-						currentOption=0;
+						if(mx>54 && mx<123 && my>119 && my<185) {
+							//socos tempestade 1
+							currentOption=3;
+						}else if(mx>54+80 && mx<123+80 && my>119 && my<185 && Game.player.tmpSocos[0]) {
+							//socos tempestade 2
+							currentOption=4;
+						}else if(mx>54+160 && mx<123+160 && my>119 && my<185 && Game.player.tmpSocos[1]) {
+							//socos tempestade 3
+							currentOption=5;
+						}else if(mx>54 && mx<123 && my>119+80 && my<185+81) {
+							//bloquear1
+							currentOption=6;
+						}else if(mx>54+80 && mx<123+80 && my>119+80 && my<185+81 && Game.player.bloqueio[0]) {
+							//bloquear2
+							currentOption=7;
+						}else if(mx>54+160 && mx<123+160 && my>119+80 && my<185+81 && Game.player.bloqueio[1]) {
+							//bloquear3
+							currentOption=8;
+						}else if(mx>54 && mx<123 && my>119+161 && my<185+161) {
+							//fortalecer 1
+							currentOption=9;
+						}else if(mx>54+80 && mx<123+80 && my>119+161 && my<185+161 && Game.player.socoForte[0]) {
+							//fortalecer 2
+							currentOption=10;
+						}else if(mx>54+160 && mx<123+160 && my>119+161 && my<185+161 && Game.player.socoForte[1]) {
+							//fortalecer 3
+							currentOption=11;
+						}else if(mx>45 && mx<70+45 && my>10 && my<30+10){
+							//opçoes
+							currentOption=1;
+						}else if(mx>620 && mx<75+620 && my>10 && my<30+10){
+							//atributos
+							currentOption=2;
+						}else if(mx>615 && mx<43+615 && my>315 && my<315+20){
+							currentOption=12;
+						}else {
+							currentOption=0;
+						}
 					}
 				}
-			}else {
-				if(clicou) {
-					clicou=false;
-					if(mcx>54 && mcx<123 && mcy>119 && mcy<185) {
-						//soco nv 1
-						currentOption=3;
-						if(!Game.player.forca[0]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="força";
-								nivel=1;
-							}
-						}
-					}else if(mcx>54+80 && mcx<123+80 && mcy>119 && mcy<185 && Game.player.forca[0]) {
-						//soco nv 2
-						currentOption=4;
-						if(!Game.player.forca[1]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="força";
-								nivel=2;
-							}
-						}
-					}else if(mcx>54+160 && mcx<123+160 && mcy>119 && mcy<185 && Game.player.forca[1]) {
-						//ssoco nv 3
-						currentOption=5;
-						if(!Game.player.forca[2]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="força";
-								nivel=3;
-							}
-						}
-					}else if(mcx>54 && mcx<123 && mcy>119+80 && mcy<185+81) {
-						//habilidades
-						currentOption=6;
-						if(!Game.player.habilidade[0]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="habilidade";
-								nivel=1;
-							}
-						}
-					}else if(mcx>54+80 && mcx<123+80 && mcy>119+80 && mcy<185+81 && Game.player.habilidade[0]) {
-						//HABILIDADE 2
-						currentOption=7;
-						if(!Game.player.habilidade[1]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="habilidade";
-								nivel=2;
-							}
-						}
-					}else if(mcx>54+160 && mcx<123+160 && mcy>119+80 && mcy<185+81 && Game.player.habilidade[1]) {
-						//habilida de 3
-						currentOption=8;
-						if(!Game.player.habilidade[2]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="habilidade";
-								nivel=3;
-							}
-						}
-					}else if(mcx>54 && mcx<123 && mcy>119+161 && mcy<185+161) {
-						//defesa 1 
-						currentOption=9;
-						if(!Game.player.defesa[0]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="defesa";
-								nivel=1;
-							}
-						}
-					}else if(mcx>54+80 && mcx<123+80 && mcy>119+161 && mcy<185+161 && Game.player.defesa[0]) {
-						//defesa 2
-						currentOption=10;
-						if(!Game.player.defesa[1]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="defesa";
-								nivel=2;
-							}
-						}
-					}else if(mcx>54+160 && mcx<123+160 && mcy>119+161 && mcy<185+161 && Game.player.defesa[1]) {
-						//defesa 3
-						currentOption=11;
-						if(!Game.player.defesa[2]) {
-							if(pontosA>0) {
-								confirmacao=true;
-								golpe="defesa";
-								nivel=3;
-							}
-						}
-					}else if(mcx>45 && mcx<90+45 && mcy>10 && mcy<30+10){
-						//habilidade
-						currentOption=1;
-						menus=0;
-					}else if(mcx>580 && mcx<580+110 && mcy>10 && mcy<30+10){
-						//apersonafgens
-						menus=2;
-						currentOption=2;
-					}else if(mcx>615 && mcx<43+615 && mcy>315 && mcy<315+20){
-						pause=false;
-						Game.gameState = "NORMAL";
-					}else {
-						currentOption=0;
-					}
-				}else {
-					if(mx>54 && mx<123 && my>119 && my<185) {
-						//força
-						currentOption=3;
-					}else if(mx>54+80 && mx<123+80 && my>119 && my<185 && Game.player.forca[0]) {
-						//força
-						currentOption=4;
-					}else if(mx>54+160 && mx<123+160 && my>119 && my<185 && Game.player.forca[1]) {
-						///força
-						currentOption=5;
-					}else if(mx>54 && mx<123 && my>119+80 && my<185+81) {
-						//habilidade
-						currentOption=6;
-					}else if(mx>54+80 && mx<123+80 && my>119+80 && my<185+81 && Game.player.habilidade[0]) {
-						//habilidade
-						currentOption=7;
-					}else if(mx>54+160 && mx<123+160 && my>119+80 && my<185+81 && Game.player.habilidade[1]) {
-						//habilidade
-						currentOption=8;
-					}else if(mx>54 && mx<123 && my>119+161 && my<185+161) {
-						//defesa
-						currentOption=9;
-					}else if(mx>54+80 && mx<123+80 && my>119+161 && my<185+161 && Game.player.defesa[0]) {
-						//defesa
-						currentOption=10;
-					}else if(mx>54+160 && mx<123+160 && my>119+161 && my<185+161 && Game.player.defesa[1]) {
-						//defesa
-						currentOption=11;
-					}else if(mx>45 && mx<90+45 && my>10 && my<30+10){
-						currentOption=1;
-					}else if(mx>580 && mx<110+580 && my>10 && my<30+10){
-						currentOption=2;
-					}else if(mx>615 && mx<43+615 && my>315 && my<315+20){
-						currentOption=12;
-					}else {
-						currentOption=0;
-					}
-				}
-			}
-		}else if(Menus[menus]=="Personagens") {
-			if(clicou) {
-				clicou=false;
-				if(mcx>45 && mcx<90+45 && mcy>10 && mcy<30+10){
-					//atributos
-					currentOption=1;
-					menus=1;
-				}else if(mcx>580 && mcx<90+580 && mcy>10 && mcy<30+10){
-					//opçoes
-					menus=3;
-					currentOption=2;
-				}else{
-					currentOption=0;
-				}
-			}else {
-				if(mx>45 && mx<90+45 && my>10 && my<30+10){
-					//atributos
-					currentOption=1;
-				}else if(mx>580 && mx<90+580 && my>10 && my<30+10){
-					//opçoes
-					currentOption=2;
-				}else{
-					currentOption=0;
-				}
-			}
-		}else if(Menus[menus]=="Opções") {
-			if(clicou) {
-				clicou=false;
-				if(mcx>45 && mcx<100+45 && mcy>10 && mcy<30+10){
-					//personagens
-					currentOption=1;
-					menus=2;
-				}else if(mcx>580 && mcx<100+580 && mcy>10 && mcy<30+10){
-					//habilidades
-					menus=0;
-					currentOption=2;
-				}else{
-					currentOption=0;
-				}
-			}else {
-				if(mx>45 && mx<100+45 && my>10 && my<30+10){
-					//personagens
-					currentOption=1;
-				}else if(mx>580 && mx<100+580 && my>10 && my<30+10){
-					//habilidades
-					currentOption=2;
-				}else{
-					currentOption=0;
-				}
-			}
-		}
-		
-		
-		
-		
-		
-		
-//		if(up) {
-//			up = false;
-//			currentOption--;
-//			if(currentOption < 0)
-//				currentOption = maxOption;
-//		}
-//		if(down) {
-//			down = false;
-//			currentOption++;
-//			if(currentOption > maxOption)
-//				currentOption = 0;
-//		}
-		
-		if(enter) {
-			enter = false;
-			if(options[currentOption] == "novo jogo" || options[currentOption] == "continuar") {
 				
-				Game.gameState = "NORMAL";
-				Game.player.visivel=true;
-				Game.player.Hudvisivel=true;
-				Game.player.depth=7;
-//				Game.cen.CenaStart(0);
-				pause = false;
-			}else if(options[currentOption] == "sair") {
-				System.exit(1);
+			}else if(Menus[menus]=="Atributos") {
+				if(confirmacao) {
+					if(clicou) {
+						clicou=false;
+						if(mcx>230 && mcx<230+40 && mcy>220 && mcy<220+20) {
+							currentOption=13;
+							pontosA--;
+							if(golpe=="força") {
+								Game.player.forca[nivel-1]=true;
+								confirmacao=false;
+							}else if(golpe=="habilidade") {
+								Game.player.habilidade[nivel-1]=true;
+								confirmacao=false;
+							}else if(golpe=="defesa") {
+								Game.player.defesa[nivel-1]=true;
+								confirmacao=false;
+							}
+						}else if(mcx>370 && mcx<370+40 && mcy>220 && mcy<220+20) {
+							confirmacao=false;
+						}
+					}else {
+						if(mx>230 && mx<230+40 && my>220 && my<220+20) {
+							currentOption=13;
+						}else if(mx>370 && mx<370+40 && my>220 && my<220+20) {
+							currentOption=14;
+						}else {
+							currentOption=0;
+						}
+					}
+				}else {
+					if(clicou) {
+						clicou=false;
+						if(mcx>54 && mcx<123 && mcy>119 && mcy<185) {
+							//soco nv 1
+							currentOption=3;
+							if(!Game.player.forca[0]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="força";
+									nivel=1;
+								}
+							}
+						}else if(mcx>54+80 && mcx<123+80 && mcy>119 && mcy<185 && Game.player.forca[0]) {
+							//soco nv 2
+							currentOption=4;
+							if(!Game.player.forca[1]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="força";
+									nivel=2;
+								}
+							}
+						}else if(mcx>54+160 && mcx<123+160 && mcy>119 && mcy<185 && Game.player.forca[1]) {
+							//ssoco nv 3
+							currentOption=5;
+							if(!Game.player.forca[2]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="força";
+									nivel=3;
+								}
+							}
+						}else if(mcx>54 && mcx<123 && mcy>119+80 && mcy<185+81) {
+							//habilidades
+							currentOption=6;
+							if(!Game.player.habilidade[0]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="habilidade";
+									nivel=1;
+								}
+							}
+						}else if(mcx>54+80 && mcx<123+80 && mcy>119+80 && mcy<185+81 && Game.player.habilidade[0]) {
+							//HABILIDADE 2
+							currentOption=7;
+							if(!Game.player.habilidade[1]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="habilidade";
+									nivel=2;
+								}
+							}
+						}else if(mcx>54+160 && mcx<123+160 && mcy>119+80 && mcy<185+81 && Game.player.habilidade[1]) {
+							//habilida de 3
+							currentOption=8;
+							if(!Game.player.habilidade[2]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="habilidade";
+									nivel=3;
+								}
+							}
+						}else if(mcx>54 && mcx<123 && mcy>119+161 && mcy<185+161) {
+							//defesa 1 
+							currentOption=9;
+							if(!Game.player.defesa[0]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="defesa";
+									nivel=1;
+								}
+							}
+						}else if(mcx>54+80 && mcx<123+80 && mcy>119+161 && mcy<185+161 && Game.player.defesa[0]) {
+							//defesa 2
+							currentOption=10;
+							if(!Game.player.defesa[1]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="defesa";
+									nivel=2;
+								}
+							}
+						}else if(mcx>54+160 && mcx<123+160 && mcy>119+161 && mcy<185+161 && Game.player.defesa[1]) {
+							//defesa 3
+							currentOption=11;
+							if(!Game.player.defesa[2]) {
+								if(pontosA>0) {
+									confirmacao=true;
+									golpe="defesa";
+									nivel=3;
+								}
+							}
+						}else if(mcx>45 && mcx<90+45 && mcy>10 && mcy<30+10){
+							//habilidade
+							currentOption=1;
+							menus=0;
+						}else if(mcx>580 && mcx<580+110 && mcy>10 && mcy<30+10){
+							//apersonafgens
+							menus=2;
+							currentOption=2;
+						}else if(mcx>615 && mcx<43+615 && mcy>315 && mcy<315+20){
+							pause=false;
+							Game.gameState = "NORMAL";
+						}else {
+							currentOption=0;
+						}
+					}else {
+						if(mx>54 && mx<123 && my>119 && my<185) {
+							//força
+							currentOption=3;
+						}else if(mx>54+80 && mx<123+80 && my>119 && my<185 && Game.player.forca[0]) {
+							//força
+							currentOption=4;
+						}else if(mx>54+160 && mx<123+160 && my>119 && my<185 && Game.player.forca[1]) {
+							///força
+							currentOption=5;
+						}else if(mx>54 && mx<123 && my>119+80 && my<185+81) {
+							//habilidade
+							currentOption=6;
+						}else if(mx>54+80 && mx<123+80 && my>119+80 && my<185+81 && Game.player.habilidade[0]) {
+							//habilidade
+							currentOption=7;
+						}else if(mx>54+160 && mx<123+160 && my>119+80 && my<185+81 && Game.player.habilidade[1]) {
+							//habilidade
+							currentOption=8;
+						}else if(mx>54 && mx<123 && my>119+161 && my<185+161) {
+							//defesa
+							currentOption=9;
+						}else if(mx>54+80 && mx<123+80 && my>119+161 && my<185+161 && Game.player.defesa[0]) {
+							//defesa
+							currentOption=10;
+						}else if(mx>54+160 && mx<123+160 && my>119+161 && my<185+161 && Game.player.defesa[1]) {
+							//defesa
+							currentOption=11;
+						}else if(mx>45 && mx<90+45 && my>10 && my<30+10){
+							currentOption=1;
+						}else if(mx>580 && mx<110+580 && my>10 && my<30+10){
+							currentOption=2;
+						}else if(mx>615 && mx<43+615 && my>315 && my<315+20){
+							currentOption=12;
+						}else {
+							currentOption=0;
+						}
+					}
+				}
+			}else if(Menus[menus]=="Personagens") {
+				if(clicou) {
+					clicou=false;
+					if(mcx>45 && mcx<90+45 && mcy>10 && mcy<30+10){
+						//atributos
+						currentOption=1;
+						menus=1;
+					}else if(mcx>580 && mcx<90+580 && mcy>10 && mcy<30+10){
+						//opçoes
+						menus=3;
+						currentOption=2;
+					}else{
+						currentOption=0;
+					}
+				}else {
+					if(mx>45 && mx<90+45 && my>10 && my<30+10){
+						//atributos
+						currentOption=1;
+					}else if(mx>580 && mx<90+580 && my>10 && my<30+10){
+						//opçoes
+						currentOption=2;
+					}else{
+						currentOption=0;
+					}
+				}
+			}else if(Menus[menus]=="Opções") {
+				if(clicou) {
+					clicou=false;
+					if(mcx>45 && mcx<100+45 && mcy>10 && mcy<30+10){
+						//personagens
+						currentOption=1;
+						menus=2;
+					}else if(mcx>580 && mcx<100+580 && mcy>10 && mcy<30+10){
+						//habilidades
+						menus=0;
+						currentOption=2;
+					}else{
+						currentOption=0;
+					}
+				}else {
+					if(mx>45 && mx<100+45 && my>10 && my<30+10){
+						//personagens
+						currentOption=1;
+					}else if(mx>580 && mx<100+580 && my>10 && my<30+10){
+						//habilidades
+						currentOption=2;
+					}else{
+						currentOption=0;
+					}
+				}
 			}
-		}
+		}	
 	}
 	
 	public void render(Graphics g) {
@@ -1246,20 +1431,305 @@ public class Menu {
 			
 			
 		}else {
-			//Opcoes de menu
-			g.setColor(Color.white);
-			g.setFont(new Font("arial",Font.BOLD,24));
-			g.drawString("Novo jogo", (Game.WIDTH*Game.SCALE) / 2 - 500, 160);
-			g.drawString("Carregar jogo", (Game.WIDTH*Game.SCALE) / 2 - 500, 200);
-			g.drawString("Sair", (Game.WIDTH*Game.SCALE) / 2 - 500, 240);
-			
-			if(options[currentOption] == "novo jogo") {
-				g.drawString(">", (Game.WIDTH*Game.SCALE) / 2- 520, 160);
-			}else if(options[currentOption] == "carregar jogo") {
-				g.drawString(">", (Game.WIDTH*Game.SCALE) / 2 - 520, 200);
-			}else if(options[currentOption] == "sair") {
-				g.drawString(">", (Game.WIDTH*Game.SCALE) / 2 - 520, 240);
+			posx++;
+			if(posx==2976-1440) {
+				posx=0;
 			}
+			Color Standart= new Color(255,0,0);
+			Color MouseOver= new Color(200,0,0);
+			Color Pressed= new Color(150,0,0);
+			Color beje= new Color(247,212,212);
+			g.drawImage(Game.fundo.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
+			if(load) {
+				g.setColor(Color.black);
+				g.fillRoundRect(720/3-40,65, 260+20, 200+20, 30, 50);
+				g.setColor(beje);
+				g.fillRoundRect(720/3-30,75, 260, 200, 30, 50);
+				
+				
+				
+				
+				
+				
+				
+				g.setColor(Color.black);
+				g.fillRoundRect(580,312, 68, 28, 30, 50);
+				
+				if(MenuPrincipal[currentOption]=="Sair"&& clicou) {
+					g.setColor(Pressed);
+					g.fillRoundRect(583,314, 62, 24, 30, 50);
+				}else if(MenuPrincipal[currentOption]=="Sair") {
+					g.setColor(MouseOver);
+					g.fillRoundRect(583,314, 62, 24, 30, 50);
+				}else {
+					g.setColor(Standart);
+					g.fillRoundRect(583,314, 62, 24, 30, 50);
+				}
+				
+				g.setColor(Color.black);
+				if(idioma=="Portugues") {
+					g.drawString("Carregar Jogo",720/3+55, 95);
+					g.setColor(Color.black);
+					g.drawString("Voltar", 599, 330);
+					if(slot1=="Empty.") {
+						slot1="Vazio.";
+					}
+					if(slot2=="Empty.") {
+						slot2="Vazio.";
+					}
+					if(slot3=="Empty.") {
+						slot3="Vazio.";
+					}
+				}else {
+					if(slot1=="Vazio.") {
+						slot1="Empty.";
+					}
+					if(slot2=="Vazio.") {
+						slot2="Empty.";
+					}
+					if(slot3=="Vazio.") {
+						slot3="Empty.";
+					}
+					g.drawString("Load Game",720/3+55, 95);
+					g.setColor(Color.black);
+					g.drawString("Back", 599, 330);
+				}
+				
+				if(MenuPrincipal[currentOption]=="Slot1"&& clicou) {
+					g.setColor(Pressed);
+					g.drawString(slot1, 720/3, 150);
+				}else if(MenuPrincipal[currentOption]=="Slot1") {
+					g.setColor(MouseOver);
+					g.drawString(slot1, 720/3, 150);
+				}else {
+					g.setColor(Standart);
+					g.drawString(slot1, 720/3, 150);
+				}
+				if(MenuPrincipal[currentOption]=="Slot2"&& clicou) {
+					g.setColor(Pressed);
+					g.drawString(slot2,720/3, 200);
+				}else if(MenuPrincipal[currentOption]=="Slot2") {
+					g.setColor(MouseOver);
+					g.drawString(slot2,720/3, 200);
+				}else {
+					g.setColor(Standart);
+					g.drawString(slot2,720/3, 200);
+				}
+				if(MenuPrincipal[currentOption]=="Slot3"&& clicou) {
+					g.setColor(Pressed);
+					g.drawString(slot3,720/3, 250);
+				}else if(MenuPrincipal[currentOption]=="Slot3") {
+					g.setColor(MouseOver);
+					g.drawString(slot3,720/3, 250);
+				}else {
+					g.setColor(Standart);
+					g.drawString(slot3,720/3, 250);
+				}
+			}else {
+				if(opcoes) {
+					g.setColor(Color.black);
+					g.fillRoundRect(720/3-40,65, 260+20, 200+20, 30, 50);
+					g.setColor(beje);
+					g.fillRoundRect(720/3-30,75, 260, 200, 30, 50);
+					
+					
+					//volume
+					g.setColor(Color.black);
+					g.fillRect(720/2,85, 99, 20);
+					
+					if(MenuPrincipal[currentOption]=="Volume") {
+						g.setColor(MouseOver);
+						g.fillRect(720/2,85, volume2, 20);
+					}else {
+						g.setColor(Standart);
+						g.fillRect(720/2,85, volume, 20);
+					}
+					
+					
+					g.setColor(Color.black);
+					g.fillRoundRect(580,312, 68, 28, 30, 50);
+					
+					if(MenuPrincipal[currentOption]=="Sair"&& clicou) {
+						g.setColor(Pressed);
+						g.fillRoundRect(583,314, 62, 24, 30, 50);
+					}else if(MenuPrincipal[currentOption]=="Sair") {
+						g.setColor(MouseOver);
+						g.fillRoundRect(583,314, 62, 24, 30, 50);
+					}else {
+						g.setColor(Standart);
+						g.fillRoundRect(583,314, 62, 24, 30, 50);
+					}
+					g.setColor(Color.black);
+					g.fillRoundRect(720/2-2,133, 29, 24, 30, 50);
+					if(sfx) {
+						if(MenuPrincipal[currentOption]=="Efeitos"&& clicou) {
+							g.setColor(Pressed);
+							g.fillRoundRect(720/2,135, 25, 20, 30, 50);
+						}else if(MenuPrincipal[currentOption]=="Efeitos") {
+							g.setColor(MouseOver);
+							g.fillRoundRect(720/2,135, 25, 20, 30, 50);
+						}else {
+							g.setColor(Standart);
+							g.fillRoundRect(720/2,135, 25, 20, 30, 50);
+						}
+					}else {
+						if(MenuPrincipal[currentOption]=="Efeitos"&& clicou) {
+							g.setColor(Pressed);
+							g.fillRoundRect(720/2,135, 25, 20, 30, 50);
+						}else if(MenuPrincipal[currentOption]=="Efeitos") {
+							g.setColor(MouseOver);
+							g.fillRoundRect(720/2,135, 25, 20, 30, 50);
+						}else {
+							g.setColor(MouseOver);
+							g.fillRoundRect(720/2,135, 25, 20, 30, 50);
+						}
+					}
+					g.setColor(Color.black);
+					if(!sfx) {
+						g.drawString("On",720/3+124, 150);
+					}else {
+						g.drawString("Off",720/3+124, 150);
+					}
+					g.setColor(Color.black);
+					g.fillRoundRect(720/2-2,133+50, 29, 24, 30, 50);
+					if(mus) {
+						if(MenuPrincipal[currentOption]=="Musica"&& clicou) {
+							g.setColor(Pressed);
+							g.fillRoundRect(720/2,185, 25, 20, 30, 50);
+						}else if(MenuPrincipal[currentOption]=="Musica") {
+							g.setColor(MouseOver);
+							g.fillRoundRect(720/2,185, 25, 20, 30, 50);
+						}else {
+							g.setColor(Standart);
+							g.fillRoundRect(720/2,185, 25, 20, 30, 50);
+						}
+					}else {
+						if(MenuPrincipal[currentOption]=="Musica"&& clicou) {
+							g.setColor(Pressed);
+							g.fillRoundRect(720/2,185, 25, 20, 30, 50);
+						}else if(MenuPrincipal[currentOption]=="Musica") {
+							g.setColor(MouseOver);
+							g.fillRoundRect(720/2,185, 25, 20, 30, 50);
+						}else {
+							g.setColor(MouseOver);
+							g.fillRoundRect(720/2,185, 25, 20, 30, 50);
+						}
+					}
+					g.setColor(Color.black);
+					if(!mus) {
+						g.drawString("On",720/3+124, 200);
+					}else {
+						g.drawString("Off",720/3+124, 200);
+					}
+					if(MenuPrincipal[currentOption]=="Idioma"&& clicou) {
+						g.setColor(Pressed);
+						g.drawString(idioma,720/3+100+20, 250);
+					}else if(MenuPrincipal[currentOption]=="Idioma") {
+						g.setColor(MouseOver);
+						g.drawString(idioma,720/3+100+20, 250);
+					}else {
+						g.setColor(Standart);
+						g.drawString(idioma,720/3+100+20, 250);
+					}
+					g.setColor(Color.black);
+					if(idioma=="Portugues") {
+						g.drawString("Volume:",720/3, 100);
+						g.drawString("Efeitos Sonoros:", 720/3, 150);
+						g.drawString("Musica:",720/3, 200);
+						g.drawString("Idioma:",720/3, 250);
+						g.setColor(Color.black);
+						g.drawString("Voltar", 599, 330);
+					}else {
+						g.drawString("Volume:",720/3, 100);
+						g.drawString("Sound Efects:", 720/3, 150);
+						g.drawString("Music:",720/3, 200);
+						g.drawString("Language:",720/3, 250);
+						g.setColor(Color.black);
+						g.drawString("Back", 599, 330);
+					}
+					
+					
+				}else {
+					//Opcoes de menu
+					g.drawImage(Game.Menu.getSprite(2700, 0,400,200), 720/2-200,30, null);
+					g.setColor(Color.black);
+					
+					g.fillRoundRect(720/2-203+00+00,247, 97, 37, 30, 50);
+					g.fillRoundRect(720/2-203+91+12,247, 97, 37, 30, 50);
+					g.fillRoundRect(720/2-203+91*2+12*2,247, 97, 37, 30, 50);
+					g.fillRoundRect(720/2-203+91*3+12*3,247, 97, 37, 30, 50);
+					
+					if(MenuPrincipal[currentOption]=="Jogar"&& clicou) {
+						g.setColor(Pressed);
+						g.fillRoundRect(720/2-200,250, 91, 30, 30, 50);
+					}else if(MenuPrincipal[currentOption]=="Jogar") {
+						g.setColor(MouseOver);
+						g.fillRoundRect(720/2-200,250, 91, 30, 30, 50);
+					}else {
+						g.setColor(Standart);
+						g.fillRoundRect(720/2-200,250, 91, 30, 30, 50);
+					}
+					
+					
+					
+					
+					if(MenuPrincipal[currentOption]=="Continuar"&& clicou) {
+						g.setColor(Pressed);
+						g.fillRoundRect(720/2-200+91+12,250, 90, 30, 30, 50);
+					}else if(MenuPrincipal[currentOption]=="Continuar") {
+						g.setColor(MouseOver);
+						g.fillRoundRect(720/2-200+91+12,250, 90, 30, 30, 50);
+					}else{
+						g.setColor(Standart);
+						g.fillRoundRect(720/2-200+91+12,250, 90, 30, 30, 50);
+					}
+					
+					
+					
+					if(MenuPrincipal[currentOption]=="Opções"&& clicou) {
+						g.setColor(Pressed);
+						g.fillRoundRect(720/2-200+91*2+12*2,250, 90, 30, 30, 50);
+					}else if(MenuPrincipal[currentOption]=="Opções") {
+						g.setColor(MouseOver);
+						g.fillRoundRect(720/2-200+91*2+12*2,250, 90, 30, 30, 50);
+					}else{
+						g.setColor(Standart);
+						g.fillRoundRect(720/2-200+91*2+12*2,250, 90, 30, 30, 50);
+					}
+					
+					
+					
+					
+					if(MenuPrincipal[currentOption]=="Sair" && clicou) {
+						g.setColor(Pressed);
+						g.fillRoundRect(720/2-200+91*3+12*3,250, 90, 30, 30, 50);
+					}else if(MenuPrincipal[currentOption]=="Sair") {
+						g.setColor(MouseOver);
+						g.fillRoundRect(720/2-200+91*3+12*3,250, 90, 30, 30, 50);
+					}else{
+						g.setColor(Standart);
+						g.fillRoundRect(720/2-200+91*3+12*3,250, 90, 30, 30, 50);
+					}
+					
+					
+					g.setColor(Color.black);
+					g.setFont(new Font("arial",Font.BOLD,18));
+					if(idioma=="Portugues") {
+						g.drawString("Jogar",720/2-200+19, 271);
+						g.drawString("Continuar ", 720/2-200+91+12+3, 271);
+						g.drawString("Opções ",720/2-200+91*2+12*2+11, 271);
+						g.drawString("Sair", 720/2-200+91*3+12*3+26, 271);
+					}else if(idioma=="English") {
+						g.drawString("Play",720/2-200+19, 271);
+						g.drawString("Continue ", 720/2-200+91+12+3, 271);
+						g.drawString("Options ",720/2-200+91*2+12*2+11, 271);
+						g.drawString("Exit", 720/2-200+91*3+12*3+26, 271);
+					}
+				}
+			}
+			
+			
+			
 		}
 		
 	}
