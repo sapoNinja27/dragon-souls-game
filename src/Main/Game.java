@@ -56,6 +56,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	public static Spritesheet spritesheet;
 	public static Spritesheet fundo;
+	public static Spritesheet fundoT;
+	public static Spritesheet fundoA;
+	public static Spritesheet fundoS;
 	public static Spritesheet Menu;
 	public static Spritesheet icones;
 	
@@ -96,6 +99,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		icones = new Spritesheet("/icones.png");
 		Menu = new Spritesheet("/Menu.png");
 		fundo = new Spritesheet("/fundo.png");
+		fundoA = new Spritesheet("/fundoace.png");
+		fundoT = new Spritesheet("/fundotai.png");
+		fundoS = new Spritesheet("/fundosander.png");
 		player = new Player(0,0,TILE_SIZE,TILE_SIZE,Game.spritesheet.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
 		entities.add(player);
 		world = new World("/level1.png");
@@ -351,25 +357,16 @@ public void run() {
 			}else {
 				cen.up();
 			}
-			if(gameState == "MENU") {
-				menu.up = true;
-			}
 		}else if(e.getKeyCode() == KeyEvent.VK_S) {
 			if(cen.CcRun()){
 				cen.down();
 			}
 			
-			if(gameState == "MENU") {
-				menu.down = true;
-			}
 			
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if(cen.CcRun()) {
 				cen.next();
-			}
-			if(gameState == "MENU") {
-				menu.enter = true;
 			}
 		}
 		
@@ -468,8 +465,6 @@ public void run() {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		menu.mcx=e.getX()/2;
-		menu.mcy=e.getY()/2;
 		menu.clicou=true;
 	}
 

@@ -34,6 +34,7 @@ public class Player extends Entity{
 	public int index=0;
 	private int cont=0,maxCont=15,verif=0,maxVerif=2;
 	private int pos=0;
+	public String personagem="Tai";
 	public int mov_das_cena=0;
 	public int camx=0,camy=0;
 	public boolean camL,camR,camU;
