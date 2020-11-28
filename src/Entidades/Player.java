@@ -528,7 +528,7 @@ public class Player extends Entity{
 	
 	public void updateCamera() {
 		
-		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2)+camx,0,World.WIDTH*Game.TILE_SIZE - Game.WIDTH);
+		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2)+camx+250,0,World.WIDTH*Game.TILE_SIZE - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() -(Game.HEIGHT/2)-53,0,World.HEIGHT*Game.TILE_SIZE - Game.HEIGHT);
 	}
 	public String isFreeX(){

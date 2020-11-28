@@ -163,9 +163,9 @@ public class TextosHablidades {
 				g.fillRect(480+x,60+y, 200, 140);
 				g.setFont(new Font("arial",Font.BOLD,12));
 				g.setColor(Color.black);
-				g.drawString("Tai rages in combat with enemies", 485+x, 85+y);
-				g.drawString("receiving resistance and attack", 485+x, 110+y);
-				g.drawString("damage per fury stack.", 485+x, 135+y);
+				g.drawString("Tai gets enraged while in combat ", 485+x, 85+y);
+				g.drawString("with enemys receiving resistance ", 485+x, 110+y);
+				g.drawString("and attack damage per fury stack.", 485+x, 135+y);
 				g.drawString("Fury can also be used to use", 485+x, 160+y);
 				g.drawString("skills.", 485+x, 185+y);
 			}else if(Game.menu.menIn.hab.Menu[Game.menu.menIn.hab.currentOption]=="Tempestade de Socos1") {
