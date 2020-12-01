@@ -7,13 +7,13 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 public class Personagens {
 	int mx,my;
-	String[] Menu = {"Vazio","tai","sander","ace","rouxie","cooper","iron","lead","titanium","gold","silver","light","kenai","oldman","mestre","alex",};
+	String[] Menu = {"Vazio","tai","sander","ace","rouxie","cooper","iron","lead","titanium","gold","silver","light","kenai","alex","oldman","mestre"};
 	int currentOption=0;
 	BufferedImage icons[]=new BufferedImage[15];
 	public void tick() {
 		mx=Game.menu.mx;
 		my=Game.menu.my;
-		for(int i=0;i<14;i++) {
+		for(int i=0;i<15;i++) {
 			icons[i]=(Game.icones.getSprite(i*64, 0, Game.TILE_SIZE, Game.TILE_SIZE));
 		}
 		if(Game.menu.soltou) {
@@ -193,29 +193,29 @@ public class Personagens {
 			g.fillRect(100+100,80+80+80,64,64);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		}
-		if(Menu[currentOption]=="oldman" && Game.menu.clicou) {
+		if(Menu[currentOption]=="alex" && Game.menu.clicou) {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
 			g.fillRect(100+100+100,80+80+80,64,64);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-		}else if(Menu[currentOption]=="oldman") {
+		}else if(Menu[currentOption]=="alex") {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 			g.fillRect(100+100+100,80+80+80,64,64);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		}
+		if(Menu[currentOption]=="oldman" && Game.menu.clicou) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+			g.fillRect(100+100+100+100,80+80+80,64,64);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		}else if(Menu[currentOption]=="oldman") {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+			g.fillRect(100+100+100+100,80+80+80,64,64);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		}
 		if(Menu[currentOption]=="mestre" && Game.menu.clicou) {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-			g.fillRect(100+100+100+100,80+80+80,64,64);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-		}else if(Menu[currentOption]=="mestre") {
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-			g.fillRect(100+100+100+100,80+80+80,64,64);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-		}
-		if(Menu[currentOption]=="alex" && Game.menu.clicou) {
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
 			g.fillRect(100+100+100+100+100,80+80+80,64,64);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-		}else if(Menu[currentOption]=="alex") {
+		}else if(Menu[currentOption]=="mestre") {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 			g.fillRect(100+100+100+100+100,80+80+80,64,64);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));

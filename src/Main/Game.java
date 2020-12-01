@@ -309,29 +309,17 @@ public void run() {
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
 				player.parado=false;
-				if(player.stamina>15) {
-					player.dash=true;
-				}
+				player.dash=true;
+				
 			}
 			if(e.getKeyCode() == KeyEvent.VK_Q){
 				player.parado=false;
 				if(player.dash) {
-					if(player.stamina>30) {
-						player.dashS=true;
-					}
+					player.dashS=true;
 				}else if(player.subindo || player.caindo){
 					//jump atackk
 				}else {
-					if(player.atacando) {
-						if(player.atack2==false) {
-							//player.atack2=true;
-						}else {
-							//player.atacando2=true;
-						}
-					}else {
-						player.atacando = true;
-					}
-					
+					player.atacando = true;					
 				}
 			}
 			if(e.getKeyCode() == KeyEvent.VK_A){

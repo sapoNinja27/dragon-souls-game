@@ -15,9 +15,9 @@ import World.Camera;
 import World.World;
 
 public class Player extends Entity{
-	public boolean caindo, subindo,podepular,completou_pulo,saiu_do_chao,caiu_no_chao, atacando,dash,dashS,dashS2,transformado,
-	atacando2,atack2;
+	public boolean caindo, subindo,podepular,completou_pulo,saiu_do_chao,caiu_no_chao, atacando,dash,dashS,dashS2,transformado;
 	public int px;
+	boolean combat;
 	public boolean tmpSocos[]=new boolean[3];
 	public boolean bloqueio[]=new boolean[3];
 	public boolean socoForte[]=new boolean[3];
@@ -44,13 +44,22 @@ public class Player extends Entity{
 	private int framesPulo = 0,maxFramesPulo =15,indexPul = 13,maxIndexPul = 15;
 	private int framesCai = 0,maxFramesCai = 15,indexCai = 16,maxIndexCai = 17;
 	private int framesCai2 = 0,maxFramesCai2 = 15;
-	private int framesAtk = 0,maxFramesAtk = 9,indexAtk =24,maxIndexAtk = 28;
-	private int framesAtk2 = 0,maxFramesAtk2 = 9,indexAtk2 =27,maxIndexAtk2 = 29;
+	private int indexAtk=0, frames=0;
+	private int framesAtkT = 0,maxFramesAtkT = 9,indexAtkT =27,maxIndexAtkT = 31;
+	private int framesAtkD = 0,maxFramesAtkD = 9,indexAtkD=25,maxIndexAtkD = 28;
+	private int framesAtkA = 0,maxFramesAtkA = 9,indexAtkA =24,maxIndexAtkA = 28;
+	private int framesAtkS = 0,maxFramesAtkS = 9,indexAtkS =24,maxIndexAtkS = 28;
 	private int framesDash = 0,maxFramesDash = 11,indexDash = 19,maxIndexDash = 20;
 	private int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
 	public boolean moved = false;
-	private BufferedImage[] rightPlayer;
-	private BufferedImage[] leftPlayer;
+	private BufferedImage[] rightTai;
+	private BufferedImage[] leftTai;
+	private BufferedImage[] rightSander;
+	private BufferedImage[] leftSander;
+	private BufferedImage[] rightAce;
+	private BufferedImage[] leftAce;
+	private BufferedImage[] rightDemon;
+	private BufferedImage[] leftDemon;
 	private BufferedImage[] direcao;
 	
 	private BufferedImage playerDamage;
@@ -68,56 +77,258 @@ public class Player extends Entity{
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 		
-		rightPlayer = new BufferedImage[33*4];
-		leftPlayer = new BufferedImage[33*4];
-		direcao = new BufferedImage[33*4];
-		
-		
-		
-		
-		for(int i =0; i < 33; i++){
-			rightPlayer[i] = Game.spritesheet.getSprite(Game.TILE_SIZE*i, 0, Game.TILE_SIZE, Game.TILE_SIZE);
-			//sessao redeye
-			rightPlayer[i+33] = Game.spritesheet.getSprite(Game.TILE_SIZE*i,Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE);
-			//machucados
-			rightPlayer[i+66] = Game.spritesheet.getSprite(Game.TILE_SIZE*i, 2*Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE);
-			//demon
-			rightPlayer[i+99] = Game.spritesheet.getSprite(Game.TILE_SIZE*i, 3*Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE);
+		rightTai = new BufferedImage[35];
+		leftTai = new BufferedImage[35];
+		rightSander= new BufferedImage[35];
+		leftSander= new BufferedImage[35];
+		rightAce= new BufferedImage[35];
+		leftAce= new BufferedImage[35];
+		rightDemon= new BufferedImage[35];
+		leftDemon= new BufferedImage[35];
+		direcao= new BufferedImage[35];
+		for(int i =0; i < 34; i++){
+			rightTai[i] =   Game.spritesheet.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightDemon[i] = Game.spritesheet.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*1, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightAce[i] =   Game.spritesheet.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*2, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightSander[i] =Game.spritesheet.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*3, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
 		
 		
 		
 	}
-	
-	public void tick() {
-		special=00;
-		if(special>maxspecial) {
-			special=maxspecial;
-		}
-		if(atacando || atacando2) {
-			if(special>maxspecial/2) {
-				special+=0.3;
-				//dano=15;
-			}else {
-				special+=0.1;
-				//dano=2;
+	public void attsprite(){
+		if(leftTai[0]==null && leftTai[34]==null) {
+			for(int i=0;i<35;i++) {
+				leftTai[i]=inverter(rightTai[i]);
 			}
 		}
-		if(stamina<maxstamina) {
-			stamina+=0.09;
+		if(leftDemon[0]==null && leftDemon[34]==null) {
+			for(int i=0;i<35;i++) {
+				leftDemon[i]=inverter(rightDemon[i]);
+			}
 		}
-		if(special>0) {
-			special-=0.03;
+		if(leftAce[0]==null && leftAce[34]==null) {
+			for(int i=0;i<35;i++) {
+				leftAce[i]=inverter(rightAce[i]);
+			}
 		}
-		cameraRoll();
+		if(leftSander[0]==null && leftSander[34]==null) {
+			for(int i=0;i<35;i++) {
+				leftSander[i]=inverter(rightSander[i]);
+			}
+		}
+	}
+	public void tick() {
+		personagem="Tai";
+		if(personagem=="Tai") {
+			Tai();	
+		}else if(personagem=="Demon Tai") {
+			Demon();
+		}else if(personagem=="Ace") {
+			Ace();
+		}else if(personagem=="Sander") {
+			Sander();
+		}
+		attsprite();
 		setHitbox();
+		anim();
+		cameraRoll();
 		movedX();
 		movedY();
-		anim();
 		checkCollisionLifePack();
-		projetil();
+//		projetil();
 		lifesistem();
-		updateCamera();
+		updateCamera(); 
+	}
+	public void Tai() {
+		if(dir == left_dir) {
+			if( index== 30 || index == 29) {
+				pos=-9;
+			}else if(index==28) {
+				pos=-1;
+			}else {
+				pos=0;
+			}
+			for(int i=0;i<35;i++) {
+				direcao[i]=leftTai[i];
+			}
+		}else if(dir == right_dir) {
+			if( index== 30 || index == 29) {
+				pos=+9;
+			}else if(index==28) {
+				pos=+1;
+			}else {
+				pos=0;
+			}
+			for(int i=0;i<35;i++) {
+				direcao[i]=(rightTai[i]);
+			}
+		}
+		
+		if(atacando) {
+			indexAtk=indexAtkT;
+			framesAtkT++;
+			if(framesAtkT == maxFramesAtkT) {
+				framesAtkT = 0;
+				indexAtkT++;
+				if(indexAtkT == maxIndexAtkT) {
+					indexAtkT = 26;
+					atacando=false;
+					parado=true;
+					combat=true;
+				}
+			}
+		}
+	}
+	public void Demon() {
+		if(dir == left_dir) {
+			if(index==27) {
+				pos=-9;
+			}else if(index ==26){
+				pos=-8;
+			}else {
+				pos=0;
+			}
+			for(int i=0;i<35;i++) {
+				direcao[i]=leftDemon[i];
+			}
+		}else if(dir == right_dir) {
+			if(index==27) {
+				pos=+9;
+			}else if(index ==26){
+				pos=+8;
+			}else {
+				pos=0;
+			}
+			for(int i=0;i<35;i++) {
+				direcao[i]=(rightDemon[i]);
+			}
+		}
+		if(atacando) {
+			indexAtk=indexAtkD;
+			framesAtkD++;
+			if(framesAtkD == maxFramesAtkD) {
+				framesAtkD = 0;
+				indexAtkD++;
+				if(indexAtkD == maxIndexAtkD) {
+					indexAtkD = 25;
+					parado=true;
+					atacando=false;
+				}
+			}
+		}
+	}
+	public void Ace() {
+		if(dir == left_dir) {
+			for(int i=0;i<35;i++) {
+				direcao[i]=leftAce[i];
+			}
+		}else if(dir == right_dir) {
+			for(int i=0;i<35;i++) {
+				direcao[i]=(rightAce[i]);
+			}
+		}
+	}
+	public void Sander() {
+		
+	}
+	public void anim() {
+		if(right) {
+			dir=right_dir;
+		}else if(left) {
+			dir=left_dir;
+		}
+		if(!isFreeY() && moved && !dash && !dashS) {
+			index=indexMoved;
+		}else if(caiu_no_chao) {
+			index=index;
+		}else if(parado) {
+			if(combat) {
+				index=indexParado+24;
+				frames++;
+				if(frames>=200) {
+					frames=0;
+					combat=false;
+				}
+			}else {
+				index=indexParado;
+			}
+		}else if(atacando) {
+			index=indexAtk;
+		}else if(dash) {
+			index=indexDash;
+		}else if(dashS) {
+			index=indexDashS;
+		}else if(dashS2) {
+			index=indexDashS;
+		}else if(subindo) {
+			index=indexPul;
+		}else if(caindo) {
+			index=indexCai;
+		}else if(moved){
+			index=indexMoved;
+		}
+		
+		if(dash) {
+			parando=false;
+			framesDash++;
+			if(framesDash == maxFramesDash) {
+				framesDash = 0;
+				indexDash++;
+				if(indexDash == maxIndexDash) {
+					indexDash = 19;
+					dash=false;
+					if(!moved) {
+						parando=true;
+					}
+					
+				}
+			}
+		}
+		if(dashS) {
+			dash=false;
+			indexDash = 19;
+			framesDash = 0;
+			framesDashS++;
+			if(framesDashS == maxFramesDashS) {
+				framesDashS = 0;
+				indexDashS++;
+				if(indexDashS == maxIndexDashS) {
+					indexDashS = 23;
+					dashS=false;
+					dashS2=true;
+				}
+			}
+		}
+		if(dashS2) {
+			dash=false;
+			framesDashS++;
+			if(framesDashS == maxFramesDashS2) {
+				framesDashS = 0;
+				indexDashS=19;
+					dashS2=false;
+					parado=true;
+				
+				}
+		}
+		if(parando ) {
+			index=12;
+			framesParan++;
+			if(dir==left_dir) {
+				if(isFreeX()!="direita") {
+					x--;
+				}
+			}else {
+				if(isFreeX()!="esquerda") {
+					x++;
+				}
+			}
+			if(framesParan == maxFramesParan) {
+				framesParan = 0;
+				parado=true;
+				parando=false;
+			}
+		}
 	}
 	public void setHitbox() {
 		//hitbox padrao
@@ -130,10 +341,6 @@ public class Player extends Entity{
 					if(indexAtk!=24 ) {
 						setMask1(50,20,30,10);
 					}
-				}else if(atacando2) {
-					if(indexAtk2!=27 ) {
-						setMask1(55,0,10,30);
-					}
 				}else {
 					setMask1(20,20,30,10);
 				}
@@ -141,10 +348,6 @@ public class Player extends Entity{
 				if(atacando) {
 					if(indexAtk!=24 ) {
 						setMask1(-15,20,30,10);
-					}
-				}else if(atacando2) {
-					if(indexAtk2!=27 ) {
-						setMask1(-4,0,10,30);
 					}
 				}else {
 					setMask1(20,20,30,10);
@@ -156,10 +359,6 @@ public class Player extends Entity{
 					if(indexAtk!=24 ) {
 						setMask1(40,20,30,10);
 					}
-				}else if(atacando2) {
-					if(indexAtk2!=27 ) {
-						setMask1(45,0,10,30);
-					}
 				}else {
 					setMask1(20,20,30,10);
 				}
@@ -167,10 +366,6 @@ public class Player extends Entity{
 				if(atacando) {
 					if(indexAtk!=24 ) {
 						setMask1(-5,20,30,10);
-					}
-				}else if(atacando2) {
-					if(indexAtk2!=27 ) {
-						setMask1(6,0,10,30);
 					}
 				}else {
 					setMask1(20,20,30,10);
@@ -255,12 +450,6 @@ public class Player extends Entity{
 		if(!isFreeY() && saiu_do_chao) {
 			caiu_no_chao=true;
 		}
-//		if(tanoar) {
-//			if(!isFreeY()) {
-//				cainimation=true;
-//				tanoar=false;
-//			}
-//		}
 		
 		if(caindo) {
 			framesCai++;
@@ -323,9 +512,7 @@ public class Player extends Entity{
 		}
 		if(moved) {
 			atacando=false;
-			atacando2=false;
 			indexAtk = 24;
-			indexAtk2 = 27;
 		}
 		if(dash) {
 			if(dir==right_dir) {
@@ -379,131 +566,7 @@ public class Player extends Entity{
 		
 		
 	}
-	public void anim() {
-		if(right) {
-			dir=right_dir;
-		}else if(left) {
-			dir=left_dir;
-		}
-		if(!isFreeY() && moved) {
-			index=indexMoved;
-		}else if(caiu_no_chao) {
-			index=index;
-		}else if(parado) {
-			if(!transformado) {
-				index=indexParado;
-			}else {
-				index=indexParado+99;
-			}
-		}else if(atacando) {
-			index=indexAtk;
-		}else if(atacando2) {
-			index=indexAtk2;
-		}else if(dash) {
-			index=indexDash;
-		}else if(dashS) {
-			index=indexDashS;
-		}else if(dashS2) {
-			index=indexDashS;
-		}else if(subindo) {
-			index=indexPul;
-		}else if(caindo) {
-			index=indexCai;
-		}else if(moved){
-			index=indexMoved;
-		}
-		
-		if(atacando) {
-			framesAtk++;
-			if(framesAtk == maxFramesAtk) {
-				framesAtk = 0;
-				indexAtk++;
-				if(indexAtk == maxIndexAtk) {
-					indexAtk = 24;
-					if(transformado) {
-						index=2;
-					}else {
-						index=24;
-					}
-					atacando=false;
-					if(atack2) {
-						atacando2=true;
-						atack2=false;
-					}
-				}
-			}
-		}
-		
-		if(dash) {
-			parando=false;
-			framesDash++;
-			if(framesDash == maxFramesDash) {
-				framesDash = 0;
-				indexDash++;
-				if(indexDash == maxIndexDash) {
-					indexDash = 19;
-					dash=false;
-
-					stamina-=15;
-					if(!moved) {
-						parando=true;
-					}
-					
-				}
-			}
-		}
-		if(dashS) {
-			dash=false;
-			indexDash = 19;
-			framesDash = 0;
-			framesDashS++;
-			if(framesDashS == maxFramesDashS) {
-				framesDashS = 0;
-				indexDashS++;
-				if(indexDashS == maxIndexDashS) {
-					if(transformado) {
-						indexDashS = 24;
-					}else {
-						indexDashS = 23;
-					}
-					dashS=false;
-					dashS2=true;
-				}
-			}
-		}
-		if(dashS2) {
-			stamina-=1;
-			dash=false;
-			framesDashS++;
-			if(framesDashS == maxFramesDashS2) {
-				framesDashS = 0;
-				indexDashS=19;
-					dashS2=false;
-					parado=true;
-				
-				}
-		}
-		if(parando ) {
-			index=12;
-			framesParan++;
-			if(dir==left_dir) {
-				if(isFreeX()!="direita") {
-					x--;
-				}
-			}else {
-				if(isFreeX()!="esquerda") {
-					x++;
-				}
-			}
-			if(framesParan == maxFramesParan) {
-				framesParan = 0;
-				parado=true;
-				parando=false;
-			}
-		}
-		
-		
-	}
+	
 	public void cameraRoll() {
 		
 		if(camU) {
@@ -602,70 +665,22 @@ public class Player extends Entity{
 	
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		Rectangle rect= new Rectangle(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
-		Rectangle rect2= new Rectangle(this.getX() - Camera.x+maskx[1],this.getY() - Camera.y+masky[1],maskw[1],maskh[1]);
-		Rectangle rect3= new Rectangle(this.getX() - Camera.x+maskx[2],this.getY() - Camera.y+masky[2],maskw[2],maskh[2]);
-//		g.setColor(Color.RED);
-//		g2.draw(rect);
-//		g.setColor(Color.BLUE);
-//		g2.draw(rect2);
-//		g.setColor(Color.green);
-//		g2.draw(rect3);
-		//g.drawImage(Game.fundo.getSprite(0, 0,1000, 750), this.getX() - Camera.x-(1000/2),this.getY() - Camera.y-(750/2), null);
-		
-		if(leftPlayer[0]==null && leftPlayer[33*4-1]==null) {
-			for(int i=0;i<33*4;i++) {
-				leftPlayer[i]=inverter(rightPlayer[i]);
-			}
-		}
-		
-		if(dir == left_dir) {
-			if(index==26 || index==27) {
-				pos=-9;
-			}else{
-				pos=0;
-			}
-			for(int i=0;i<33*4;i++) {
-				direcao[i]=leftPlayer[i];
-			}
-		}else if(dir == right_dir) {
-			if(index==26 || index==27) {
-				pos=+9;
-			}else{
-				pos=0;
-			}
-			for(int i=0;i<33*4;i++) {
-				direcao[i]=(rightPlayer[i]);
-			}
-		}
-		for(int i=0;i<4;i++) {
-			//g.drawImage(direcao[24+i],i*80,0, null);
-		}
-//		g.drawImage(direcao[index+1], this.getX()+50 - Camera.x,this.getY() - Camera.y, null);
-//		g.drawImage(direcao[index+2], this.getX()+51 - Camera.x,this.getY() - Camera.y, null);
-//		g.drawImage(direcao[index+3], this.getX()+60 - Camera.x,this.getY() - Camera.y, null);
-//		g.drawImage(direcao[index+4], this.getX()+60 - Camera.x,this.getY() - Camera.y, null);
 
-		
+//		g.drawImage(direcao[30], this.getX()+9 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
+//		g.drawImage(direcao[29], this.getX()+9 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
+//		g.drawImage(direcao[28], this.getX()+1 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
+//		g.drawImage(direcao[27], this.getX()+0 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		if(visivel) {
-			if(index==32 || index==99+30) {
+			if(index==32) {
 				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y+5, null);
 			}else {
-				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);				
+				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
 			}
 		}
 		
 		
 		
 		
-		
-		
-//		if(!isDamaged) {
-//			
-//		}else {
-//			g.drawImage(playerDamage, this.getX()-Camera.x, this.getY() - Camera.y,null);
-//			
-//		}
 	}
 
 }
