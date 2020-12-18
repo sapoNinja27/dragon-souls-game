@@ -43,76 +43,76 @@ public class Pupkin_Boss extends Entity {
 //			}
 //		}
 		
-		depth=7;
-		for(int i=0;i<5;i++) {
-			fumacinha[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*5+(16+16*i), 18*Game.TILE_SIZE, 16, 16);
-		}
-		for(int i=0; i<19;i++) {
-			right[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(8+3+i), 10*Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE*2);
-			Fright[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(8+i), (10+6)*Game.TILE_SIZE, Game.TILE_SIZE*2, Game.TILE_SIZE);
-		}
-		if(left[0]==null && left[18]==null) {
-			for(int i=0;i<18;i++) {
-				left[i]=inverter(right[i]);
-				Fleft[i]=inverter(Fright[i]);
-			}
-		}
-		framesFumacinha++;
-		if(framesFumacinha>=10) {
-			indexF++;
-			framesFumacinha=0;
-			if(indexF==3) {
-				indexF=0;
-			}
-		}
-		if(dir == left_dir) {
-			for(int i=0;i<18;i++) {
-				img[i]=left[i];
-				fogo[i]=Fleft[i];
-			}
-		}else if(dir == right_dir) {
-				for(int i=0;i<18;i++) {
-					img[i]=(right[i]);
-					fogo[i]=(Fright[i]);
-			}
-		}
-
-		
-		if(parado) {
-			if(queimou) {
-				index=indexParado+12;
-			}else {
-				index=indexParado;
-			}
-		}
-		
-		if(parado) {
-			framesParado++;
-			if(framesParado==maxFramesParado) {
-				framesParado=0;
-				indexParado++;
-				if(indexParado==maxIndexParado) {
-					indexParado=0;
-				}
-			}
-		}
+//		depth=7;
+//		for(int i=0;i<5;i++) {
+//			fumacinha[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*5+(16+16*i), 18*Game.TILE_SIZE, 16, 16);
+//		}
+//		for(int i=0; i<19;i++) {
+//			right[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(8+3+i), 10*Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE*2);
+//			Fright[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(8+i), (10+6)*Game.TILE_SIZE, Game.TILE_SIZE*2, Game.TILE_SIZE);
+//		}
+//		if(left[0]==null && left[18]==null) {
+//			for(int i=0;i<18;i++) {
+//				left[i]=inverter(right[i]);
+//				Fleft[i]=inverter(Fright[i]);
+//			}
+//		}
+//		framesFumacinha++;
+//		if(framesFumacinha>=10) {
+//			indexF++;
+//			framesFumacinha=0;
+//			if(indexF==3) {
+//				indexF=0;
+//			}
+//		}
+//		if(dir == left_dir) {
+//			for(int i=0;i<18;i++) {
+//				img[i]=left[i];
+//				fogo[i]=Fleft[i];
+//			}
+//		}else if(dir == right_dir) {
+//				for(int i=0;i<18;i++) {
+//					img[i]=(right[i]);
+//					fogo[i]=(Fright[i]);
+//			}
+//		}
+//
+//		
+//		if(parado) {
+//			if(queimou) {
+//				index=indexParado+12;
+//			}else {
+//				index=indexParado;
+//			}
+//		}
+//		
+//		if(parado) {
+//			framesParado++;
+//			if(framesParado==maxFramesParado) {
+//				framesParado=0;
+//				indexParado++;
+//				if(indexParado==maxIndexParado) {
+//					indexParado=0;
+//				}
+//			}
+//		}
 	}
 	public void render(Graphics g) {
-		g.drawImage(img[index], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
-		if(fumaça) {
-			g.drawImage(fumacinha[indexF], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
-		}
-		if(aceso[0]) {
-			g.drawImage(fogo[0], this.getX()- Camera.x+px+15,this.getY()+py - Camera.y+15,5,5, null);
-		}
-		if(aceso[1]) {
-			g.drawImage(fogo[0], this.getX()- Camera.x+px-30,this.getY()+py - Camera.y+5,60,40, null);
-		}
-		if(aceso[2]) {
-			g.drawImage(fogo[0], this.getX()- Camera.x+px-90,this.getY()+py - Camera.y+3,64*2,64, null);
-		}
-		if(aceso[3]) {
-			g.drawImage(fogo[0], this.getX()- Camera.x+px-205,this.getY()+py - Camera.y+5,64*4,64, null);
-		}
+//		g.drawImage(img[index], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
+//		if(fumaça) {
+//			g.drawImage(fumacinha[indexF], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
+//		}
+//		if(aceso[0]) {
+//			g.drawImage(fogo[0], this.getX()- Camera.x+px+15,this.getY()+py - Camera.y+15,5,5, null);
+//		}
+//		if(aceso[1]) {
+//			g.drawImage(fogo[0], this.getX()- Camera.x+px-30,this.getY()+py - Camera.y+5,60,40, null);
+//		}
+//		if(aceso[2]) {
+//			g.drawImage(fogo[0], this.getX()- Camera.x+px-90,this.getY()+py - Camera.y+3,64*2,64, null);
+//		}
+//		if(aceso[3]) {
+//			g.drawImage(fogo[0], this.getX()- Camera.x+px-205,this.getY()+py - Camera.y+5,64*4,64, null);
+//		}
 	}
 }

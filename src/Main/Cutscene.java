@@ -92,7 +92,7 @@ public class Cutscene {
 			
 			pisca=0;
 		}
-		buttonimg=Game.spritesheet.getSprite(Game.TILE_SIZE*5, 18*Game.TILE_SIZE, 16, 16);
+		buttonimg=Game.tinyIcons.getSprite(0, 0, 16, 16);
 		for(int i=0;i<30;i++) {
 			for(int j=0;j<10;j++) {
 				icon[i][j]=Game.icones.getSprite(Game.TILE_SIZE*(i), Game.TILE_SIZE*j, Game.TILE_SIZE, Game.TILE_SIZE);

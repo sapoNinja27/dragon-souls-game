@@ -17,7 +17,7 @@ import World.World;
 public class Player extends Entity{
 	public boolean caindo, subindo,podepular,completou_pulo,saiu_do_chao,caiu_no_chao, atacando,dash,dashS,dashS2,transformado;
 	public int px;
-	boolean combat;
+	public boolean combat;
 	public boolean tmpSocos[]=new boolean[3];
 	public boolean bloqueio[]=new boolean[3];
 	public boolean socoForte[]=new boolean[3];
@@ -44,8 +44,12 @@ public class Player extends Entity{
 	private int framesPulo = 0,maxFramesPulo =15,indexPul = 13,maxIndexPul = 15;
 	private int framesCai = 0,maxFramesCai = 15,indexCai = 16,maxIndexCai = 17;
 	private int framesCai2 = 0,maxFramesCai2 = 15;
-	private int indexAtk=0, frames=0;
-	private int framesAtkT = 0,maxFramesAtkT = 9,indexAtkT =27,maxIndexAtkT = 31;
+	private int indexAtk=0;
+	public int frames=0;
+	public int framesAtkT = 0;
+	private int maxFramesAtkT = 6;
+	private int indexAtkT =27;
+	private int maxIndexAtkT = 33;
 	private int framesAtkD = 0,maxFramesAtkD = 9,indexAtkD=25,maxIndexAtkD = 28;
 	private int framesAtkA = 0,maxFramesAtkA = 9,indexAtkA =24,maxIndexAtkA = 28;
 	private int framesAtkS = 0,maxFramesAtkS = 9,indexAtkS =24,maxIndexAtkS = 28;
@@ -77,8 +81,8 @@ public class Player extends Entity{
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 		
-		rightTai = new BufferedImage[35];
-		leftTai = new BufferedImage[35];
+		rightTai = new BufferedImage[50];
+		leftTai = new BufferedImage[50];
 		rightSander= new BufferedImage[35];
 		leftSander= new BufferedImage[35];
 		rightAce= new BufferedImage[35];
@@ -86,12 +90,46 @@ public class Player extends Entity{
 		rightDemon= new BufferedImage[35];
 		leftDemon= new BufferedImage[35];
 		direcao= new BufferedImage[35];
-		for(int i =0; i < 34; i++){
-			rightTai[i] =   Game.spritesheet.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE);
-			rightDemon[i] = Game.spritesheet.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*1, Game.TILE_SIZE, Game.TILE_SIZE);
-			rightAce[i] =   Game.spritesheet.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*2, Game.TILE_SIZE, Game.TILE_SIZE);
-			rightSander[i] =Game.spritesheet.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*3, Game.TILE_SIZE, Game.TILE_SIZE);
+		//respirando
+		for(int i =0; i < 4; i++){
+			rightTai[i] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE);
+//			rightDemon[i] = Game.demonTai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE);
+//			rightAce[i] =   Game.ace.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE);
+//			rightSander[i] =Game.sander.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE*2);
 		}
+		//correndo
+		for(int i =0; i < 9; i++){
+			rightTai[i+4] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*1, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+		//pulando
+		for(int i =0; i < 6; i++){
+			rightTai[i+13] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*2, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+		//dash
+		for(int i =0; i < 5; i++){
+			rightTai[i+19] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*3, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+//		//parado soco
+		for(int i =0; i < 4; i++){
+			rightTai[i+24] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*4, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+//		//socos
+		for(int i =0; i < 6; i++){
+			rightTai[i+28] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*5, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+//		//hb1
+		for(int i =0; i < 9; i++){
+			rightTai[i+34] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*6, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+//		//h2
+//		for(int i =0; i < 4; i++){
+//			rightTai[i+37] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*7, Game.TILE_SIZE, Game.TILE_SIZE);
+//		}
+//		//h3
+//		for(int i =0; i < 4; i++){
+//			rightTai[i+37] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*8, Game.TILE_SIZE, Game.TILE_SIZE);
+//		}
+		//??
 		
 		
 		
@@ -141,25 +179,38 @@ public class Player extends Entity{
 		updateCamera(); 
 	}
 	public void Tai() {
-		if(dir == left_dir) {
-			if( index== 30 || index == 29) {
-				pos=-9;
-			}else if(index==28) {
-				pos=-1;
-			}else {
-				pos=0;
+		if(atacando) {
+			if(dir == left_dir) {
+				if( indexAtkT== 30 || indexAtkT == 29 || indexAtkT==31) {
+					pos=-9;
+				}else if(indexAtkT==28 || indexAtkT==32 ) {
+					pos=-1;
+				}else {
+					pos=0;
+				}
+				for(int i=0;i<35;i++) {
+					direcao[i]=leftTai[i];
+				}
+			}else if(dir == right_dir) {
+				if( indexAtkT== 30 || indexAtkT == 29 || indexAtkT==31) {
+					pos=+9;
+				}else if(indexAtkT==28 || indexAtkT==32 ) {
+					pos=+1;
+				}else {
+					pos=0;
+				}
+				for(int i=0;i<35;i++) {
+					direcao[i]=(rightTai[i]);
+				}
 			}
+		}else {
+			pos=0;
+		}
+		if(dir == left_dir) {
 			for(int i=0;i<35;i++) {
 				direcao[i]=leftTai[i];
 			}
 		}else if(dir == right_dir) {
-			if( index== 30 || index == 29) {
-				pos=+9;
-			}else if(index==28) {
-				pos=+1;
-			}else {
-				pos=0;
-			}
 			for(int i=0;i<35;i++) {
 				direcao[i]=(rightTai[i]);
 			}
@@ -168,7 +219,7 @@ public class Player extends Entity{
 		if(atacando) {
 			indexAtk=indexAtkT;
 			framesAtkT++;
-			if(framesAtkT == maxFramesAtkT) {
+			if(framesAtkT ==maxFramesAtkT) {
 				framesAtkT = 0;
 				indexAtkT++;
 				if(indexAtkT == maxIndexAtkT) {
@@ -233,6 +284,7 @@ public class Player extends Entity{
 		
 	}
 	public void anim() {
+		
 		if(right) {
 			dir=right_dir;
 		}else if(left) {
@@ -242,19 +294,6 @@ public class Player extends Entity{
 			index=indexMoved;
 		}else if(caiu_no_chao) {
 			index=index;
-		}else if(parado) {
-			if(combat) {
-				index=indexParado+24;
-				frames++;
-				if(frames>=200) {
-					frames=0;
-					combat=false;
-				}
-			}else {
-				index=indexParado;
-			}
-		}else if(atacando) {
-			index=indexAtk;
 		}else if(dash) {
 			index=indexDash;
 		}else if(dashS) {
@@ -267,6 +306,19 @@ public class Player extends Entity{
 			index=indexCai;
 		}else if(moved){
 			index=indexMoved;
+		}else if(atacando ) {
+			index=indexAtk;
+		}else if(parado) {
+			if(combat) {
+				index=indexParado+24;
+				frames++;
+				if(frames>=200) {
+					frames=0;
+					combat=false;
+				}
+			}else {
+				index=indexParado;
+			}
 		}
 		
 		if(dash) {
@@ -510,10 +562,6 @@ public class Player extends Entity{
 				
 			}
 		}
-		if(moved) {
-			atacando=false;
-			indexAtk = 24;
-		}
 		if(dash) {
 			if(dir==right_dir) {
 				if(isFreeX()!="esquerda") {
@@ -665,17 +713,15 @@ public class Player extends Entity{
 	
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+		g.setColor(Color.red);
+		g.drawRect(getX()- Camera.x+maskx[0], getY()- Camera.y+masky[0], maskw[0], maskh[0]);
 
 //		g.drawImage(direcao[30], this.getX()+9 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
 //		g.drawImage(direcao[29], this.getX()+9 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
 //		g.drawImage(direcao[28], this.getX()+1 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 //		g.drawImage(direcao[27], this.getX()+0 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		if(visivel) {
-			if(index==32) {
-				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y+5, null);
-			}else {
-				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
-			}
+			g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		}
 		
 		

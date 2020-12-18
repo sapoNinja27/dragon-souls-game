@@ -33,40 +33,40 @@ public class roux_npc extends Entity {
 //			}
 //		}
 		
-		depth=5;
-		for(int i=0; i<11;i++) {
-			right[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(i), 13*Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE);
-		}
-		if(left[0]==null && left[18]==null) {
-			for(int i=0;i<18;i++) {
-				left[i]=inverter(right[i]);
-			}
-		}
-		if(parado) {
-			index=indexParado;
-		}
-		if(parado) {
-			framesParado++;
-			if(framesParado==maxFramesParado) {
-				framesParado=0;
-				indexParado++;
-				if(indexParado==maxIndexParado) {
-					indexParado=0;
-				}
-			}
-		}
-		if(dir == left_dir) {
-			for(int i=0;i<18;i++) {
-				img[i]=left[i];
-			}
-		}else if(dir == right_dir) {
-				for(int i=0;i<18;i++) {
-				img[i]=(right[i]);
-			}
-		}
+//		depth=5;
+//		for(int i=0; i<11;i++) {
+//			right[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(i), 13*Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE);
+//		}
+//		if(left[0]==null && left[18]==null) {
+//			for(int i=0;i<18;i++) {
+//				left[i]=inverter(right[i]);
+//			}
+//		}
+//		if(parado) {
+//			index=indexParado;
+//		}
+//		if(parado) {
+//			framesParado++;
+//			if(framesParado==maxFramesParado) {
+//				framesParado=0;
+//				indexParado++;
+//				if(indexParado==maxIndexParado) {
+//					indexParado=0;
+//				}
+//			}
+//		}
+//		if(dir == left_dir) {
+//			for(int i=0;i<18;i++) {
+//				img[i]=left[i];
+//			}
+//		}else if(dir == right_dir) {
+//				for(int i=0;i<18;i++) {
+//				img[i]=(right[i]);
+//			}
+//		}
 	}
 	public void render(Graphics g) {
-		g.drawImage(img[index], this.getX()- Camera.x+px,this.getY()+py - Camera.y, null);
+//		g.drawImage(img[index], this.getX()- Camera.x+px,this.getY()+py - Camera.y, null);
 	}
 }
 

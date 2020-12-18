@@ -17,7 +17,7 @@ public class UI {
 		
 		if(Game.player.visivel && Game.player.Hudvisivel) {
 			for(int i=0;i<5;i++) {
-				icon[i]=Game.spritesheet.getSprite(i*Game.TILE_SIZE,18*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
+//				icon[i]=Game.spritesheet.getSprite(i*Game.TILE_SIZE,18*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 			}
 			Graphics2D g2 = (Graphics2D) g;
 			Rectangle barlife= new Rectangle(100,55,(int)Game.player.totalife,11);

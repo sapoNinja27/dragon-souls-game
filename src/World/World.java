@@ -54,6 +54,8 @@ public class World {
 						//Player
 						Game.player.setX(xx*Game.TILE_SIZE);
 						Game.player.setY(yy*Game.TILE_SIZE);
+						Game.player2.setX(xx*Game.TILE_SIZE);
+						Game.player2.setY(yy*Game.TILE_SIZE);
 					}else   if(pixelAtual == 0xFF910000) {
 						soldier_npc sd= new soldier_npc(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
 						Game.entities.add(sd);
@@ -102,15 +104,15 @@ public class World {
 	}
 	
 	public static void restartGame(String level){
-		Game.entities.clear();
-		Game.enemies.clear();
-		Game.entities = new ArrayList<Entity>();
-		Game.enemies = new ArrayList<Enemy>();
-		Game.spritesheet = new Spritesheet("/spritesheet.png");
-		Game.player = new Player(0,0,Game.TILE_SIZE,Game.TILE_SIZE,Game.spritesheet.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
-		Game.entities.add(Game.player);
-		Game.world = new World("/"+level);
-		return;
+//		Game.entities.clear();
+//		Game.enemies.clear();
+//		Game.entities = new ArrayList<Entity>();
+//		Game.enemies = new ArrayList<Enemy>();
+//		Game.spritesheet = new Spritesheet("/spritesheet.png");
+//		Game.player = new Player(0,0,Game.TILE_SIZE,Game.TILE_SIZE,Game.spritesheet.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
+//		Game.entities.add(Game.player);
+//		Game.world = new World("/"+level);
+//		return;
 	}
 	
 	public void render(Graphics g){

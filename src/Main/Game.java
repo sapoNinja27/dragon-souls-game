@@ -32,8 +32,10 @@ import Entidades.BulletShoot;
 import Entidades.Enemy;
 import Entidades.Entity;
 import Entidades.Player;
+import Entidades.PlayerDois;
 import Graficos.Spritesheet;
 import Graficos.UI;
+import Menu.Menu;
 import World.World;
 
 public class Game extends Canvas implements Runnable,KeyListener,MouseListener,MouseMotionListener{
@@ -53,18 +55,30 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<BulletShoot> bullets;
-	
-	public static Spritesheet spritesheet;
+	//personagens
+	public static Spritesheet ace;
+	public static Spritesheet demonTai;
+	public static Spritesheet tai;
+	public static Spritesheet iron;
+	public static Spritesheet light;
+	public static Spritesheet rouxie;
+	public static Spritesheet sander;
+	//menus
 	public static Spritesheet fundo;
 	public static Spritesheet fundoT;
 	public static Spritesheet fundoA;
 	public static Spritesheet fundoS;
 	public static Spritesheet Menu;
 	public static Spritesheet icones;
+	public static Spritesheet tinyIcons;
+	//cenario
+	public static Spritesheet cenario;
+	
 	
 	public static World world;
 	
 	public static Player player;
+	public static PlayerDois player2;
 	
 	public static Random rand;
 	public UI ui;
@@ -94,17 +108,33 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<BulletShoot>();
+		//personagens
+		ace = new Spritesheet("/personagens/ace.png");
+		demonTai = new Spritesheet("/personagens/demonTai.png");
+		iron = new Spritesheet("/personagens/iron.png");
+		light = new Spritesheet("/personagens/light.png");
+		rouxie = new Spritesheet("/personagens/rouxie.png");
+		sander = new Spritesheet("/personagens/sander.png");
+		tai = new Spritesheet("/personagens/tai.png");
+		//menus
+		tinyIcons = new Spritesheet("/menus/tinyIcons.png");
+		icones = new Spritesheet("/menus/icones.png");
+		Menu = new Spritesheet("/menus/Menu.png");
+		fundo = new Spritesheet("/menus/fundo.png");
+		fundoA = new Spritesheet("/menus/fundoace.png");
+		fundoT = new Spritesheet("/menus/fundotai.png");
+		fundoS = new Spritesheet("/menus/fundosander.png");
+		//cenario
+		cenario = new Spritesheet("/cenario/cenario.png");
 		
-		spritesheet = new Spritesheet("/spritesheet.png");
-		icones = new Spritesheet("/icones.png");
-		Menu = new Spritesheet("/Menu.png");
-		fundo = new Spritesheet("/fundo.png");
-		fundoA = new Spritesheet("/fundoace.png");
-		fundoT = new Spritesheet("/fundotai.png");
-		fundoS = new Spritesheet("/fundosander.png");
-		player = new Player(0,0,TILE_SIZE,TILE_SIZE,Game.spritesheet.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
+		
+		
+		
+		player2 = new PlayerDois(0,0,TILE_SIZE,TILE_SIZE,Game.demonTai.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
+		player = new Player(0,0,TILE_SIZE,TILE_SIZE,Game.tai.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
 		entities.add(player);
-		world = new World("/level1.png");
+		entities.add(player2);
+		world = new World("/niveis/level1.png");
 		
 		
 		menu = new Menu();
@@ -118,12 +148,12 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		frame.pack();
 		Image imagem=null;
 		try {
-			imagem=ImageIO.read(getClass().getResource("/icon.png"));
+			imagem=ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
 		Toolkit toolkit =Toolkit.getDefaultToolkit();
-		Image image= toolkit.getImage(getClass().getResource("/icon.png"));
+		Image image= toolkit.getImage(getClass().getResource("/icone-jogo/icon.png"));
 		Cursor c= toolkit.createCustomCursor(image, new Point(0,0), "img");
 		
 		frame.setIconImage(imagem);
@@ -297,23 +327,30 @@ public void run() {
 		}
 		if(!cen.CcRun()) {
 			if(e.getKeyCode() == KeyEvent.VK_D){
-				
-					player.right = true;
-					player.parado=false;
-					player.parando=false;
-					player.moved=true;
-					if(player.isFreeX()!="esquerda") {
-						player.parede=false;
-					}
+				player.atacando=false;
+				player.combat=false;
+				player.frames=0;
+				player.right = true;
+				player.parado=false;
+				player.parando=false;
+				player.moved=true;
+				if(player.isFreeX()!="esquerda") {
+					player.parede=false;
+				}
 				
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
 				player.parado=false;
 				player.dash=true;
+				player.combat=false;
+				player.frames=0;
 				
 			}
 			if(e.getKeyCode() == KeyEvent.VK_Q){
+				player.framesAtkT = 0;
 				player.parado=false;
+				player.combat=false;
+				player.frames=0;
 				if(player.dash) {
 					player.dashS=true;
 				}else if(player.subindo || player.caindo){
@@ -327,6 +364,8 @@ public void run() {
 				player.parado=false;
 				player.parando=false;
 				player.moved=true;
+				player.combat=false;
+				player.frames=0;
 				if(player.isFreeX()!="direita") {
 					player.parede=false;
 				}

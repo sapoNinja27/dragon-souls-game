@@ -38,13 +38,13 @@ public class Cenario_Interagivel extends Entity{
 		
 		if(tipo=="prateleira") {
 			
-			g.drawImage(Game.spritesheet.getSprite(2*Game.TILE_SIZE,22*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+			g.drawImage(Game.cenario.getSprite(2*Game.TILE_SIZE,0*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 					this.getX()- Camera.x,this.getY() - Camera.y-16,Game.TILE_SIZE,Game.TILE_SIZE+20, null);
 			
-			g.drawImage(Game.spritesheet.getSprite(3*Game.TILE_SIZE,22*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+			g.drawImage(Game.cenario.getSprite(3*Game.TILE_SIZE,0*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 					this.getX()- Camera.x+Game.TILE_SIZE,this.getY() - Camera.y-16,Game.TILE_SIZE,Game.TILE_SIZE+20, null);
 			
-			g.drawImage(Game.spritesheet.getSprite(4*Game.TILE_SIZE,22*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+			g.drawImage(Game.cenario.getSprite(4*Game.TILE_SIZE,0*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 					this.getX()- Camera.x+Game.TILE_SIZE+Game.TILE_SIZE,this.getY() - Camera.y-16,Game.TILE_SIZE,Game.TILE_SIZE+20, null);
 		
 			
@@ -65,7 +65,7 @@ public class Cenario_Interagivel extends Entity{
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 			
 			
-			g.drawImage(Game.spritesheet.getSprite(Game.TILE_SIZE,22*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+			g.drawImage(Game.cenario.getSprite(Game.TILE_SIZE,0*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 					this.getX() - Camera.x
 					,this.getY() - Camera.y-2,(int)(Game.TILE_SIZE),Game.TILE_SIZE, null);
 			

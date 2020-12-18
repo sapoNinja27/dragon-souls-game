@@ -42,7 +42,7 @@ public class Plataforma extends Entity{
 		Rectangle rect4= new Rectangle(this.getX() - Camera.x+maskx[3],this.getY() - Camera.y+masky[3],maskw[3],maskh[3]);
 		g.setColor(Color.RED);
 		
-		g.drawImage(Game.spritesheet.getSprite(1*Game.TILE_SIZE,23*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+		g.drawImage(Game.cenario.getSprite(1*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 				this.getX() - Camera.x,this.getY() - Camera.y+3, null);
 //		g2.draw(rect);
 //		g.setColor(Color.YELLOW);
