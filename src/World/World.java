@@ -3,20 +3,12 @@ package World;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import Entidades.Cenario_Interagivel;
-import Entidades.Enemy;
-import Entidades.Entity;
+import Entidades.Janela;
 import Entidades.Plataforma;
-import Entidades.Player;
-import Entidades.Pupkin_Boss;
-import Entidades.light_npc;
-import Entidades.roux_npc;
-import Entidades.soldier_npc;
-import Graficos.Spritesheet;
+import Entidades.Porta;
 import Main.Game;
 
 public class World {
@@ -41,36 +33,63 @@ public class World {
 						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
 						Game.entities.add(pack);
 					}else  if(pixelAtual == 0xFFFF6A00){
-						Cenario_Interagivel pack = new Cenario_Interagivel(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,"prateleira",null);
-						Game.entities.add(pack);
-						
-						
-						Cenario_Interagivel pack2 = new Cenario_Interagivel(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,"caixa",null);
-						Game.entities.add(pack2);
+//						Cenario_Interagivel pack = new Cenario_Interagivel(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,"prateleira",null);
+//						Game.entities.add(pack);
+//						
+//						
+//						Cenario_Interagivel pack2 = new Cenario_Interagivel(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,"caixa",null);
+//						Game.entities.add(pack2);
 					}else if(pixelAtual == 0xFF000000){
-						Cenario_Interagivel pack = new Cenario_Interagivel(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,"lampada",null);
-						Game.entities.add(pack);
+//						Cenario_Interagivel pack = new Cenario_Interagivel(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,"lampada",null);
+//						Game.entities.add(pack);
 					}else if(pixelAtual == 0xFF0026FF) {
 						//Player
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
 						Game.player.setX(xx*Game.TILE_SIZE);
 						Game.player.setY(yy*Game.TILE_SIZE);
-						Game.player2.setX(xx*Game.TILE_SIZE);
-						Game.player2.setY(yy*Game.TILE_SIZE);
+//						Game.player2.setX(xx*Game.TILE_SIZE);
+//						Game.player2.setY(yy*Game.TILE_SIZE);
 					}else   if(pixelAtual == 0xFF910000) {
-						soldier_npc sd= new soldier_npc(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
-						Game.entities.add(sd);
-						
-						roux_npc rn= new roux_npc(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
-						Game.entities.add(rn);
-						light_npc ln= new light_npc(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
-						Game.entities.add(ln);
-						
-						Pupkin_Boss pb= new Pupkin_Boss(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
-						Game.entities.add(pb);
+//						soldier_npc sd= new soldier_npc(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+//						Game.entities.add(sd);
+//						
+//						roux_npc rn= new roux_npc(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+//						Game.entities.add(rn);
+//						light_npc ln= new light_npc(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+//						Game.entities.add(ln);
+//						
+//						Pupkin_Boss pb= new Pupkin_Boss(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+//						Game.entities.add(pb);
 					}else   if(pixelAtual == 0xFFFF7F7F) {
 						//Life Pack
 //						Lifepack pack = new Lifepack(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,Entity.LIFEPACK_EN);
 //						Game.entities.add(pack);
+					}else   if(pixelAtual == 0xFF494949) {
+						//parte de baixo
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+					}else   if(pixelAtual == 0xFF333333) {
+						//parte de cima
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,2*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+					}else   if(pixelAtual == 0xFF595959) {
+						//porta
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Game.entities.add(pack);
+						Game.portas.add(pack);
+					}else   if(pixelAtual == 0xFF262626) {
+						//beirada de cima-esquerda
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,4*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+					}else   if(pixelAtual == 0xFF3F3F3F) {
+						//beirada de baixo-esquerda
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+					}else   if(pixelAtual == 0xFF666666) {
+						//janela
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						Janela pack = new Janela(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Game.entities.add(pack);
+					}else {
+						//fundo
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Tile.TILE_FLOOR);
 					}
 					
 						
@@ -116,8 +135,8 @@ public class World {
 	}
 	
 	public void render(Graphics g){
-		int xstart = Camera.x >> 10;
-		int ystart = Camera.y >> 10;
+		int xstart = Camera.x >>6;
+		int ystart = Camera.y >> 6;
 		
 		int xfinal = xstart + (Game.WIDTH >> 4);
 		int yfinal = ystart + (Game.HEIGHT >> 4);

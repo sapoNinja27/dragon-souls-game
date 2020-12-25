@@ -15,7 +15,7 @@ public class Plataforma extends Entity{
 	}
 	public void tick() {
 		maskx[0]= 0;
-		masky[0]= 0;
+		masky[0]= -3;
 		maskw[0]= Game.TILE_SIZE;
 		maskh[0]=3;
 		
@@ -41,9 +41,10 @@ public class Plataforma extends Entity{
 		Rectangle rect3= new Rectangle(this.getX() - Camera.x+maskx[2],this.getY() - Camera.y+masky[2],maskw[2],maskh[2]);
 		Rectangle rect4= new Rectangle(this.getX() - Camera.x+maskx[3],this.getY() - Camera.y+masky[3],maskw[3],maskh[3]);
 		g.setColor(Color.RED);
-		
-		g.drawImage(Game.cenario.getSprite(1*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
-				this.getX() - Camera.x,this.getY() - Camera.y+3, null);
+		g.drawImage(Game.cenario.getSprite(1*Game.TILE_SIZE,2*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+				this.getX() - Camera.x,this.getY() - Camera.y, null);
+//		g.drawImage(Game.cenario.getSprite(1*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+//				this.getX() - Camera.x,this.getY() - Camera.y, null);
 //		g2.draw(rect);
 //		g.setColor(Color.YELLOW);
 //		g2.draw(rect2);

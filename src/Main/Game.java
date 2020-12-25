@@ -6,7 +6,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -20,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -33,6 +31,7 @@ import Entidades.Enemy;
 import Entidades.Entity;
 import Entidades.Player;
 import Entidades.PlayerDois;
+import Entidades.Porta;
 import Graficos.Spritesheet;
 import Graficos.UI;
 import Menu.Menu;
@@ -54,6 +53,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
+	public static List<Porta> portas;
 	public static List<BulletShoot> bullets;
 	//personagens
 	public static Spritesheet ace;
@@ -108,6 +108,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<BulletShoot>();
+		portas = new ArrayList<Porta>();
 		//personagens
 		ace = new Spritesheet("/personagens/ace.png");
 		demonTai = new Spritesheet("/personagens/demonTai.png");
@@ -134,7 +135,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		player = new Player(0,0,TILE_SIZE,TILE_SIZE,Game.tai.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
 		entities.add(player);
 		entities.add(player2);
-		world = new World("/niveis/level1.png");
+		world = new World("/niveis/mapaMundi.png");
 		
 		
 		menu = new Menu();
@@ -200,7 +201,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 				Entity e = entities.get(i);
 				e.tick();
 			}
-			
+			for(int i = 0; i < portas.size(); i++) {
+				portas.get(i).tick();
+			}
 			for(int i = 0; i < bullets.size(); i++) {
 				bullets.get(i).tick();
 			}

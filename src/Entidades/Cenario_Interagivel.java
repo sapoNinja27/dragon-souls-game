@@ -71,6 +71,10 @@ public class Cenario_Interagivel extends Entity{
 			
 
 
+		}else if(tipo=="porta") {
+			g.drawImage(Game.cenario.getSprite(Game.TILE_SIZE,0*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+					this.getX() - Camera.x
+					,this.getY() - Camera.y-2,(int)(Game.TILE_SIZE),Game.TILE_SIZE, null);
 		}
 		
 			

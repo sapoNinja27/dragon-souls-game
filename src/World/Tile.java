@@ -7,7 +7,7 @@ import Main.Game;
 
 public class Tile {
 	
-	public static BufferedImage TILE_FLOOR = Game.cenario.getSprite(0*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
+	public static BufferedImage TILE_FLOOR = Game.cenario.getSprite(2*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 	private BufferedImage sprite;
 	private int x,y;
 	

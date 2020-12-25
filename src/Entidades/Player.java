@@ -174,6 +174,7 @@ public class Player extends Entity{
 		movedX();
 		movedY();
 		checkCollisionLifePack();
+		checkCollisionPorta();
 //		projetil();
 		lifesistem();
 		updateCamera(); 
@@ -709,7 +710,19 @@ public class Player extends Entity{
 			}
 		}
 	}
-
+	public void checkCollisionPorta(){
+		for(int i = 0; i < Game.portas.size(); i++){
+			Porta atual = Game.portas.get(i);
+			if(atual instanceof Porta) {
+				if(Entity.isColidding(this, atual,0,0)) {
+					atual.emFrente=true;
+//					Game.entities.remove(atual);
+				}else {
+					atual.emFrente=false;
+				}
+			}
+		}
+	}
 	
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
