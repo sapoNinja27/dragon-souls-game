@@ -77,18 +77,18 @@ public class Menu_de_Load {
 		Graphics2D g2 = (Graphics2D) g;
 		g.setColor(Color.black);
 		g.fillRoundRect(720/3-40,65, 260+20, 200+20, 30, 50);
-		g.setColor(Game.menu.menIn.beje);
+		g.setColor(Game.menu.beje);
 		g.fillRoundRect(720/3-30,75, 260, 200, 30, 50);
 		g.setColor(Color.black);
 		g.fillRoundRect(580,312, 68, 28, 30, 50);
 		if(Menu[currentOption]=="Sair"&& Game.menu.clicou) {
-			g.setColor(Game.menu.menIn.Pressed);
+			g.setColor(Game.menu.Pressed);
 			g.fillRoundRect(583,314, 62, 24, 30, 50);
 		}else if(Menu[currentOption]=="Sair") {
-			g.setColor(Game.menu.menIn.MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.fillRoundRect(583,314, 62, 24, 30, 50);
 		}else {
-			g.setColor(Game.menu.menIn.Standart);
+			g.setColor(Game.menu.Standart);
 			g.fillRoundRect(583,314, 62, 24, 30, 50);
 		}
 		g.setColor(Color.black);
@@ -121,33 +121,33 @@ public class Menu_de_Load {
 		}
 		
 		if(Menu[currentOption]=="Slot1"&& Game.menu.clicou) {
-			g.setColor(Game.menu.menIn.Pressed);
+			g.setColor(Game.menu.Pressed);
 			g.drawString(slot1, 720/3, 150);
 		}else if(Menu[currentOption]=="Slot1") {
-			g.setColor(Game.menu.menIn.MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.drawString(slot1, 720/3, 150);
 		}else {
-			g.setColor(Game.menu.menIn.Standart);
+			g.setColor(Game.menu.Standart);
 			g.drawString(slot1, 720/3, 150);
 		}
 		if(Menu[currentOption]=="Slot2"&& Game.menu.clicou) {
-			g.setColor(Game.menu.menIn.Pressed);
+			g.setColor(Game.menu.Pressed);
 			g.drawString(slot2,720/3, 200);
 		}else if(Menu[currentOption]=="Slot2") {
-			g.setColor(Game.menu.menIn.MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.drawString(slot2,720/3, 200);
 		}else {
-			g.setColor(Game.menu.menIn.Standart);
+			g.setColor(Game.menu.Standart);
 			g.drawString(slot2,720/3, 200);
 		}
 		if(Menu[currentOption]=="Slot3"&& Game.menu.clicou) {
-			g.setColor(Game.menu.menIn.Pressed);
+			g.setColor(Game.menu.Pressed);
 			g.drawString(slot3,720/3, 250);
 		}else if(Menu[currentOption]=="Slot3") {
-			g.setColor(Game.menu.menIn.MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.drawString(slot3,720/3, 250);
 		}else {
-			g.setColor(Game.menu.menIn.Standart);
+			g.setColor(Game.menu.Standart);
 			g.drawString(slot3,720/3, 250);
 		}		
 	}

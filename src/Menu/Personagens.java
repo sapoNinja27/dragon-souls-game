@@ -75,7 +75,7 @@ public class Personagens {
 			g.setColor(Color.black);
 			g.fillRoundRect(95+100*i-x,75,64+10,64+10,30,30);
 			g.fillRoundRect(95+100*i-x,75+80,64+10,64+10,30,30);
-			g.setColor(Game.menu.menIn.beje);
+			g.setColor(Game.menu.beje);
 			g.fillRect(100+100*i-x,80,64,64);
 			g.fillRect(100+100*i-x,160,64,64);
 			g.drawImage(icons[i], 100+100*i-x,80,null);
@@ -83,7 +83,7 @@ public class Personagens {
 			if(i!=5 && i!=4) {
 				g.setColor(Color.black);
 				g.fillRoundRect(95+100*i+100-x,75+160,64+10,64+10,30,30);
-				g.setColor(Game.menu.menIn.beje);
+				g.setColor(Game.menu.beje);
 				g.fillRect(100+100*i-x+100,240,64,64);
 				g.drawImage(icons[i+12], 100+100+100*i-x, 240,null);
 			}

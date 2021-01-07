@@ -30,8 +30,10 @@ public class Menu {
 	public Color Standart;
 	public Color MouseOver;
 	public Color Pressed;
+	public Color beje;
 	boolean sfx;
 	boolean mus;
+	
 	public boolean clicou, soltou;
 	public int mx,my;
 	public boolean pause = false;
@@ -110,6 +112,7 @@ public class Menu {
 			}
 		}
 	}
+	
 	public void tick() {
 		pontosH=6;
 		pontosA=6;
@@ -172,6 +175,7 @@ public class Menu {
 		Standart= new Color(255,0,0);
 		MouseOver= new Color(200,0,0);
 		Pressed= new Color(150,0,0);
+		beje= new Color(247,212,212);
 		Graphics2D g2 = (Graphics2D) g;
 		if(pause) {
 			menIn.render(g);	

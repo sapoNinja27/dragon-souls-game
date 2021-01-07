@@ -26,10 +26,7 @@ public class Menu_ingame {
 	Atributos at= new Atributos();
 	Personagens pe= new Personagens();
 	public int mx,my;
-	public Color Standart;
-	public Color MouseOver;
-	public Color Pressed;
-	public Color beje;
+	
 	
 	public void attMouse() {
 		mx=Game.menu.mx;
@@ -98,24 +95,24 @@ public class Menu_ingame {
 		if(Game.player.personagem=="Tai") {
 			//menu do tai
 			g.drawImage(Game.fundoT.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
-			Standart= new Color(255,0,0);
-			MouseOver= new Color(200,0,0);
-			Pressed= new Color(150,0,0);
-			beje= new Color(247,212,212);
+			Game.menu.Standart= new Color(255,0,0);
+			Game.menu.MouseOver= new Color(200,0,0);
+			Game.menu.Pressed= new Color(150,0,0);
+			Game.menu.beje= new Color(247,212,212);
 		}else if(Game.player.personagem=="Ace") {
 			//menu do ace
 			g.drawImage(Game.fundoA.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
-			Standart= new Color(132,132,132);
-			MouseOver= new Color(102,102,102);
-			Pressed= new Color(76,76,76);
-			beje= new Color(212,212,212);
+			Game.menu.Standart= new Color(132,132,132);
+			Game.menu.MouseOver= new Color(102,102,102);
+			Game.menu.Pressed= new Color(76,76,76);
+			Game.menu.beje= new Color(212,212,212);
 		}else if(Game.player.personagem=="Sander") {
 			//menu do sander
 			g.drawImage(Game.fundoS.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
-			Standart= new Color(155,62,0);
-			MouseOver= new Color(102,40,0);
-			Pressed= new Color(51,20,0);
-			beje= new Color(247,212,212);
+			Game.menu.Standart= new Color(155,62,0);
+			Game.menu.MouseOver= new Color(102,40,0);
+			Game.menu.Pressed= new Color(51,20,0);
+			Game.menu.beje= new Color(247,212,212);
 			
 		}
 		g.setColor(Color.black);
@@ -124,33 +121,33 @@ public class Menu_ingame {
 		g.fillRoundRect(580,28, 86, 28, 30, 50);
 		
 		if(Menu[currentOption]=="Sair" && Game.menu.clicou) {
-			g.setColor(Pressed);
+			g.setColor(Game.menu.Pressed);
 			g.fillRoundRect(583,314, 80, 24, 30, 50);
 		}else if(Menu[currentOption]=="Sair") {
-			g.setColor(MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.fillRoundRect(583,314, 80, 24, 30, 50);
 		}else{
-			g.setColor(Standart);
+			g.setColor(Game.menu.Standart);
 			g.fillRoundRect(583,314, 80, 24, 30, 50);
 		}
 		if(Menu[currentOption]=="Back" && Game.menu.clicou) {
-			g.setColor(Pressed);
+			g.setColor(Game.menu.Pressed);
 			g.fillRoundRect(50,30, 80, 24, 30, 50);
 		}else if(Menu[currentOption]=="Back") {
-			g.setColor(MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.fillRoundRect(50,30, 80, 24, 30, 50);
 		}else{
-			g.setColor(Standart);
+			g.setColor(Game.menu.Standart);
 			g.fillRoundRect(50,30, 80, 24, 30, 50);
 		}
 		if(Menu[currentOption]=="Next" && Game.menu.clicou) {
-			g.setColor(Pressed);
+			g.setColor(Game.menu.Pressed);
 			g.fillRoundRect(583,30, 80, 24, 30, 50);
 		}else if(Menu[currentOption]=="Next") {
-			g.setColor(MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.fillRoundRect(583,30, 80, 24, 30, 50);
 		}else{
-			g.setColor(Standart);
+			g.setColor(Game.menu.Standart);
 			g.fillRoundRect(583,30, 80, 24, 30, 50);
 		}
 		g.setColor(Color.black);

@@ -99,7 +99,7 @@ public class Menu_de_Opcoes  {
 		Graphics2D g2 = (Graphics2D) g;
 		g.setColor(Color.black);
 		g.fillRoundRect(720/3+20-40,65, 260+20, 200+20, 30, 50);
-		g.setColor(Game.menu.menIn.beje);
+		g.setColor(Game.menu.beje);
 		g.fillRoundRect(720/3+20-30,75, 260, 200, 30, 50);
 		
 		
@@ -108,38 +108,36 @@ public class Menu_de_Opcoes  {
 		g.fillRect(720/2+20,85, 99, 20);
 		
 		if(Menu[currentOption]=="Volume") {
-			g.setColor(Game.menu.menIn.MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.fillRect(720/2+20,85, volume, 20);
 		}else {
-			g.setColor(Game.menu.menIn.Standart);
+			g.setColor(Game.menu.Standart);
 			g.fillRect(720/2+20,85, Game.menu.volume, 20);
 		}
-		
-		
 		g.setColor(Color.black);
 		
 		if(!Game.menu.pause) {
 			g.fillRoundRect(580+20,312, 68, 28, 30, 50);
 			if(Menu[currentOption]=="Sair"&& Game.menu.clicou) {
-				g.setColor(Game.menu.menIn.Pressed);
+				g.setColor(Game.menu.Pressed);
 				g.fillRoundRect(583+20,314, 62, 24, 30, 50);
 			}else if(Menu[currentOption]=="Sair") {
-				g.setColor(Game.menu.menIn.MouseOver);
+				g.setColor(Game.menu.MouseOver);
 				g.fillRoundRect(583+20,314, 62, 24, 30, 50);
 			}else {
-				g.setColor(Game.menu.menIn.Standart);
+				g.setColor(Game.menu.Standart);
 				g.fillRoundRect(583+20,314, 62, 24, 30, 50);
 			}
 		}else {
 			g.fillRoundRect(580-80-100-124,312, 170, 28, 30, 50);
 			if(Menu[currentOption]=="Sair"&& Game.menu.clicou) {
-				g.setColor(Game.menu.menIn.Pressed);
+				g.setColor(Game.menu.Pressed);
 				g.fillRoundRect(583-80-100-124,314, 165, 24, 30, 50);
 			}else if(Menu[currentOption]=="Sair") {
-				g.setColor(Game.menu.menIn.MouseOver);
+				g.setColor(Game.menu.MouseOver);
 				g.fillRoundRect(583-80-100-124,314, 165, 24, 30, 50);
 			}else {
-				g.setColor(Game.menu.menIn.Standart);
+				g.setColor(Game.menu.Standart);
 				g.fillRoundRect(583-80-100-124,314, 165, 24, 30, 50);
 			}
 		}
@@ -147,24 +145,24 @@ public class Menu_de_Opcoes  {
 		g.fillRoundRect(720/2+20-2,133, 29, 24, 30, 50);
 		if(Game.menu.sfx) {
 			if(Menu[currentOption]=="Efeitos"&& Game.menu.clicou) {
-				g.setColor(Game.menu.menIn.Pressed);
+				g.setColor(Game.menu.Pressed);
 				g.fillRoundRect(720/2+20,135, 25, 20, 30, 50);
 			}else if(Menu[currentOption]=="Efeitos") {
-				g.setColor(Game.menu.menIn.MouseOver);
+				g.setColor(Game.menu.MouseOver);
 				g.fillRoundRect(720/2+20,135, 25, 20, 30, 50);
 			}else {
-				g.setColor(Game.menu.menIn.Standart);
+				g.setColor(Game.menu.Standart);
 				g.fillRoundRect(720/2+20,135, 25, 20, 30, 50);
 			}
 		}else {
 			if(Menu[currentOption]=="Efeitos"&& Game.menu.clicou) {
-				g.setColor(Game.menu.menIn.Pressed);
+				g.setColor(Game.menu.Pressed);
 				g.fillRoundRect(720/2+20,135, 25, 20, 30, 50);
 			}else if(Menu[currentOption]=="Efeitos") {
-				g.setColor(Game.menu.menIn.MouseOver);
+				g.setColor(Game.menu.MouseOver);
 				g.fillRoundRect(720/2+20,135, 25, 20, 30, 50);
 			}else {
-				g.setColor(Game.menu.menIn.MouseOver);
+				g.setColor(Game.menu.MouseOver);
 				g.fillRoundRect(720/2+20,135, 25, 20, 30, 50);
 			}
 		}
@@ -178,24 +176,24 @@ public class Menu_de_Opcoes  {
 		g.fillRoundRect(720/2-2+20,133+50, 29, 24, 30, 50);
 		if(Game.menu.mus) {
 			if(Menu[currentOption]=="Musica"&& Game.menu.clicou) {
-				g.setColor(Game.menu.menIn.Pressed);
+				g.setColor(Game.menu.Pressed);
 				g.fillRoundRect(720/2+20,185, 25, 20, 30, 50);
 			}else if(Menu[currentOption]=="Musica") {
-				g.setColor(Game.menu.menIn.MouseOver);
+				g.setColor(Game.menu.MouseOver);
 				g.fillRoundRect(720/2+20,185, 25, 20, 30, 50);
 			}else {
-				g.setColor(Game.menu.menIn.Standart);
+				g.setColor(Game.menu.Standart);
 				g.fillRoundRect(720/2+20,185, 25, 20, 30, 50);
 			}
 		}else {
 			if(Menu[currentOption]=="Musica"&& Game.menu.clicou) {
-				g.setColor(Game.menu.menIn.Pressed);
+				g.setColor(Game.menu.Pressed);
 				g.fillRoundRect(720/2+20,185, 25, 20, 30, 50);
 			}else if(Menu[currentOption]=="Musica") {
-				g.setColor(Game.menu.menIn.MouseOver);
+				g.setColor(Game.menu.MouseOver);
 				g.fillRoundRect(720/2+20,185, 25, 20, 30, 50);
 			}else {
-				g.setColor(Game.menu.menIn.MouseOver);
+				g.setColor(Game.menu.MouseOver);
 				g.fillRoundRect(720/2+20,185, 25, 20, 30, 50);
 			}
 		}
@@ -206,13 +204,13 @@ public class Menu_de_Opcoes  {
 			g.drawString("Off",720/3+20+124, 200);
 		}
 		if(Menu[currentOption]=="Idioma"&& Game.menu.clicou) {
-			g.setColor(Game.menu.menIn.Pressed);
+			g.setColor(Game.menu.Pressed);
 			g.drawString(Game.menu.idioma,720/3+20+100+20, 250);
 		}else if(Menu[currentOption]=="Idioma") {
-			g.setColor(Game.menu.menIn.MouseOver);
+			g.setColor(Game.menu.MouseOver);
 			g.drawString(Game.menu.idioma,720/3+20+100+20, 250);
 		}else {
-			g.setColor(Game.menu.menIn.Standart);
+			g.setColor(Game.menu.Standart);
 			g.drawString(Game.menu.idioma,720/3+20+100+20, 250);
 		}
 		g.setColor(Color.black);
