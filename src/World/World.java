@@ -45,8 +45,11 @@ public class World {
 					}else if(pixelAtual == 0xFF0026FF) {
 						//Player
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						
 						Game.player.setX(xx*Game.TILE_SIZE);
 						Game.player.setY(yy*Game.TILE_SIZE);
+						
+						
 //						Game.player2.setX(xx*Game.TILE_SIZE);
 //						Game.player2.setY(yy*Game.TILE_SIZE);
 					}else   if(pixelAtual == 0xFF910000) {

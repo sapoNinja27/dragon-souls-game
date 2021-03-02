@@ -22,7 +22,7 @@ public class confirmacao {
 	int mx,my;
 	int x,y;
 	boolean confirmar;
-	String tipo="Habilidade";
+	String tipo="A2";
 	String golpe;
 	int nivel;
 	boolean ok;
@@ -40,23 +40,23 @@ public class confirmacao {
 				if(mx>503-250 && mx<503-250+34 && my>202+y && my<202+50+16) {
 					confirmar=false;
 					if(golpe=="tempestade de socos") {
-						Game.player.tmpSocos[nivel-1]=true;
+						Game.player.H1[nivel-1]=true;
 						Game.menu.pontosH--;
 					}else if(golpe=="bloquear") {
-						Game.player.bloqueio[nivel-1]=true;
+						Game.player.H2[nivel-1]=true;
 						Game.menu.pontosH--;
 					}else if(golpe=="fortalecer") {
-						Game.player.socoForte[nivel-1]=true;
+						Game.player.H3[nivel-1]=true;
 						Game.menu.pontosH--;
 					}
-					if(golpe=="forca") {
-						Game.player.forca[nivel-1]=true;
+					if(golpe=="A1") {
+						Game.player.A1[nivel-1]=true;
 						Game.menu.pontosA--;
-					}else if(golpe=="habilidade") {
-						Game.player.habilidade[nivel-1]=true;
+					}else if(golpe=="A2") {
+						Game.player.A2[nivel-1]=true;
 						Game.menu.pontosA--;
-					}else if(golpe=="defesa") {
-						Game.player.defesa[nivel-1]=true;
+					}else if(golpe=="A3") {
+						Game.player.A3[nivel-1]=true;
 						Game.menu.pontosA--;
 					}
 				}else if(mx>613-250 && mx<613-250+34 && my>202+50 && my<202+50+16) {
@@ -91,7 +91,7 @@ public class confirmacao {
 		Color beje= new Color(247,212,212);
 		g.setColor(Color.BLACK); 
 		if(confirmar) {
-			if(tipo=="Habilidade") {
+			if(tipo=="A2") {
 				g.setColor(Color.black);
 				g.fillRoundRect(470+x,50+y, 220, 185,30,30);
 				g.setColor(beje);
@@ -99,7 +99,7 @@ public class confirmacao {
 				g.setFont(new Font("arial",Font.BOLD,12));
 				g.setColor(Color.black);
 				g.drawString("Tem certeza?", 100+190, 85+y);
-				g.drawString("Gastar 1 ponto de habilidade ", 500+x, 120+y);
+				g.drawString("Gastar 1 ponto de Habilidade ", 500+x, 120+y);
 				if(golpe!="tempestade de socos") {
 					g.drawString("para evoluir "+golpe, 500+x, 140+y);
 					g.drawString("para o nivel "+nivel+"?", 500+x, 160+y);

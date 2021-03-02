@@ -18,6 +18,8 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +34,9 @@ import Entidades.Entity;
 import Entidades.Player;
 import Entidades.PlayerDois;
 import Entidades.Porta;
+import Entidades.Sander;
+import Entidades.Ace;
+import Entidades.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
 import Menu.Menu;
@@ -131,10 +136,10 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		
 		
 		
-		player2 = new PlayerDois(0,0,TILE_SIZE,TILE_SIZE,Game.demonTai.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
-		player = new Player(0,0,TILE_SIZE,TILE_SIZE,Game.tai.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
+		player = new Tai(0,0,TILE_SIZE,TILE_SIZE,Game.tai.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
+		player2=new PlayerDois(0,0,TILE_SIZE,TILE_SIZE,null);
 		entities.add(player);
-		entities.add(player2);
+	//	entities.add(player2);
 		world = new World("/niveis/mapaMundi.png");
 		
 		
@@ -149,7 +154,17 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		frame.pack();
 		Image imagem=null;
 		try {
-			imagem=ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
+			LocalDate myObj = LocalDate.now(); 
+			String data= String.valueOf(myObj);
+			String mes= data.substring(5, 7);
+			String dia= data.substring(8, 10);
+//			imagem=ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
+			if(mes.equals("12") && dia.equals("25")) {
+				imagem=ImageIO.read(getClass().getResource("/icone-jogo/iconNatalino.png"));
+			}else {
+				imagem=ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
+			}
+			
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -316,17 +331,22 @@ public void run() {
 	public void keyPressed(KeyEvent e) {
 		
 		
-		
+		if(e.getKeyCode() == KeyEvent.VK_P){
+			int nx=player.getX();
+			int ny=player.getY();
+			Player ace=new Ace(0,0,TILE_SIZE,TILE_SIZE,Game.ace.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
+			player=ace;
+		}
 		if(!cen.CcRun()) {
 			if(e.getKeyCode() == KeyEvent.VK_UP){
 				
 			}
-			if(e.getKeyCode() == KeyEvent.VK_LEFT){
-				player.camL=true;
-			}
-			if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-				player.camR=true;
-			}
+//			if(e.getKeyCode() == KeyEvent.VK_LEFT){
+//				player.camL=true;
+//			}
+//			if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+//				player.camR=true;
+//			}
 		}
 		if(!cen.CcRun()) {
 			if(e.getKeyCode() == KeyEvent.VK_D){
@@ -337,9 +357,9 @@ public void run() {
 				player.parado=false;
 				player.parando=false;
 				player.moved=true;
-				if(player.isFreeX()!="esquerda") {
-					player.parede=false;
-				}
+//				if(player.isFreeX()!="esquerda") {
+//					player.parede=false;
+//				}
 				
 			}
 			if(e.getKeyCode() == KeyEvent.VK_E){
@@ -350,7 +370,7 @@ public void run() {
 				
 			}
 			if(e.getKeyCode() == KeyEvent.VK_Q){
-				player.framesAtkT = 0;
+				player.framesAtk = 0;
 				player.parado=false;
 				player.combat=false;
 				player.frames=0;
@@ -369,9 +389,9 @@ public void run() {
 				player.moved=true;
 				player.combat=false;
 				player.frames=0;
-				if(player.isFreeX()!="direita") {
-					player.parede=false;
-				}
+//				if(player.isFreeX()!="direita") {
+//					player.parede=false;
+//				}
 			}
 		}
 		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
@@ -413,14 +433,14 @@ public void run() {
 			if(e.getKeyCode() == KeyEvent.VK_UP){
 				
 			}
-			if(e.getKeyCode() == KeyEvent.VK_LEFT){
-				player.camL=false;
-				player.camx=0;
-			}
-			if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-				player.camR=false;
-				player.camx=0;
-			}
+//			if(e.getKeyCode() == KeyEvent.VK_LEFT){
+//				player.camL=false;
+//				player.camx=0;
+//			}
+//			if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+//				player.camR=false;
+//				player.camx=0;
+//			}
 		}
 		if(!cen.CcRun()) {
 			if(e.getKeyCode() == KeyEvent.VK_D){
