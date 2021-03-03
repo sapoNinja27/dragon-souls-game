@@ -15,7 +15,7 @@ public class UI {
 	public void render(Graphics g) {
 		
 		
-		if(Game.player.visivel && Game.player.Hudvisivel) {
+		if(Game.player.Hudvisivel) {
 			for(int i=0;i<5;i++) {
 //				icon[i]=Game.spritesheet.getSprite(i*Game.TILE_SIZE,18*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 			}

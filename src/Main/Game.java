@@ -36,6 +36,7 @@ import Entidades.PlayerDois;
 import Entidades.Porta;
 import Entidades.Sander;
 import Entidades.Ace;
+import Entidades.AceBot;
 import Entidades.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
@@ -136,10 +137,10 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		
 		
 		
-		player = new Tai(0,0,TILE_SIZE,TILE_SIZE,Game.tai.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
-		player2=new PlayerDois(0,0,TILE_SIZE,TILE_SIZE,null);
+		player = new Tai(0,0,TILE_SIZE,TILE_SIZE,tai.getSprite(TILE_SIZE*0, 0, TILE_SIZE, TILE_SIZE));
+		player2=new AceBot(0,0,TILE_SIZE,TILE_SIZE,null);
 		entities.add(player);
-	//	entities.add(player2);
+		entities.add(player2);
 		world = new World("/niveis/mapaMundi.png");
 		
 		
@@ -297,7 +298,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	}
 	
 public void run() {
-		
 		long lastTime = System.nanoTime();
 		double amongOfTicks = 60.0;
 		double delta = 0;
@@ -332,10 +332,11 @@ public void run() {
 		
 		
 		if(e.getKeyCode() == KeyEvent.VK_P){
-			int nx=player.getX();
-			int ny=player.getY();
-			Player ace=new Ace(0,0,TILE_SIZE,TILE_SIZE,Game.ace.getSprite(Game.TILE_SIZE*0, 0, Game.TILE_SIZE, Game.TILE_SIZE));
-			player=ace;
+			if(Game.player.personagem=="Tai") {
+				World.trocaPersonagem("Ace");
+			}else {
+				World.trocaPersonagem("Tai");
+			}
 		}
 		if(!cen.CcRun()) {
 			if(e.getKeyCode() == KeyEvent.VK_UP){

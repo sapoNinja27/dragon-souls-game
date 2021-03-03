@@ -52,7 +52,6 @@ public class Player extends Entity {
 	public boolean moved = false;
 	public boolean isDamaged = false;
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100,stamina = 100,maxstamina=100;
-	
 
 	public boolean H1[]=new boolean[3];
 	public boolean H2[]=new boolean[3];
@@ -66,8 +65,6 @@ public class Player extends Entity {
 		
 		
 	}
-	
-
 	public void changeChar() {
 		
 	}

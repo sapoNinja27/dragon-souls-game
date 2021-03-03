@@ -14,7 +14,7 @@ import Main.Game;
 import World.Camera;
 import World.World;
 
-public class Ace extends Player{
+public class AceBot extends PlayerDois{
 	
 	private BufferedImage[] rightAce;
 	private BufferedImage[] leftAce;
@@ -25,7 +25,7 @@ public class Ace extends Player{
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100
 			,stamina = 100,maxstamina=100;
 
-	public Ace(int x, int y, int width, int height, BufferedImage sprite) {
+	public AceBot(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 		
 		rightAce= new BufferedImage[35];
@@ -89,18 +89,16 @@ public class Ace extends Player{
 			}
 		}
 	}
+	
 	public void tick() {
 		depth=5;
 		attsprite();
 		setHitbox();
 		anim();
-		cameraRoll();
 		movedX();
-		movedY();
-		updateCamera();
-		checkCollisionLifePack();
-		checkCollisionPorta();
+//		movedY();
 		lifesistem();
+		bot();
 	}
 	public void anim() {
 		
@@ -109,16 +107,12 @@ public class Ace extends Player{
 		}else if(left) {
 			dir=left_dir;
 		}
-		if(!isFreeY() && moved && !dash && !dashS) {
+		if(!isFreeY() && moved && !dash ) {
 			index=indexMoved;
 		}else if(caiu_no_chao) {
 			index=index;
 		}else if(dash) {
 			index=indexDash;
-		}else if(dashS) {
-			index=indexDashS;
-		}else if(dashS2) {
-			index=indexDashS;
 		}else if(subindo) {
 			index=indexPul;
 		}else if(caindo) {
@@ -156,32 +150,7 @@ public class Ace extends Player{
 				}
 			}
 		}
-		if(dashS) {
-			dash=false;
-			indexDash = 19;
-			framesDash = 0;
-			framesDashS++;
-			if(framesDashS == maxFramesDashS) {
-				framesDashS = 0;
-				indexDashS++;
-				if(indexDashS == maxIndexDashS) {
-					indexDashS = 23;
-					dashS=false;
-					dashS2=true;
-				}
-			}
-		}
-		if(dashS2) {
-			dash=false;
-			framesDashS++;
-			if(framesDashS == maxFramesDashS2) {
-				framesDashS = 0;
-				indexDashS=19;
-					dashS2=false;
-					parado=true;
-				
-				}
-		}
+		
 		if(parando ) {
 			index=12;
 			framesParan++;
@@ -198,6 +167,7 @@ public class Ace extends Player{
 				framesParan = 0;
 				parado=true;
 				parando=false;
+				jaParou=true;
 			}
 		}
 	}
@@ -277,7 +247,7 @@ public class Ace extends Player{
 					
 				}
 			}
-			setY(getY()-speed);
+			setY((int)(getY()-speed));
 		}
 		if(down){
 			//cair da plat
@@ -305,7 +275,7 @@ public class Ace extends Player{
 					caindo=false;
 				}
 			}
-			setY(getY()+speed);
+			setY((int)(getY()+speed));
 		}
 		if(caiu_no_chao ) {
 			indexCai=16;
@@ -325,12 +295,12 @@ public class Ace extends Player{
 		if(right && isFreeX()!="esquerda") {
 			moved = true;
 			dir = right_dir;
-			setX(getX()+speed);
+			setX((int)(getX()+speed));
 		}
 		if(left && isFreeX()!="direita") {
 			moved = true;
 			dir = left_dir;
-			setX(getX()-speed);
+			setX((int)(getX()-speed));
 		}
 		if(parado) {
 			framesParado++;
@@ -364,43 +334,6 @@ public class Ace extends Player{
 				}
 			}
 		}
-		if(!transformado) {
-			if(dashS) {
-				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+6);
-					}
-				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-6);
-					}
-				}
-			}
-			if(dashS2) {
-				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+4);
-					}
-				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-4);
-					}
-				}
-			}
-		}else {
-			if(dashS) {
-				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+3);
-					}
-				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-3);
-					}
-				}
-			}
-			
-		}
 		
 		
 		
@@ -411,13 +344,15 @@ public class Ace extends Player{
 		Graphics2D g2 = (Graphics2D) g;
 		g.setColor(Color.red);
 		g.drawRect(getX()- Camera.x+maskx[0], getY()- Camera.y+masky[0], maskw[0], maskh[0]);
-		
+		g.drawRect(getX()- Camera.x+maskx[1], getY()- Camera.y+masky[1], maskw[1], maskh[1]);
 		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
-		
-		
-		
-		
-		
+		if(visivel) {
+			if(index==32) {
+				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y+5, null);
+			}else {
+				g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
+			}
+		}
 	}
 
 }
