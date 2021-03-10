@@ -19,7 +19,8 @@ public class Tai extends Player{
 	private BufferedImage[] rightTai;
 	private BufferedImage[] leftTai;
 	private BufferedImage[] direcao;
-	
+	public int framesDash = 0,maxFramesDash = 11,indexDash = 19,maxIndexDash = 20;
+	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100,stamina = 100,maxstamina=100;
 	
 	
@@ -73,9 +74,9 @@ public class Tai extends Player{
 	public void attsprite(){
 		if(atacando) {
 			if(dir == left_dir) {
-				if( indexAtkT== 30 || indexAtkT == 29 || indexAtkT==31) {
+				if( indexAtk== 30 || indexAtk == 29 || indexAtk==31) {
 					pos=-9;
-				}else if(indexAtkT==28 || indexAtkT==32 ) {
+				}else if(indexAtk==28 || indexAtk==32 ) {
 					pos=-1;
 				}else {
 					pos=0;
@@ -84,9 +85,9 @@ public class Tai extends Player{
 					direcao[i]=leftTai[i];
 				}
 			}else if(dir == right_dir) {
-				if( indexAtkT== 30 || indexAtkT == 29 || indexAtkT==31) {
+				if( indexAtk== 30 || indexAtk == 29 || indexAtk==31) {
 					pos=+9;
-				}else if(indexAtkT==28 || indexAtkT==32 ) {
+				}else if(indexAtk==28 || indexAtk==32 ) {
 					pos=+1;
 				}else {
 					pos=0;
@@ -107,21 +108,6 @@ public class Tai extends Player{
 				direcao[i]=(rightTai[i]);
 			}
 		}
-		
-		if(atacando) {
-			indexAtk=indexAtkT;
-			framesAtkT++;
-			if(framesAtkT ==maxFramesAtkT) {
-				framesAtkT = 0;
-				indexAtkT++;
-				if(indexAtkT == maxIndexAtkT) {
-					indexAtkT = 26;
-					atacando=false;
-					parado=true;
-					combat=true;
-				}
-			}
-		}
 		if(leftTai[0]==null && leftTai[34]==null) {
 			for(int i=0;i<35;i++) {
 				leftTai[i]=inverter(rightTai[i]);
@@ -131,19 +117,23 @@ public class Tai extends Player{
 	}
 	public void tick() {
 		depth=5;
-		if(Game.player.personagem=="Tai"){
-			updateCamera(); 
-		}
 			attsprite();
 			setHitbox();
 			anim();
 			cameraRoll();
 			movedX();
-			movedY();
-			checkCollisionLifePack();
-			checkCollisionPorta();
+			dash();
 			lifesistem();
-		
+			if(this==Game.player) {
+				updateCamera(); 
+				nBot();
+				movedY();
+				checkCollisionLifePack();
+				checkCollisionPorta();
+			}else {
+				bot();
+//				longeDemais();
+			}
 	}
 	
 	
@@ -243,48 +233,51 @@ public class Tai extends Player{
 				framesParan = 0;
 				parado=true;
 				parando=false;
+				if(this==Game.player2) {
+					jaParou=true;
+				}
 			}
 		}
 	}
 	public void setHitbox() {
 		//hitbox padrao
-		setMask0(20,11,20,52);
-		setMask2(11,60,40,3);
+		setMask(0,20,11,20,52);
+		setMask(2,11,60,40,3);
 		//ataques melle
 		if(special>maxspecial/2) {
 			if(dir==right_dir) {
 				if(atacando) {
 					if(indexAtk!=24 ) {
-						setMask1(50,20,30,10);
+						setMask(1,50,20,30,10);
 					}
 				}else {
-					setMask1(20,20,30,10);
+					setMask(1,20,20,30,10);
 				}
 			}else {
 				if(atacando) {
 					if(indexAtk!=24 ) {
-						setMask1(-15,20,30,10);
+						setMask(1,-15,20,30,10);
 					}
 				}else {
-					setMask1(20,20,30,10);
+					setMask(1,20,20,30,10);
 				}
 			}
 		}else {
 			if(dir==right_dir) {
 				if(atacando) {
 					if(indexAtk!=24 ) {
-						setMask1(40,20,30,10);
+						setMask(1,40,20,30,10);
 					}
 				}else {
-					setMask1(20,20,30,10);
+					setMask(1,20,20,30,10);
 				}
 			}else {
 				if(atacando) {
 					if(indexAtk!=24 ) {
-						setMask1(-5,20,30,10);
+						setMask(1,-5,20,30,10);
 					}
 				}else {
-					setMask1(20,20,30,10);
+					setMask(1,20,20,30,10);
 				}
 			}
 		}
@@ -321,7 +314,7 @@ public class Tai extends Player{
 					
 				}
 			}
-			setY(getY()-speed);
+			setY(getY()-4);
 		}
 		if(down){
 			//cair da plat
@@ -349,7 +342,7 @@ public class Tai extends Player{
 					caindo=false;
 				}
 			}
-			setY(getY()+speed);
+			setY(getY()+4);
 		}
 		if(caiu_no_chao ) {
 			indexCai=16;
@@ -365,38 +358,7 @@ public class Tai extends Player{
 		}
 		
 	}
-	public void movedX() {
-		if(right && isFreeX()!="esquerda") {
-			moved = true;
-			dir = right_dir;
-			setX(getX()+speed);
-		}
-		if(left && isFreeX()!="direita") {
-			moved = true;
-			dir = left_dir;
-			setX(getX()-speed);
-		}
-		if(parado) {
-			framesParado++;
-			if(framesParado==maxFramesParado) {
-				framesParado=0;
-				indexParado++;
-				if(indexParado==maxIndexParado) {
-					indexParado=0;
-				}
-			}
-		}
-		if(moved) {
-			framesMoved++;
-			if(framesMoved==maxFramesMoved) {
-				framesMoved=0;
-				indexMoved++;
-				if(indexMoved==maxIndexMoved) {
-					indexMoved=4;
-				}
-				
-			}
-		}
+	void dash() {
 		if(dash) {
 			if(dir==right_dir) {
 				if(isFreeX()!="esquerda") {
@@ -408,8 +370,7 @@ public class Tai extends Player{
 				}
 			}
 		}
-		if(!transformado) {
-			if(dashS) {
+		if(dashS) {
 				if(dir==right_dir) {
 					if(isFreeX()!="esquerda") {
 						setX(getX()+6);
@@ -431,23 +392,6 @@ public class Tai extends Player{
 					}
 				}
 			}
-		}else {
-			if(dashS) {
-				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+3);
-					}
-				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-3);
-					}
-				}
-			}
-			
-		}
-		
-		
-		
 	}
 	
 

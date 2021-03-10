@@ -19,9 +19,9 @@ public class Ace extends Player{
 	private BufferedImage[] rightAce;
 	private BufferedImage[] leftAce;
 	private BufferedImage[] direcao;
-	public int framesMoved = 0,maxFramesMoved = 7,indexMoved = 4, maxIndexMoved=12;
 	private BufferedImage playerDamage;
-	
+	public int framesDash = 0,maxFramesDash = 5,indexDash = 19,maxIndexDash = 24;
+	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100
 			,stamina = 100,maxstamina=100;
 
@@ -39,22 +39,22 @@ public class Ace extends Player{
 		for(int i =0; i < 9; i++){
 			rightAce[i+4] =   Game.ace.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*1, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
-//		//pulando
-//		for(int i =0; i < 6; i++){
-//			rightTai[i+13] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*2, Game.TILE_SIZE, Game.TILE_SIZE);
-//		}
-//		//dash
-//		for(int i =0; i < 5; i++){
-//			rightTai[i+19] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*3, Game.TILE_SIZE, Game.TILE_SIZE);
-//		}
-////		//parado soco
-//		for(int i =0; i < 4; i++){
-//			rightTai[i+24] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*4, Game.TILE_SIZE, Game.TILE_SIZE);
-//		}
-////		//socos
-//		for(int i =0; i < 6; i++){
-//			rightTai[i+28] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*5, Game.TILE_SIZE, Game.TILE_SIZE);
-//		}
+		//pulando
+		for(int i =0; i < 6; i++){
+			rightAce[i+13] =   Game.ace.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*2, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+		//dash
+		for(int i =0; i < 5; i++){
+			rightAce[i+19] =   Game.ace.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*3, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+//		//parado soco
+		for(int i =0; i < 4; i++){
+			rightAce[i+24] =   Game.ace.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*4, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
+//		//socos
+		for(int i =0; i < 6; i++){
+			rightAce[i+28] =   Game.ace.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*5, Game.TILE_SIZE, Game.TILE_SIZE);
+		}
 ////		//hb1
 //		for(int i =0; i < 9; i++){
 //			rightTai[i+34] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*6, Game.TILE_SIZE, Game.TILE_SIZE);
@@ -73,7 +73,27 @@ public class Ace extends Player{
 		
 	}
 	public void attsprite(){
-		
+		if(atacando) {
+			if(dir == left_dir) {
+				if( indexAtk== 29 || indexAtk == 30 ) {
+					pos=-7;
+				}else if(indexAtk==31 ) {
+					pos=-4;
+				}else {
+					pos=0;
+				}
+			}else if(dir == right_dir) {
+				if( indexAtk== 29 || indexAtk == 30 ) {
+					pos=8;
+				}else if(indexAtk==31 ) {
+					pos=2;
+				}else {
+					pos=0;
+				}
+			}
+		}else {
+			pos=0;
+		}
 		if(leftAce[0]==null && leftAce[34]==null) {
 			for(int i=0;i<35;i++) {
 				leftAce[i]=inverter(rightAce[i]);
@@ -91,16 +111,23 @@ public class Ace extends Player{
 	}
 	public void tick() {
 		depth=5;
-		attsprite();
-		setHitbox();
-		anim();
-		cameraRoll();
-		movedX();
-		movedY();
-		updateCamera();
-		checkCollisionLifePack();
-		checkCollisionPorta();
-		lifesistem();
+			attsprite();
+			setHitbox();
+			anim();
+			cameraRoll();
+			movedX();
+			dash();
+			lifesistem();
+			if(this==Game.player) {
+				updateCamera(); 
+				nBot();
+				movedY();
+				checkCollisionLifePack();
+				checkCollisionPorta();
+			}else {
+				bot();
+//				longeDemais();
+			}
 	}
 	public void anim() {
 		
@@ -143,10 +170,11 @@ public class Ace extends Player{
 		if(dash) {
 			parando=false;
 			framesDash++;
-			if(framesDash == maxFramesDash) {
+			if(framesDash >= 5) {
 				framesDash = 0;
 				indexDash++;
-				if(indexDash == maxIndexDash) {
+				if(indexDash >= 25) {
+					framesDash++;
 					indexDash = 19;
 					dash=false;
 					if(!moved) {
@@ -187,59 +215,63 @@ public class Ace extends Player{
 			framesParan++;
 			if(dir==left_dir) {
 				if(isFreeX()!="direita") {
-					x--;
+					setX(getX()-1);
 				}
 			}else {
 				if(isFreeX()!="esquerda") {
-					x++;
+					setX(getX()+1);
 				}
 			}
 			if(framesParan == maxFramesParan) {
 				framesParan = 0;
 				parado=true;
 				parando=false;
+				if(this==Game.player2) {
+					jaParou=true;
+				}
 			}
 		}
 	}
+	
 	public void setHitbox() {
 		//hitbox padrao
-		setMask0(20,11,20,52);
-		setMask2(11,60,40,3);
+		setMask(0,20,11,20,52);
+		setMask(2,11,60,40,3);
 		//ataques melle
 		if(special>maxspecial/2) {
 			if(dir==right_dir) {
 				if(atacando) {
 					if(indexAtk!=24 ) {
-						setMask1(50,20,30,10);
+						setMask(1,50,20,30,10);
 					}
 				}else {
-					setMask1(20,20,30,10);
+					setMask(1,20,20,30,10);
 				}
 			}else {
 				if(atacando) {
 					if(indexAtk!=24 ) {
-						setMask1(-15,20,30,10);
+						setMask(1,-15,20,30,10);
 					}
 				}else {
-					setMask1(20,20,30,10);
+					setMask(1,20,20,30,10);
 				}
 			}
 		}else {
 			if(dir==right_dir) {
 				if(atacando) {
 					if(indexAtk!=24 ) {
-						setMask1(40,20,30,10);
+						setMask(1,40,20,30,10);
 					}
 				}else {
-					setMask1(20,20,30,10);
+					setMask(1,20,20,30,10);
 				}
 			}else {
 				if(atacando) {
 					if(indexAtk!=24 ) {
-						setMask1(-5,20,30,10);
+						setMask(1,-5,20,30,10);
 					}
 				}else {
-					setMask1(20,20,30,10);
+					setMask(1,20,20,30,10);
 				}
 			}
 		}
@@ -277,7 +309,7 @@ public class Ace extends Player{
 					
 				}
 			}
-			setY(getY()-speed);
+			setY(getY()-4);
 		}
 		if(down){
 			//cair da plat
@@ -305,7 +337,7 @@ public class Ace extends Player{
 					caindo=false;
 				}
 			}
-			setY(getY()+speed);
+			setY(getY()+4);
 		}
 		if(caiu_no_chao ) {
 			indexCai=16;
@@ -321,51 +353,20 @@ public class Ace extends Player{
 		}
 		
 	}
-	public void movedX() {
-		if(right && isFreeX()!="esquerda") {
-			moved = true;
-			dir = right_dir;
-			setX(getX()+speed);
-		}
-		if(left && isFreeX()!="direita") {
-			moved = true;
-			dir = left_dir;
-			setX(getX()-speed);
-		}
-		if(parado) {
-			framesParado++;
-			if(framesParado==maxFramesParado) {
-				framesParado=0;
-				indexParado++;
-				if(indexParado==maxIndexParado) {
-					indexParado=0;
-				}
-			}
-		}
-		if(moved) {
-			framesMoved++;
-			if(framesMoved==maxFramesMoved) {
-				framesMoved=0;
-				indexMoved++;
-				if(indexMoved==maxIndexMoved) {
-					indexMoved=4;
-				}
-				
-			}
-		}
+
+	void dash() {
 		if(dash) {
 			if(dir==right_dir) {
 				if(isFreeX()!="esquerda") {
-					setX(getX()+8);
+					setX(getX()+15);
 				}
 			}else {
 				if(isFreeX()!="direita") {
-					setX(getX()-8);
+					setX(getX()-15);
 				}
 			}
 		}
-		if(!transformado) {
-			if(dashS) {
+		if(dashS) {
 				if(dir==right_dir) {
 					if(isFreeX()!="esquerda") {
 						setX(getX()+6);
@@ -387,26 +388,7 @@ public class Ace extends Player{
 					}
 				}
 			}
-		}else {
-			if(dashS) {
-				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+3);
-					}
-				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-3);
-					}
-				}
-			}
-			
-		}
-		
-		
-		
 	}
-
-	
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g.setColor(Color.red);

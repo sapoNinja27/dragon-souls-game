@@ -22,6 +22,7 @@ public class Player extends Entity {
 	public int camx=0,camy=0;
 	protected double x;
 	protected double y;
+	boolean jaParou;
 	public boolean camL,camR,camU;
 	public int framesMoved = 0,maxFramesMoved = 9,indexMoved = 4, maxIndexMoved=12;
 	public int framesParan = 0,maxFramesParan = 15;
@@ -29,11 +30,11 @@ public class Player extends Entity {
 	public int framesPulo = 0,maxFramesPulo =15,indexPul = 13,maxIndexPul = 15;
 	public int framesCai = 0,maxFramesCai = 15,indexCai = 16,maxIndexCai = 17;
 	public int framesCai2 = 0,maxFramesCai2 = 15;
-	public int framesAtkT = 0;
-	public int maxFramesAtkT = 6;
+	public int framesAtk= 0;
+	public int maxFramesAtk = 6;
 	
-	public int indexAtkT =27;
-	public int maxIndexAtkT = 33;
+	public int indexAtk =27;
+	public int maxIndexAtk = 33;
 	public int framesDash = 0,maxFramesDash = 11,indexDash = 19,maxIndexDash = 20;
 	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
 	public boolean caindo, subindo,podepular,completou_pulo,saiu_do_chao,caiu_no_chao, atacando,dash,dashS,dashS2,transformado;
@@ -42,11 +43,9 @@ public class Player extends Entity {
 	public int right_dir = 0,left_dir = 1;
 	public int dir = right_dir;
 	public int index=0;
-	public int indexAtk=0;
 	public int frames=0;
 	public boolean Hudvisivel;
-	public int speed=4;
-	public int framesAtk= 0;
+	public double speed=4;
 	public boolean visivel;
 	public String personagem="Tai";
 	public boolean moved = false;
@@ -65,8 +64,28 @@ public class Player extends Entity {
 		
 		
 	}
-	public void changeChar() {
+	public  void trocaPersonagem(String character){
+		int x1=Game.player.getX();
+		int y1=Game.player.getY();
+		int x2=Game.player2.getX();
+		int y2=Game.player2.getY();
 		
+		Game.entities.remove(Game.player);
+		Game.entities.remove(Game.player2);
+		if(character.equals("Tai")) {
+			Game.player = new Tai(x2,y2,Game.TILE_SIZE,Game.TILE_SIZE,Game.tai.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
+
+			Game.player2 = new Ace(x1,y1,Game.TILE_SIZE,Game.TILE_SIZE,Game.ace.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
+			Game.player.personagem="Tai";
+		}else if(character.equals("Ace")) {
+			Game.player = new Ace(x2,y2,Game.TILE_SIZE,Game.TILE_SIZE,Game.ace.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
+			Game.player2 = new Tai(x1,y1,Game.TILE_SIZE,Game.TILE_SIZE,Game.ace.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
+			Game.player.personagem="Ace";
+		}
+		Game.player.Hudvisivel=true;
+		Game.entities.add(Game.player);
+		Game.entities.add(Game.player2);
+		Game.player.parado=true;
 	}
 	public void updateCamera() {
 		
@@ -184,5 +203,138 @@ public class Player extends Entity {
 			Game.gameState = "GAME_OVER";
 		}
 	}
-
+	public void nBot() {
+		speed=4;
+		if(atacando) {
+			framesAtk++;
+			if(framesAtk ==maxFramesAtk) {
+				framesAtk = 0;
+				indexAtk++;
+				if(indexAtk == maxIndexAtk) {
+					indexAtk = 26;
+					atacando=false;
+					parado=true;
+					combat=true;
+				}
+			}
+		}
+	}
+	public void bot() {
+		if(Game.player.moved==true) {
+			speed=3.9;
+		}else {
+			speed=5;
+		}
+		setMask(0,-50,11,150,52);
+		setMask(1,0,11,50,52);
+		setMask(3,-100,11,250,52);
+		if(Game.player.dash) {
+			parado=false;
+			dash=true;
+			jaParou=false;
+		}else {
+			dash=false;
+			if(!moved) {
+				if(!jaParou) {
+					parando=true;
+				}
+			}
+			
+		}
+		if(Game.player.dir==left_dir) {
+			if(Game.player.getX()<getX()) {
+				dir=left_dir;
+				if(Game.player.getX()<getX() && !isColiddingWithPlayer()) {
+					parado=false;
+					left=true;
+					right=false;
+					moved=true;
+					jaParou=false;
+				}else {
+					if(!jaParou) {
+						left=false;
+						moved=false;
+						parando=true;
+					}
+				}
+			}else {
+				dir=right_dir;
+			}
+		}else if(Game.player.dir==right_dir) {
+			if(Game.player.getX()>getX()) {
+				dir=right_dir;
+				if(Game.player.getX()>getX() && !isColiddingWithPlayer()) {
+					parado=false;
+					right=true;
+					left=false;
+					moved=true;
+					jaParou=false;
+				}else {
+					if(!jaParou) {
+						right=false;
+						moved=false;
+						parando=true;
+					}
+				}
+			}else {
+				dir=left_dir;
+			}
+			
+		}
+		visivel=true;
+		depth=9;
+	}
+	public void movedX() {
+		if(right && isFreeX()!="esquerda") {
+			moved = true;
+			dir = right_dir;
+			correr(xDouble()+speed);
+		}
+		if(left && isFreeX()!="direita") {
+			moved = true;
+			dir = left_dir;
+			correr(xDouble()-speed);
+		}
+		if(parado) {
+			framesParado++;
+			if(framesParado==maxFramesParado) {
+				framesParado=0;
+				indexParado++;
+				if(indexParado==maxIndexParado) {
+					indexParado=0;
+				}
+			}
+		}
+		if(moved) {
+			framesMoved++;
+			if(framesMoved==maxFramesMoved) {
+				framesMoved=0;
+				indexMoved++;
+				if(indexMoved==maxIndexMoved) {
+					indexMoved=4;
+				}
+				
+			}
+		}
+		
+		
+		
+		
+		
+	}
+	public boolean isColiddingWithPlayer(){
+		Rectangle player2 = new Rectangle(Game.player2.getX() + Game.player2.maskx[0],Game.player2.getY() + 
+				Game.player2.masky[0],Game.player2.maskw[0],Game.player2.maskh[0]);
+		
+		Rectangle player = new Rectangle(Game.player.getX()+ Game.player.maskx[0],
+				Game.player.getY()+ Game.player.masky[0],Game.player.maskw[0],Game.player.maskh[0]);
+		
+		return player2.intersects(player);
+	}
+	public boolean safeZone(){
+		Rectangle player2 = new Rectangle(this.getX() + maskx[1],this.getY() + masky[1],maskw[1],maskh[1]);
+		Rectangle player = new Rectangle(Game.player.getX(),Game.player.getY(),maskw[0],maskh[0]);
+		
+		return player2.intersects(player);
+	}
 }

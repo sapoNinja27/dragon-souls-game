@@ -7,12 +7,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Entidades.Ace;
-import Entidades.AceBot;
 import Entidades.Janela;
 import Entidades.Plataforma;
 import Entidades.Porta;
 import Entidades.Tai;
-import Entidades.TaiBot;
 import Main.Game;
 
 public class World {
@@ -140,30 +138,7 @@ public class World {
 //		Game.world = new World("/"+level);
 //		return;
 	}
-	public static void trocaPersonagem(String character){
-		int x1=Game.player.getX();
-		int y1=Game.player.getY();
-		int x2=Game.player2.getX();
-		int y2=Game.player2.getY();
-		
-		Game.entities.remove(Game.player);
-		Game.entities.remove(Game.player2);
-		if(character.equals("Tai")) {
-			Game.player = new Tai(x2,y2,Game.TILE_SIZE,Game.TILE_SIZE,Game.tai.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
-
-			Game.player2 = new AceBot(x1,y1,Game.TILE_SIZE,Game.TILE_SIZE,Game.ace.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
-			Game.player.personagem="Tai";
-		}else if(character.equals("Ace")) {
-			Game.player = new Ace(x2,y2,Game.TILE_SIZE,Game.TILE_SIZE,Game.ace.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
-			Game.player2 = new TaiBot(x1,y1,Game.TILE_SIZE,Game.TILE_SIZE,Game.ace.getSprite(32, 0,Game.TILE_SIZE,Game.TILE_SIZE));
-			Game.player.personagem="Ace";
-		}
-		Game.player.Hudvisivel=true;
-		Game.entities.add(Game.player);
-		Game.entities.add(Game.player2);
-		Game.player.parado=true;
-		return;
-	}
+	
 	public void render(Graphics g){
 		int xstart = Camera.x >>6;
 		int ystart = Camera.y >> 6;

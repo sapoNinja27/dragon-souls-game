@@ -20,7 +20,7 @@ public class Porta extends Entity{
 	}
 	public void tick() {
 		depth=1;
-		setMask0(0-25,-20,46,80);
+		setMask(0,0-25,-20,46,80);
 		for(int i=0;i <2 ; i++) {
 			porta1[i]=Game.cenario.getSprite((i+2)*Game.TILE_SIZE,(2)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 		}

@@ -32,11 +32,9 @@ import Entidades.BulletShoot;
 import Entidades.Enemy;
 import Entidades.Entity;
 import Entidades.Player;
-import Entidades.PlayerDois;
 import Entidades.Porta;
 import Entidades.Sander;
 import Entidades.Ace;
-import Entidades.AceBot;
 import Entidades.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
@@ -84,7 +82,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static World world;
 	
 	public static Player player;
-	public static PlayerDois player2;
+	public static Player player2;
 	
 	public static Random rand;
 	public UI ui;
@@ -138,7 +136,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		
 		
 		player = new Tai(0,0,TILE_SIZE,TILE_SIZE,tai.getSprite(TILE_SIZE*0, 0, TILE_SIZE, TILE_SIZE));
-		player2=new AceBot(0,0,TILE_SIZE,TILE_SIZE,null);
+		player2=new Ace(0,0,TILE_SIZE,TILE_SIZE,null);
 		entities.add(player);
 		entities.add(player2);
 		world = new World("/niveis/mapaMundi.png");
@@ -333,9 +331,9 @@ public void run() {
 		
 		if(e.getKeyCode() == KeyEvent.VK_P){
 			if(Game.player.personagem=="Tai") {
-				World.trocaPersonagem("Ace");
+				player.trocaPersonagem("Ace");
 			}else {
-				World.trocaPersonagem("Tai");
+				player.trocaPersonagem("Tai");
 			}
 		}
 		if(!cen.CcRun()) {

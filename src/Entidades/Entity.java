@@ -49,37 +49,18 @@ public class Entity {
 			return 0;
 		}
 	};
-	public void setMask0(int maskx,int masky,int mwidth,int mheight){
-		this.maskx[0] = maskx;
-		this.masky [0]= masky;
-		this.maskw [0]= mwidth;
-		this.maskh[0] = mheight;
+	public void setMask(int vet,int maskx,int masky,int mwidth,int mheight){
+		this.maskx[vet] = maskx;
+		this.masky [vet]= masky;
+		this.maskw [vet]= mwidth;
+		this.maskh[vet] = mheight;
 	}
-	public void setMask1(int maskx,int masky,int mwidth,int mheight){
-		this.maskx[1] = maskx;
-		this.masky[1] = masky;
-		this.maskw [1]= mwidth;
-		this.maskh [1]= mheight;
+	public void correr(double x) {
+		this.x = x;
 	}
-	public void setMask2(int maskx,int masky,int mwidth,int mheight){
-		this.maskx [2]= maskx;
-		this.masky[2] = masky;
-		this.maskw[2] = mwidth;
-		this.maskh[2] = mheight;
+	public double xDouble() {
+		return this.x;
 	}
-	public void setMask3(int maskx,int masky,int mwidth,int mheight){
-		this.maskx[3] = maskx;
-		this.masky[3] = masky;
-		this.maskw[3] = mwidth;
-		this.maskh[3] = mheight;
-	}
-	public void setMask4(int maskx,int masky,int mwidth,int mheight){
-		this.maskx[4] = maskx;
-		this.masky[4] = masky;
-		this.maskw[4] = mwidth;
-		this.maskh[4] = mheight;
-	}
-	
 	public void setX(int newX) {
 		this.x = newX;
 	}
