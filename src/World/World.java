@@ -6,18 +6,18 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import Entidades.Ace;
+import Entidades.Bueiro;
 import Entidades.Janela;
 import Entidades.Plataforma;
 import Entidades.Porta;
-import Entidades.Tai;
+import Entidades.PosteLuz;
 import Main.Game;
 
 public class World {
 
 	public static Tile[] tiles;
 	public static int WIDTH,HEIGHT;
-	
+	private int cont=0;
 	
 	public World(String path){
 		try {
@@ -32,9 +32,23 @@ public class World {
 					int pixelAtual = pixels[xx + (yy * map.getWidth())];
 					tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Tile.TILE_FLOOR);
 					if(pixelAtual == 0xFFFFFFFF){
+						//chao de asfalto
+						cont ++;
+						if(cont%10==0 || cont==0) {
+							PosteLuz post = new PosteLuz(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+							Game.entities.add(post);
+						}
 						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
 						Game.entities.add(pack);
-					}else  if(pixelAtual == 0xFFFF6A00){
+					}else if(pixelAtual == 0xFFAA004A){
+						//bueiro
+						
+						Bueiro bueiro = new Bueiro(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Game.entities.add(pack);
+						Game.entities.add(bueiro);
+						Game.bueiros.add(bueiro);
+					}else if(pixelAtual == 0xFFFF6A00){
 //						Cenario_Interagivel pack = new Cenario_Interagivel(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,"prateleira",null);
 //						Game.entities.add(pack);
 //						

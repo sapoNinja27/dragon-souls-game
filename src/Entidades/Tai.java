@@ -19,6 +19,7 @@ public class Tai extends Player{
 	private BufferedImage[] rightTai;
 	private BufferedImage[] leftTai;
 	private BufferedImage[] direcao;
+	private BufferedImage[] sombra;
 	public int framesDash = 0,maxFramesDash = 11,indexDash = 19,maxIndexDash = 20;
 	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100,stamina = 100,maxstamina=100;
@@ -29,7 +30,8 @@ public class Tai extends Player{
 		
 		rightTai = new BufferedImage[50];
 		leftTai = new BufferedImage[50];
-		direcao= new BufferedImage[35];
+		direcao= new BufferedImage[50];
+		sombra= new BufferedImage[50];
 		//respirando
 		for(int i =0; i < 4; i++){
 			rightTai[i] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE);
@@ -72,6 +74,9 @@ public class Tai extends Player{
 		
 	}
 	public void attsprite(){
+		for(int i=0;i<35;i++) {
+			sombra[i]=Sombra(direcao[i]);
+		}
 		if(atacando) {
 			if(dir == left_dir) {
 				if( indexAtk== 30 || indexAtk == 29 || indexAtk==31) {
@@ -116,20 +121,18 @@ public class Tai extends Player{
 		
 	}
 	public void tick() {
-		depth=5;
 			attsprite();
 			setHitbox();
 			anim();
 			cameraRoll();
 			movedX();
 			dash();
+			movedY();
 			lifesistem();
 			if(this==Game.player) {
 				updateCamera(); 
 				nBot();
-				movedY();
 				checkCollisionLifePack();
-				checkCollisionPorta();
 			}else {
 				bot();
 //				longeDemais();
@@ -286,78 +289,7 @@ public class Tai extends Player{
 		
 		
 	}
-	public void movedY() {
-		
-		if(up &&podepular){
-			subindo=true;
-		}else {
-			subindo=false;
-			//cainimation=true;
-		}
-		if(!isFreeY()) {
-			podepular=true;
-		}
-
-		if(subindo) {
-			caiu_no_chao=false;
-			saiu_do_chao=true;
-			framesPulo++;
-			if(framesPulo == maxFramesPulo) {
-				framesPulo = 0;
-				if(indexPul!=maxIndexPul) {
-					indexPul++;
-				}
-				if(indexPul==maxIndexPul) {
-					subindo=false;
-					podepular=false;
-					completou_pulo=true;
-					
-				}
-			}
-			setY(getY()-4);
-		}
-		if(down){
-			//cair da plat
-		}
-		
-		if(isFreeY() && !subindo) {
-			caindo=true;
-		}else {
-			
-			caindo=false; 
-			
-		}
-		if(!isFreeY() && saiu_do_chao) {
-			caiu_no_chao=true;
-		}
-		
-		if(caindo) {
-			framesCai++;
-			if(framesCai == maxFramesCai) {
-				framesCai = 0;
-				if(indexCai!=maxIndexCai) {
-					indexCai++;
-				}
-				if(indexCai==maxIndexCai) {
-					caindo=false;
-				}
-			}
-			setY(getY()+4);
-		}
-		if(caiu_no_chao ) {
-			indexCai=16;
-			indexPul=13;
-			saiu_do_chao=false;
-			index=18;
-			framesCai2++;
-			if(framesCai2 == maxFramesCai2) {
-				framesCai2 = 0;
-				parado=true;
-				caiu_no_chao=false;
-			}
-		}
-		
-	}
+	
 	void dash() {
 		if(dash) {
 			if(dir==right_dir) {
@@ -398,17 +330,19 @@ public class Tai extends Player{
 	
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g.setColor(Color.red);
-		g.drawRect(getX()- Camera.x+maskx[0], getY()- Camera.y+masky[0], maskw[0], maskh[0]);
-//		g.drawImage(direcao[30], this.getX()+9 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
-//		g.drawImage(direcao[29], this.getX()+9 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);	
-//		g.drawImage(direcao[28], this.getX()+1 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
-//		g.drawImage(direcao[27], this.getX()+0 - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
+//		g.setColor(Color.red);
+//		g.drawRect(getX()- Camera.x+maskx[0], getY()- Camera.y+masky[0], maskw[0], maskh[0]);
+//		g.setColor(Color.blue);
+//		g.drawRect(getX()- Camera.x+maskx[1], getY()- Camera.y+masky[1], maskw[1], maskh[1]);
+//		g.setColor(Color.green);
+//		g.drawRect(getX()- Camera.x+maskx[2], getY()- Camera.y+masky[2], maskw[2], maskh[2]);
+//		g.setColor(Color.yellow);
+//		g.drawRect(getX()- Camera.x+maskx[3], getY()- Camera.y+masky[3], maskw[3], maskh[3]);
 		if(visivel) {
-			g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
+//			g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		}
-		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
-		
+//		g.drawImage(Sombra(direcao[index]), this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
+		g.drawImage(sombra[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		
 		
 	}

@@ -110,20 +110,18 @@ public class Ace extends Player{
 		}
 	}
 	public void tick() {
-		depth=5;
 			attsprite();
 			setHitbox();
 			anim();
 			cameraRoll();
 			movedX();
+			movedY();
 			dash();
 			lifesistem();
 			if(this==Game.player) {
 				updateCamera(); 
 				nBot();
-				movedY();
 				checkCollisionLifePack();
-				checkCollisionPorta();
 			}else {
 				bot();
 //				longeDemais();
@@ -170,10 +168,10 @@ public class Ace extends Player{
 		if(dash) {
 			parando=false;
 			framesDash++;
-			if(framesDash >= 5) {
+			if(framesDash == maxFramesDash) {
 				framesDash = 0;
 				indexDash++;
-				if(indexDash >= 25) {
+				if(indexDash == maxIndexDash) {
 					framesDash++;
 					indexDash = 19;
 					dash=false;
@@ -281,78 +279,7 @@ public class Ace extends Player{
 		
 	}
 	
-	public void movedY() {
-		
-		if(up &&podepular){
-			subindo=true;
-		}else {
-			subindo=false;
-			//cainimation=true;
-		}
-		if(!isFreeY()) {
-			podepular=true;
-		}
-
-		if(subindo) {
-			caiu_no_chao=false;
-			saiu_do_chao=true;
-			framesPulo++;
-			if(framesPulo == maxFramesPulo) {
-				framesPulo = 0;
-				if(indexPul!=maxIndexPul) {
-					indexPul++;
-				}
-				if(indexPul==maxIndexPul) {
-					subindo=false;
-					podepular=false;
-					completou_pulo=true;
-					
-				}
-			}
-			setY(getY()-4);
-		}
-		if(down){
-			//cair da plat
-		}
-		
-		if(isFreeY() && !subindo) {
-			caindo=true;
-		}else {
-			
-			caindo=false; 
-			
-		}
-		if(!isFreeY() && saiu_do_chao) {
-			caiu_no_chao=true;
-		}
-		
-		if(caindo) {
-			framesCai++;
-			if(framesCai == maxFramesCai) {
-				framesCai = 0;
-				if(indexCai!=maxIndexCai) {
-					indexCai++;
-				}
-				if(indexCai==maxIndexCai) {
-					caindo=false;
-				}
-			}
-			setY(getY()+4);
-		}
-		if(caiu_no_chao ) {
-			indexCai=16;
-			indexPul=13;
-			saiu_do_chao=false;
-			index=18;
-			framesCai2++;
-			if(framesCai2 == maxFramesCai2) {
-				framesCai2 = 0;
-				parado=true;
-				caiu_no_chao=false;
-			}
-		}
-		
-	}
+	
 
 	void dash() {
 		if(dash) {
@@ -391,8 +318,14 @@ public class Ace extends Player{
 	}
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g.setColor(Color.red);
-		g.drawRect(getX()- Camera.x+maskx[0], getY()- Camera.y+masky[0], maskw[0], maskh[0]);
+//		g.setColor(Color.red);
+//		g.drawRect(getX()- Camera.x+maskx[0], getY()- Camera.y+masky[0], maskw[0], maskh[0]);
+//		g.setColor(Color.blue);
+//		g.drawRect(getX()- Camera.x+maskx[1], getY()- Camera.y+masky[1], maskw[1], maskh[1]);
+//		g.setColor(Color.green);
+//		g.drawRect(getX()- Camera.x+maskx[2], getY()- Camera.y+masky[2], maskw[2], maskh[2]);
+//		g.setColor(Color.yellow);
+//		g.drawRect(getX()- Camera.x+maskx[3], getY()- Camera.y+masky[3], maskw[3], maskh[3]);
 		
 		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		

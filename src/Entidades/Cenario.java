@@ -17,12 +17,7 @@ public class Cenario extends Entity{
 	}
 	public void render(Graphics g) {
 
-		if(tipo == "janela") {
-//			g.drawImage(Game.spritesheet.getSprite(2*Game.TILE_SIZE,11*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
-//					this.getX()- Camera.x+100,this.getY() - Camera.y+90,Game.TILE_SIZE/2,Game.TILE_SIZE/2, null);
-			
-			
-		}
+
 						
 	}
 }

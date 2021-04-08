@@ -24,8 +24,21 @@ public class Porta extends Entity{
 		for(int i=0;i <2 ; i++) {
 			porta1[i]=Game.cenario.getSprite((i+2)*Game.TILE_SIZE,(2)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 		}
-		
+		checkCollisionPorta();
 
+	}
+	public void checkCollisionPorta(){
+		for(int i = 0; i < Game.portas.size(); i++){
+			Porta atual = Game.portas.get(i);
+			if(atual instanceof Porta) {
+				if(Entity.isColidding(Game.player, atual,0,0)) {
+					atual.emFrente=true;
+//					Game.entities.remove(atual);
+				}else {
+					atual.emFrente=false;
+				}
+			}
+		}
 	}
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;

@@ -45,7 +45,7 @@ public class Player extends Entity {
 	public int index=0;
 	public int frames=0;
 	public boolean Hudvisivel;
-	public double speed=4;
+	public double speed=5;
 	public boolean visivel;
 	public String personagem="Tai";
 	public boolean moved = false;
@@ -183,19 +183,7 @@ public class Player extends Entity {
 			}
 		}
 	}
-	public void checkCollisionPorta(){
-		for(int i = 0; i < Game.portas.size(); i++){
-			Porta atual = Game.portas.get(i);
-			if(atual instanceof Porta) {
-				if(Entity.isColidding(this, atual,0,0)) {
-					atual.emFrente=true;
-//					Game.entities.remove(atual);
-				}else {
-					atual.emFrente=false;
-				}
-			}
-		}
-	}
+	
 	public void lifesistem() {
 		if(life<=0) {
 			//Game over!
@@ -204,7 +192,8 @@ public class Player extends Entity {
 		}
 	}
 	public void nBot() {
-		speed=4;
+		depth=6;
+		speed=6;
 		if(atacando) {
 			framesAtk++;
 			if(framesAtk ==maxFramesAtk) {
@@ -219,15 +208,97 @@ public class Player extends Entity {
 			}
 		}
 	}
-	public void bot() {
-		if(Game.player.moved==true) {
-			speed=3.9;
+public void movedY() {
+		
+		if(up &&podepular){
+			subindo=true;
 		}else {
-			speed=5;
+			subindo=false;
+			//cainimation=true;
+		}
+		if(!isFreeY()) {
+			podepular=true;
+		}
+
+		if(subindo) {
+			caiu_no_chao=false;
+			saiu_do_chao=true;
+			framesPulo++;
+			if(framesPulo == maxFramesPulo) {
+				framesPulo = 0;
+				if(indexPul!=maxIndexPul) {
+					indexPul++;
+				}
+				if(indexPul==maxIndexPul) {
+					subindo=false;
+					podepular=false;
+					completou_pulo=true;
+					
+				}
+			}
+			setY(getY()-4);
+		}
+		if(down){
+			//cair da plat
+		}
+		
+		if(isFreeY() && !subindo) {
+			caindo=true;
+		}else {
+			
+			caindo=false; 
+			
+		}
+		if(!isFreeY() && saiu_do_chao) {
+			caiu_no_chao=true;
+		}
+		
+		if(caindo) {
+			framesCai++;
+			if(framesCai == maxFramesCai) {
+				framesCai = 0;
+				if(indexCai!=maxIndexCai) {
+					indexCai++;
+				}
+				if(indexCai==maxIndexCai) {
+					caindo=false;
+				}
+			}
+			setY(getY()+4);
+		}
+		if(caiu_no_chao ) {
+			indexCai=16;
+			indexPul=13;
+			saiu_do_chao=false;
+			index=18;
+			framesCai2++;
+			if(framesCai2 == maxFramesCai2) {
+				framesCai2 = 0;
+				parado=true;
+				caiu_no_chao=false;
+			}
+		}
+		
+	}
+	public void bot() {
+		depth=5;
+//		if(distanciaX(Game.player.getX(),Game.player2.getX())<100 && Game.player.up) {
+//			up=true;
+//			parado=false;
+//		}else {
+//			up=false;
+//			
+//		}
+		if(Game.player.moved==true) {
+			if(distanciaX(Game.player.getX(),Game.player2.getX())/20>4) {
+				speed=distanciaX(Game.player.getX(),Game.player2.getX())/25;
+			}
+		}else {
+			if(distanciaX(Game.player.getX(),Game.player2.getX())/25>4) {
+				speed=distanciaX(Game.player.getX(),Game.player2.getX())/30;
+			}
 		}
 		setMask(0,-50,11,150,52);
-		setMask(1,0,11,50,52);
-		setMask(3,-100,11,250,52);
 		if(Game.player.dash) {
 			parado=false;
 			dash=true;
@@ -282,7 +353,6 @@ public class Player extends Entity {
 			
 		}
 		visivel=true;
-		depth=9;
 	}
 	public void movedX() {
 		if(right && isFreeX()!="esquerda") {
@@ -307,7 +377,7 @@ public class Player extends Entity {
 		}
 		if(moved) {
 			framesMoved++;
-			if(framesMoved==maxFramesMoved) {
+			if(framesMoved>=6) {
 				framesMoved=0;
 				indexMoved++;
 				if(indexMoved==maxIndexMoved) {

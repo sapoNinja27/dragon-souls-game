@@ -19,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,13 +27,13 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import Entidades.Ace;
+import Entidades.Bueiro;
 import Entidades.BulletShoot;
 import Entidades.Enemy;
 import Entidades.Entity;
 import Entidades.Player;
 import Entidades.Porta;
-import Entidades.Sander;
-import Entidades.Ace;
 import Entidades.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
@@ -54,10 +53,11 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	private int CUR_LEVEL = 1;
 	private BufferedImage image;
-	
+	public static boolean dia;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<Porta> portas;
+	public static List<Bueiro> bueiros;
 	public static List<BulletShoot> bullets;
 	//personagens
 	public static Spritesheet ace;
@@ -113,6 +113,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<BulletShoot>();
 		portas = new ArrayList<Porta>();
+		bueiros = new ArrayList<Bueiro>();
 		//personagens
 		ace = new Spritesheet("/personagens/ace.png");
 		demonTai = new Spritesheet("/personagens/demonTai.png");

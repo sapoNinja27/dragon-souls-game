@@ -88,6 +88,12 @@ public class Entity {
 	public void tick(){
 		
 	}
+	public double distanciaX(int x1, int x2) {
+		return Math.abs(x1-x2);
+	}
+	public double distanciaY(int y1, int y2) {
+		return Math.abs(y1-y2);
+	}
 	public double calculateDistance(int x1,int y1,int x2, int y2) {
 		return Math.sqrt(x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
 	}
@@ -102,6 +108,24 @@ public class Entity {
 					imageP[xx-1+(yy*image.getWidth())]=color.hashCode();
 				}
 			}
+			return newImage;
+		}
+		return null;
+		
+	}
+	public static BufferedImage Sombra(BufferedImage image) {
+		if(image!=null) {
+			BufferedImage newImage=new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
+			int[] imageP= new int[image.getWidth()*image.getHeight()];
+			image.getRGB(0, 0, image.getWidth(), image.getHeight(), imageP, 0, image.getWidth());
+			for(int xx=0; xx<newImage.getWidth(); xx++) {
+				for(int yy = 0; yy < newImage.getHeight(); yy++) {
+					if(imageP[xx+(yy*image.getWidth())]!=0xFFFFFF) {
+						imageP[xx+(yy*image.getWidth())]=0xFF000000;
+					}
+				}
+			}
+			newImage.setRGB(0, 0, image.getWidth(), image.getHeight(), imageP, 0, image.getWidth());
 			return newImage;
 		}
 		return null;
