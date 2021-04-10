@@ -1,5 +1,6 @@
 package World;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -7,9 +8,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Entidades.Bueiro;
+import Entidades.Entity;
 import Entidades.Janela;
+import Entidades.LataLixo;
 import Entidades.Plataforma;
 import Entidades.Porta;
+import Entidades.Portao;
 import Entidades.PosteLuz;
 import Main.Game;
 
@@ -18,7 +22,21 @@ public class World {
 	public static Tile[] tiles;
 	public static int WIDTH,HEIGHT;
 	private int cont=0;
-	
+	private int left_dir=0,right_dir=1;
+	private int dir=left_dir;
+	private int beiradas=1;
+	private int cor=0;
+	private Color[] predios1= {
+			new Color(0xFFE55137)
+			,new Color(0xFFE7BCC1),
+			new Color(0xFFFFAF6E),
+			Color.white,
+			new Color(0xFF6A4B74),
+			new Color(0xFF6ABE74),
+			new Color(0xFF745E7A),
+			new Color(0xFFEA5E7A),
+			new Color(0xFFA04564),
+			new Color(0xFF9E6C4B)};
 	public World(String path){
 		try {
 			BufferedImage map = ImageIO.read(getClass().getResource(path));
@@ -60,7 +78,8 @@ public class World {
 //						Game.entities.add(pack);
 					}else if(pixelAtual == 0xFF0026FF) {
 						//Player
-						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
 						
 						Game.player.setX(xx*Game.TILE_SIZE);
 						Game.player.setY(yy*Game.TILE_SIZE);
@@ -85,30 +104,83 @@ public class World {
 //						Game.entities.add(pack);
 					}else   if(pixelAtual == 0xFF494949) {
 						//parte de baixo
-						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
 					}else   if(pixelAtual == 0xFF333333) {
 						//parte de cima
-						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,2*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,2*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
 					}else   if(pixelAtual == 0xFF595959) {
 						//porta
-						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
 						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						pack.setCor(predios1[cor]);
 						Game.entities.add(pack);
 						Game.portas.add(pack);
-					}else   if(pixelAtual == 0xFF262626) {
+					}else   if(pixelAtual == 0xFF5E0000) {
+						//Lata de lixo
+						LataLixo pack = new LataLixo(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Game.entities.add(pack);
+					}else if(pixelAtual == 0xFF7F0000) {
+						//portao
+						Portao pack = new Portao(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Game.entities.add(pack);
+						Game.portoes.add(pack);
+					}else if(pixelAtual == 0xFF262626) {
 						//beirada de cima-esquerda
-						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,4*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						if(dir==left_dir) {
+							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+									Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,4*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
+						}else {
+							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+									Entity.inverter(Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,4*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor])));
+						}
+						
+						
 					}else   if(pixelAtual == 0xFF3F3F3F) {
 						//beirada de baixo-esquerda
-						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						if(dir==left_dir) {
+							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+									Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
+						}else {
+							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+									Entity.inverter(Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor])));
+						}
+						
 					}else   if(pixelAtual == 0xFF666666) {
 						//janela
-						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
 						Janela pack = new Janela(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
 						Game.entities.add(pack);
+					}else if(pixelAtual == 0xFF191919) {
+						//virar a beirada
+						beiradas++;
+						if(beiradas==2) {
+							cor++;
+							beiradas=0;
+						}
+						if(cor>10) {
+							cor=0;
+						}
+						if(dir==left_dir) {
+							dir=right_dir;
+						}else	if(dir==right_dir) {
+							dir=left_dir;
+						}
+						if(dir==left_dir) {
+							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+									Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,4*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
+						}else {
+							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+									Entity.inverter(Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,4*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor])));
+						}
 					}else {
-						//fundo
+						//fundo{
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Tile.TILE_FLOOR);
+						
 					}
 					
 						

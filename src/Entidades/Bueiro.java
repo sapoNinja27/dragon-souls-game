@@ -33,7 +33,7 @@ public class Bueiro extends Entity{
 			frames=0;
 			op=0.1f;
 		}
-		depth=1;
+		depth=0;
 		setMask(0,-47,-30,32,40);
 		for(int i=0;i <2 ; i++) {
 			bueiro[i]=Game.cenario.getSprite((1)*Game.TILE_SIZE,(3+i)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
@@ -56,25 +56,27 @@ public class Bueiro extends Entity{
 	}
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		Rectangle rect= new Rectangle(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
-		Rectangle rect2= new Rectangle(this.getX() - Camera.x+maskx[1],this.getY() - Camera.y+masky[1],maskw[1],maskh[1]);
-		Rectangle rect3= new Rectangle(this.getX() - Camera.x+maskx[2],this.getY() - Camera.y+masky[2],maskw[2],maskh[2]);
-		Rectangle rect4= new Rectangle(this.getX() - Camera.x+maskx[3],this.getY() - Camera.y+masky[3],maskw[3],maskh[3]);
-		Rectangle rect5= new Rectangle(this.getX() - Camera.x+maskx[4],this.getY() - Camera.y+masky[4],maskw[4],maskh[4]);
+		
 		
 		if(!emFrente) {
 			g.drawImage(bueiro[0],this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y,Game.TILE_SIZE,Game.TILE_SIZE,null);
 		}else {
 			g.drawImage(bueiro[1],this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y,Game.TILE_SIZE,Game.TILE_SIZE,null);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
-			g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,36));
-			g.setColor(Color.black);
-			g.drawString("Esgotos", 100+190, 150);
+			g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,20));
+			g.setColor(Color.white);
+			g.drawString("Esgotos", this.getX()-Camera.x-64, this.getY()-Camera.y+30);
+//			g.drawLine(100+190, 150, 100+350, 150);
+//			g.drawLine(100+160, 125, 100+310, 125);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
 		
 		
-		
+		Rectangle rect= new Rectangle(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
+		Rectangle rect2= new Rectangle(this.getX() - Camera.x+maskx[1],this.getY() - Camera.y+masky[1],maskw[1],maskh[1]);
+		Rectangle rect3= new Rectangle(this.getX() - Camera.x+maskx[2],this.getY() - Camera.y+masky[2],maskw[2],maskh[2]);
+		Rectangle rect4= new Rectangle(this.getX() - Camera.x+maskx[3],this.getY() - Camera.y+masky[3],maskw[3],maskh[3]);
+		Rectangle rect5= new Rectangle(this.getX() - Camera.x+maskx[4],this.getY() - Camera.y+masky[4],maskw[4],maskh[4]);
 //		g.drawRect(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
 		
 			

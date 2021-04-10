@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import Main.Game;
 import World.Camera;
+import World.Tile;
 
 public class Janela extends Entity{
 	private BufferedImage janela;
@@ -26,7 +27,7 @@ public class Janela extends Entity{
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		
-		g.drawImage(janela,this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
+		g.drawImage(Tile.colorir(janela,new Color(0x00E55137)),this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
 		
 			
 			

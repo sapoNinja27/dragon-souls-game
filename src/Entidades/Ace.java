@@ -317,19 +317,9 @@ public class Ace extends Player{
 			}
 	}
 	public void render(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-//		g.setColor(Color.red);
-//		g.drawRect(getX()- Camera.x+maskx[0], getY()- Camera.y+masky[0], maskw[0], maskh[0]);
-//		g.setColor(Color.blue);
-//		g.drawRect(getX()- Camera.x+maskx[1], getY()- Camera.y+masky[1], maskw[1], maskh[1]);
-//		g.setColor(Color.green);
-//		g.drawRect(getX()- Camera.x+maskx[2], getY()- Camera.y+masky[2], maskw[2], maskh[2]);
-//		g.setColor(Color.yellow);
-//		g.drawRect(getX()- Camera.x+maskx[3], getY()- Camera.y+masky[3], maskw[3], maskh[3]);
-		
+		Sombras(g,direcao);
 		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
-		
-		
+		CharEscuro(g,direcao);
 		
 		
 		

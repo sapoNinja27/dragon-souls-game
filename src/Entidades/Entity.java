@@ -126,6 +126,25 @@ public class Entity {
 				}
 			}
 			newImage.setRGB(0, 0, image.getWidth(), image.getHeight(), imageP, 0, image.getWidth());
+			return (newImage);
+		}
+		return null;
+		
+	}
+	public static BufferedImage inverterV(BufferedImage image) {
+		if(image!=null) {
+			BufferedImage newImage=new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
+			int[] imageP=((DataBufferInt)newImage.getAlphaRaster().getDataBuffer()).getData();
+			for(int xx=0; xx<image.getTileWidth(); xx++) {
+				for(int yy = image.getHeight(); yy >0; yy--) {
+					int y2=(yy-image.getHeight())*(-1);
+					Color color=new Color(image.getRGB(xx, y2),true);
+					if(xx+(yy*image.getWidth())-1>=4096) {
+						continue;
+					}
+					imageP[xx+(yy*image.getWidth())-1]=color.hashCode();
+				}
+			}
 			return newImage;
 		}
 		return null;

@@ -1,5 +1,6 @@
 package Graficos;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -83,5 +84,6 @@ public class UI {
 		
 		
 	}
+	
 	
 }

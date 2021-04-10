@@ -32,8 +32,10 @@ import Entidades.Bueiro;
 import Entidades.BulletShoot;
 import Entidades.Enemy;
 import Entidades.Entity;
+import Entidades.Escuro;
 import Entidades.Player;
 import Entidades.Porta;
+import Entidades.Portao;
 import Entidades.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
@@ -53,10 +55,11 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	private int CUR_LEVEL = 1;
 	private BufferedImage image;
-	public static boolean dia;
+	public static boolean dia=false;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<Porta> portas;
+	public static List<Portao> portoes;
 	public static List<Bueiro> bueiros;
 	public static List<BulletShoot> bullets;
 	//personagens
@@ -113,6 +116,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<BulletShoot>();
 		portas = new ArrayList<Porta>();
+		portoes = new ArrayList<Portao>();
 		bueiros = new ArrayList<Bueiro>();
 		//personagens
 		ace = new Spritesheet("/personagens/ace.png");
@@ -276,6 +280,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 			for(int i = 0; i < bullets.size(); i++) {
 				bullets.get(i).render(g);
 			}
+			Escuro.render(g);
 			ui.render(g);
 			if(cen.CcRun()) {
 				cen.render(g);

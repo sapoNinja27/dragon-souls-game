@@ -208,6 +208,77 @@ public class Player extends Entity {
 			}
 		}
 	}
+	public void CharEscuro(Graphics g, BufferedImage[] direcao) {
+		Graphics2D g2 = (Graphics2D) g;
+		float op=0.6f;
+		if(Game.dia) {
+			op=0f;
+		}else {
+			for(int i = 0; i < Game.entities.size(); i++){
+				Entity atual = Game.entities.get(i);
+				if(atual instanceof PosteLuz) {
+					if(distanciaX(getX(),atual.getX())<150) {
+						int[] dist={0,1,2,3,4,5,6,7,8,9,10,11,12};
+						float[] opac={0.1f,0.1f,0.2f,0.2f,0.3f,0.3f,0.4f,0.4f,0.5f,0.5f,0.6f,0.6f};
+						
+						for(int c=0;c<11;c++) {
+							if((int)distanciaX(getX(),atual.getX())/10==dist[c]) {
+								op=opac[c];
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,op));
+		g.drawImage(Sombra(direcao[index]), this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+	}
+	public void Sombras(Graphics g, BufferedImage[] direcao) {
+		Graphics2D g2 = (Graphics2D) g;
+		float op=0.1f;
+		if(Game.dia) {
+			op=0.5f;
+		}else {
+			for(int i = 0; i < Game.entities.size(); i++){
+				Entity atual = Game.entities.get(i);
+				if(atual instanceof PosteLuz) {
+					if(distanciaX(getX(),atual.getX())<150) {
+						int[] dist={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
+						float[] opac={0.8f,0.8f,0.7f,0.7f,0.6f,0.6f,0.5f,0.5f,0.4f,0.4f,0.3f,0.3f,0.2f,0.2f,0.1f,0.1f};
+						for(int c=0;c<15;c++) {
+							if((int)distanciaX(getX(),atual.getX())/10==dist[c]) {
+								op=opac[c];
+							}
+						}
+					}
+				}
+			}
+			if(this==Game.player2) {
+				g.setColor(Color.black);
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));
+				g.fillRect(Game.player.getX()-Camera.x-800, Game.player.getY()-Camera.y-300, 2000, 1200);
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));
+			}
+		}
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,op));
+		if(!subindo && !caindo) {
+			if(Game.dia) {
+				g.drawImage(inverterV(Sombra(direcao[index])), this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y+Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE/2, null);
+			}else {
+				g.drawImage(inverterV(Sombra(direcao[index])), this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y+Game.TILE_SIZE+7,Game.TILE_SIZE,Game.TILE_SIZE/2, null);
+			}
+			
+		}else {
+			g.drawImage(Sombra(direcao[index]), this.getX()+pos - Camera.x+mov_das_cena+10,this.getY() - Camera.y+Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE/2, null);
+		}
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		
+		
+		
+	}
+	
 public void movedY() {
 		
 		if(up &&podepular){
@@ -289,15 +360,25 @@ public void movedY() {
 //			up=false;
 //			
 //		}
-		if(Game.player.moved==true) {
-			if(distanciaX(Game.player.getX(),Game.player2.getX())/20>4) {
-				speed=distanciaX(Game.player.getX(),Game.player2.getX())/25;
+		
+		if(distanciaX(Game.player.getX(),Game.player2.getX())<500) {
+			if(Game.player.moved==true) {
+				if(distanciaX(Game.player.getX(),Game.player2.getX())/20>4) {
+					speed=distanciaX(Game.player.getX(),Game.player2.getX())/25;
+				}
+			}else {
+				if(distanciaX(Game.player.getX(),Game.player2.getX())/25>4) {
+					speed=distanciaX(Game.player.getX(),Game.player2.getX())/30;
+				}
 			}
 		}else {
-			if(distanciaX(Game.player.getX(),Game.player2.getX())/25>4) {
-				speed=distanciaX(Game.player.getX(),Game.player2.getX())/30;
+			if(Game.player.getX()<getX()) {
+				setX(Game.player.getX()-20);
+			}else if(Game.player.getX()>getX()) {
+				setX(Game.player.getX()+20);
 			}
 		}
+		
 		setMask(0,-50,11,150,52);
 		if(Game.player.dash) {
 			parado=false;
@@ -315,7 +396,7 @@ public void movedY() {
 		if(Game.player.dir==left_dir) {
 			if(Game.player.getX()<getX()) {
 				dir=left_dir;
-				if(Game.player.getX()<getX() && !isColiddingWithPlayer()) {
+				if(Game.player.getX()<getX() && distanciaX(Game.player.getX(),Game.player2.getX())>70) {
 					parado=false;
 					left=true;
 					right=false;
@@ -334,7 +415,7 @@ public void movedY() {
 		}else if(Game.player.dir==right_dir) {
 			if(Game.player.getX()>getX()) {
 				dir=right_dir;
-				if(Game.player.getX()>getX() && !isColiddingWithPlayer()) {
+				if(Game.player.getX()>getX() && distanciaX(Game.player.getX(),Game.player2.getX())>70) {
 					parado=false;
 					right=true;
 					left=false;

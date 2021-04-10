@@ -10,14 +10,7 @@ import Main.Game;
 import World.Camera;
 
 public class Cenario extends Entity{
-	String tipo;
-	public Cenario(int x, int y, int width, int height,String tipo, BufferedImage sprite) {
+	public Cenario(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
-		this.tipo=tipo;
-	}
-	public void render(Graphics g) {
-
-
-						
 	}
 }
