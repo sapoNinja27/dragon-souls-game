@@ -22,6 +22,7 @@ public class World {
 	public static Tile[] tiles;
 	public static int WIDTH,HEIGHT;
 	private int cont=0;
+	private boolean canoOn=false;
 	private int left_dir=0,right_dir=1;
 	private int dir=left_dir;
 	private int beiradas=1;
@@ -57,7 +58,32 @@ public class World {
 							Game.entities.add(post);
 						}
 						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						pack.setTipo(1);
 						Game.entities.add(pack);
+					}else if(pixelAtual == 0xFFF2F2F2){
+						//chao de esgoto
+						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						pack.setTipo(4);
+						Game.entities.add(pack);
+						
+						
+						
+						
+					}else if(pixelAtual == 0xFFE5E5E5){
+						//chao de esgoto co canos
+						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						if(canoOn) {
+							pack.setTipo(2);
+							canoOn=false;
+						}else {
+							pack.setTipo(3);
+							canoOn=true;
+						}
+						Game.entities.add(pack);
+						
+						
+						
+						
 					}else if(pixelAtual == 0xFFAA004A){
 						//bueiro
 						
@@ -111,10 +137,32 @@ public class World {
 						//parte de cima
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,2*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
+					}else if(pixelAtual == 0xFF35F2F2) {
+						//parede tunel
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+								Tile.colorir
+								(Game.cenario.getSprite
+										(0*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF3B4235)));
 					}else   if(pixelAtual == 0xFF595959) {
 						//porta
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
+						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						pack.setCor(predios1[cor]);
+						Game.entities.add(pack);
+						Game.portas.add(pack);
+					}else    if(pixelAtual == 0xFFE50063) {
+						//escada baixa
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF3B4235)));
+						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						pack.setCor(predios1[cor]);
+						Game.entities.add(pack);
+						Game.portas.add(pack);
+					}else    if(pixelAtual == 0xFFFF006E) {
+						//escada corpo
+						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
+								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF3B4235)));
 						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
 						pack.setCor(predios1[cor]);
 						Game.entities.add(pack);

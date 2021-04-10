@@ -10,10 +10,19 @@ import Main.Game;
 import World.Camera;
 
 public class Plataforma extends Entity{
+	private int tipo=0;
+	private BufferedImage[] img;
 	public Plataforma(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
+		img= new BufferedImage[6];
+	}
+	public void setTipo(int tipo) {
+		this.tipo=tipo-1;
 	}
 	public void tick() {
+		for(int i=0; i<img.length;i++) {
+			img[i]=Game.cenario.getSprite((2+i)*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
+		}
 		maskx[0]= 0;
 		masky[0]= -3;
 		maskw[0]= Game.TILE_SIZE;
@@ -41,8 +50,7 @@ public class Plataforma extends Entity{
 		Rectangle rect3= new Rectangle(this.getX() - Camera.x+maskx[2],this.getY() - Camera.y+masky[2],maskw[2],maskh[2]);
 		Rectangle rect4= new Rectangle(this.getX() - Camera.x+maskx[3],this.getY() - Camera.y+masky[3],maskw[3],maskh[3]);
 		g.setColor(Color.RED);
-		g.drawImage(Game.cenario.getSprite(1*Game.TILE_SIZE,2*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
-				this.getX() - Camera.x,this.getY() - Camera.y, null);
+		g.drawImage(img[tipo],this.getX() - Camera.x,this.getY() - Camera.y, null);
 //		g.drawImage(Game.cenario.getSprite(1*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 //				this.getX() - Camera.x,this.getY() - Camera.y, null);
 //		g2.draw(rect);
