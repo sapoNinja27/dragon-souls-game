@@ -114,7 +114,6 @@ public class Ace extends Player{
 			setHitbox();
 			anim();
 			cameraRoll();
-			movedX();
 			movedY();
 			dash();
 			lifesistem();
@@ -320,9 +319,6 @@ public class Ace extends Player{
 		Sombras(g,direcao);
 		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		CharEscuro(g,direcao);
-		
-		
-		
 	}
 
 }

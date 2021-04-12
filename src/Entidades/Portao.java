@@ -23,7 +23,9 @@ public class Portao extends Entity{
 	}
 	public void tick() {
 		depth=4;
-		checkCollisionPortao();
+		if(Game.Ambiente=="Cidade") {
+			checkCollisionPortao();
+		}
 		if(emFrente) {
 			frames++;
 			if(frames>=10) {
@@ -68,29 +70,7 @@ public class Portao extends Entity{
 		g.drawImage(Game.cenario.getSprite(Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 				this.getX()-Camera.x-29,this.getY()-Camera.y+3,Game.TILE_SIZE,Game.TILE_SIZE,null);
 		g.drawImage(Game.cenario.getSprite(2*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
-				this.getX()-Camera.x-29+64,this.getY()-Camera.y+3,Game.TILE_SIZE,Game.TILE_SIZE,null);
-//		g.setColor(Color.red);
-//		Rectangle rect= new Rectangle(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
-//		Rectangle rect2= new Rectangle(this.getX() - Camera.x+maskx[1],this.getY() - Camera.y+masky[1],maskw[1],maskh[1]);
-//		Rectangle rect3= new Rectangle(this.getX() - Camera.x+maskx[2],this.getY() - Camera.y+masky[2],maskw[2],maskh[2]);
-//		Rectangle rect4= new Rectangle(this.getX() - Camera.x+maskx[3],this.getY() - Camera.y+masky[3],maskw[3],maskh[3]);
-//		Rectangle rect5= new Rectangle(this.getX() - Camera.x+maskx[4],this.getY() - Camera.y+masky[4],maskw[4],maskh[4]);
-//		g.drawRect(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
-		
-		
-		
-			
-			
-			
-			
-			
-			
-
-			
-			
-			
-			
-			
+				this.getX()-Camera.x-29+64,this.getY()-Camera.y+3,Game.TILE_SIZE,Game.TILE_SIZE,null);	
 		}
 						
 	

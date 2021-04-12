@@ -18,6 +18,9 @@ public class Player extends Entity {
 	public int px;	
 	public int cont=0,maxCont=15,verif=0,maxVerif=2;
 	public int pos=0;
+	public int lastPorta=0;
+	public boolean clicouPortas=false;
+	public boolean clicouBueiros=false;
 	public int mov_das_cena=0;
 	public int camx=0,camy=0;
 	protected double x;
@@ -93,26 +96,26 @@ public class Player extends Entity {
 		Camera.y = Camera.clamp(this.getY() -(Game.HEIGHT/2)-53,0,World.HEIGHT*Game.TILE_SIZE - Game.HEIGHT);
 	}
 	public String isFreeX(){
-		for(int i = 0; i < Game.entities.size(); i++){
-			Entity atual = Game.entities.get(i);
-			
-			if(atual instanceof Cenario_Interagivel) {
-				if(Entity.isColidding(this,  atual,0,2)) {
-					Cenario_Interagivel at2= (Cenario_Interagivel)atual;
-					if(at2.tipo=="parede_invisivel") {
-						return "direita";
-					}
-				}else if(Entity.isColidding(this,  atual,0,1)) {
-					Cenario_Interagivel at2= (Cenario_Interagivel)atual;
-					if(at2.tipo=="parede_invisivel") {
-						return "esquerda";
-					}
-				}else if(Entity.isColidding(this,  atual,0,0)) {
-					return "cima";
-				}
-				
-			}
-		}
+//		for(int i = 0; i < Game.entities.size(); i++){
+//			Entity atual = Game.entities.get(i);
+//			
+//			if(atual instanceof Cenario_Interagivel) {
+//				if(Entity.isColidding(this,  atual,0,2)) {
+//					Cenario_Interagivel at2= (Cenario_Interagivel)atual;
+//					if(at2.tipo=="parede_invisivel") {
+//						return "direita";
+//					}
+//				}else if(Entity.isColidding(this,  atual,0,1)) {
+//					Cenario_Interagivel at2= (Cenario_Interagivel)atual;
+//					if(at2.tipo=="parede_invisivel") {
+//						return "esquerda";
+//					}
+//				}else if(Entity.isColidding(this,  atual,0,0)) {
+//					return "cima";
+//				}
+//				
+//			}
+//		}
 		return "livre";
 	}
 	public boolean isFreeY(){
@@ -192,6 +195,7 @@ public class Player extends Entity {
 		}
 	}
 	public void nBot() {
+		movedX();
 		depth=6;
 		speed=6;
 		if(atacando) {
@@ -211,26 +215,37 @@ public class Player extends Entity {
 	public void CharEscuro(Graphics g, BufferedImage[] direcao) {
 		Graphics2D g2 = (Graphics2D) g;
 		float op=0.6f;
-		if(Game.dia) {
-			op=0f;
-		}else {
-			for(int i = 0; i < Game.entities.size(); i++){
-				Entity atual = Game.entities.get(i);
-				if(atual instanceof PosteLuz) {
-					if(distanciaX(getX(),atual.getX())<150) {
-						int[] dist={0,1,2,3,4,5,6,7,8,9,10,11,12};
-						float[] opac={0.1f,0.1f,0.2f,0.2f,0.3f,0.3f,0.4f,0.4f,0.5f,0.5f,0.6f,0.6f};
-						
-						for(int c=0;c<11;c++) {
-							if((int)distanciaX(getX(),atual.getX())/10==dist[c]) {
-								op=opac[c];
+		if(Game.Ambiente=="Cidade") {
+			if(Game.dia) {
+				op=0f;
+			}else {
+				for(int i = 0; i < Game.entities.size(); i++){
+					Entity atual = Game.entities.get(i);
+					if(atual instanceof PosteLuz) {
+						if(distanciaX(getX(),atual.getX())<150 && distanciaY(getY(),atual.getY())<500) {
+							int[] dist={0,1,2,3,4,5,6,7,8,9,10,11,12};
+							float[] opac={0.1f,0.1f,0.2f,0.2f,0.3f,0.3f,0.4f,0.4f,0.5f,0.5f,0.6f,0.6f};
+							
+							for(int c=0;c<11;c++) {
+								if((int)distanciaX(getX(),atual.getX())/10==dist[c]) {
+									op=opac[c];
+								}
 							}
 						}
 					}
 				}
+				
 			}
-			
+		}else if(Game.Ambiente=="Esgoto") {
+			op=0.6f;
+		}else if(Game.Ambiente=="Terraço") {
+			if(Game.dia) {
+				op=0f;
+			}else {
+				op=0.6f;
+			}
 		}
+		
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,op));
 		g.drawImage(Sombra(direcao[index]), this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
@@ -238,30 +253,53 @@ public class Player extends Entity {
 	public void Sombras(Graphics g, BufferedImage[] direcao) {
 		Graphics2D g2 = (Graphics2D) g;
 		float op=0.1f;
-		if(Game.dia) {
-			op=0.5f;
-		}else {
-			for(int i = 0; i < Game.entities.size(); i++){
-				Entity atual = Game.entities.get(i);
-				if(atual instanceof PosteLuz) {
-					if(distanciaX(getX(),atual.getX())<150) {
-						int[] dist={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
-						float[] opac={0.8f,0.8f,0.7f,0.7f,0.6f,0.6f,0.5f,0.5f,0.4f,0.4f,0.3f,0.3f,0.2f,0.2f,0.1f,0.1f};
-						for(int c=0;c<15;c++) {
-							if((int)distanciaX(getX(),atual.getX())/10==dist[c]) {
-								op=opac[c];
+		if(Game.Ambiente=="Cidade") {
+			if(Game.dia) {
+				op=0.5f;
+			}else {
+				for(int i = 0; i < Game.entities.size(); i++){
+					Entity atual = Game.entities.get(i);
+					if(atual instanceof PosteLuz) {
+						if(distanciaX(getX(),atual.getX())<150 && distanciaY(getY(),atual.getY())<500) {
+							int[] dist={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
+							float[] opac={0.8f,0.8f,0.7f,0.7f,0.6f,0.6f,0.5f,0.5f,0.4f,0.4f,0.3f,0.3f,0.2f,0.2f,0.1f,0.1f};
+							for(int c=0;c<15;c++) {
+								if((int)distanciaX(getX(),atual.getX())/10==dist[c]) {
+									op=opac[c];
+								}
 							}
 						}
 					}
 				}
+				if(this==Game.player2) {
+					g.setColor(Color.black);
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.5f));
+					g.fillRect(Game.player.getX()-Camera.x-800, Game.player.getY()-Camera.y-300, 2000, 1200);
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));
+				}
 			}
+		}else if(Game.Ambiente=="Esgoto") {
+			op=0.0f;
 			if(this==Game.player2) {
 				g.setColor(Color.black);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.6f));
 				g.fillRect(Game.player.getX()-Camera.x-800, Game.player.getY()-Camera.y-300, 2000, 1200);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));
 			}
+		}else if(Game.Ambiente=="Terraço") {
+			if(Game.dia) {
+				op=0.5f;
+			}else {
+				op=0.2f;
+				if(this==Game.player2) {
+					g.setColor(Color.black);
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.6f));
+					g.fillRect(Game.player.getX()-Camera.x-800, Game.player.getY()-Camera.y-300, 2000, 1200);
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));
+				}
+			}
 		}
+			
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,op));
 		if(!subindo && !caindo) {
 			if(Game.dia) {
@@ -352,6 +390,7 @@ public void movedY() {
 		
 	}
 	public void bot() {
+		movedBot();
 		depth=5;
 //		if(distanciaX(Game.player.getX(),Game.player2.getX())<100 && Game.player.up) {
 //			up=true;
@@ -360,24 +399,19 @@ public void movedY() {
 //			up=false;
 //			
 //		}
-		
-		if(distanciaX(Game.player.getX(),Game.player2.getX())<500) {
-			if(Game.player.moved==true) {
-				if(distanciaX(Game.player.getX(),Game.player2.getX())/20>4) {
-					speed=distanciaX(Game.player.getX(),Game.player2.getX())/25;
-				}
-			}else {
-				if(distanciaX(Game.player.getX(),Game.player2.getX())/25>4) {
-					speed=distanciaX(Game.player.getX(),Game.player2.getX())/30;
-				}
+		if(distanciaX(Game.player.getX(),Game.player2.getX())<20) {
+			moved=false;
+		}
+		if(Game.player.moved==true) {
+			if(distanciaX(Game.player.getX(),Game.player2.getX())/20>4) {
+				speed=distanciaX(Game.player.getX(),Game.player2.getX())/25;
 			}
 		}else {
-			if(Game.player.getX()<getX()) {
-				setX(Game.player.getX()-20);
-			}else if(Game.player.getX()>getX()) {
-				setX(Game.player.getX()+20);
+			if(distanciaX(Game.player.getX(),Game.player2.getX())/25>4) {
+				speed=distanciaX(Game.player.getX(),Game.player2.getX())/30;
 			}
 		}
+		
 		
 		setMask(0,-50,11,150,52);
 		if(Game.player.dash) {
@@ -467,11 +501,37 @@ public void movedY() {
 				
 			}
 		}
-		
-		
-		
-		
-		
+	}
+	public void movedBot() {
+		if(right && isFreeX()!="esquerda"&& moved) {
+			dir = right_dir;
+			correr(xDouble()+speed);
+		}
+		if(left && isFreeX()!="direita"&& moved) {
+			dir = left_dir;
+			correr(xDouble()-speed);
+		}
+		if(parado) {
+			framesParado++;
+			if(framesParado==maxFramesParado) {
+				framesParado=0;
+				indexParado++;
+				if(indexParado==maxIndexParado) {
+					indexParado=0;
+				}
+			}
+		}
+		if(moved) {
+			framesMoved++;
+			if(framesMoved>=6) {
+				framesMoved=0;
+				indexMoved++;
+				if(indexMoved==maxIndexMoved) {
+					indexMoved=4;
+				}
+				
+			}
+		}
 	}
 	public boolean isColiddingWithPlayer(){
 		Rectangle player2 = new Rectangle(Game.player2.getX() + Game.player2.maskx[0],Game.player2.getY() + 

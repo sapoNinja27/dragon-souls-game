@@ -28,11 +28,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import Entidades.Ace;
-import Entidades.Bueiro;
 import Entidades.BulletShoot;
 import Entidades.Enemy;
 import Entidades.Entity;
-import Entidades.Escuro;
+import Entidades.EscadaEsgoto;
+import Entidades.Plataforma;
 import Entidades.Player;
 import Entidades.Porta;
 import Entidades.Portao;
@@ -46,6 +46,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static int TILE_SIZE=64;
 	private static final long serialVersionUID = 1L;
 	boolean savegame;
+	public static boolean podeClicar=true;
+	public static String Ambiente="Terraço";//terraço-esgotos-cidade
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
@@ -55,12 +57,14 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	private int CUR_LEVEL = 1;
 	private BufferedImage image;
-	public static boolean dia=false;
+	public static boolean dia=true;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<Porta> portas;
+	public static List<Porta> portaTerraco;
 	public static List<Portao> portoes;
-	public static List<Bueiro> bueiros;
+	public static List<EscadaEsgoto> escadasDeEsgoto;
+	public static List<Plataforma> bueiros;
 	public static List<BulletShoot> bullets;
 	//personagens
 	public static Spritesheet ace;
@@ -116,8 +120,10 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<BulletShoot>();
 		portas = new ArrayList<Porta>();
+		portaTerraco = new ArrayList<Porta>();
 		portoes = new ArrayList<Portao>();
-		bueiros = new ArrayList<Bueiro>();
+		bueiros = new ArrayList<Plataforma>();
+		escadasDeEsgoto=new ArrayList<EscadaEsgoto>();
 		//personagens
 		ace = new Spritesheet("/personagens/ace.png");
 		demonTai = new Spritesheet("/personagens/demonTai.png");
@@ -280,8 +286,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 			for(int i = 0; i < bullets.size(); i++) {
 				bullets.get(i).render(g);
 			}
-			Escuro.render(g);
-			ui.render(g);
+//			ui.render(g);
 			if(cen.CcRun()) {
 				cen.render(g);
 			}
@@ -333,8 +338,14 @@ public void run() {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
-		
+		if(e.getKeyCode() == KeyEvent.VK_X){
+			if(podeClicar) {
+				podeClicar=false;
+				player.clicouBueiros=true;
+				player.clicouPortas=true;
+			}
+			
+		}
 		if(e.getKeyCode() == KeyEvent.VK_P){
 			if(Game.player.personagem=="Tai") {
 				player.trocaPersonagem("Ace");
@@ -434,6 +445,9 @@ public void run() {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_X){
+			podeClicar=true;
+		}
 		if(!cen.CcRun()) {
 			if(e.getKeyCode() == KeyEvent.VK_UP){
 				

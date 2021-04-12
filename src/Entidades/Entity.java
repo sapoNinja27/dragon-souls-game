@@ -7,8 +7,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.Comparator;
 
-
-
+import Main.Game;
 import World.Camera;
 
 public class Entity {
@@ -49,6 +48,20 @@ public class Entity {
 			return 0;
 		}
 	};
+	public void teleportar(int x1, int y1,int x2,int y2, int dir) {
+		Game.player.setX(x1);
+		Game.player.setY(y1);
+		if(dir==Game.player.left_dir) {
+			Game.player2.setX(x2+20);
+			Game.player2.setY(y2);
+			Game.player.dir=dir;
+		}else if(dir==Game.player.right_dir) {
+			Game.player2.setX(x2-20);
+			Game.player2.setY(y2);
+			Game.player.dir=dir;
+		}
+		
+	}
 	public void setMask(int vet,int maskx,int masky,int mwidth,int mheight){
 		this.maskx[vet] = maskx;
 		this.masky [vet]= masky;

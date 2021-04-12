@@ -125,7 +125,6 @@ public class Tai extends Player{
 			setHitbox();
 			anim();
 			cameraRoll();
-			movedX();
 			dash();
 			movedY();
 			lifesistem();
