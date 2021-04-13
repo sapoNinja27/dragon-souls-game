@@ -9,7 +9,7 @@ import Main.Game;
 import World.Camera;
 import World.World;
 
-public class Soldier_Enemy extends Entity{
+public class Soldier_Enemy extends Enemy{
 	
 	private double speed = 0.4;
 	
@@ -33,86 +33,7 @@ public class Soldier_Enemy extends Entity{
 
 	public void tick(){	
 	}
-	public void tick2() {
-		if(isColiddingWithPlayer() == false){
-		if((int)x < Game.player.getX() && World.isFree((int)(x+speed), this.getY())
-				&& !isColidding((int)(x+speed), this.getY())){
-			x+=speed;
-		}
-		else if((int)x > Game.player.getX() && World.isFree((int)(x-speed), this.getY())
-				&& !isColidding((int)(x-speed), this.getY())) {
-			x-=speed;
-		}
-		
-		if((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y+speed)) &&
-				!isColidding(this.getX(), (int)(y+speed))){
-			y+=speed;
-		}
-		else if((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y-speed)) &&
-				!isColidding(this.getX(), (int)(y-speed))) {
-			y-=speed;
-		}
-		}else{
-			//Estamos colidindo
-			if(Game.rand.nextInt(100) < 10){
-				Game.player.life-=Game.rand.nextInt(3);
-				Game.player.isDamaged = true;
-				//System.out.println("Vida: "+ Game.player.life);
-			}
-			
-		}
-		
-		
-			frames++;
-			if(frames == maxFrames) {
-				frames = 0;
-				index++;
-				if(index > maxIndex)
-					index = 0;
-			}
-			
-			
-			if(life <= 0) {
-				destroySelf();
-				return;
-			}
-			
-			if(isDamaged) {
-				this.damageCurrent++;
-				if(this.damageCurrent == this.damageFrames) {
-					this.damageCurrent = 0;
-					this.isDamaged = false;
-				}
-			}
-	}
-	public void destroySelf() {
-		Game.enemies.remove(this);
-		Game.entities.remove(this);
-	}
 	
-	
-	
-	public boolean isColiddingWithPlayer(){
-		Rectangle enemyCurrent = new Rectangle(this.getX() + maskx,this.getY() + masky,maskw,maskh);
-		Rectangle player = new Rectangle(Game.player.getX(),Game.player.getY(),16,16);
-		
-		return enemyCurrent.intersects(player);
-	}
-	
-	public boolean isColidding(int xnext,int ynext){
-		Rectangle enemyCurrent = new Rectangle(xnext + maskx,ynext + masky,maskw,maskh);
-		for(int i =0; i < Game.enemies.size(); i++){
-			Soldier_Enemy e = Game.enemies.get(i);
-			if(e == this)
-				continue;
-			Rectangle targetEnemy = new Rectangle(e.getX()+ maskx,e.getY()+ masky,maskw,maskh);
-			if(enemyCurrent.intersects(targetEnemy)){
-				return true;
-			}
-		}
-		
-		return false;
-	}
 	
 	public void render(Graphics g) {
 		if(!isDamaged)
