@@ -1,13 +1,12 @@
-package Entidades;
+package Entidades.Cenario;
+
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import Main.Game;
-import World.Camera;
+import Entidades.Entity;
 
 public class Fundo_Cenario extends Entity{
 

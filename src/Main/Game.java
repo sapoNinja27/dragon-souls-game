@@ -27,16 +27,16 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import Entidades.Ace;
 import Entidades.BulletShoot;
-import Entidades.Enemy;
 import Entidades.Entity;
-import Entidades.EscadaEsgoto;
-import Entidades.Plataforma;
-import Entidades.Player;
-import Entidades.Porta;
-import Entidades.Portao;
-import Entidades.Tai;
+import Entidades.Cenario.EscadaEsgoto;
+import Entidades.Cenario.Plataforma;
+import Entidades.Cenario.Porta;
+import Entidades.Cenario.Portao;
+import Entidades.Enemies.Enemy;
+import Entidades.Players.Ace;
+import Entidades.Players.Player;
+import Entidades.Players.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
 import Menu.Menu;
@@ -47,7 +47,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	private static final long serialVersionUID = 1L;
 	boolean savegame;
 	public static boolean podeClicar=true;
-	public static String Ambiente="Terraço";//terraço-esgotos-cidade
+	public static String Ambiente="Cidade";//terraço-esgotos-cidade
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;

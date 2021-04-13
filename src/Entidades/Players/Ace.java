@@ -1,18 +1,10 @@
-package Entidades;
+package Entidades.Players;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
-import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
-import World.World;
 
 public class Ace extends Player{
 	
@@ -230,53 +222,7 @@ public class Ace extends Player{
 		}
 	}
 	
-	public void setHitbox() {
-		//hitbox padrao
-		setMask(0,20,11,20,52);
-		setMask(2,11,60,40,3);
-		//ataques melle
-		if(special>maxspecial/2) {
-			if(dir==right_dir) {
-				if(atacando) {
-					if(indexAtk!=24 ) {
-						setMask(1,50,20,30,10);
-					}
-				}else {
-					setMask(1,20,20,30,10);
-				}
-			}else {
-				if(atacando) {
-					if(indexAtk!=24 ) {
-						setMask(1,-15,20,30,10);
-					}
-				}else {
-					setMask(1,20,20,30,10);
-				}
-			}
-		}else {
-			if(dir==right_dir) {
-				if(atacando) {
-					if(indexAtk!=24 ) {
-						setMask(1,40,20,30,10);
-					}
-				}else {
-					setMask(1,20,20,30,10);
-				}
-			}else {
-				if(atacando) {
-					if(indexAtk!=24 ) {
-						setMask(1,-5,20,30,10);
-					}
-				}else {
-					setMask(1,20,20,30,10);
-				}
-			}
-		}
-		
-		
-		
-		
-	}
+
 	
 	
 

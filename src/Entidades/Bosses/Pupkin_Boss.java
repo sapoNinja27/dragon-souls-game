@@ -1,10 +1,9 @@
-package Entidades;
+package Entidades.Bosses;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import Main.Game;
-import World.Camera;
+import Entidades.Entity;
 
 public class Pupkin_Boss extends Entity {
 	public static int index;

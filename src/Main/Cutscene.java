@@ -8,10 +8,10 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import Entidades.Pupkin_Boss;
-import Entidades.light_npc;
-import Entidades.roux_npc;
 import Entidades.soldier_npc;
+import Entidades.Bosses.Pupkin_Boss;
+import Entidades.Npcs.light_npc;
+import Entidades.Npcs.roux_npc;
 
 public class Cutscene {
 	int fade, aux;

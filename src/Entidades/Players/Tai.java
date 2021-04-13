@@ -1,4 +1,4 @@
-package Entidades;
+package Entidades.Players;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -241,53 +241,7 @@ public class Tai extends Player{
 			}
 		}
 	}
-	public void setHitbox() {
-		//hitbox padrao
-		setMask(0,20,11,20,52);
-		setMask(2,11,60,40,3);
-		//ataques melle
-		if(special>maxspecial/2) {
-			if(dir==right_dir) {
-				if(atacando) {
-					if(indexAtk!=24 ) {
-						setMask(1,50,20,30,10);
-					}
-				}else {
-					setMask(1,20,20,30,10);
-				}
-			}else {
-				if(atacando) {
-					if(indexAtk!=24 ) {
-						setMask(1,-15,20,30,10);
-					}
-				}else {
-					setMask(1,20,20,30,10);
-				}
-			}
-		}else {
-			if(dir==right_dir) {
-				if(atacando) {
-					if(indexAtk!=24 ) {
-						setMask(1,40,20,30,10);
-					}
-				}else {
-					setMask(1,20,20,30,10);
-				}
-			}else {
-				if(atacando) {
-					if(indexAtk!=24 ) {
-						setMask(1,-5,20,30,10);
-					}
-				}else {
-					setMask(1,20,20,30,10);
-				}
-			}
-		}
-		
-		
-		
-		
-	}
+	
 	
 	void dash() {
 		if(dash) {
@@ -331,7 +285,8 @@ public class Tai extends Player{
 		Sombras(g,direcao);
 		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		CharEscuro(g,direcao);
-		
+//		g.setColor(Color.red);
+//		g.drawRect(getX()- Camera.x+maskx[2], getY()- Camera.y+masky[2], maskw[2], maskh[2]);
 		
 		
 		

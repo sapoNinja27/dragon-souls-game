@@ -1,4 +1,4 @@
-package Entidades;
+package Entidades.Players;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -446,8 +446,6 @@ public class Sander extends Player{
 				dx = -1;
 			}
 			
-			BulletShoot bullet = new BulletShoot(this.getX()+px,this.getY()+py,3,3,null,dx,0);
-			Game.bullets.add(bullet);
 			
 		}
 	}

@@ -1,15 +1,16 @@
-package Entidades;
+package Entidades.Players;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
-import Graficos.Spritesheet;
+import Entidades.Entity;
+import Entidades.Lifepack;
+import Entidades.Cenario.Plataforma;
+import Entidades.Cenario.PosteLuz;
 import Main.Game;
 import World.Camera;
 import World.World;
@@ -122,7 +123,7 @@ public class Player extends Entity {
 		for(int i = 0; i < Game.entities.size(); i++){
 			Entity atual = Game.entities.get(i);
 			if(atual instanceof Plataforma) {
-				if(Entity.isColidding(this,  atual,0,0)) {
+				if(Entity.isColidding(this,  atual,2,0)) {
 					return false;
 				}
 				
@@ -288,7 +289,7 @@ public class Player extends Entity {
 			}
 		}else if(Game.Ambiente=="Terraço") {
 			if(Game.dia) {
-				op=0.5f;
+				op=0.0f;
 			}else {
 				op=0.2f;
 				if(this==Game.player2) {
@@ -413,7 +414,7 @@ public void movedY() {
 		}
 		
 		
-		setMask(0,-50,11,150,52);
+		
 		if(Game.player.dash) {
 			parado=false;
 			dash=true;
@@ -468,6 +469,52 @@ public void movedY() {
 			
 		}
 		visivel=true;
+	}
+	public void setHitbox() {
+		setMask(0,20,11,20,52);
+		setMask(2,11,60,40,3);
+		//ataques melle
+		if(special>maxspecial/2) {
+			if(dir==right_dir) {
+				if(atacando) {
+					if(indexAtk!=24 ) {
+						setMask(1,50,20,30,10);
+					}
+				}else {
+					setMask(1,20,20,30,10);
+				}
+			}else {
+				if(atacando) {
+					if(indexAtk!=24 ) {
+						setMask(1,-15,20,30,10);
+					}
+				}else {
+					setMask(1,20,20,30,10);
+				}
+			}
+		}else {
+			if(dir==right_dir) {
+				if(atacando) {
+					if(indexAtk!=24 ) {
+						setMask(1,40,20,30,10);
+					}
+				}else {
+					setMask(1,20,20,30,10);
+				}
+			}else {
+				if(atacando) {
+					if(indexAtk!=24 ) {
+						setMask(1,-5,20,30,10);
+					}
+				}else {
+					setMask(1,20,20,30,10);
+				}
+			}
+		}
+		
+		
+		
+		
 	}
 	public void movedX() {
 		if(right && isFreeX()!="esquerda") {

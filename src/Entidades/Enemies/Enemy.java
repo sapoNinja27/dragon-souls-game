@@ -1,10 +1,11 @@
-package Entidades;
+package Entidades.Enemies;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Entidades.Entity;
 import Main.Game;
 import World.Camera;
 import World.World;

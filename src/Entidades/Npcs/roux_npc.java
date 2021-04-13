@@ -1,22 +1,20 @@
-package Entidades;
-
+package Entidades.Npcs;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import Main.Game;
-import World.Camera;
+import Entidades.Entity;
 
-public class light_npc extends Entity {
+public class roux_npc extends Entity {
 	public static int index;
-	static int px,py;
 	public static boolean parado;
 	private int framesParado = 0,maxFramesParado = 17,indexParado = 0, maxIndexParado=4;
+	static int px,py;
 	public static int right_dir = 0,left_dir = 1;
 	public static int dir = right_dir;
 	BufferedImage img[]= new BufferedImage[18];
 	private BufferedImage[] right= new BufferedImage[19];
 	private BufferedImage[] left= new BufferedImage[19];
-	public light_npc(int x, int y, int width, int height, BufferedImage[] sprite) {
+	public roux_npc(int x, int y, int width, int height, BufferedImage[] sprite) {
 		super(x, y, width, height, null);
 		
 	}
@@ -25,10 +23,18 @@ public class light_npc extends Entity {
 		py=y;
 	}
 	public void tick() {
+//		frames++;
+//		if(frames==10) {
+//			frames=0;
+//			index++;
+//			if(index==14) {
+//				index=7;
+//			}
+//		}
 		
-//		depth=6;
-//		for(int i=0; i<6;i++) {
-//			right[i]=Game.light.getSprite(Game.TILE_SIZE*(i+1), 8*Game.TILE_SIZE, Game.TILE_SIZE*2, Game.TILE_SIZE);
+//		depth=5;
+//		for(int i=0; i<11;i++) {
+//			right[i]=Game.spritesheet.getSprite(Game.TILE_SIZE*(i), 13*Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE);
 //		}
 //		if(left[0]==null && left[18]==null) {
 //			for(int i=0;i<18;i++) {
@@ -57,10 +63,10 @@ public class light_npc extends Entity {
 //				img[i]=(right[i]);
 //			}
 //		}
-		
-		
 	}
 	public void render(Graphics g) {
-//		g.drawImage(img[index], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
+//		g.drawImage(img[index], this.getX()- Camera.x+px,this.getY()+py - Camera.y, null);
 	}
 }
+
+

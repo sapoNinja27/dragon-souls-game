@@ -1,16 +1,16 @@
-package Entidades;
+package Entidades.Cenario;
+
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Entidades.Entity;
 import Main.Game;
 import World.Camera;
-import World.Tile;
 
 public class Plataforma extends Entity{
 	private int tipo=0;
