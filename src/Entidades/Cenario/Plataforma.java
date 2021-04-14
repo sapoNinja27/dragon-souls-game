@@ -45,7 +45,7 @@ public class Plataforma extends Entity{
 			op=0.1f;
 		}
 		for(int i=0; i<(img.length/2);i++) {
-			img[i]=Game.cenario.getSprite((1+i)*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
+			img[i]=Game.cenario.getSprite((i)*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 		}
 		if(!invisivel) {
 			setMask(0,0,-3,64,3);

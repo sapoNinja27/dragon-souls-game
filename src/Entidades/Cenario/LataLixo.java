@@ -1,6 +1,7 @@
 package Entidades.Cenario;
 
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -29,10 +30,20 @@ public class LataLixo extends Entity{
 	}
 	public void render(Graphics g) {
 		for(int i=0;i<3;i++) {
+			
 			if(pos[i]==1) {
 				g.drawImage(lata[index[i]],this.getX()-Camera.x+20+(-i*20),this.getY()-Camera.y+7,Game.TILE_SIZE,Game.TILE_SIZE,null);
 			}else{
 				g.drawImage(inverter(lata[index[i]]),this.getX()-Camera.x+20+(-i*20),this.getY()-Camera.y+7,Game.TILE_SIZE,Game.TILE_SIZE,null);
+			}
+			
+		}
+		if(Game.dia) {
+			for(int i=0;i<3;i++) {
+				if(index[i]==0) {
+					g.setColor(Color.LIGHT_GRAY);
+					g.fillOval(this.getX()-Camera.x+40+Game.rand.nextInt(25)+(-i*20),this.getY()-Camera.y+7+Game.rand.nextInt(20),3,3);
+				}
 			}
 		}
 		

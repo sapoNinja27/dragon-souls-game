@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import Entidades.Entity;
 import Entidades.Lifepack;
+import Entidades.Cenario.ArtificiosComMovimento;
 import Entidades.Cenario.Plataforma;
 import Entidades.Cenario.PosteLuz;
 import Main.Game;
@@ -28,6 +29,7 @@ public class Player extends Entity {
 	protected double y;
 	boolean jaParou;
 	public boolean camL,camR,camU;
+	private int framesObj=0;
 	public int framesMoved = 0,maxFramesMoved = 9,indexMoved = 4, maxIndexMoved=12;
 	public int framesParan = 0,maxFramesParan = 15;
 	public int framesParado = 0,maxFramesParado = 17,indexParado = 0, maxIndexParado=4;
@@ -118,6 +120,41 @@ public class Player extends Entity {
 //			}
 //		}
 		return "livre";
+	}
+	public void gerarObj() {
+		if(Game.Ambiente=="Esgoto") {
+			if(Game.rand.nextInt(50)==0){
+				ArtificiosComMovimento am= new ArtificiosComMovimento(Game.player.getX()+500,3900+Game.rand.nextInt(2)*32,64,64,null);
+				am.setTipo(1);
+				am.setSpeed(Game.rand.nextInt(3));
+				if(Game.objetos.size()<Game.rand.nextInt(10)) {
+					Game.objetos.add(am);
+				}
+			}
+			
+		}else if(Game.Ambiente=="Cidade") {
+			if(Game.dia) {
+				if(Game.rand.nextInt(25)==0){
+					ArtificiosComMovimento am= new ArtificiosComMovimento(Game.player.getX()-1100,2300+Game.rand.nextInt(5),64,64,null);
+					am.setTipo(0);
+					am.setSpeed(Game.rand.nextInt(13));
+					if(Game.objetos.size()<Game.rand.nextInt(3)) {
+						Game.objetos.add(am);
+					}
+				}
+			}else {
+				if(Game.rand.nextInt(100)==0){
+					ArtificiosComMovimento am= new ArtificiosComMovimento(Game.player.getX()-1100,2300+Game.rand.nextInt(5),64,64,null);
+					am.setTipo(0);
+					am.setSpeed(Game.rand.nextInt(13));
+					if(Game.objetos.size()<Game.rand.nextInt(2)) {
+						Game.objetos.add(am);
+					}
+				}
+			}
+			
+			
+		}
 	}
 	public boolean isFreeY(){
 		for(int i = 0; i < Game.entities.size(); i++){

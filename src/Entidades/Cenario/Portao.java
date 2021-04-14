@@ -41,7 +41,7 @@ public class Portao extends Entity{
 		}
 		setMask(0,0,20,64,40);
 		for(int i=0;i <2 ; i++) {
-			porta1[i]=Game.cenario.getSprite((4+i)*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
+			porta1[i]=Game.cenario.getSprite((0+i)*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 		}
 
 	}
@@ -68,9 +68,9 @@ public class Portao extends Entity{
 //			g.drawLine(100+160, 125, 100+310, 125);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
-		g.drawImage(Game.cenario.getSprite(Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+		g.drawImage(Game.cenario.getSprite(0,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 				this.getX()-Camera.x-29,this.getY()-Camera.y+3,Game.TILE_SIZE,Game.TILE_SIZE,null);
-		g.drawImage(Game.cenario.getSprite(2*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+		g.drawImage(Game.cenario.getSprite(1*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
 				this.getX()-Camera.x-29+64,this.getY()-Camera.y+3,Game.TILE_SIZE,Game.TILE_SIZE,null);	
 		}
 						

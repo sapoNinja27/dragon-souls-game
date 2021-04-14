@@ -29,6 +29,7 @@ import javax.swing.JFrame;
 
 import Entidades.BulletShoot;
 import Entidades.Entity;
+import Entidades.Cenario.ArtificiosComMovimento;
 import Entidades.Cenario.EscadaEsgoto;
 import Entidades.Cenario.Plataforma;
 import Entidades.Cenario.Porta;
@@ -57,8 +58,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	private int CUR_LEVEL = 1;
 	private BufferedImage image;
-	public static boolean dia=true;
+	public static boolean dia=false;
 	public static List<Entity> entities;
+	public static List<ArtificiosComMovimento> objetos;
 	public static List<Enemy> enemies;
 	public static List<Porta> portas;
 	public static List<Porta> portaTerraco;
@@ -124,6 +126,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		portoes = new ArrayList<Portao>();
 		bueiros = new ArrayList<Plataforma>();
 		escadasDeEsgoto=new ArrayList<EscadaEsgoto>();
+		objetos=new ArrayList<ArtificiosComMovimento>();
 		//personagens
 		ace = new Spritesheet("/personagens/ace.png");
 		demonTai = new Spritesheet("/personagens/demonTai.png");
@@ -232,7 +235,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 			for(int i = 0; i < bullets.size(); i++) {
 				bullets.get(i).tick();
 			}
-			
+			for(int i = 0; i < objetos.size(); i++) {
+				objetos.get(i).tick();
+			}
 	//		if(enemies.size() == 0) {
 	//			String newWorld = "level"+CUR_LEVEL+".png";
 	//			World.restartGame(newWorld);
@@ -285,6 +290,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 			}
 			for(int i = 0; i < bullets.size(); i++) {
 				bullets.get(i).render(g);
+			}
+			for(int i = 0; i < objetos.size(); i++) {
+				objetos.get(i).render(g);
 			}
 //			ui.render(g);
 			if(cen.CcRun()) {

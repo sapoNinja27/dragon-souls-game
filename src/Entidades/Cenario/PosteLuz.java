@@ -91,8 +91,9 @@ public class PosteLuz extends Entity{
 					6);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
-		
-		
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillOval(this.getX()-Camera.x+40+Game.rand.nextInt(25)+(10),this.getY()-Camera.y+Game.rand.nextInt(20)-140,3,3);
+		g.fillOval(this.getX()-Camera.x+40+Game.rand.nextInt(25)-50,this.getY()-Camera.y+Game.rand.nextInt(20)-140,3,3);
 		
 //		g.drawRect(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
 		

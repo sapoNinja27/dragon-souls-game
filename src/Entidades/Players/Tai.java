@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import Entidades.Cenario.ArtificiosComMovimento;
 import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
@@ -121,6 +122,7 @@ public class Tai extends Player{
 		
 	}
 	public void tick() {
+			
 			attsprite();
 			setHitbox();
 			anim();
@@ -129,6 +131,7 @@ public class Tai extends Player{
 			movedY();
 			lifesistem();
 			if(this==Game.player) {
+				gerarObj();
 				updateCamera(); 
 				nBot();
 				checkCollisionLifePack();
