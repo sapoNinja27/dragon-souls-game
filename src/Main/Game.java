@@ -37,6 +37,7 @@ import Entidades.Cenario.Portao;
 import Entidades.Enemies.Enemy;
 import Entidades.Players.Ace;
 import Entidades.Players.Player;
+import Entidades.Players.Sander;
 import Entidades.Players.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
@@ -58,7 +59,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	private int CUR_LEVEL = 1;
 	private BufferedImage image;
-	public static boolean dia=false;
+	public static boolean dia=true;
 	public static List<Entity> entities;
 	public static List<ArtificiosComMovimento> objetos;
 	public static List<Enemy> enemies;
@@ -149,7 +150,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		
 		
 		
-		player = new Tai(0,0,TILE_SIZE,TILE_SIZE,tai.getSprite(TILE_SIZE*0, 0, TILE_SIZE, TILE_SIZE));
+		player = new Sander(0,0,TILE_SIZE,TILE_SIZE,tai.getSprite(TILE_SIZE*0, 0, TILE_SIZE, TILE_SIZE));
 		player2=new Ace(0,0,TILE_SIZE,TILE_SIZE,null);
 		entities.add(player);
 		entities.add(player2);

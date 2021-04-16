@@ -31,8 +31,8 @@ public class World {
 	private int beiradas=1;
 	private int cor=0;
 	private Color[] predios1= {
-			new Color(0xFFE55137)
-			,new Color(0xFFE7BCC1),
+			new Color(0xFF007F0E)
+			,new Color(0xFF415944),
 			new Color(0xFFFFAF6E),
 			new Color(0xFF7A6A70),//
 			new Color(0xFF6A4B74),
@@ -282,7 +282,7 @@ public class World {
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 								Tile.colorir
 								(Game.cenario.getSprite
-										(0*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF3B4235)));
+										(0*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF294F29)));
 					}else 
 						//PORTAS
 						//PORTAS

@@ -91,7 +91,6 @@ public class Menu_ingame {
 		}
 	}
 	public void render(Graphics g) {
-		Game.player.personagem="Tai";
 		if(Game.player.personagem=="Tai") {
 			//menu do tai
 			g.drawImage(Game.fundoT.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);

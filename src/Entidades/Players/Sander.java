@@ -34,31 +34,31 @@ public class Sander extends Player{
 		sombra= new BufferedImage[50];
 		//respirando
 		for(int i =0; i < 4; i++){
-			rightTai[i] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightTai[i] =   Game.sander.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*0, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
 		//correndo
 		for(int i =0; i < 9; i++){
-			rightTai[i+4] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*1, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightTai[i+4] =   Game.sander.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*1, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
 		//pulando
 		for(int i =0; i < 6; i++){
-			rightTai[i+13] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*2, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightTai[i+13] =   Game.sander.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*2, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
 		//dash
 		for(int i =0; i < 5; i++){
-			rightTai[i+19] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*3, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightTai[i+19] =   Game.sander.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*3, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
 //		//parado soco
 		for(int i =0; i < 4; i++){
-			rightTai[i+24] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*4, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightTai[i+24] =   Game.sander.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*4, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
 //		//socos
 		for(int i =0; i < 6; i++){
-			rightTai[i+28] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*5, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightTai[i+28] =   Game.sander.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*5, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
 //		//hb1
 		for(int i =0; i < 9; i++){
-			rightTai[i+34] =   Game.tai.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*6, Game.TILE_SIZE, Game.TILE_SIZE);
+			rightTai[i+34] =   Game.sander.getSprite(Game.TILE_SIZE*i, Game.TILE_SIZE*6, Game.TILE_SIZE, Game.TILE_SIZE);
 		}
 //		//h2
 //		for(int i =0; i < 4; i++){
@@ -285,12 +285,20 @@ public class Sander extends Player{
 		Sombras(g,direcao);
 		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		CharEscuro(g,direcao);
-//		g.setColor(Color.red);
-//		g.drawRect(getX()- Camera.x+maskx[2], getY()- Camera.y+masky[2], maskw[2], maskh[2]);
 		
 		
 		
-		
+//		Color c=Color.green;
+//		g.setColor(c);
+//		g.fillOval(200, 200, 50, 50);
+//		int red= c.getRed();
+//		int green= c.getGreen();
+//		int blue= c.getBlue();
+//		float[] hsbvals = new float[3];
+//		Color.RGBtoHSB(red, green, blue, hsbvals);
+//		System.out.println(hsbvals[0]);
+//		g.setColor(new Color(Color.HSBtoRGB(hsbvals[0], hsbvals[1], hsbvals[2])));
+//		g.fillOval(250, 200, 50, 50);
 	}
 
 }
