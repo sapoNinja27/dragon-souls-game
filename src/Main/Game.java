@@ -27,22 +27,25 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import Entidades.BulletShoot;
 import Entidades.Entity;
-import Entidades.Cenario.ArtificiosComMovimento;
+import Entidades.Projetil;
 import Entidades.Cenario.EscadaEsgoto;
 import Entidades.Cenario.Plataforma;
 import Entidades.Cenario.Porta;
 import Entidades.Cenario.Portao;
+import Entidades.Cenario.ObjetosComMovimento.LixoEsgoto;
+import Entidades.Cenario.ObjetosComMovimento.ObjetosComMovimento;
+import Entidades.Cenario.ObjetosComMovimento.Transito;
 import Entidades.Enemies.Enemy;
 import Entidades.Players.Ace;
 import Entidades.Players.Player;
-import Entidades.Players.Sander;
 import Entidades.Players.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
 import Menu.Menu;
 import World.World;
+import enums.TipoMenu;
+import jObjects.Mouse;
 
 public class Game extends Canvas implements Runnable,KeyListener,MouseListener,MouseMotionListener{
 	public static int TILE_SIZE=64;
@@ -56,19 +59,19 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static final int WIDTH = 180*4;
 	public static final int HEIGHT = 90*4;
 	public static final int SCALE = 2;
-	
+	public static TipoMenu estadoMenu=TipoMenu.INICIAL;
 	private int CUR_LEVEL = 1;
 	private BufferedImage image;
 	public static boolean dia=true;
 	public static List<Entity> entities;
-	public static List<ArtificiosComMovimento> objetos;
+	public static List<ObjetosComMovimento> objetos;
 	public static List<Enemy> enemies;
 	public static List<Porta> portas;
 	public static List<Porta> portaTerraco;
 	public static List<Portao> portoes;
 	public static List<EscadaEsgoto> escadasDeEsgoto;
 	public static List<Plataforma> bueiros;
-	public static List<BulletShoot> bullets;
+	public static List<Projetil> bullets;
 	//personagens
 	public static Spritesheet ace;
 	public static Spritesheet demonTai;
@@ -121,13 +124,13 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		pixels =((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
-		bullets = new ArrayList<BulletShoot>();
+		bullets = new ArrayList<Projetil>();
 		portas = new ArrayList<Porta>();
 		portaTerraco = new ArrayList<Porta>();
 		portoes = new ArrayList<Portao>();
 		bueiros = new ArrayList<Plataforma>();
 		escadasDeEsgoto=new ArrayList<EscadaEsgoto>();
-		objetos=new ArrayList<ArtificiosComMovimento>();
+		objetos=new ArrayList<ObjetosComMovimento>();
 		//personagens
 		ace = new Spritesheet("/personagens/ace.png");
 		demonTai = new Spritesheet("/personagens/demonTai.png");
@@ -150,8 +153,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		
 		
 		
-		player = new Sander(0,0,TILE_SIZE,TILE_SIZE,tai.getSprite(TILE_SIZE*0, 0, TILE_SIZE, TILE_SIZE));
-		player2=new Ace(0,0,TILE_SIZE,TILE_SIZE,null);
+		player = new Tai(0,0);
+		player2=new Ace(0,0);
 		entities.add(player);
 		entities.add(player2);
 		world = new World("/niveis/mapaMundi.png");
@@ -160,7 +163,69 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		menu = new Menu();
 		cen=new Cutscene();
 	}
-	
+	public void gerarObj() {
+		if(Game.Ambiente=="Esgoto") {
+			if(Game.rand.nextInt(50)==0){
+				ObjetosComMovimento am= new LixoEsgoto(Game.player.getX()+500,3900+Game.rand.nextInt(2)*32);
+				am.setSpeed(Game.rand.nextInt(3));
+				if(Game.objetos.size()<Game.rand.nextInt(10)) {
+					Game.objetos.add(am);
+				}
+			}
+			
+		}else if(Game.Ambiente=="Cidade") {
+			if(Game.dia) {
+				if(Game.rand.nextInt(25)==0){
+					ObjetosComMovimento am= new Transito(Game.player.getX()-1100,2300+Game.rand.nextInt(5));
+					am.setSpeed(Game.rand.nextInt(13));
+					if(Game.objetos.size()<Game.rand.nextInt(3)) {
+						Game.objetos.add(am);
+					}
+				}
+			}else {
+				if(Game.rand.nextInt(100)==0){
+					ObjetosComMovimento am= new Transito(Game.player.getX()-1100,2300+Game.rand.nextInt(5));
+					am.setSpeed(Game.rand.nextInt(13));
+					if(Game.objetos.size()<Game.rand.nextInt(2)) {
+						Game.objetos.add(am);
+					}
+				}
+			}
+			
+			
+		}
+	}
+	/**
+	 * Atualiza a imagem do mouse
+	 */
+	public void attMouse() {
+//		int bot = mascaras.size();
+//		for (int i = 0; i < mascaras.size(); i++) {
+//			if (mascaras.get(i).mouseOver()) {
+//				bot--;
+//			}
+//		}
+//		if (bot == mascaras.size()) {
+//			try {
+//				Toolkit toolkit = Toolkit.getDefaultToolkit();
+//				Image image = mouse.getSprite(0,0,32,32);
+//				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+//				frame.setCursor(c);
+//			} catch (Exception e) {
+//
+//			}
+//		} else {
+//			try {
+//				Toolkit toolkit = Toolkit.getDefaultToolkit();
+//				Image image = mouse.getSprite(32,0,32,32);
+//				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+//				frame.setCursor(c);
+//			} catch (Exception e) {
+//
+//			}
+//		}
+
+	}
 	public void initFrame(){
 		frame = new JFrame("Dragon Soul I");
 		frame.add(this);
@@ -220,7 +285,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 				String[] opt1= {"level"};
 				int[] opt2= {1};
 				menu.saveGame(opt1,opt2,0);
-				System.out.println("salvo");
 			}
 			if(cen.CcRun()) {
 				cen.tick();
@@ -236,6 +300,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 			for(int i = 0; i < bullets.size(); i++) {
 				bullets.get(i).tick();
 			}
+			gerarObj();
 			for(int i = 0; i < objetos.size(); i++) {
 				objetos.get(i).tick();
 			}
@@ -248,8 +313,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 			
 			
 			if(restartGame) {
-				this.restartGame = false;
-				this.gameState = "NORMAL";
+				restartGame = false;
+				gameState = "NORMAL";
 				CUR_LEVEL = 1;
 				String newWorld = "level"+CUR_LEVEL+".png";
 				//System.out.println(newWorld);
@@ -356,11 +421,7 @@ public void run() {
 			
 		}
 		if(e.getKeyCode() == KeyEvent.VK_P){
-			if(Game.player.personagem=="Tai") {
-				player.trocaPersonagem("Ace");
-			}else {
-				player.trocaPersonagem("Tai");
-			}
+			Player.trocaPersonagem(player,player2);
 		}
 		if(!cen.CcRun()) {
 			if(e.getKeyCode() == KeyEvent.VK_UP){
@@ -447,7 +508,7 @@ public void run() {
 		
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			gameState = "MENU";
-			menu.pause = true;
+			estadoMenu=TipoMenu.PAUSE;
 		}
 		
 	}
@@ -475,10 +536,8 @@ public void run() {
 				player.right = false;
 				player.moved=false;
 				if(!player.left) {
-					if(player.isFreeX()!="esquerda") {
-						if(!player.caindo && !player.subindo) {
-							player.parando=true;
-						}
+					if(!player.caindo && !player.subindo) {
+						player.parando=true;
 					}
 				}
 
@@ -487,10 +546,8 @@ public void run() {
 				player.left = false;
 				player.moved=false;
 				if(!player.right) {
-					if(player.isFreeX()!="direita") {
-						if(!player.caindo && !player.subindo) {
-							player.parando=true;
-						}
+					if(!player.caindo && !player.subindo) {
+						player.parando=true;
 					}
 				}
 
@@ -518,46 +575,51 @@ public void run() {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		
+
 	}
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		menu.mx=e.getX()/2;
-		menu.my=e.getY()/2;
+		if (e != null) {
+			Mouse.setCordinates(e.getX()/2, e.getY()/2);
+		}
 	}
+
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		menu.clicou=true;
+		if (e != null ) {
+			Mouse.pressed = true;
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		menu.mx=e.getX()/2;
-		menu.my=e.getY()/2;
-		menu.clicou=false;	
-		menu.soltou=true;
+		if (e != null) {
+			Mouse.setCordinates(e.getX()/2, e.getY()/2);
+			Mouse.pressed = false;
+			Mouse.released = true;
+		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-//  nao
-		
+
 	}
 
 	

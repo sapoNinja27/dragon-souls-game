@@ -1,4 +1,4 @@
-package Entidades.Cenario;
+package Entidades.Cenario.ObjetosComMovimento;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -13,29 +13,18 @@ import Main.Game;
 import World.Camera;
 import World.Tile;
 
-public class ArtificiosComMovimento extends Entity{
+public class Transito extends ObjetosComMovimento{
 	private int speed=10;
 	private BufferedImage img;
-	public ArtificiosComMovimento(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
-	}
-	public void setTipo(int tipo){
-		if(tipo==1) {
-			img=Game.cenario.getSprite(Game.TILE_SIZE+(32*Game.rand.nextInt(2)),6*Game.TILE_SIZE+32*Game.rand.nextInt(2),32,32);
-		}else if(tipo==0) {
-			img=inverter(Game.cenario.getSprite((Game.rand.nextInt(2))*Game.TILE_SIZE,(7+Game.rand.nextInt(2))*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
-		}
+	public Transito(int x, int y) {
+		super(x, y);
+		img=inverter(Game.cenario.getSprite((Game.rand.nextInt(2))*Game.TILE_SIZE,(7+Game.rand.nextInt(2))*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE));
 	}
 	public void setSpeed(int speed){
 		this.speed=speed;
 	}
 	public void tick() {
-		depth=10;
-		if(Game.Ambiente=="Cidade") {
-			x+=speed+10;
-		}else if(Game.Ambiente=="Esgoto") {
-			x-=speed+1;
-		}
+		x+=speed+10;
 		if(distanciaX(getX(),Game.player.getX())>1200) {
 			Game.objetos.remove(this);
 		}
@@ -75,16 +64,7 @@ public class ArtificiosComMovimento extends Entity{
 						this.getY()-Camera.y-Game.TILE_SIZE*3+200},
 						6);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-				
 			}
-			
-		}else if(Game.Ambiente=="Esgoto") {
-			g.drawImage(img,this.getX()-Camera.x+20+(20),this.getY()-Camera.y+10,32,32,null);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
-			g.drawImage(Sombra(img),this.getX()-Camera.x+20+(20),this.getY()-Camera.y+10,32,32,null);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
 	}
-						
-	
 }

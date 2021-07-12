@@ -20,16 +20,14 @@ public class Entity {
 	
 	public boolean debug = false;
 	
-	private BufferedImage sprite;
 	public int depth;
 	public int maskx[],masky[],maskh[],maskw[];
 	
-	public Entity(int x,int y,int width,int height,BufferedImage sprite){
+	public Entity(int x,int y,int width,int height){
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.sprite = sprite;
 		
 		maskx = new int[5];
 		masky = new int[5];

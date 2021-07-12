@@ -13,10 +13,10 @@ import Main.Game;
 import World.Camera;
 import World.Tile;
 
-public class DanoDeQueda extends Entity{
+public class LimiteDeCenarioAbismo extends Entity{
 
-	public DanoDeQueda(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public LimiteDeCenarioAbismo(int x, int y, int width, int height) {
+		super(x, y, width, height);
 	}
 	
 	public void tick() {
@@ -26,7 +26,7 @@ public class DanoDeQueda extends Entity{
 	public void checkCollision(){
 		for(int i = 0; i < Game.entities.size(); i++){
 			Entity atual = Game.entities.get(i);
-			if(atual instanceof DanoDeQueda) {
+			if(atual instanceof LimiteDeCenarioAbismo) {
 				if(Entity.isColidding(Game.player, atual,0,0)) {
 						teleportar(Game.portaTerraco.get(Game.player.lastPorta).getX()-40,
 								Game.portaTerraco.get(Game.player.lastPorta).getY(),

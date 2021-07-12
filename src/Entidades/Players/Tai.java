@@ -9,7 +9,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import Entidades.Cenario.ArtificiosComMovimento;
+import Entidades.Cenario.ObjetosComMovimento.ObjetosComMovimento;
 import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
@@ -26,8 +26,8 @@ public class Tai extends Player{
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100,stamina = 100,maxstamina=100;
 	
 	
-	public Tai(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public Tai(int x, int y) {
+		super(x, y);
 		
 		rightTai = new BufferedImage[50];
 		leftTai = new BufferedImage[50];
@@ -122,7 +122,6 @@ public class Tai extends Player{
 		
 	}
 	public void tick() {
-			
 			attsprite();
 			setHitbox();
 			anim();
@@ -131,7 +130,6 @@ public class Tai extends Player{
 			movedY();
 			lifesistem();
 			if(this==Game.player) {
-				gerarObj();
 				updateCamera(); 
 				nBot();
 				checkCollisionLifePack();
@@ -140,160 +138,11 @@ public class Tai extends Player{
 //				longeDemais();
 			}
 	}
-	
-	
-	public void anim() {
-		
-		if(right) {
-			dir=right_dir;
-		}else if(left) {
-			dir=left_dir;
-		}
-		if(!isFreeY() && moved && !dash && !dashS) {
-			index=indexMoved;
-		}else if(caiu_no_chao) {
-			index=index;
-		}else if(dash) {
-			index=indexDash;
-		}else if(dashS) {
-			index=indexDashS;
-		}else if(dashS2) {
-			index=indexDashS;
-		}else if(subindo) {
-			index=indexPul;
-		}else if(caindo) {
-			index=indexCai;
-		}else if(!isFreeY() && moved && !dash && !dashS ){
-			index=indexMoved;
-		}else if(atacando ) {
-			index=indexAtk;
-		}else if(parado) {
-			if(combat) {
-				index=indexParado+24;
-				frames++;
-				if(frames>=200) {
-					frames=0;
-					combat=false;
-				}
-			}else {
-				index=indexParado;
-			}
-		}
-		
-		if(dash) {
-			parando=false;
-			framesDash++;
-			if(framesDash == maxFramesDash) {
-				framesDash = 0;
-				indexDash++;
-				if(indexDash == maxIndexDash) {
-					indexDash = 19;
-					dash=false;
-					if(!moved) {
-						parando=true;
-					}
-					
-				}
-			}
-		}
-		if(dashS) {
-			dash=false;
-			indexDash = 19;
-			framesDash = 0;
-			framesDashS++;
-			if(framesDashS == maxFramesDashS) {
-				framesDashS = 0;
-				indexDashS++;
-				if(indexDashS == maxIndexDashS) {
-					indexDashS = 23;
-					dashS=false;
-					dashS2=true;
-				}
-			}
-		}
-		if(dashS2) {
-			dash=false;
-			framesDashS++;
-			if(framesDashS == maxFramesDashS2) {
-				framesDashS = 0;
-				indexDashS=19;
-					dashS2=false;
-					parado=true;
-				
-				}
-		}
-		if(parando ) {
-			index=12;
-			framesParan++;
-			if(dir==left_dir) {
-				if(isFreeX()!="direita") {
-					setX(getX()-1);
-				}
-			}else {
-				if(isFreeX()!="esquerda") {
-					setX(getX()+1);
-				}
-			}
-			if(framesParan == maxFramesParan) {
-				framesParan = 0;
-				parado=true;
-				parando=false;
-				if(this==Game.player2) {
-					jaParou=true;
-				}
-			}
-		}
-	}
-	
-	
-	void dash() {
-		if(dash) {
-			if(dir==right_dir) {
-				if(isFreeX()!="esquerda") {
-					setX(getX()+8);
-				}
-			}else {
-				if(isFreeX()!="direita") {
-					setX(getX()-8);
-				}
-			}
-		}
-		if(dashS) {
-				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+6);
-					}
-				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-6);
-					}
-				}
-			}
-			if(dashS2) {
-				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+4);
-					}
-				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-4);
-					}
-				}
-			}
-	}
-	
-
-	
 	public void render(Graphics g) {
 		Sombras(g,direcao);
 		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
 		CharEscuro(g,direcao);
 //		g.setColor(Color.red);
-//		g.drawRect(getX()- Camera.x+maskx[2], getY()- Camera.y+masky[2], maskw[2], maskh[2]);
-		
-		
-		
-		
+//		g.drawRect(getX()- Camera.x+maskx[2], getY()- Camera.y+masky[2], maskw[2], maskh[2]);	
 	}
-
 }

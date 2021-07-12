@@ -13,8 +13,8 @@ import World.Tile;
 
 public class Janela extends Entity{
 	private BufferedImage janela;
-	public Janela(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public Janela(int x, int y) {
+		super(x, y, 0, 0);
 	}
 	public void setCor(Color cor) {
 		janela=Tile.colorir(Game.cenario.getSprite((4)*Game.TILE_SIZE,(2)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),cor);

@@ -21,20 +21,19 @@ public class Porta extends Entity{
 	private Color cor;
 	private int tipo;
 	private BufferedImage fund[]=new BufferedImage[2];
-	public Porta(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public Porta(int x, int y, Color cor, int tipo) {
+		super(x, y, 0,0);
 		porta1=new BufferedImage[2];
+		setCor(cor);
+		this.tipo=tipo;
 	}
-	public void setCor(Color cor) {
+	private void setCor(Color cor) {
 		for(int i=0;i <2 ; i++) {
 			porta1[i]=Tile.colorir(Game.cenario.getSprite((i+2)*Game.TILE_SIZE,(2)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),cor);
 		}
 		for(int i=0;i <2 ; i++) {
 			fund[i]=Tile.colorir(Game.cenario.getSprite((i+4)*Game.TILE_SIZE,(0)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),cor);
 		}
-	}
-	public void setTipo(int tipo) {
-		this.tipo=tipo;
 	}
 	public void tick() {
 		depth=1;
@@ -71,25 +70,20 @@ public class Porta extends Entity{
 
 	}
 	public void checkCollisionPorta(){
-		for(int i = 0; i < Game.portas.size(); i++){
-			Porta atual = Game.portas.get(i);
-			if(atual instanceof Porta) {
-				if(Entity.isColidding(Game.player, atual,0,0)) {
-					atual.emFrente=true;
-					if(Game.player.clicouPortas) {
-						Game.player.clicouPortas=false;
-						teleportar(Game.portaTerraco.get(i).getX()-40,
-								Game.portaTerraco.get(i).getY(),
-								Game.portaTerraco.get(i).getX()-40,
-								Game.portaTerraco.get(i).getY(),
-								Game.player.dir);
-						Game.player.lastPorta=i;
-						Game.Ambiente="Terraço";
-					}
-				}else {
-					atual.emFrente=false;
-				}
+		if(Entity.isColidding(Game.player, this,0,0)) {
+			emFrente=true;
+			if(Game.player.clicouPortas) {
+				Game.player.clicouPortas=false;
+//				teleportar(Game.portaTerraco.get(i).getX()-40,
+//						Game.portaTerraco.get(i).getY(),
+//						Game.portaTerraco.get(i).getX()-40,
+//						Game.portaTerraco.get(i).getY(),
+//						Game.player.dir);
+//				Game.player.lastPorta=i;
+				Game.Ambiente="Terraço";
 			}
+		}else {
+			emFrente=false;
 		}
 	}
 	public void checkCollisionPortaTerraco(){

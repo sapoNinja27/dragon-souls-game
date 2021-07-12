@@ -16,10 +16,9 @@ public class Portao extends Entity{
 	public boolean emFrente;
 	private float op=0.1f;
 	private int frames=0;
-	private final int[] index= {Game.rand.nextInt(2),Game.rand.nextInt(2),Game.rand.nextInt(2),Game.rand.nextInt(2),Game.rand.nextInt(2)};
 	private BufferedImage[] porta1;
-	public Portao(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public Portao(int x, int y) {
+		super(x, y,0,0);
 		porta1=new BufferedImage[2];
 	}
 	public void tick() {

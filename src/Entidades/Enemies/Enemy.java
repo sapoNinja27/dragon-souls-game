@@ -25,11 +25,9 @@ public class Enemy extends Entity{
 	private boolean isDamaged = false;
 	private int damageFrames = 10,damageCurrent = 0;
 
-	public Enemy(int x, int y, int width, int height, BufferedImage[] sprite) {
-		super(x, y, width, height, null);
+	public Enemy(int x, int y) {
+		super(x, y, 0,0);
 		sprites = new BufferedImage[2];
-		this.sprites[0] = sprite[0];
-		this.sprites[1] = sprite[1];
 	}
 
 	public void tick(){	

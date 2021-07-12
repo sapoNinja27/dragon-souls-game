@@ -8,15 +8,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Entidades.Entity;
-import Entidades.Cenario.DanoDeQueda;
 import Entidades.Cenario.EscadaEsgoto;
 import Entidades.Cenario.Janela;
 import Entidades.Cenario.LataLixo;
-import Entidades.Cenario.Limite_Cenario;
+import Entidades.Cenario.LimiteDeCenarioAbismo;
+import Entidades.Cenario.ParedeInvisivel;
 import Entidades.Cenario.Plataforma;
 import Entidades.Cenario.Porta;
 import Entidades.Cenario.Portao;
 import Entidades.Cenario.PosteLuz;
+import Entidades.Cenario.Predio;
 import Main.Game;
 
 public class World {
@@ -63,20 +64,20 @@ public class World {
 						//chao de asfalto
 						cont ++;
 						if(cont%10==0 || cont==0) {
-							PosteLuz post = new PosteLuz(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+							PosteLuz post = new PosteLuz(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 							Game.entities.add(post);
 						}
-						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						pack.setTipo(3);
 						Game.entities.add(pack);
 					}else if(pixelAtual == 0xFFF2F2F2){
 						//chao de esgoto
-						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						pack.setTipo(6);
 						Game.entities.add(pack);	
 					}else if(pixelAtual == 0xFFE5E5E5){
 						//chao de esgoto coM canos
-						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						if(canoOn) {
 							pack.setTipo(4);
 							canoOn=false;
@@ -87,13 +88,13 @@ public class World {
 						Game.entities.add(pack);
 					}else if(pixelAtual == 0xFFAA004A){
 						//bueiro
-						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						pack.setTipo(1);
 						Game.entities.add(pack);
 						Game.bueiros.add(pack);
 					}else if(pixelAtual == 0xFFD8D8D8){
 						//Telhado
-						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Plataforma pack = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						pack.invisivel();
 						Game.entities.add(pack);
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,
@@ -106,8 +107,7 @@ public class World {
 						//PLAYER
 					if(pixelAtual == 0xFF0026FF) {
 						if(Game.Ambiente=="Cidade") {
-							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
-								Tile.colorir(Game.cenario.getSprite(2*Game.TILE_SIZE,6*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
+							
 						}else if(Game.Ambiente=="Esgoto") {
 							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 									Tile.colorir
@@ -135,21 +135,23 @@ public class World {
 						//PREDIO
 					if(pixelAtual == 0xFF494949) {
 						//parte de baixo PREDIO
+						Predio pack=new Predio(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 7, 8, predios1[cor], "normal");
+						Game.entities.add(pack);
 						
-						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
-								Tile.colorir(Game.cenario.getSprite(2*Game.TILE_SIZE,6*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
 					}else   if(pixelAtual == 0xFF333333) {
 						//parte de cima PREDIO
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 								Tile.colorir(Game.cenario.getSprite(2*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
-					}else if(pixelAtual == 0xFF8E8E34) {
+					}
+					else 
+						if(pixelAtual == 0xFF8E8E34) {
 						//dano de queda
-						DanoDeQueda pack = new DanoDeQueda(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 						Game.entities.add(pack);
 						
 					}else if(pixelAtual == 0xFFFF0000) {
 						//limite cenario
-						Limite_Cenario pack = new Limite_Cenario(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						ParedeInvisivel pack = new ParedeInvisivel(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						pack.setParede(borda);
 						borda++;
 						Game.entities.add(pack);
@@ -163,7 +165,7 @@ public class World {
 							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 									Entity.inverter(Tile.colorir(Game.cenario.getSprite(2*Game.TILE_SIZE,7*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor])));
 						}
-						DanoDeQueda pack = new DanoDeQueda(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 						Game.entities.add(pack);
 						
 					}else   if(pixelAtual == 0xFF4C4C1C) {
@@ -176,7 +178,7 @@ public class World {
 							tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 									Entity.inverter(Tile.colorir(Game.cenario.getSprite(2*Game.TILE_SIZE,8*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor])));
 						}
-						DanoDeQueda pack = new DanoDeQueda(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 						Game.entities.add(pack);
 					}else     if(pixelAtual == 0xFF666625) {
 						//parte de baixo dano de queda
@@ -187,7 +189,7 @@ public class World {
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 								Tile.colorir(Game.cenario.getSprite(2*Game.TILE_SIZE,5*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
 
-						DanoDeQueda pack = new DanoDeQueda(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
 						Game.entities.add(pack);
 					}else  if(pixelAtual == 0xFF262626) {
 						//beirada de cima-esquerda
@@ -293,19 +295,16 @@ public class World {
 						//porta
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 								Tile.colorir(Game.cenario.getSprite(2*Game.TILE_SIZE,6*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
-						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
-						pack.setCor(predios1[cor]);
+						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, predios1[cor], 0);
 						Game.entities.add(pack);
 						Game.portas.add(pack);
 					}else if(pixelAtual == 0xFFCCCCCC) {
 						//porta terraço
-						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
-						pack.setTipo(1);
-						pack.setCor(predios1[cor]);
+						Porta pack = new Porta(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, predios1[cor], 1);
 						Game.entities.add(pack);
 						Game.portaTerraco.add(pack);
 						
-						Plataforma plat = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Plataforma plat = new Plataforma(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						plat.invisivel();
 						Game.entities.add(plat);
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,
@@ -313,14 +312,16 @@ public class World {
 					}else if(pixelAtual == 0xFFE50063) {
 						//escada baixa
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
-								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF3B4235)));
-						EscadaEsgoto pack = new EscadaEsgoto(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+								Tile.colorir
+								(Game.cenario.getSprite
+										(0*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF294F29)));
+						EscadaEsgoto pack = new EscadaEsgoto(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						pack.setSubida();
 						Game.escadasDeEsgoto.add(pack);
 						Game.entities.add(pack);
 					}else if(pixelAtual == 0xFF7F0000) {
 						//portao
-						Portao pack = new Portao(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Portao pack = new Portao(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						Game.entities.add(pack);
 						Game.portoes.add(pack);
 					}else
@@ -335,18 +336,20 @@ public class World {
 					if(pixelAtual == 0xFFFF006E) {
 						//escada corpo
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
-								Tile.colorir(Game.cenario.getSprite(0*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF3B4235)));
-						EscadaEsgoto pack = new EscadaEsgoto(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+								Tile.colorir
+								(Game.cenario.getSprite
+										(0*Game.TILE_SIZE,1*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),new Color(0xFF294F29)));
+						EscadaEsgoto pack = new EscadaEsgoto(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						Game.entities.add(pack);
 					}else if(pixelAtual == 0xFF5E0000) {
 						//Lata de lixo
-						LataLixo pack = new LataLixo(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						LataLixo pack = new LataLixo(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						Game.entities.add(pack);
 					}else if(pixelAtual == 0xFF666666) {
 						//janela
 						tiles[xx + (yy * WIDTH)] = new FundoTile(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE, 
 								Tile.colorir(Game.cenario.getSprite(2*Game.TILE_SIZE,6*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),predios1[cor]));
-						Janela pack = new Janela(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+						Janela pack = new Janela(xx*Game.TILE_SIZE,yy*Game.TILE_SIZE);
 						pack.setCor(predios1[cor]);
 						Game.entities.add(pack);
 					}else 

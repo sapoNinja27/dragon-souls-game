@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import Main.Game;
 import World.Camera;
 
-public class BulletShoot extends Entity{
+public class Projetil extends Entity{
 
 	private double dx;
 	private double dy;
@@ -16,8 +16,8 @@ public class BulletShoot extends Entity{
 	private int life = 30,curLife = 0;
 	
 	
-	public BulletShoot(int x, int y, int width, int height, BufferedImage sprite,double dx,double dy) {
-		super(x, y, width, height, sprite);
+	public Projetil(int x, int y, int width, int height, BufferedImage sprite,double dx,double dy) {
+		super(x, y, width, height);
 		this.dx = dx;
 		this.dy = dy;
 	}

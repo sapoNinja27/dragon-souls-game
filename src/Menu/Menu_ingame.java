@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import Main.Game;
 import World.World;
+import jObjects.Mouse;
 
 public class Menu_ingame {
 	int posx=0,posy=0;
@@ -24,7 +25,7 @@ public class Menu_ingame {
 	boolean confirmacao;
 	Habilidades hab= new Habilidades();
 	Atributos at= new Atributos();
-	Personagens pe= new Personagens();
+	Inventario pe= new Inventario();
 	public int mx,my;
 	
 	
@@ -41,22 +42,22 @@ public class Menu_ingame {
 		if(Game.menu.menIn.hab.con.confirmar) {
 			Game.menu.menIn.hab.con.tick();
 		}else {
-			if(Game.menu.soltou) {
+			if(Mouse.released) {
 				if(mx>583 && mx<583+80 && my>30 && my<24+30) {
 					currentMenu++;
 					if(currentMenu>3) {
 						currentMenu=0;
 					}
-					Game.menu.soltou=false;
+					Mouse.released=false;
 				}else if(mx>50 && mx<80+80 && my>30 && my<30+24) {
 					currentMenu--;
 					if(currentMenu<0) {
 						currentMenu=3;
 					}
-					Game.menu.soltou=false;
+					Mouse.released=false;
 				}else if(mx>583 && mx<583+80 && my>314 && my<314+24) {
 					Game.gameState="NORMAL";
-					Game.menu.soltou=false;
+					Mouse.released=false;
 				}else {
 					currentOption=0;
 				}
@@ -91,35 +92,36 @@ public class Menu_ingame {
 		}
 	}
 	public void render(Graphics g) {
-		if(Game.player.personagem=="Tai") {
-			//menu do tai
-			g.drawImage(Game.fundoT.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
-			Game.menu.Standart= new Color(255,0,0);
-			Game.menu.MouseOver= new Color(200,0,0);
-			Game.menu.Pressed= new Color(150,0,0);
-			Game.menu.beje= new Color(247,212,212);
-		}else if(Game.player.personagem=="Ace") {
-			//menu do ace
-			g.drawImage(Game.fundoA.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
-			Game.menu.Standart= new Color(132,132,132);
-			Game.menu.MouseOver= new Color(102,102,102);
-			Game.menu.Pressed= new Color(76,76,76);
-			Game.menu.beje= new Color(212,212,212);
-		}else if(Game.player.personagem=="Sander") {
-			//menu do sander
-			g.drawImage(Game.fundoS.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
-			Game.menu.Standart= new Color(155,62,0);
-			Game.menu.MouseOver= new Color(102,40,0);
-			Game.menu.Pressed= new Color(51,20,0);
-			Game.menu.beje= new Color(247,212,212);
-			
-		}
+		g.fillRect(0, 0, 800, 800);
+//		if(Game.player.personagem=="Tai") {
+//			//menu do tai
+//			g.drawImage(Game.fundoT.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
+//			Game.menu.Standart= new Color(255,0,0);
+//			Game.menu.MouseOver= new Color(200,0,0);
+//			Game.menu.Pressed= new Color(150,0,0);
+//			Game.menu.beje= new Color(247,212,212);
+//		}else if(Game.player.personagem=="Ace") {
+//			//menu do ace
+//			g.drawImage(Game.fundoA.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
+//			Game.menu.Standart= new Color(132,132,132);
+//			Game.menu.MouseOver= new Color(102,102,102);
+//			Game.menu.Pressed= new Color(76,76,76);
+//			Game.menu.beje= new Color(212,212,212);
+//		}else if(Game.player.personagem=="Sander") {
+//			//menu do sander
+//			g.drawImage(Game.fundoS.getSprite(posx, posy, 1440, 720), 0, 0,720,360, null);
+//			Game.menu.Standart= new Color(155,62,0);
+//			Game.menu.MouseOver= new Color(102,40,0);
+//			Game.menu.Pressed= new Color(51,20,0);
+//			Game.menu.beje= new Color(247,212,212);
+//			
+//		}
 		g.setColor(Color.black);
 		g.fillRoundRect(580,312, 86, 28, 30, 50);
 		g.fillRoundRect(47,28, 86, 28, 30, 50);
 		g.fillRoundRect(580,28, 86, 28, 30, 50);
 		
-		if(Menu[currentOption]=="Sair" && Game.menu.clicou) {
+		if(Menu[currentOption]=="Sair" && Mouse.pressed) {
 			g.setColor(Game.menu.Pressed);
 			g.fillRoundRect(583,314, 80, 24, 30, 50);
 		}else if(Menu[currentOption]=="Sair") {
@@ -129,7 +131,7 @@ public class Menu_ingame {
 			g.setColor(Game.menu.Standart);
 			g.fillRoundRect(583,314, 80, 24, 30, 50);
 		}
-		if(Menu[currentOption]=="Back" && Game.menu.clicou) {
+		if(Menu[currentOption]=="Back" && Mouse.pressed) {
 			g.setColor(Game.menu.Pressed);
 			g.fillRoundRect(50,30, 80, 24, 30, 50);
 		}else if(Menu[currentOption]=="Back") {
@@ -139,7 +141,7 @@ public class Menu_ingame {
 			g.setColor(Game.menu.Standart);
 			g.fillRoundRect(50,30, 80, 24, 30, 50);
 		}
-		if(Menu[currentOption]=="Next" && Game.menu.clicou) {
+		if(Menu[currentOption]=="Next" && Mouse.pressed) {
 			g.setColor(Game.menu.Pressed);
 			g.fillRoundRect(583,30, 80, 24, 30, 50);
 		}else if(Menu[currentOption]=="Next") {

@@ -16,8 +16,8 @@ public class PosteLuz extends Entity{
 	private BufferedImage lampada[]=new BufferedImage[3];
 	private float op=0.1f;
 	private int frames = 0;
-	public PosteLuz(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public PosteLuz(int x, int y) {
+		super(x, y,0,0);
 	}
 	public void tick() {
 		if(!Game.dia) {
@@ -90,26 +90,10 @@ public class PosteLuz extends Entity{
 					this.getY()-Camera.y-Game.TILE_SIZE*3+197},
 					6);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillOval(this.getX()-Camera.x+40+Game.rand.nextInt(25)+(10),this.getY()-Camera.y+Game.rand.nextInt(20)-140,3,3);
+			g.fillOval(this.getX()-Camera.x+40+Game.rand.nextInt(25)-50,this.getY()-Camera.y+Game.rand.nextInt(20)-140,3,3);
 		}
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillOval(this.getX()-Camera.x+40+Game.rand.nextInt(25)+(10),this.getY()-Camera.y+Game.rand.nextInt(20)-140,3,3);
-		g.fillOval(this.getX()-Camera.x+40+Game.rand.nextInt(25)-50,this.getY()-Camera.y+Game.rand.nextInt(20)-140,3,3);
-		
-//		g.drawRect(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
-		
-			
-			
-			
-			
-			
-			
-
-			
-			
-			
-			
-			
+//		g.drawRect(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);	
 		}
-						
-	
 }

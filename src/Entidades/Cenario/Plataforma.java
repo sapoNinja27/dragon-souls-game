@@ -20,8 +20,8 @@ public class Plataforma extends Entity{
 	private int frames=0;
 	private float op =0.1f;
 	private boolean invisivel=false;
-	public Plataforma(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public Plataforma(int x, int y) {
+		super(x, y,0,0);
 		img= new BufferedImage[14];
 	}
 	public void setTipo(int tipo) {

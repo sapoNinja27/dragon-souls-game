@@ -17,8 +17,8 @@ public class Ace extends Player{
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100
 			,stamina = 100,maxstamina=100;
 
-	public Ace(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public Ace(int x, int y) {
+		super(x, y);
 		
 		rightAce= new BufferedImage[35];
 		leftAce= new BufferedImage[35];
@@ -203,13 +203,9 @@ public class Ace extends Player{
 			index=12;
 			framesParan++;
 			if(dir==left_dir) {
-				if(isFreeX()!="direita") {
-					setX(getX()-1);
-				}
+				setX(getX()-1);
 			}else {
-				if(isFreeX()!="esquerda") {
-					setX(getX()+1);
-				}
+				setX(getX()+1);
 			}
 			if(framesParan == maxFramesParan) {
 				framesParan = 0;
@@ -229,35 +225,23 @@ public class Ace extends Player{
 	void dash() {
 		if(dash) {
 			if(dir==right_dir) {
-				if(isFreeX()!="esquerda") {
-					setX(getX()+15);
-				}
+				setX(getX()+15);
 			}else {
-				if(isFreeX()!="direita") {
-					setX(getX()-15);
-				}
+				setX(getX()-15);
 			}
 		}
 		if(dashS) {
 				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+6);
-					}
+					setX(getX()+6);
 				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-6);
-					}
+					setX(getX()-6);
 				}
 			}
 			if(dashS2) {
 				if(dir==right_dir) {
-					if(isFreeX()!="esquerda") {
-						setX(getX()+4);
-					}
+					setX(getX()+4);
 				}else {
-					if(isFreeX()!="direita") {
-						setX(getX()-4);
-					}
+					setX(getX()-4);
 				}
 			}
 	}

@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import Main.Game;
-public class Personagens {
+public class Inventario {
 	int x=25;
 	int mx,my;
 	String[] Menu = {"Vazio",

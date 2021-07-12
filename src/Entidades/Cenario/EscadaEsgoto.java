@@ -19,8 +19,8 @@ public class EscadaEsgoto extends Entity{
 	private float op=0.1f;
 	private boolean eCorpo=true;
 	private int frames = 0;
-	public EscadaEsgoto(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public EscadaEsgoto(int x, int y) {
+		super(x, y, 0, 0);
 	}
 	public void setSubida() {
 		this.eCorpo=false;

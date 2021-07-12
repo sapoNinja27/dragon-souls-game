@@ -14,8 +14,8 @@ public class LataLixo extends Entity{
 	private final int[] index= {Game.rand.nextInt(2),Game.rand.nextInt(2),Game.rand.nextInt(2)};
 	private final int[] pos= {Game.rand.nextInt(2),Game.rand.nextInt(2),Game.rand.nextInt(2)};
 	private BufferedImage[] lata;
-	public LataLixo(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+	public LataLixo(int x, int y) {
+		super(x, y, 0,0);
 		lata=new BufferedImage[2];
 	}
 	public void tick() {

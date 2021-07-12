@@ -1,8 +1,9 @@
-package Entidades;
+package Entidades.Npcs;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import Entidades.Entity;
 import Main.Game;
 import World.Camera;
 
