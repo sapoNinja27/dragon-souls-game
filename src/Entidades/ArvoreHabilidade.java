@@ -37,27 +37,27 @@ public class ArvoreHabilidade{
 		g.drawImage(sprite[3],208,232,265/2,265/2,null);
 		
 
-//		g.drawImage(sprite[4],99,88,265/2,265/2,null);
-//		g.drawImage(sprite[5],119,103,265/2,265/2,null);
-//		g.drawImage(sprite[6],162,108,265/2,265/2,null);
-//		g.drawImage(sprite[7],200,139,265/2,265/2,null);
-//		g.drawImage(sprite[8],234,162,265/2,265/2,null);
-//		g.drawImage(sprite[9],262,189,265/2,265/2,null);
-//		g.drawImage(sprite[10],277,219,265/2,265/2,null);
-//		g.drawImage(sprite[11],290,229,265/2,265/2,null);
+		g.drawImage(sprite[4],99,88,265/2,265/2,null);
+		g.drawImage(sprite[5],119,103,265/2,265/2,null);
+		g.drawImage(sprite[6],162,108,265/2,265/2,null);
+		g.drawImage(sprite[7],200,139,265/2,265/2,null);
+		g.drawImage(sprite[8],234,162,265/2,265/2,null);
+		g.drawImage(sprite[9],262,189,265/2,265/2,null);
+		g.drawImage(sprite[10],277,219,265/2,265/2,null);
+		g.drawImage(sprite[11],290,229,265/2,265/2,null);
 		
 
-//		g.drawImage(sprite[12],107,27,265/2,265/2,null);
-//		g.drawImage(sprite[13],129,31,265/2,265/2,null);
-//		g.drawImage(sprite[14],161,53,265/2,265/2,null);
-//		g.drawImage(sprite[15],200,68,265/2,265/2,null);
-//		g.drawImage(sprite[16],226,85,265/2,265/2,null);
-//		g.drawImage(sprite[17],253,103,265/2,265/2,null);
-//		g.drawImage(sprite[18],279,123,265/2,265/2,null);
-//		g.drawImage(sprite[19],317,152,265/2,265/2,null);
-//		g.drawImage(sprite[20],327,187,265/2,265/2,null);
-//		g.drawImage(sprite[21],348,201,265/2,265/2,null);
-//		g.drawImage(sprite[22],352,222,265/2,265/2,null);
+		g.drawImage(sprite[12],107,27,265/2,265/2,null);
+		g.drawImage(sprite[13],129,31,265/2,265/2,null);
+		g.drawImage(sprite[14],161,53,265/2,265/2,null);
+		g.drawImage(sprite[15],200,68,265/2,265/2,null);
+		g.drawImage(sprite[16],226,85,265/2,265/2,null);
+		g.drawImage(sprite[17],253,103,265/2,265/2,null);
+		g.drawImage(sprite[18],279,123,265/2,265/2,null);
+		g.drawImage(sprite[19],317,152,265/2,265/2,null);
+		g.drawImage(sprite[20],327,187,265/2,265/2,null);
+		g.drawImage(sprite[21],348,201,265/2,265/2,null);
+		g.drawImage(sprite[22],352,222,265/2,265/2,null);
 		
 		
 		g.setColor(Color.red);

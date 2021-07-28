@@ -10,15 +10,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import Configuration.Configuracoes;
 import Main.Game;
 import World.World;
+import enums.TipoGame;
 import enums.TipoMenu;
 import jObjects.Botao;
 
 public class Menu {
-	Menu_de_Opcoes menOp = new Menu_de_Opcoes();
+	Options menOp = new Options();
 	Load menLo = new Load();
-	Menu_ingame menIn = new Menu_ingame();
+	Habilidades hab = new Habilidades();
+	Inventario inv = new Inventario();
 	int posx = 0, posy = 0;
 	private Botao[] botoes = { new Botao(720 / 2 - 200, 250, 91, 30, "Jogar", Color.red, 2, 20, 20, 30, 50),
 			new Botao(720 / 2 - 200 + 91 + 12, 250, 90, 30, "Continuar", Color.red, 2, 3, 20, 30, 50),
@@ -32,7 +35,8 @@ public class Menu {
 			switch (spl2[0]) {
 			case "level":
 				World.restartGame("level" + spl2[1] + ".png");
-				Game.gameState = "NORMAL";
+				Configuracoes.estadoGame = TipoGame.NORMAL;
+				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
 				break;
 			}
 		}
@@ -102,65 +106,74 @@ public class Menu {
 	}
 
 	public void tick() {
-		if (Game.estadoMenu == TipoMenu.LOAD || Game.estadoMenu == TipoMenu.INICIAL
-				|| Game.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
-			posx++;
-			if (posx == 2976 - 1440) {
-				posx = 0;
-			}
+		posx++;
+		if (posx == 2976 - 1440) {
+			posx = 0;
 		}
-		if (Game.estadoMenu == TipoMenu.INICIAL) {
+		if (Configuracoes.estadoMenu == TipoMenu.INICIAL) {
 			for (int i = 0; i < botoes.length; i++) {
 				botoes[i].tick();
 			}
 			if (botoes[0].isClicked()) {
-				Game.gameState = "NORMAL";
+				Game.world = new World("/niveis/mapaMundi.png");
+				Configuracoes.estadoGame = TipoGame.NORMAL;
+				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
 				Game.player.visivel = true;
 				Game.player.Hudvisivel = true;
 				Game.player.depth = 7;
 //				Game.cen.CenaStart(0);
 			}
 			if (botoes[1].isClicked()) {
-				Game.estadoMenu = TipoMenu.LOAD;
+				Configuracoes.estadoMenu = TipoMenu.LOAD;
 			}
 			if (botoes[2].isClicked()) {
-				Game.estadoMenu = TipoMenu.OPCOESPRINCIPAL;
+				Configuracoes.estadoMenu = TipoMenu.OPCOESPRINCIPAL;
 			}
 			if (botoes[3].isClicked()) {
 				System.exit(1);
 			}
-		}
-		if (Game.estadoMenu == TipoMenu.LOAD) {
+		}else if (Configuracoes.estadoMenu == TipoMenu.LOAD) {
 			menLo.tick();
-		} else if (Game.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
+		} else if (Configuracoes.estadoMenu == TipoMenu.OPCOESPAUSE
+				|| Configuracoes.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
 			menOp.tick();
-		} else if (Game.estadoMenu == TipoMenu.HABILIDADES) {
-
-		} else if (Game.estadoMenu == TipoMenu.INVENTARIO) {
-
+		} else if (Configuracoes.estadoMenu == TipoMenu.HABILIDADES) {
+			hab.tick();
+		} else if (Configuracoes.estadoMenu == TipoMenu.INVENTARIO) {
+			inv.tick();
 		}
 	}
 
 	public void render(Graphics g) {
-		if (Game.estadoMenu == TipoMenu.LOAD || Game.estadoMenu == TipoMenu.INICIAL
-				|| Game.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
+		if (Configuracoes.estadoMenu == TipoMenu.LOAD || Configuracoes.estadoMenu == TipoMenu.INICIAL
+				|| Configuracoes.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
 			g.drawImage(Game.fundo.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
+		} else if (Configuracoes.estadoMenu == TipoMenu.HABILIDADES || Configuracoes.estadoMenu == TipoMenu.INVENTARIO
+				|| Configuracoes.estadoMenu == TipoMenu.OPCOESPAUSE) {
+			if (Game.player.personagem == "Tai") {
+				// menu do tai
+				g.drawImage(Game.fundoT.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
+			} else if (Game.player.personagem == "Ace") {
+				// menu do ace
+				g.drawImage(Game.fundoA.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
+			} else if (Game.player.personagem == "Sander") {
+				// menu do sander
+				g.drawImage(Game.fundoS.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
+			}
 		}
-		if (Game.estadoMenu == TipoMenu.INICIAL) {
+		if (Configuracoes.estadoMenu == TipoMenu.INICIAL) {
 			g.drawImage(Game.Menu.getSprite(2700, 0, 400, 200), 720 / 2 - 200, 30, null);
 			for (int i = 0; i < botoes.length; i++) {
 				botoes[i].render(g);
 			}
-		} else if (Game.estadoMenu == TipoMenu.LOAD) {
+		} else if (Configuracoes.estadoMenu == TipoMenu.LOAD) {
 			menLo.render(g);
-		} else if (Game.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
+		} else if (Configuracoes.estadoMenu == TipoMenu.OPCOESPRINCIPAL || Configuracoes.estadoMenu == TipoMenu.OPCOESPAUSE) {
 			menOp.render(g);
-		} else if (Game.estadoMenu == TipoMenu.OPCOESPAUSE) {
-			menOp.render(g);
-		} else if (Game.estadoMenu == TipoMenu.HABILIDADES) {
-
-		} else if (Game.estadoMenu == TipoMenu.INVENTARIO) {
-
+		} else if (Configuracoes.estadoMenu == TipoMenu.HABILIDADES) {
+			hab.render(g);
+		} else if (Configuracoes.estadoMenu == TipoMenu.INVENTARIO) {
+			inv.render(g);
 		}
 	}
 }

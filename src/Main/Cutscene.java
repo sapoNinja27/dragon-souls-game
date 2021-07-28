@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Entidades.Bosses.Pupkin_Boss;
 import Entidades.Npcs.light_npc;
 import Entidades.Npcs.roux_npc;
@@ -25,8 +26,8 @@ public class Cutscene {
 	boolean boxright, boxleft;
 	BufferedImage icon[][]= new BufferedImage[30][10];
 	BufferedImage buttonimg;
-	public static int right_dir = 0,left_dir = 1;
-	private int frames = 0,maxFrames = 2;
+	public  int right_dir = 0,left_dir = 1;
+	private int frames = 0;
 	private static boolean[] passo=new boolean[100];
 	private static boolean[] cena = new boolean[100];
 	private static boolean cutscene=false;
@@ -62,10 +63,10 @@ public class Cutscene {
 			}
 		}
 	}
-	public static void next() {
+	public  void next() {
 		next=true;
 	}
-	public static void up() {
+	public  void up() {
 		opc--;
 		if(opc<0) {
 			opc=maxOpc;
@@ -95,7 +96,7 @@ public class Cutscene {
 		buttonimg=Game.tinyIcons.getSprite(0, 0, 16, 16);
 		for(int i=0;i<30;i++) {
 			for(int j=0;j<10;j++) {
-				icon[i][j]=Game.icones.getSprite(Game.TILE_SIZE*(i), Game.TILE_SIZE*j, Game.TILE_SIZE, Game.TILE_SIZE);
+				icon[i][j]=Game.icones.getSprite(Configuracoes.TILE_SIZE*(i), Configuracoes.TILE_SIZE*j, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 			}
 		}
 //		testes
@@ -805,39 +806,39 @@ public class Cutscene {
 		Graphics2D g2 = (Graphics2D) g;
 		
 		if(boxleft) {
-			Rectangle borda= new Rectangle(offX-Game.TILE_SIZE*3,offY, Game.TILE_SIZE*3, Game.TILE_SIZE-1);
+			Rectangle borda= new Rectangle(offX-Configuracoes.TILE_SIZE*3,offY, Configuracoes.TILE_SIZE*3, Configuracoes.TILE_SIZE-1);
 			g.setColor(Color.white);
-			g.fillRect(offX-Game.TILE_SIZE*4,offY, Game.TILE_SIZE, Game.TILE_SIZE);
+			g.fillRect(offX-Configuracoes.TILE_SIZE*4,offY, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-			g.fillRect(offX-Game.TILE_SIZE*3,offY, Game.TILE_SIZE*3, Game.TILE_SIZE-1);
+			g.fillRect(offX-Configuracoes.TILE_SIZE*3,offY, Configuracoes.TILE_SIZE*3, Configuracoes.TILE_SIZE-1);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 			g.setColor(Color.black);
 			g2.draw(borda);
 		}
 		if(boxright) {
-			Rectangle borda2= new Rectangle(offX2-Game.TILE_SIZE*3,offY2, Game.TILE_SIZE*3, Game.TILE_SIZE-1);
+			Rectangle borda2= new Rectangle(offX2-Configuracoes.TILE_SIZE*3,offY2, Configuracoes.TILE_SIZE*3, Configuracoes.TILE_SIZE-1);
 			g.setColor(Color.white);
-			g.fillRect(offX2,offY2, Game.TILE_SIZE, Game.TILE_SIZE);
+			g.fillRect(offX2,offY2, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-			g.fillRect(offX2-Game.TILE_SIZE*3,offY2, Game.TILE_SIZE*3, Game.TILE_SIZE-1);
+			g.fillRect(offX2-Configuracoes.TILE_SIZE*3,offY2, Configuracoes.TILE_SIZE*3, Configuracoes.TILE_SIZE-1);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 			g.setColor(Color.black);
 			g2.draw(borda2);
 		}
 		if(boxleft) {
-			g.drawString(dialog,offX-15-Game.TILE_SIZE*3+20,offY+20);
-			g.drawString(dialog2,offX-15-Game.TILE_SIZE*3+20,offY+40);
-			g.drawString(dialog3,offX-15-Game.TILE_SIZE*3+20,offY+60);
-			g.drawImage(icon[avatarL][avatarC],offX-Game.TILE_SIZE*4,offY,(int)(Game.TILE_SIZE),Game.TILE_SIZE, null);
+			g.drawString(dialog,offX-15-Configuracoes.TILE_SIZE*3+20,offY+20);
+			g.drawString(dialog2,offX-15-Configuracoes.TILE_SIZE*3+20,offY+40);
+			g.drawString(dialog3,offX-15-Configuracoes.TILE_SIZE*3+20,offY+60);
+			g.drawImage(icon[avatarL][avatarC],offX-Configuracoes.TILE_SIZE*4,offY,(int)(Configuracoes.TILE_SIZE),Configuracoes.TILE_SIZE, null);
 			if(button) {
 				g.drawImage(buttonimg,offX-20,offY+45,16,16, null);
 			}
 		}
 		if(boxright) {
-			g.drawString(dialog,offX2-15-Game.TILE_SIZE*3+20,offY2+20);
-			g.drawString(dialog2,offX2-15-Game.TILE_SIZE*3+20,offY2+40);
-			g.drawString(dialog3,offX2-15-Game.TILE_SIZE*3+20,offY2+60);
-			g.drawImage(icon[avatarL][avatarC],offX2,offY2,(int)(Game.TILE_SIZE),Game.TILE_SIZE, null);
+			g.drawString(dialog,offX2-15-Configuracoes.TILE_SIZE*3+20,offY2+20);
+			g.drawString(dialog2,offX2-15-Configuracoes.TILE_SIZE*3+20,offY2+40);
+			g.drawString(dialog3,offX2-15-Configuracoes.TILE_SIZE*3+20,offY2+60);
+			g.drawImage(icon[avatarL][avatarC],offX2,offY2,(int)(Configuracoes.TILE_SIZE),Configuracoes.TILE_SIZE, null);
 			if(button) {
 				g.drawImage(buttonimg,offX2-20,offY2+45,16,16, null);
 			}

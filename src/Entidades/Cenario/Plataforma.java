@@ -8,9 +8,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Entidades.Entity;
 import Main.Game;
 import World.Camera;
+import enums.TipoAmbiente;
 
 public class Plataforma extends Entity{
 	private int tipo=0;
@@ -45,7 +47,7 @@ public class Plataforma extends Entity{
 			op=0.1f;
 		}
 		for(int i=0; i<(img.length/2);i++) {
-			img[i]=Game.cenario.getSprite((i)*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
+			img[i]=Game.cenario.getSprite((i)*Configuracoes.TILE_SIZE,3*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
 		}
 		if(!invisivel) {
 			setMask(0,0,-3,64,3);
@@ -55,7 +57,7 @@ public class Plataforma extends Entity{
 		
 		//mascara bueiro
 		setMask(1,17,-30,32,40);
-		if(Game.Ambiente=="Cidade") {
+		if(Configuracoes.local==TipoAmbiente.RUA) {
 			if(tipo==0) {
 				checkCollisionBueiro();
 			}
@@ -78,7 +80,7 @@ public class Plataforma extends Entity{
 								Game.escadasDeEsgoto.get(i).getX(),
 								Game.escadasDeEsgoto.get(i).getY(),
 								Game.player.dir);
-						Game.Ambiente="Esgoto";
+						Configuracoes.local=TipoAmbiente.ESGOTOS;
 					}
 				}else {
 					atual.emFrente=false;

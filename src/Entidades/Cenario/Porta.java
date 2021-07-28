@@ -8,10 +8,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Entidades.Entity;
 import Main.Game;
 import World.Camera;
 import World.Tile;
+import enums.TipoAmbiente;
 
 public class Porta extends Entity{
 	public boolean emFrente;
@@ -29,10 +31,10 @@ public class Porta extends Entity{
 	}
 	private void setCor(Color cor) {
 		for(int i=0;i <2 ; i++) {
-			porta1[i]=Tile.colorir(Game.cenario.getSprite((i+2)*Game.TILE_SIZE,(2)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),cor);
+			porta1[i]=Tile.colorir(Game.cenario.getSprite((i+2)*Configuracoes.TILE_SIZE,(2)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE),cor);
 		}
 		for(int i=0;i <2 ; i++) {
-			fund[i]=Tile.colorir(Game.cenario.getSprite((i+4)*Game.TILE_SIZE,(0)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),cor);
+			fund[i]=Tile.colorir(Game.cenario.getSprite((i+4)*Configuracoes.TILE_SIZE,(0)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE),cor);
 		}
 	}
 	public void tick() {
@@ -50,21 +52,21 @@ public class Porta extends Entity{
 			op=0.1f;
 		}
 		setMask(0,0-25,-20,46,80);
-		if(tipo==0) {
-			if(Game.Ambiente=="Cidade") {
-				checkCollisionPorta();
-				if(!emFrente) {
-					Game.player.clicouPortas=false;
-				}
-			}
-		}else {
-			if(Game.Ambiente=="Terraço") {
-				checkCollisionPortaTerraco();
-				if(!emFrente) {
-					Game.player.clicouPortas=false;
-				}
-			}
-		}
+//		if(tipo==0) {
+//			if(Game.Ambiente=="Cidade") {
+//				checkCollisionPorta();
+//				if(!emFrente) {
+//					Game.player.clicouPortas=false;
+//				}
+//			}
+//		}else {
+//			if(Game.Ambiente=="Terraço") {
+//				checkCollisionPortaTerraco();
+//				if(!emFrente) {
+//					Game.player.clicouPortas=false;
+//				}
+//			}
+//		}
 		
 		
 
@@ -80,7 +82,7 @@ public class Porta extends Entity{
 //						Game.portaTerraco.get(i).getY(),
 //						Game.player.dir);
 //				Game.player.lastPorta=i;
-				Game.Ambiente="Terraço";
+				Configuracoes.local=TipoAmbiente.TELHADO;
 			}
 		}else {
 			emFrente=false;
@@ -99,7 +101,7 @@ public class Porta extends Entity{
 								Game.portas.get(i).getX()-40,
 								Game.portas.get(i).getY(),
 								Game.player.dir);
-						Game.Ambiente="Cidade";
+						Configuracoes.local=TipoAmbiente.RUA;
 					}
 				}else {
 					atual.emFrente=false;
@@ -111,9 +113,9 @@ public class Porta extends Entity{
 		Graphics2D g2 = (Graphics2D) g;
 		if(tipo==0) {
 			if(!emFrente) {
-				g.drawImage(porta1[0],this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
+				g.drawImage(porta1[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
 			}else {
-				g.drawImage(porta1[1],this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
+				g.drawImage(porta1[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
 				g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,20));
 				if(cor==Color.white) {
@@ -127,12 +129,12 @@ public class Porta extends Entity{
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 			}
 		}else {
-//			g.drawImage(fund[0],this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
-//			g.drawImage(fund[1],this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE,null);
+//			g.drawImage(fund[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,null);
+//			g.drawImage(fund[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,null);
 			if(!emFrente) {
-				g.drawImage(porta1[0],this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
+				g.drawImage(porta1[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
 			}else {
-				g.drawImage(porta1[1],this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
+				g.drawImage(porta1[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
 				g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,20));
 				if(cor==Color.white) {

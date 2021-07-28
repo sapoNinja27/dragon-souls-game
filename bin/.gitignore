@@ -1,12 +1,20 @@
-/Sem título.png
-/arvoreHabilidades.pdn
+/Configuration/
 /Entidades/
 /Graficos/
 /Main/
 /Menu/
 /World/
-/jObjects/
-/fogo.png
-/arvre.png
-/arvoreDesmontada.png
+/conceitos/
 /enums/
+/fogo.png
+/icone-jogo/
+/ideias.pdn
+/inimigos/
+/jObjects/
+/loading.png
+/menus/
+/niveis/
+/off/
+/on/
+/personagens/
+/spritesheet.png

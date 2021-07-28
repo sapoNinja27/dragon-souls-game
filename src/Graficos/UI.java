@@ -1,15 +1,13 @@
 package Graficos;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Main.Game;
-import World.Camera;
 
 public class UI {
 	private BufferedImage icon[]=new BufferedImage[5];
@@ -18,7 +16,7 @@ public class UI {
 		
 		if(Game.player.Hudvisivel) {
 			for(int i=0;i<5;i++) {
-//				icon[i]=Game.spritesheet.getSprite(i*Game.TILE_SIZE,18*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
+//				icon[i]=Game.spritesheet.getSprite(i*Configuracoes.TILE_SIZE,18*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
 			}
 			Graphics2D g2 = (Graphics2D) g;
 			Rectangle barlife= new Rectangle(100,55,(int)Game.player.totalife,11);
@@ -49,33 +47,33 @@ public class UI {
 	//		g.setColor(Color.green);
 	//		g.fillRect(90,67,(int)((Game.player.life/Game.player.maxlife)*90),11);
 			
-	//		g.drawImage(Game.spritesheet.getSprite(1*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+	//		g.drawImage(Game.spritesheet.getSprite(1*Configuracoes.TILE_SIZE,3*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE),
 	//				
-	//				84 ,0,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
-	//		g.drawImage(Game.spritesheet.getSprite(1*Game.TILE_SIZE,3*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),
+	//				84 ,0,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
+	//		g.drawImage(Game.spritesheet.getSprite(1*Configuracoes.TILE_SIZE,3*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE),
 	//				
-	//				84 ,20,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
+	//				84 ,20,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
 			g.setColor(Color.black);
-			g.fillOval(41,33,Game.TILE_SIZE,Game.TILE_SIZE);
+			g.fillOval(41,33,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
 			g.setColor(Color.white);
 			g.fillOval(43,35,60,60);
 			
 			if(!Game.player.transformado) {
 				if(Game.player.special> (Game.player.maxspecial/2)) {
 					if(Game.player.life> (Game.player.maxlife/2)) {
-						g.drawImage(icon[2],25 ,18,Game.TILE_SIZE+35,Game.TILE_SIZE+35,null);
+						g.drawImage(icon[2],25 ,18,Configuracoes.TILE_SIZE+35,Configuracoes.TILE_SIZE+35,null);
 					}else {
-						g.drawImage(icon[3],25 ,18,Game.TILE_SIZE+35,Game.TILE_SIZE+35,null);
+						g.drawImage(icon[3],25 ,18,Configuracoes.TILE_SIZE+35,Configuracoes.TILE_SIZE+35,null);
 					}	
 				}else {
 					if(Game.player.life> (Game.player.maxlife/2)) {
-						g.drawImage(icon[0],25 ,18,Game.TILE_SIZE+35,Game.TILE_SIZE+35,null);
+						g.drawImage(icon[0],25 ,18,Configuracoes.TILE_SIZE+35,Configuracoes.TILE_SIZE+35,null);
 					}else {
-						g.drawImage(icon[1],25 ,18,Game.TILE_SIZE+35,Game.TILE_SIZE+35,null);
+						g.drawImage(icon[1],25 ,18,Configuracoes.TILE_SIZE+35,Configuracoes.TILE_SIZE+35,null);
 					}
 				}
 			}else {
-				g.drawImage(icon[4],25 ,18,Game.TILE_SIZE+35,Game.TILE_SIZE+35,null);
+				g.drawImage(icon[4],25 ,18,Configuracoes.TILE_SIZE+35,Configuracoes.TILE_SIZE+35,null);
 			}
 		}
 		

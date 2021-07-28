@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Main.Game;
 import World.Camera;
 
@@ -13,7 +14,7 @@ public class LixoEsgoto extends ObjetosComMovimento{
 	private BufferedImage img;
 	public LixoEsgoto(int x, int y) {
 		super(x, y);
-		img=Game.cenario.getSprite(Game.TILE_SIZE+(32*Game.rand.nextInt(2)),6*Game.TILE_SIZE+32*Game.rand.nextInt(2),32,32);
+		img=Game.cenario.getSprite(Configuracoes.TILE_SIZE+(32*Game.rand.nextInt(2)),6*Configuracoes.TILE_SIZE+32*Game.rand.nextInt(2),32,32);
 	}
 	public void setSpeed(int speed){
 		this.speed=speed;

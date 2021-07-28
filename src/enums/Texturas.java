@@ -1,21 +1,18 @@
 package enums;
 
-public enum TipoMenu {
-	INICIAL(1), 
-	HABILIDADES(2),
-	OPCOESPRINCIPAL(3),
-	OPCOESPAUSE(4),
-	LOAD(5),
-	INVENTARIO(6),
-	GAMEOVER(7);
+public enum Texturas {
+	MARMORE(1), 
+	TIJOLO(2),
+	MADEIRA(3),
+	CIMENTO(4);
 
 	private int cod;
 
 	public static Integer totalTipos() {
-		return TipoMenu.values().length;
+		return Texturas.values().length;
 	}
 
-	private TipoMenu(int cod) {
+	private Texturas(int cod) {
 		this.cod = cod;
 	}
 
@@ -25,11 +22,11 @@ public enum TipoMenu {
 
 
 
-	public static TipoMenu toEnum(Integer cod) {
+	public static Texturas toEnum(Integer cod) {
 		if (cod == null) {
 			return null;
 		}
-		for (TipoMenu x : TipoMenu.values()) {
+		for (Texturas x : Texturas.values()) {
 			if (cod.equals(x.getCod())) {
 				return x;
 			}

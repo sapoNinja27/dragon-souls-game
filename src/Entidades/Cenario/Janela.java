@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Entidades.Entity;
 import Main.Game;
 import World.Camera;
@@ -17,7 +18,7 @@ public class Janela extends Entity{
 		super(x, y, 0, 0);
 	}
 	public void setCor(Color cor) {
-		janela=Tile.colorir(Game.cenario.getSprite((4)*Game.TILE_SIZE,(2)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE),cor);
+		janela=Tile.colorir(Game.cenario.getSprite((4)*Configuracoes.TILE_SIZE,(2)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE),cor);
 		
 	}
 	public void tick() {
@@ -28,7 +29,7 @@ public class Janela extends Entity{
 	}
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g.drawImage(janela,this.getX()-Camera.x-Game.TILE_SIZE,this.getY()-Camera.y-Game.TILE_SIZE,Game.TILE_SIZE*2,Game.TILE_SIZE*2,null);
+		g.drawImage(janela,this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
 	}
 						
 	

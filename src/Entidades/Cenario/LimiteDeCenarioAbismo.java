@@ -1,17 +1,13 @@
 package Entidades.Cenario;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Entidades.Entity;
 import Main.Game;
 import World.Camera;
-import World.Tile;
+import enums.TipoAmbiente;
 
 public class LimiteDeCenarioAbismo extends Entity{
 
@@ -36,7 +32,7 @@ public class LimiteDeCenarioAbismo extends Entity{
 						Game.player.caindo=false;
 						Game.player.parado=true;
 						Game.player.life--;
-						Game.Ambiente="Terraço";
+						Configuracoes.local=TipoAmbiente.TELHADO;
 					
 				}
 			}

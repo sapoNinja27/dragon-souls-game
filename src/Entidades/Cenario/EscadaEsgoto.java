@@ -6,12 +6,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Entidades.Entity;
 import Main.Game;
 import World.Camera;
+import enums.TipoAmbiente;
 
 public class EscadaEsgoto extends Entity{
 	public boolean emFrente;
@@ -43,10 +44,10 @@ public class EscadaEsgoto extends Entity{
 		depth=0;
 		setMask(0,18,0,31,40);
 		
-		bueiro[0]=Game.cenario.getSprite(0*Game.TILE_SIZE,(6)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
-		bueiro[1]=Game.cenario.getSprite(0*Game.TILE_SIZE,(6)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE-3);
+		bueiro[0]=Game.cenario.getSprite(0*Configuracoes.TILE_SIZE,(6)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
+		bueiro[1]=Game.cenario.getSprite(0*Configuracoes.TILE_SIZE,(6)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE-3);
 		
-		if(Game.Ambiente=="Esgoto") {
+		if(Configuracoes.local==TipoAmbiente.ESGOTOS) {
 			checkCollision();
 			if(!emFrente) {
 				Game.player.clicouBueiros=false;
@@ -64,11 +65,11 @@ public class EscadaEsgoto extends Entity{
 					if(Game.player.clicouBueiros) {
 						Game.player.clicouBueiros=false;
 						teleportar(Game.bueiros.get(i).getX(),
-								Game.bueiros.get(i).getY()-Game.TILE_SIZE,
+								Game.bueiros.get(i).getY()-Configuracoes.TILE_SIZE,
 								Game.bueiros.get(i).getX(),
-								Game.bueiros.get(i).getY()-Game.TILE_SIZE,
+								Game.bueiros.get(i).getY()-Configuracoes.TILE_SIZE,
 								Game.player.dir);
-						Game.Ambiente="Cidade";
+						Configuracoes.local=TipoAmbiente.RUA;
 					}
 				}else {
 					atual.emFrente=false;
@@ -80,9 +81,9 @@ public class EscadaEsgoto extends Entity{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		if(eCorpo) {
-			g.drawImage(bueiro[1],this.getX()-Camera.x-27,this.getY()-Camera.y,Game.TILE_SIZE*2,Game.TILE_SIZE,null);
+			g.drawImage(bueiro[1],this.getX()-Camera.x-27,this.getY()-Camera.y,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE,null);
 		}else {
-			g.drawImage(bueiro[0],this.getX()-Camera.x-27,this.getY()-Camera.y,Game.TILE_SIZE*2,Game.TILE_SIZE,null);
+			g.drawImage(bueiro[0],this.getX()-Camera.x-27,this.getY()-Camera.y,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE,null);
 			if(emFrente) {
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
 				g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,20));
@@ -96,11 +97,11 @@ public class EscadaEsgoto extends Entity{
 		
 		
 		
-		Rectangle rect= new Rectangle(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
-		Rectangle rect2= new Rectangle(this.getX() - Camera.x+maskx[1],this.getY() - Camera.y+masky[1],maskw[1],maskh[1]);
-		Rectangle rect3= new Rectangle(this.getX() - Camera.x+maskx[2],this.getY() - Camera.y+masky[2],maskw[2],maskh[2]);
-		Rectangle rect4= new Rectangle(this.getX() - Camera.x+maskx[3],this.getY() - Camera.y+masky[3],maskw[3],maskh[3]);
-		Rectangle rect5= new Rectangle(this.getX() - Camera.x+maskx[4],this.getY() - Camera.y+masky[4],maskw[4],maskh[4]);
+//		Rectangle rect= new Rectangle(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
+//		Rectangle rect2= new Rectangle(this.getX() - Camera.x+maskx[1],this.getY() - Camera.y+masky[1],maskw[1],maskh[1]);
+//		Rectangle rect3= new Rectangle(this.getX() - Camera.x+maskx[2],this.getY() - Camera.y+masky[2],maskw[2],maskh[2]);
+//		Rectangle rect4= new Rectangle(this.getX() - Camera.x+maskx[3],this.getY() - Camera.y+masky[3],maskw[3],maskh[3]);
+//		Rectangle rect5= new Rectangle(this.getX() - Camera.x+maskx[4],this.getY() - Camera.y+masky[4],maskw[4],maskh[4]);
 //		g.drawRect(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
 		
 			

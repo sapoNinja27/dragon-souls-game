@@ -3,9 +3,8 @@ package Entidades;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Graficos.Spritesheet;
-import Main.Game;
-import World.Camera;
 
 public class Chama extends Entity{
 	private BufferedImage sprite[];
@@ -16,10 +15,10 @@ public class Chama extends Entity{
 		sprite= new BufferedImage[16];
 		chama=new Spritesheet("/fogo.png");
 		for(int i = 0;i<4;i++) {
-			sprite[i]=chama.getSprite((i)*Game.TILE_SIZE,(0)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
-			sprite[i+4]=chama.getSprite((i)*Game.TILE_SIZE,(1)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
-			sprite[i+8]=chama.getSprite((i)*Game.TILE_SIZE,(2)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
-			sprite[i+12]=chama.getSprite((i)*Game.TILE_SIZE,(3)*Game.TILE_SIZE,Game.TILE_SIZE,Game.TILE_SIZE);
+			sprite[i]=chama.getSprite((i)*Configuracoes.TILE_SIZE,(0)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
+			sprite[i+4]=chama.getSprite((i)*Configuracoes.TILE_SIZE,(1)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
+			sprite[i+8]=chama.getSprite((i)*Configuracoes.TILE_SIZE,(2)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
+			sprite[i+12]=chama.getSprite((i)*Configuracoes.TILE_SIZE,(3)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
 		}
 	}
 	public void tick(){
@@ -33,6 +32,6 @@ public class Chama extends Entity{
 		}
 	}
 	public void render(Graphics g) {
-		g.drawImage(sprite[index],this.getX(),this.getY(),Game.TILE_SIZE,Game.TILE_SIZE,null);
+		g.drawImage(sprite[index],this.getX(),this.getY(),Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,null);
 	}
 }

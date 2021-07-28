@@ -17,7 +17,8 @@ public class Botao {
 	private int x, y, w, h, aw, ah;
 	private Color cor = Color.white;
 	private String text;
-	private boolean mouseOver, mousePressed, mouseOut = true;
+	private boolean mouseOver, mousePressed = false;
+	private boolean overPressed;
 	private int borda;
 	private int spacingX,spacingY;
 	private boolean clicked;
@@ -112,7 +113,11 @@ public class Botao {
 	 */
 
 	public boolean isClicked() {
-		return clicked;
+		if(clicked) {
+			clicked=false;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -122,14 +127,6 @@ public class Botao {
 		return mouseOver;
 	}
 
-	/**
-	 * Redefine o botão (utilizado quando é nescessario trocar a pagina que ele esta
-	 * instanciado)
-	 */
-	public void off() {
-		clicked = false;
-		mouseOver = true;
-	}
 
 	/**
 	 * Funções tick são chamadas indefinidamente durante a aplicação atualiza a
@@ -138,36 +135,35 @@ public class Botao {
 	public void tick() {
 		mx = Mouse.getX();
 		my = Mouse.getY();
-		if(mousePressed && !mouseOut && mouseOver) {
-			clicked=true;
-		}else {
-			clicked=false;
-		}
 		if (Mouse.pressed) {
 			if (mx > x && mx < x + w && my > y && my < y + h) {
+				overPressed=true;
 				mousePressed = true;
-				mouseOut = false;
 			} else {
+				overPressed=false;
 				mouseOver = false;
-				mouseOut = true;
 			}
 		} else if (Mouse.released) {
 			mousePressed = false;
 			if (mx > x && mx < x + w && my > y && my < y + h) {
+				if(overPressed) {
+					Mouse.released=false;
+					overPressed=false;
+					clicked=true;
+				}
 				mouseOver = true;
-				mouseOut = false;
 			} else {
+				if(overPressed) {
+					Mouse.released=false;
+					overPressed=false;
+				}
 				mouseOver = false;
-				mouseOut = true;
 			}
 		} else {
-			mousePressed = false;
 			if (mx > x && mx < x + w && my > y && my < y + h) {
 				mouseOver = true;
-				mouseOut = false;
 			} else {
 				mouseOver = false;
-				mouseOut = true;
 			}
 		}
 	}

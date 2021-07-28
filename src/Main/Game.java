@@ -2,13 +2,10 @@ package Main;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -16,7 +13,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +23,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import Configuration.Configuracoes;
 import Entidades.Entity;
 import Entidades.Projetil;
 import Entidades.Cenario.EscadaEsgoto;
@@ -42,27 +39,23 @@ import Entidades.Players.Player;
 import Entidades.Players.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
+import Menu.Loading;
 import Menu.Menu;
 import World.World;
+import enums.TipoAmbiente;
+import enums.TipoGame;
 import enums.TipoMenu;
 import jObjects.Mouse;
 
 public class Game extends Canvas implements Runnable,KeyListener,MouseListener,MouseMotionListener{
-	public static int TILE_SIZE=64;
 	private static final long serialVersionUID = 1L;
-	boolean savegame;
 	public static boolean podeClicar=true;
-	public static String Ambiente="Cidade";//terraço-esgotos-cidade
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
-	public static final int WIDTH = 180*4;
-	public static final int HEIGHT = 90*4;
-	public static final int SCALE = 2;
-	public static TipoMenu estadoMenu=TipoMenu.INICIAL;
-	private int CUR_LEVEL = 1;
 	private BufferedImage image;
-	public static boolean dia=true;
+	public static Loading loading;
+	public static boolean isLoading;
 	public static List<Entity> entities;
 	public static List<ObjetosComMovimento> objetos;
 	public static List<Enemy> enemies;
@@ -90,38 +83,25 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static Spritesheet tinyIcons;
 	//cenario
 	public static Spritesheet cenario;
-	
-	
 	public static World world;
-	
 	public static Player player;
 	public static Player player2;
-	
 	public static Random rand;
 	public UI ui;
-	
-	public static String gameState = "MENU";
-	private boolean showMessageGameOver = true;
-	private int framesGameOver = 0;
-	private boolean restartGame = false;
 	public static Cutscene cen;
 	public static Menu menu;
-	public static int[] pixels;
-	public static int[] lightMap;
-	
 	public Game(){
 //		requestFocus();
 		rand = new Random();
+		loading=new Loading();
 		addKeyListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
+		setPreferredSize(new Dimension(Configuracoes.WIDTH*Configuracoes.SCALE,Configuracoes.HEIGHT*Configuracoes.SCALE));
 		initFrame();
 		//Inicializando objetos.
 		ui = new UI();
-		lightMap = new int[WIDTH*HEIGHT];
-		image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
-		pixels =((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+		image = new BufferedImage(Configuracoes.WIDTH,Configuracoes.HEIGHT,BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<Projetil>();
@@ -157,14 +137,13 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		player2=new Ace(0,0);
 		entities.add(player);
 		entities.add(player2);
-		world = new World("/niveis/mapaMundi.png");
 		
 		
 		menu = new Menu();
 		cen=new Cutscene();
 	}
 	public void gerarObj() {
-		if(Game.Ambiente=="Esgoto") {
+		if(Configuracoes.local==TipoAmbiente.ESGOTOS) {
 			if(Game.rand.nextInt(50)==0){
 				ObjetosComMovimento am= new LixoEsgoto(Game.player.getX()+500,3900+Game.rand.nextInt(2)*32);
 				am.setSpeed(Game.rand.nextInt(3));
@@ -173,8 +152,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 				}
 			}
 			
-		}else if(Game.Ambiente=="Cidade") {
-			if(Game.dia) {
+		}else if(Configuracoes.local==TipoAmbiente.RUA) {
+			if(Configuracoes.dia) {
 				if(Game.rand.nextInt(25)==0){
 					ObjetosComMovimento am= new Transito(Game.player.getX()-1100,2300+Game.rand.nextInt(5));
 					am.setSpeed(Game.rand.nextInt(13));
@@ -247,9 +226,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
-		Toolkit toolkit =Toolkit.getDefaultToolkit();
-		Image image= toolkit.getImage(getClass().getResource("/icone-jogo/icon.png"));
-		Cursor c= toolkit.createCustomCursor(image, new Point(0,0), "img");
+//		Toolkit toolkit =Toolkit.getDefaultToolkit();
+//		Image image= toolkit.getImage(getClass().getResource("/icone-jogo/icon.png"));
+//		Cursor c= toolkit.createCustomCursor(image, new Point(0,0), "img");
 		
 		frame.setIconImage(imagem);
 //		frame.setAlwaysOnTop(true);
@@ -279,51 +258,47 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	}
 	
 	public void tick(){
-		if(gameState == "NORMAL") {
-			if(savegame) {
-				savegame=false;
-				String[] opt1= {"level"};
-				int[] opt2= {1};
-				menu.saveGame(opt1,opt2,0);
-			}
-			if(cen.CcRun()) {
-				cen.tick();
-			}
-			this.restartGame = false;	
-			for(int i = 0; i < entities.size(); i++) {
-				Entity e = entities.get(i);
-				e.tick();
-			}
-			for(int i = 0; i < portas.size(); i++) {
-				portas.get(i).tick();
-			}
-			for(int i = 0; i < bullets.size(); i++) {
-				bullets.get(i).tick();
-			}
-			gerarObj();
-			for(int i = 0; i < objetos.size(); i++) {
-				objetos.get(i).tick();
-			}
-	//		if(enemies.size() == 0) {
-	//			String newWorld = "level"+CUR_LEVEL+".png";
-	//			World.restartGame(newWorld);
-	//		}
-		}else if(gameState == "GAME_OVER") {
+		loading.tick();
+		if(isLoading) {
 			
-			
-			
-			if(restartGame) {
-				restartGame = false;
-				gameState = "NORMAL";
-				CUR_LEVEL = 1;
-				String newWorld = "level"+CUR_LEVEL+".png";
-				//System.out.println(newWorld);
-				World.restartGame(newWorld);
+		}else {
+			if(Configuracoes.estadoGame==TipoGame.NORMAL) {
+				if(cen.CcRun()) {
+					cen.tick();
+				}
+				for(int i = 0; i < entities.size(); i++) {
+					Entity e = entities.get(i);
+					e.tick();
+				}
+				for(int i = 0; i < portas.size(); i++) {
+					portas.get(i).tick();
+				}
+				for(int i = 0; i < bullets.size(); i++) {
+					bullets.get(i).tick();
+				}
+				gerarObj();
+				for(int i = 0; i < objetos.size(); i++) {
+					objetos.get(i).tick();
+				}
 			}
-		}else if(gameState == "MENU") {
-			
-			menu.tick();
+//			else if(Configuracoes.estadoGame==TipoGame.GAMEOVER) {
+//				
+//				
+//				
+//				if(restartGame) {
+//					restartGame = false;
+//					Configuracoes.estadoGame=TipoGame.NORMAL;
+////					CUR_LEVEL = 1;
+////					String newWorld = "level"+CUR_LEVEL+".png";
+//					//System.out.println(newWorld);
+////					World.restartGame(newWorld);
+//				}
+//			}
+			else if(Configuracoes.estadoGame==TipoGame.MENU) {
+				menu.tick();
+			}
 		}
+		
 	}
 	
 
@@ -343,12 +318,11 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		}
 		Graphics g = image.getGraphics();
 		g.setColor(new Color(0,0,0));
-		g.fillRect(0, 0,WIDTH,HEIGHT);
+		g.fillRect(0, 0,Configuracoes.WIDTH,Configuracoes.HEIGHT);
 		
-		/*Renderização do jogo*/
-		//Graphics2D g2 = (Graphics2D) g;
-		world.render(g);
-		if(gameState == "NORMAL") {
+		if(Configuracoes.estadoGame==TipoGame.NORMAL) {
+//			world.render(g);
+			
 			Collections.sort(entities,Entity.nodeSorter);
 			for(int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -365,16 +339,15 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 				cen.render(g);
 			}
 		}
-		if(gameState == "GAME_OVER") {
-			//menugover.render(g);
-		}else if(gameState == "MENU") {
+		if(Configuracoes.estadoGame==TipoGame.MENU) {
 			menu.render(g);
 		}
-		/***/
 		g.dispose();
 		g = bs.getDrawGraphics();
-		g.drawImage(image, 0, 0,WIDTH*SCALE,HEIGHT*SCALE,null);
-		g.setFont(new Font("arial",Font.BOLD,20));
+		g.drawImage(image, 0, 0,Configuracoes.WIDTH*Configuracoes.SCALE,Configuracoes.HEIGHT*Configuracoes.SCALE,null);
+
+		loading.render(g);
+
 		
 		
 		bs.show();
@@ -481,7 +454,9 @@ public void run() {
 			}
 		}
 		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-			savegame=true;
+			String[] opt1= {"level"};
+			int[] opt2= {1};
+			menu.saveGame(opt1,opt2,0);
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_W){
@@ -507,8 +482,14 @@ public void run() {
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			gameState = "MENU";
-			estadoMenu=TipoMenu.PAUSE;
+			if(Configuracoes.estadoMenu != TipoMenu.INICIAL) {
+				if(Configuracoes.estadoGame == TipoGame.MENU) {
+					Configuracoes.estadoGame = TipoGame.NORMAL;
+				}else if(Configuracoes.estadoGame == TipoGame.NORMAL) {
+					Configuracoes.estadoGame = TipoGame.MENU;
+				}
+			}
+			
 		}
 		
 	}

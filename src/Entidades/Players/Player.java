@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Configuration.Configuracoes;
 import Entidades.Entity;
 import Entidades.Lifepack;
 import Entidades.Cenario.Plataforma;
@@ -14,6 +15,9 @@ import Entidades.Cenario.PosteLuz;
 import Main.Game;
 import World.Camera;
 import World.World;
+import enums.TipoAmbiente;
+import enums.TipoGame;
+import enums.TipoMenu;
 
 public class Player extends Entity {
 	public int px;
@@ -28,7 +32,6 @@ public class Player extends Entity {
 	protected double y;
 	boolean jaParou;
 	public boolean camL, camR, camU;
-	private int framesObj = 0;
 	public int framesMoved = 0, maxFramesMoved = 9, indexMoved = 4, maxIndexMoved = 12;
 	public int framesParan = 0, maxFramesParan = 15;
 	public int framesParado = 0, maxFramesParado = 17, indexParado = 0, maxIndexParado = 4;
@@ -81,7 +84,7 @@ public class Player extends Entity {
 		if (!isFreeY() && moved && !dash && !dashS) {
 			index = indexMoved;
 		} else if (caiu_no_chao) {
-			index = index;
+//			index = index;
 		} else if (dash) {
 			index = indexDash;
 		} else if (dashS) {
@@ -248,9 +251,9 @@ public class Player extends Entity {
 
 	public void updateCamera() {
 
-		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2) + camx + 250, 0,
-				World.WIDTH * Game.TILE_SIZE - Game.WIDTH);
-		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2) - 53, 0, World.HEIGHT * Game.TILE_SIZE - Game.HEIGHT);
+		Camera.x = Camera.clamp(this.getX() - (Configuracoes.WIDTH / 2) + camx + 250, 0,
+				World.WIDTH * Configuracoes.TILE_SIZE - Configuracoes.WIDTH);
+		Camera.y = Camera.clamp(this.getY() - (Configuracoes.HEIGHT / 2) - 53, 0, World.HEIGHT * Configuracoes.TILE_SIZE - Configuracoes.HEIGHT);
 	}
 
 	
@@ -326,7 +329,8 @@ public class Player extends Entity {
 		if (life <= 0) {
 			// Game over!
 			life = 0;
-			Game.gameState = "GAME_OVER";
+			Configuracoes.estadoGame=TipoGame.MENU;
+			Configuracoes.estadoMenu=TipoMenu.GAMEOVER;
 		}
 	}
 
@@ -352,8 +356,8 @@ public class Player extends Entity {
 	public void CharEscuro(Graphics g, BufferedImage[] direcao) {
 		Graphics2D g2 = (Graphics2D) g;
 		float op = 0.6f;
-		if (Game.Ambiente == "Cidade") {
-			if (Game.dia) {
+		if (Configuracoes.local==TipoAmbiente.RUA) {
+			if (Configuracoes.dia) {
 				op = 0f;
 			} else {
 				for (int i = 0; i < Game.entities.size(); i++) {
@@ -373,10 +377,10 @@ public class Player extends Entity {
 				}
 
 			}
-		} else if (Game.Ambiente == "Esgoto") {
+		} else if (Configuracoes.local==TipoAmbiente.ESGOTOS) {
 			op = 0.6f;
-		} else if (Game.Ambiente == "Terraço") {
-			if (Game.dia) {
+		} else if (Configuracoes.local==TipoAmbiente.TELHADO) {
+			if (Configuracoes.dia) {
 				op = 0f;
 			} else {
 				op = 0.6f;
@@ -391,8 +395,8 @@ public class Player extends Entity {
 	public void Sombras(Graphics g, BufferedImage[] direcao) {
 		Graphics2D g2 = (Graphics2D) g;
 		float op = 0.1f;
-		if (Game.Ambiente == "Cidade") {
-			if (Game.dia) {
+		if (Configuracoes.local==TipoAmbiente.RUA) {
+			if (Configuracoes.dia) {
 				op = 0.5f;
 			} else {
 				for (int i = 0; i < Game.entities.size(); i++) {
@@ -417,7 +421,7 @@ public class Player extends Entity {
 					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 				}
 			}
-		} else if (Game.Ambiente == "Esgoto") {
+		} else if (Configuracoes.local==TipoAmbiente.ESGOTOS) {
 			op = 0.0f;
 			if (this == Game.player2) {
 				g.setColor(Color.black);
@@ -425,8 +429,8 @@ public class Player extends Entity {
 				g.fillRect(Game.player.getX() - Camera.x - 800, Game.player.getY() - Camera.y - 300, 2000, 1200);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 			}
-		} else if (Game.Ambiente == "Terraço") {
-			if (Game.dia) {
+		} else if (Configuracoes.local==TipoAmbiente.TELHADO) {
+			if (Configuracoes.dia) {
 				op = 0.0f;
 			} else {
 				op = 0.2f;
@@ -441,17 +445,17 @@ public class Player extends Entity {
 
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
 		if (!subindo && !caindo) {
-			if (Game.dia) {
+			if (Configuracoes.dia) {
 				g.drawImage(inverterV(Sombra(direcao[index])), this.getX() + pos - Camera.x + mov_das_cena,
-						this.getY() - Camera.y + Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE / 2, null);
+						this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2, null);
 			} else {
 				g.drawImage(inverterV(Sombra(direcao[index])), this.getX() + pos - Camera.x + mov_das_cena,
-						this.getY() - Camera.y + Game.TILE_SIZE + 7, Game.TILE_SIZE, Game.TILE_SIZE / 2, null);
+						this.getY() - Camera.y + Configuracoes.TILE_SIZE + 7, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2, null);
 			}
 
 		} else {
 			g.drawImage(Sombra(direcao[index]), this.getX() + pos - Camera.x + mov_das_cena + 10,
-					this.getY() - Camera.y + Game.TILE_SIZE, Game.TILE_SIZE, Game.TILE_SIZE / 2, null);
+					this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2, null);
 		}
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
