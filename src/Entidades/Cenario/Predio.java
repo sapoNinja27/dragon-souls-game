@@ -20,10 +20,12 @@ public class Predio extends Entity{
 		this.width=width;
 		this.distanciaX= this.getWidth()*Configuracoes.TILE_SIZE+Configuracoes.TILE_SIZE*2+27;
 		this.distanciaY= this.getHeight()*Configuracoes.TILE_SIZE+Configuracoes.TILE_SIZE;
-		porta=new Porta(x+100, y, Color.white, 0);
 		for(int i = 0;i<paredes.length;i++) {
 			paredes[i]=Game.cenario.getSprite(2*Configuracoes.TILE_SIZE,(5+i)*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
 		}
+	}
+	public void generateEstruturas() {
+		porta=new Porta(getX()+100, getY(), Color.white, 0);
 	}
 	public void tick() {
 		porta.tick();

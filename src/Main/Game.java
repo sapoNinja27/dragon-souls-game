@@ -533,7 +533,6 @@ public void run() {
 				}
 
 			}
-			
 			if(e.getKeyCode() == KeyEvent.VK_W){
 				player.up = false;
 				player.podepular=false;

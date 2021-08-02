@@ -152,6 +152,7 @@ public class World {
 			predios[indexPredio].setX(x * Configuracoes.TILE_SIZE);
 			predios[indexPredio].setY(y * Configuracoes.TILE_SIZE);
 			Predio pack = predios[indexPredio];
+			pack.generateEstruturas();
 			Game.entities.add(pack);
 			indexPredio++;
 		}

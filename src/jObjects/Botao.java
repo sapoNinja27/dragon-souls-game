@@ -7,14 +7,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 /**
- * Botão
+ * Botï¿½o
  * 
- * @apiNote Cria um botão customizavel mais simples de modificar
- * @apiNote Configurações do objeto assim como sua inclusão na lista do main são
+ * @apiNote Cria um botï¿½o customizavel mais simples de modificar
+ * @apiNote Configuraï¿½ï¿½es do objeto assim como sua inclusï¿½o na lista do main sï¿½o
  *          feitas no init() da pagina
  */
 public class Botao {
-	private int x, y, w, h, aw, ah;
+	private int x, y, w, h, aw, ah,fontSize;
 	private Color cor = Color.white;
 	private String text;
 	private boolean mouseOver, mousePressed = false;
@@ -25,10 +25,10 @@ public class Botao {
 	private int mx, my;
 
 	/**
-	 * Cria um botão
+	 * Cria um botï¿½o
 	 * 
-	 * @param x      : posição horizontal
-	 * @param y      : posição vertical
+	 * @param x      : posiï¿½ï¿½o horizontal
+	 * @param y      : posiï¿½ï¿½o vertical
 	 * @param width  : tamanho horizontal
 	 * @param height : tamanho vertical
 	 */
@@ -40,17 +40,19 @@ public class Botao {
 	}
 
 	/**
-	 * Cria um botão mais elaborado
+	 * Cria um botï¿½o mais elaborado
 	 * 
-	 * @param x      : posição horizontal
-	 * @param y      : posição vertical
+	 * @param x      : posiï¿½ï¿½o horizontal
+	 * @param y      : posiï¿½ï¿½o vertical
 	 * @param width  : tamanho horizontal
 	 * @param height : tamanho vertical
-	 * @param text   : texto do botão
-	 * @param cor    : cor do botão
+	 * @param text   : texto do botï¿½o
+	 * @param cor    : cor do botï¿½o
 	 * @param borda  : tamanho da borda
 	 */
-	public Botao(int x, int y, int w, int h, String text, Color cor, int borda, int px,int py,int aw,int ah) {
+	public Botao(int x, int y, int w, int h, String text, Color cor, int borda, int px,int py,int aw,int ah
+//			, int fontSize
+			) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -62,10 +64,11 @@ public class Botao {
 		this.spacingY=py;
 		this.aw=aw;
 		this.ah=ah;
+		this.fontSize=18;
 	}
 
 	/**
-	 * Ajusta quão redondo é o botão, o padrão é 0
+	 * Ajusta quï¿½o redondo ï¿½ o botï¿½o, o padrï¿½o ï¿½ 0
 	 * 
 	 * @param w : Valor de "rounded" horizontal
 	 * @param h : Valor de "rounded" vertical
@@ -76,7 +79,7 @@ public class Botao {
 	}
 
 	/**
-	 * Adiciona o texto do botão
+	 * Adiciona o texto do botï¿½o
 	 * 
 	 * @param text : texto
 	 */
@@ -85,7 +88,7 @@ public class Botao {
 	}
 
 	/**
-	 * Adiciona a cor do botão, o padrão é branco
+	 * Adiciona a cor do botï¿½o, o padrï¿½o ï¿½ branco
 	 * 
 	 * @param cor : cor
 	 */
@@ -109,7 +112,7 @@ public class Botao {
 	}
 
 	/**
-	 * Retorna verdadeiro quando o botão é pressionado
+	 * Retorna verdadeiro quando o botï¿½o ï¿½ pressionado
 	 */
 
 	public boolean isClicked() {
@@ -121,7 +124,7 @@ public class Botao {
 	}
 
 	/**
-	 * Retorna verdadeiro quando o mouse esta acima do botão
+	 * Retorna verdadeiro quando o mouse esta acima do botï¿½o
 	 */
 	public boolean mouseOver() {
 		return mouseOver;
@@ -129,8 +132,8 @@ public class Botao {
 
 
 	/**
-	 * Funções tick são chamadas indefinidamente durante a aplicação atualiza a
-	 * posição do mouse em relação ao objeto
+	 * Funï¿½ï¿½es tick sï¿½o chamadas indefinidamente durante a aplicaï¿½ï¿½o atualiza a
+	 * posiï¿½ï¿½o do mouse em relaï¿½ï¿½o ao objeto
 	 */
 	public void tick() {
 		mx = Mouse.getX();
@@ -190,7 +193,7 @@ public class Botao {
 		g.fillRoundRect(x - borda, y - borda, w + borda * 2, h + borda * 2, aw, ah);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		g.setColor(Color.black);
-		g.setFont(new Font("arial", Font.BOLD, 18));
+		g.setFont(new Font("arial", Font.BOLD, fontSize));
 		g.drawString(text, (x+spacingX), y + spacingY);
 
 	}

@@ -38,6 +38,7 @@ public class Porta extends Entity{
 		}
 	}
 	public void tick() {
+		checkCollisionPorta();
 		depth=1;
 		if(emFrente) {
 			frames++;
@@ -60,7 +61,7 @@ public class Porta extends Entity{
 //				}
 //			}
 //		}else {
-//			if(Game.Ambiente=="Terraço") {
+//			if(Game.Ambiente=="Terraï¿½o") {
 //				checkCollisionPortaTerraco();
 //				if(!emFrente) {
 //					Game.player.clicouPortas=false;
@@ -71,6 +72,7 @@ public class Porta extends Entity{
 		
 
 	}
+	
 	public void checkCollisionPorta(){
 		if(Entity.isColidding(Game.player, this,0,0)) {
 			emFrente=true;
@@ -82,7 +84,7 @@ public class Porta extends Entity{
 //						Game.portaTerraco.get(i).getY(),
 //						Game.player.dir);
 //				Game.player.lastPorta=i;
-				Configuracoes.local=TipoAmbiente.TELHADO;
+//				Configuracoes.local=TipoAmbiente.TELHADO;
 			}
 		}else {
 			emFrente=false;
@@ -94,15 +96,15 @@ public class Porta extends Entity{
 			if(atual instanceof Porta) {
 				if(Entity.isColidding(Game.player, atual,0,0)) {
 					atual.emFrente=true;
-					if(Game.player.clicouPortas) {
-						Game.player.clicouPortas=false;
-						teleportar(Game.portas.get(i).getX()-40,
-								Game.portas.get(i).getY(),
-								Game.portas.get(i).getX()-40,
-								Game.portas.get(i).getY(),
-								Game.player.dir);
-						Configuracoes.local=TipoAmbiente.RUA;
-					}
+//					if(Game.player.clicouPortas) {
+//						Game.player.clicouPortas=false;
+//						teleportar(Game.portas.get(i).getX()-40,
+//								Game.portas.get(i).getY(),
+//								Game.portas.get(i).getX()-40,
+//								Game.portas.get(i).getY(),
+//								Game.player.dir);
+//						Configuracoes.local=TipoAmbiente.RUA;
+//					}
 				}else {
 					atual.emFrente=false;
 				}
@@ -111,57 +113,46 @@ public class Porta extends Entity{
 	}
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		if(tipo==0) {
-			if(!emFrente) {
-				g.drawImage(porta1[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
-			}else {
-				g.drawImage(porta1[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
-				g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,20));
-				if(cor==Color.white) {
-					g.setColor(Color.blue);
-				}else {
-					g.setColor(Color.white);
-				}
-				g.drawString("Terraço", this.getX()-Camera.x-35, this.getY()-Camera.y-30);
-//				g.drawLine(100+190, 150, 100+350, 150);
-//				g.drawLine(100+160, 125, 100+310, 125);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-			}
+//		if(tipo==0) {
+//			if(!emFrente) {
+//				g.drawImage(porta1[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
+//			}else {
+//				g.drawImage(porta1[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
+//				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
+//				g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,20));
+//				if(cor==Color.white) {
+//					g.setColor(Color.blue);
+//				}else {
+//					g.setColor(Color.white);
+//				}
+//				g.drawString("Terraï¿½o", this.getX()-Camera.x-35, this.getY()-Camera.y-30);
+////				g.drawLine(100+190, 150, 100+350, 150);
+////				g.drawLine(100+160, 125, 100+310, 125);
+//				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+//			}
+//		}else {
+////			g.drawImage(fund[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,null);
+////			g.drawImage(fund[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,null);
+//		}
+		if(!emFrente) {
+			g.drawImage(porta1[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
 		}else {
-//			g.drawImage(fund[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,null);
-//			g.drawImage(fund[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,null);
-			if(!emFrente) {
-				g.drawImage(porta1[0],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
+			g.drawImage(porta1[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
+			g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,20));
+			if(cor==Color.white) {
+				g.setColor(Color.blue);
 			}else {
-				g.drawImage(porta1[1],this.getX()-Camera.x-Configuracoes.TILE_SIZE,this.getY()-Camera.y-Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE*2,Configuracoes.TILE_SIZE*2,null);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
-				g.setFont(new Font("Cambria Math",Font.ROMAN_BASELINE,20));
-				if(cor==Color.white) {
-					g.setColor(Color.blue);
-				}else {
-					g.setColor(Color.white);
-				}
-				g.drawString("Cidade", this.getX()-Camera.x-35, this.getY()-Camera.y-30);
-//				g.drawLine(100+190, 150, 100+350, 150);
-//				g.drawLine(100+160, 125, 100+310, 125);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+				g.setColor(Color.white);
 			}
-		}
-		
-			
-			
-			
-			
-			
-			
+			g.drawString("Cidade", this.getX()-Camera.x-35, this.getY()-Camera.y-30);
+//			g.drawLine(100+190, 150, 100+350, 150);
+//			g.drawLine(100+160, 125, 100+310, 125);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
-			
-			
-			
-			
-			
-		}
-						
-	
+		}	
+
+		g.setColor(Color.red);
+		g.drawRect(getX()- Camera.x+maskx[0], getY()- Camera.y+masky[0], maskw[0], maskh[0]);	
+	}
 }
