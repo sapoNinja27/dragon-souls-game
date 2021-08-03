@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import Entidades.Entity;
+
 /**
  * Botão
  * 
@@ -13,7 +15,7 @@ import java.awt.Graphics2D;
  * @apiNote Configurações do objeto assim como sua inclusão na lista do main são
  *          feitas no init() da pagina
  */
-public class Botao {
+public class Botao{
 	private int x, y, w, h, aw, ah;
 	private Color cor = Color.white;
 	private String text;
@@ -23,6 +25,7 @@ public class Botao {
 	private int spacingX,spacingY;
 	private boolean clicked;
 	private int mx, my;
+	private boolean lastBotao=false;
 
 	/**
 	 * Cria um botão
@@ -135,10 +138,19 @@ public class Botao {
 	public void tick() {
 		mx = Mouse.getX();
 		my = Mouse.getY();
+		if(mouseOver) {
+			Mouse.hover=true;
+		}else {
+			if(lastBotao) {
+				Mouse.hover=false;
+				lastBotao=false;
+			}
+		}
 		if (Mouse.pressed) {
 			if (mx > x && mx < x + w && my > y && my < y + h) {
 				overPressed=true;
 				mousePressed = true;
+				lastBotao=true;
 			} else {
 				overPressed=false;
 				mouseOver = false;
@@ -149,6 +161,7 @@ public class Botao {
 				if(overPressed) {
 					Mouse.released=false;
 					overPressed=false;
+					Mouse.hover=false;
 					clicked=true;
 				}
 				mouseOver = true;
@@ -162,6 +175,7 @@ public class Botao {
 		} else {
 			if (mx > x && mx < x + w && my > y && my < y + h) {
 				mouseOver = true;
+				lastBotao=true;
 			} else {
 				mouseOver = false;
 			}
