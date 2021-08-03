@@ -2,9 +2,12 @@ package Main;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -86,6 +89,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static Player player;
 	public static Player player2;
 	public static Random rand;
+	//mouse
+	Spritesheet mouse;
 	public UI ui;
 	public static Cutscene cen;
 	public static Menu menu;
@@ -127,6 +132,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		fundoS = new Spritesheet("/menus/fundosander.png");
 		//cenario
 		cenario = new Spritesheet("/cenario/cenario.png");
+		//mouse
+		mouse = new Spritesheet("/cursor.png");
 		
 		
 		
@@ -176,31 +183,28 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	 * Atualiza a imagem do mouse
 	 */
 	public void attMouse() {
-//		int bot = mascaras.size();
-//		for (int i = 0; i < mascaras.size(); i++) {
-//			if (mascaras.get(i).mouseOver()) {
-//				bot--;
-//			}
-//		}
-//		if (bot == mascaras.size()) {
-//			try {
-//				Toolkit toolkit = Toolkit.getDefaultToolkit();
-//				Image image = mouse.getSprite(0,0,32,32);
-//				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-//				frame.setCursor(c);
-//			} catch (Exception e) {
-//
-//			}
-//		} else {
-//			try {
-//				Toolkit toolkit = Toolkit.getDefaultToolkit();
-//				Image image = mouse.getSprite(32,0,32,32);
-//				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-//				frame.setCursor(c);
-//			} catch (Exception e) {
-//
-//			}
-//		}
+		System.out.println(Mouse.hover);
+		if (Mouse.hover) {
+			try {
+				//hover
+				Toolkit toolkit = Toolkit.getDefaultToolkit();
+				Image image = mouse.getSprite(32,0,32,32);
+				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+				frame.setCursor(c);
+			} catch (Exception e) {
+
+			}
+		} else {
+			//standart
+			try {
+				Toolkit toolkit = Toolkit.getDefaultToolkit();
+				Image image = mouse.getSprite(0,0,32,32);
+				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+				frame.setCursor(c);
+			} catch (Exception e) {
+
+			}
+		}
 
 	}
 	public void initFrame(){
@@ -256,6 +260,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	}
 	
 	public void tick(){
+		attMouse();
 		loading.tick();
 		if(isLoading) {
 			
@@ -318,7 +323,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		Graphics g = image.getGraphics();
 		g.setColor(new Color(0,0,0));
 		g.fillRect(0, 0,Configuracoes.WIDTH,Configuracoes.HEIGHT);
-		
 		if(Configuracoes.estadoGame==TipoGame.NORMAL) {
 //			world.render(g);
 
