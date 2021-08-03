@@ -24,11 +24,7 @@ public class LimiteDeCenarioAbismo extends Entity{
 			Entity atual = Game.entities.get(i);
 			if(atual instanceof LimiteDeCenarioAbismo) {
 				if(Entity.isColidding(Game.player, atual,0,0)) {
-						teleportar(Game.portaTerraco.get(Game.player.lastPorta).getX()-40,
-								Game.portaTerraco.get(Game.player.lastPorta).getY(),
-								Game.portaTerraco.get(Game.player.lastPorta).getX()-40,
-								Game.portaTerraco.get(Game.player.lastPorta).getY(),
-								Game.player.dir);
+						
 						Game.player.caindo=false;
 						Game.player.parado=true;
 						Game.player.life--;

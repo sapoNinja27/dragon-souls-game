@@ -3,7 +3,6 @@ package Main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -30,6 +29,7 @@ import Entidades.Cenario.EscadaEsgoto;
 import Entidades.Cenario.Plataforma;
 import Entidades.Cenario.Porta;
 import Entidades.Cenario.Portao;
+import Entidades.Cenario.Predio;
 import Entidades.Cenario.ObjetosComMovimento.LixoEsgoto;
 import Entidades.Cenario.ObjetosComMovimento.ObjetosComMovimento;
 import Entidades.Cenario.ObjetosComMovimento.Transito;
@@ -49,7 +49,7 @@ import jObjects.Mouse;
 
 public class Game extends Canvas implements Runnable,KeyListener,MouseListener,MouseMotionListener{
 	private static final long serialVersionUID = 1L;
-	public static boolean podeClicar=true;
+	public static boolean podeClicar=true, clicked;
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
@@ -57,10 +57,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static Loading loading;
 	public static boolean isLoading;
 	public static List<Entity> entities;
+	public static List<Predio> predios;
 	public static List<ObjetosComMovimento> objetos;
 	public static List<Enemy> enemies;
-	public static List<Porta> portas;
-	public static List<Porta> portaTerraco;
 	public static List<Portao> portoes;
 	public static List<EscadaEsgoto> escadasDeEsgoto;
 	public static List<Plataforma> bueiros;
@@ -103,10 +102,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		ui = new UI();
 		image = new BufferedImage(Configuracoes.WIDTH,Configuracoes.HEIGHT,BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
+		predios = new ArrayList<Predio>();
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<Projetil>();
-		portas = new ArrayList<Porta>();
-		portaTerraco = new ArrayList<Porta>();
 		portoes = new ArrayList<Portao>();
 		bueiros = new ArrayList<Plataforma>();
 		escadasDeEsgoto=new ArrayList<EscadaEsgoto>();
@@ -270,8 +268,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 					Entity e = entities.get(i);
 					e.tick();
 				}
-				for(int i = 0; i < portas.size(); i++) {
-					portas.get(i).tick();
+				for(int i = 0; i < predios.size(); i++) {
+					Entity e = predios.get(i);
+					e.tick();
 				}
 				for(int i = 0; i < bullets.size(); i++) {
 					bullets.get(i).tick();
@@ -322,7 +321,10 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		
 		if(Configuracoes.estadoGame==TipoGame.NORMAL) {
 //			world.render(g);
-			
+
+			for(int i = 0; i < predios.size(); i++) {
+				predios.get(i).render(g);
+			}
 			Collections.sort(entities,Entity.nodeSorter);
 			for(int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -388,8 +390,7 @@ public void run() {
 		if(e.getKeyCode() == KeyEvent.VK_X){
 			if(podeClicar) {
 				podeClicar=false;
-				player.clicouBueiros=true;
-				player.clicouPortas=true;
+				clicked=true;
 			}
 			
 		}
@@ -498,6 +499,7 @@ public void run() {
 	public void keyReleased(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_X){
 			podeClicar=true;
+			clicked=false;
 		}
 		if(!cen.CcRun()) {
 			if(e.getKeyCode() == KeyEvent.VK_UP){

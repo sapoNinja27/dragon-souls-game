@@ -27,11 +27,11 @@ public class World {
 	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
 	private int indexPredio = 0;
-	private Predio[] predios = { new Predio(0, 0, 7, 4, Texturas.MARMORE), new Predio(0, 0, 6, 4, Texturas.MARMORE),
-			new Predio(0, 0, 9, 4, Texturas.MARMORE), new Predio(0, 0, 25, 4, Texturas.MARMORE),
-			new Predio(0, 0, 12, 4, Texturas.MARMORE), new Predio(0, 0, 11, 4, Texturas.MARMORE),
-			new Predio(0, 0, 32, 4, Texturas.MARMORE), new Predio(0, 0, 9, 4, Texturas.MARMORE),
-			new Predio(0, 0, 7, 4, Texturas.MARMORE), new Predio(0, 0, 9, 4, Texturas.MARMORE) };
+	private Predio[] predios = { new Predio(0,0, 0, 7, 4, Texturas.MARMORE), new Predio(1,0, 0, 6, 4, Texturas.MARMORE),
+			new Predio(2,0, 0, 9, 4, Texturas.MARMORE), new Predio(3,0, 0, 25, 4, Texturas.MARMORE),
+			new Predio(4,0, 0, 12, 4, Texturas.MARMORE), new Predio(5,0, 0, 11, 4, Texturas.MARMORE),
+			new Predio(6,0, 0, 32, 4, Texturas.MARMORE), new Predio(7,0, 0, 9, 4, Texturas.MARMORE),
+			new Predio(8,0, 0, 7, 4, Texturas.MARMORE), new Predio(9,0, 0, 9, 4, Texturas.MARMORE) };
 	private int cor = 0;
 	private Color[] predios1 = { new Color(0xFF007F0E), new Color(0xFF415944), new Color(0xFFFFAF6E),
 			new Color(0xFF7A6A70), //
@@ -152,7 +152,8 @@ public class World {
 			predios[indexPredio].setX(x * Configuracoes.TILE_SIZE);
 			predios[indexPredio].setY(y * Configuracoes.TILE_SIZE);
 			Predio pack = predios[indexPredio];
-			Game.entities.add(pack);
+			pack.generateObjects(pack.getId());
+			Game.predios.add(pack);
 			indexPredio++;
 		}
 	}

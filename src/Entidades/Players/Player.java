@@ -31,6 +31,8 @@ public class Player extends Entity {
 	protected double x;
 	protected double y;
 	boolean jaParou;
+	private boolean dentro;
+
 	public boolean camL, camR, camU;
 	public int framesMoved = 0, maxFramesMoved = 9, indexMoved = 4, maxIndexMoved = 12;
 	public int framesParan = 0, maxFramesParan = 15;
@@ -197,6 +199,13 @@ public class Player extends Entity {
 		}
 	}
 
+	public boolean getDentro() {
+		return dentro;
+	}
+
+	public void setDentro(boolean dentro) {
+		this.dentro = dentro;
+	}
 	public static void trocaPersonagem(Player p, Player p2) {
 		int x1 = p.getX();
 		int y1 = p.getY();
