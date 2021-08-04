@@ -6,8 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import Entidades.Entity;
-
 /**
  * Botão
  * 
@@ -15,17 +13,17 @@ import Entidades.Entity;
  * @apiNote Configurações do objeto assim como sua inclusão na lista do main são
  *          feitas no init() da pagina
  */
-public class Botao{
+public class Botao {
 	private int x, y, w, h, aw, ah;
 	private Color cor = Color.white;
 	private String text;
 	private boolean mouseOver, mousePressed = false;
 	private boolean overPressed;
 	private int borda;
-	private int spacingX,spacingY;
+	private int spacingX, spacingY;
 	private boolean clicked;
 	private int mx, my;
-	private boolean lastBotao=false;
+	private boolean lastBotao = false;
 
 	/**
 	 * Cria um botão
@@ -53,7 +51,7 @@ public class Botao{
 	 * @param cor    : cor do botão
 	 * @param borda  : tamanho da borda
 	 */
-	public Botao(int x, int y, int w, int h, String text, Color cor, int borda, int px,int py,int aw,int ah) {
+	public Botao(int x, int y, int w, int h, String text, Color cor, int borda, int px, int py, int aw, int ah) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -61,10 +59,10 @@ public class Botao{
 		this.text = text;
 		this.cor = cor;
 		this.borda = borda;
-		this.spacingX=px;
-		this.spacingY=py;
-		this.aw=aw;
-		this.ah=ah;
+		this.spacingX = px;
+		this.spacingY = py;
+		this.aw = aw;
+		this.ah = ah;
 	}
 
 	/**
@@ -104,9 +102,8 @@ public class Botao{
 	public void setBorda(int borda) {
 		this.borda = borda;
 	}
-	
 
-	public void setSpacing(int x,int y) {
+	public void setSpacing(int x, int y) {
 		this.spacingX = x;
 		this.spacingY = y;
 	}
@@ -116,8 +113,8 @@ public class Botao{
 	 */
 
 	public boolean isClicked() {
-		if(clicked) {
-			clicked=false;
+		if (clicked) {
+			clicked = false;
 			return true;
 		}
 		return false;
@@ -130,7 +127,6 @@ public class Botao{
 		return mouseOver;
 	}
 
-
 	/**
 	 * Funções tick são chamadas indefinidamente durante a aplicação atualiza a
 	 * posição do mouse em relação ao objeto
@@ -138,44 +134,44 @@ public class Botao{
 	public void tick() {
 		mx = Mouse.getX();
 		my = Mouse.getY();
-		if(mouseOver) {
-			Mouse.hover=true;
-		}else {
-			if(lastBotao) {
-				Mouse.hover=false;
-				lastBotao=false;
+		if (mouseOver) {
+			Mouse.hover = true;
+		} else {
+			if (lastBotao) {
+				Mouse.hover = false;
+				lastBotao = false;
 			}
 		}
 		if (Mouse.pressed) {
 			if (mx > x && mx < x + w && my > y && my < y + h) {
-				overPressed=true;
+				overPressed = true;
 				mousePressed = true;
-				lastBotao=true;
+				lastBotao = true;
 			} else {
-				overPressed=false;
+				overPressed = false;
 				mouseOver = false;
 			}
 		} else if (Mouse.released) {
 			mousePressed = false;
 			if (mx > x && mx < x + w && my > y && my < y + h) {
-				if(overPressed) {
-					Mouse.released=false;
-					overPressed=false;
-					Mouse.hover=false;
-					clicked=true;
+				if (overPressed) {
+					Mouse.released = false;
+					overPressed = false;
+					Mouse.hover = false;
+					clicked = true;
 				}
 				mouseOver = true;
 			} else {
-				if(overPressed) {
-					Mouse.released=false;
-					overPressed=false;
+				if (overPressed) {
+					Mouse.released = false;
+					overPressed = false;
 				}
 				mouseOver = false;
 			}
 		} else {
 			if (mx > x && mx < x + w && my > y && my < y + h) {
 				mouseOver = true;
-				lastBotao=true;
+				lastBotao = true;
 			} else {
 				mouseOver = false;
 			}
@@ -205,7 +201,7 @@ public class Botao{
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		g.setColor(Color.black);
 		g.setFont(new Font("arial", Font.BOLD, 18));
-		g.drawString(text, (x+spacingX), y + spacingY);
+		g.drawString(text, (x + spacingX), y + spacingY);
 
 	}
 

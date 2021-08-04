@@ -60,11 +60,11 @@ public class Predio extends Entity {
 	}
 
 	public void generateObjects(int id) {
-		System.out.println(id);
 		porta = new Porta(id, getX() + 100, getY(), Color.white, 0);
 		portaFora = new PortaFora(id, getX() + 100, getY(), Color.white, 0);
 		portaFora.ativa = false;
 		par = new ParedeInvisivel(getX(), 0, width);
+		par.setLarguraParede(10);
 		Game.entities.add(portaFora);
 	}
 
