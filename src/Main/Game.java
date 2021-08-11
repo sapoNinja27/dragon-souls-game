@@ -183,7 +183,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	 * Atualiza a imagem do mouse
 	 */
 	public void attMouse() {
-		System.out.println(Mouse.hover);
 		if (Mouse.hover) {
 			try {
 				//hover

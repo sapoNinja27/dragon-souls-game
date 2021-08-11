@@ -8,35 +8,32 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Configuration.Configuracoes;
-import Entidades.Entity;
+import Entidades.Cenario.Bueiro;
 import Entidades.Cenario.EscadaEsgoto;
-import Entidades.Cenario.Janela;
 import Entidades.Cenario.LataLixo;
 import Entidades.Cenario.LimiteDeCenarioAbismo;
 import Entidades.Cenario.ParedeInvisivel;
 import Entidades.Cenario.Plataforma;
-import Entidades.Cenario.Porta;
 import Entidades.Cenario.Portao;
-import Entidades.Cenario.PosteLuz;
 import Entidades.Cenario.Predio;
+import Graficos.Spritesheet;
 import Main.Game;
-import enums.Texturas;
 import enums.TipoAmbiente;
 
 public class World {
 	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
 	private int indexPredio = 0;
-	private Predio[] predios = { new Predio(0,0, 0, 7, 4, Texturas.MARMORE), new Predio(1,0, 0, 6, 4, Texturas.MARMORE),
-			new Predio(2,0, 0, 9, 4, Texturas.MARMORE), new Predio(3,0, 0, 25, 4, Texturas.MARMORE),
-			new Predio(4,0, 0, 12, 4, Texturas.MARMORE), new Predio(5,0, 0, 11, 4, Texturas.MARMORE),
-			new Predio(6,0, 0, 32, 4, Texturas.MARMORE), new Predio(7,0, 0, 9, 4, Texturas.MARMORE),
-			new Predio(8,0, 0, 7, 4, Texturas.MARMORE), new Predio(9,0, 0, 9, 4, Texturas.MARMORE) };
-	private int cor = 0;
-	private Color[] predios1 = { new Color(0xFF007F0E), new Color(0xFF415944), new Color(0xFFFFAF6E),
-			new Color(0xFF7A6A70), //
-			new Color(0xFF6A4B74), new Color(0xFF6ABE74), new Color(0xFF745E7A), new Color(0xFFEA5E7A),
-			new Color(0xFFA04564), new Color(0xFF9E6C4B) };
+	private Predio[] predios = { new Predio(1, 0, 0, 7, 4, new Spritesheet("/cenario/predioBranco.png")),
+			new Predio(3, 0, 0, 9, 4,  new Spritesheet("/cenario/stone.png")), new Predio(8, 0, 0, 7, 4,  new Spritesheet("/cenario/predioBranco.png")) };
+//	private Predio[] predios2 = {
+//			new Predio(2,0, 0, 6, 4, Texturas.MARMORE),
+//			new Predio(4,0, 0, 25, 4, Texturas.MARMORE),
+//			new Predio(5,0, 0, 12, 4, Texturas.MARMORE), 
+//			new Predio(6,0, 0, 11, 4, Texturas.MARMORE),
+//			new Predio(7,0, 0, 32, 4, Texturas.MARMORE), 
+//			new Predio(9,0, 0, 7, 4, Texturas.MARMORE)
+//	};
 
 	public World(String path) {
 		try {
@@ -91,7 +88,7 @@ public class World {
 					y * Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 			Game.entities.add(pack);
 		} else if (pixelAtual == 0xFFFF0000) {
-			ParedeInvisivel pack = new ParedeInvisivel(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,WIDTH);
+			ParedeInvisivel pack = new ParedeInvisivel(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, WIDTH);
 			Game.entities.add(pack);
 
 		}
@@ -109,17 +106,21 @@ public class World {
 //		PosteLuz post = new PosteLuz(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
 //		Game.entities.add(post);
 		if (pixelAtual == 0xFFFFFFFF) {
-			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
-			pack.setTipo(3);
+			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
+					Game.cenario.getSprite((2) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE));
 			Game.entities.add(pack);
 		} else if (pixelAtual == 0xFFF2F2F2) {
 			// chao de esgoto
-			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
-			pack.setTipo(6);
+			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
+					Game.cenario.getSprite((5) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE));
 			Game.entities.add(pack);
 		} else if (pixelAtual == 0xFFE5E5E5) {
-			// chao de esgoto coM canos
-			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
+			// chao de esgoto com canos
+			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
+					Game.cenario.getSprite((3) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE));
 //			if (canoOn) {
 //				pack.setTipo(4);
 //				canoOn = false;
@@ -130,14 +131,19 @@ public class World {
 			Game.entities.add(pack);
 		} else if (pixelAtual == 0xFFAA004A) {
 			// bueiro
-			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
-			pack.setTipo(1);
+			BufferedImage[] img = {
+					Game.cenario.getSprite(0 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE),
+					Game.cenario.getSprite(1 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE) };
+
+			Bueiro pack = new Bueiro(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,img);
+			Plataforma plat = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, null);
 			Game.entities.add(pack);
-			Game.bueiros.add(pack);
+			Game.entities.add(plat);
 		} else if (pixelAtual == 0xFFD8D8D8) {
 			// Telhado
-			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
-			pack.invisivel();
+			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, null);
 			Game.entities.add(pack);
 			tiles[pixelAtual] = new FundoTile(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
 					Tile.colorir(Game.cenario.getSprite(1 * Configuracoes.TILE_SIZE, 1 * Configuracoes.TILE_SIZE,
