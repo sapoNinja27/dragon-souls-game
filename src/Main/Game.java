@@ -52,8 +52,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private Thread thread;
 	private boolean isRunning = true;
 	private BufferedImage image;
-	public static Loading loading;
-	public static boolean isLoading;
 	public static List<Entity> entities;
 	public static List<Predio> predios;
 	public static List<ObjetosComMovimento> objetos;
@@ -97,21 +95,27 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		entities.add(player2);
 	}
 
-	public static void refreshListsSTC() {
+	public static void refreshListsSTC(boolean newWorld) {
 		entities = new ArrayList<Entity>();
 		predios = new ArrayList<Predio>();
 		enemies = new ArrayList<Enemy>();
 		objetos = new ArrayList<ObjetosComMovimento>();
-		player =	Configuracoes.p1;
-		player2 =	Configuracoes.p2;
-		entities.add(player);
-		entities.add(player2);
+		if (!newWorld) {
+			player = Configuracoes.p1;
+			player2 = Configuracoes.p2;
+			entities.add(player);
+			entities.add(player2);
+		} else {
+			player = new Tai(0, 0);
+			player2 = new Ace(0, 0);
+			entities.add(player);
+			entities.add(player2);
+		}
 	}
 
 	public Game() {
 //		requestFocus();
 		rand = new Random();
-		loading = new Loading();
 		addKeyListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -121,7 +125,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		// Inicializando objetos.
 		ui = new UI();
 		image = new BufferedImage(Configuracoes.WIDTH, Configuracoes.HEIGHT, BufferedImage.TYPE_INT_RGB);
-		
+
 		// personagens
 		ace = new Spritesheet("/personagens/ace.png");
 		demonTai = new Spritesheet("/personagens/demonTai.png");
@@ -142,7 +146,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		cenario = new Spritesheet("/cenario/cenario.png");
 		// mouse
 		mouse = new Spritesheet("/cursor.png");
-		
+
 		menu = new Menu();
 		cen = new Cutscene();
 		refreshLists();
@@ -262,8 +266,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void tick() {
 		attMouse();
-		loading.tick();
-		if (isLoading) {
+		Loading.tick();
+		if (Loading.isLoading()) {
 
 		} else {
 			if (Configuracoes.estadoGame == TipoGame.NORMAL) {
@@ -283,19 +287,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					objetos.get(i).tick();
 				}
 			}
-//			else if(Configuracoes.estadoGame==TipoGame.GAMEOVER) {
-//				
-//				
-//				
-//				if(restartGame) {
-//					restartGame = false;
-//					Configuracoes.estadoGame=TipoGame.NORMAL;
-////					CUR_LEVEL = 1;
-////					String newWorld = "level"+CUR_LEVEL+".png";
-//					//System.out.println(newWorld);
-////					World.restartGame(newWorld);
-//				}
-//			}
 			else if (Configuracoes.estadoGame == TipoGame.MENU) {
 				menu.tick();
 			}
@@ -340,7 +331,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.drawImage(image, 0, 0, Configuracoes.WIDTH * Configuracoes.SCALE, Configuracoes.HEIGHT * Configuracoes.SCALE,
 				null);
 
-		loading.render(g);
+		Loading.render(g);
 
 		bs.show();
 	}

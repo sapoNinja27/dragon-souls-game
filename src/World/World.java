@@ -58,8 +58,6 @@ public class World {
 					fundo(pixelAtual, xx, yy);
 				}
 			}
-
-			Game.loading.finishStartGame();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -167,9 +165,10 @@ public class World {
 			Game.player.setX(x * Configuracoes.TILE_SIZE);
 			Game.player.setY(y * Configuracoes.TILE_SIZE);
 			Game.player2.setX(x * Configuracoes.TILE_SIZE - 20);
-			Game.player2.setY(y * Configuracoes.TILE_SIZE - 3);
+			Game.player2.setY(y * Configuracoes.TILE_SIZE + 3);
 			Game.player.setPrimeiroSpawn();
 			Game.player2.setPrimeiroSpawn();
+			Game.player.parado=true;
 			Configuracoes.p1=Game.player;
 			Configuracoes.p2=Game.player2;
 		}
@@ -186,9 +185,13 @@ public class World {
 //		Game.world = new World("/"+level);
 //		return;
 	}
-
+	public static void startGame() {
+		Game.refreshListsSTC(true);
+		Game.world = new World("/niveis/area1.png");
+	}
+	
 	public static void changeArea() {
-		Game.refreshListsSTC();
+		Game.refreshListsSTC(false);
 		Game.world = new World("/niveis/area"+Configuracoes.rotear()+".png");
 	}
 

@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import Configuration.Configuracoes;
 import Entidades.Entity;
 import Main.Game;
+import Menu.Loading;
 import World.Camera;
 import World.World;
 import enums.TipoAmbiente;
@@ -60,7 +61,9 @@ public class Portao extends Entity {
 				Game.clicked = false;
 				Configuracoes.p1 = Game.player;
 				Configuracoes.p2 = Game.player2;
+				Loading.start();
 				World.changeArea();
+				Loading.stop();
 			}
 		} else {
 			emFrente = false;

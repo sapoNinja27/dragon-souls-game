@@ -115,7 +115,9 @@ public class Menu {
 				botoes[i].tick();
 			}
 			if (botoes[0].isClicked()) {
-				Game.world = new World("/niveis/area1.png");
+				Loading.start();
+				World.startGame();
+				Loading.stop();
 				Configuracoes.estadoGame = TipoGame.NORMAL;
 				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
 				Game.player.visivel = true;

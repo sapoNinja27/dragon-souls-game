@@ -20,11 +20,7 @@ public class ParedeInvisivel extends Entity {
 	}
 
 	public void tick() {
-		if (this.distanciaX((int) x, Game.player.getX()) < 1000 && this.distanciaY((int) y, Game.player.getY()) < 150) {
-			if (!Game.player.getDentro()) {
-				checkCollision();
-			}
-		}
+		checkCollision();
 	}
 
 	void setLarguraParede(int larg) {

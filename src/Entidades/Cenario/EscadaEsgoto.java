@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import Configuration.Configuracoes;
 import Entidades.Entity;
 import Main.Game;
+import Menu.Loading;
 import World.Camera;
 
 public class EscadaEsgoto extends Entity {
@@ -52,8 +53,10 @@ public class EscadaEsgoto extends Entity {
 			emFrente = true;
 			if (Game.clicked) {
 				Game.clicked = false;
+				Loading.start();
 				Game.player.setY(getY() - 955);
 				Game.player2.setY(getY() - 955);
+				Loading.stop();
 			}
 		} else {
 			emFrente = false;

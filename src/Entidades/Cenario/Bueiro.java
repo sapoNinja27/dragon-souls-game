@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import Entidades.Entity;
 import Main.Game;
+import Menu.Loading;
 import World.Camera;
 
 public class Bueiro extends Entity {
@@ -48,8 +49,10 @@ public class Bueiro extends Entity {
 			emFrente = true;
 			if (Game.clicked) {
 				Game.clicked = false;
+				Loading.start();
 				Game.player.setY(getY() + 898);
 				Game.player2.setY(getY() + 898);
+				Loading.stop();
 			}
 		} else {
 			emFrente = false;
