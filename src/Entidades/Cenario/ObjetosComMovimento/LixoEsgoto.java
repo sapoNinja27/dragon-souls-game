@@ -31,8 +31,6 @@ public class LixoEsgoto extends ObjetosComMovimento{
 	
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-//		g.setColor(Color.red);
-//		g.drawRect(this.getX() - Camera.x+maskx[0],this.getY() - Camera.y+masky[0],maskw[0],maskh[0]);
 		g.drawImage(img,this.getX()-Camera.x+20+(20),this.getY()-Camera.y+10,32,32,null);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
 		g.drawImage(Sombra(img),this.getX()-Camera.x+20+(20),this.getY()-Camera.y+10,32,32,null);

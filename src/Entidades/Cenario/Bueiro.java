@@ -6,10 +6,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import Configuration.Configuracoes;
 import Entidades.Entity;
 import Main.Game;
 import Menu.Loading;
 import World.Camera;
+import enums.TipoAmbiente;
 
 public class Bueiro extends Entity {
 	private boolean emFrente;
@@ -50,6 +53,7 @@ public class Bueiro extends Entity {
 			if (Game.clicked) {
 				Game.clicked = false;
 				Loading.start();
+				Configuracoes.local = TipoAmbiente.ESGOTOS;
 				Game.player.setY(getY() + 898);
 				Game.player2.setY(getY() + 898);
 				Loading.stop();

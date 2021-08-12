@@ -154,29 +154,29 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void gerarObj() {
 		if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
-			if (Game.rand.nextInt(50) == 0) {
-				ObjetosComMovimento am = new LixoEsgoto(Game.player.getX() + 500, 3900 + Game.rand.nextInt(2) * 32);
-				am.setSpeed(Game.rand.nextInt(3));
-				if (Game.objetos.size() < Game.rand.nextInt(10)) {
-					Game.objetos.add(am);
+			if (rand.nextInt(50) == 0) {
+				ObjetosComMovimento am = new LixoEsgoto(player.getX() + 500, player.getY() + 58 + rand.nextInt(2) * 32);
+				am.setSpeed(rand.nextInt(3));
+				if (objetos.size() < rand.nextInt(10)) {
+					objetos.add(am);
 				}
 			}
 
 		} else if (Configuracoes.local == TipoAmbiente.RUA) {
 			if (Configuracoes.dia) {
-				if (Game.rand.nextInt(25) == 0) {
-					ObjetosComMovimento am = new Transito(Game.player.getX() - 1100, 2300 + Game.rand.nextInt(5));
-					am.setSpeed(Game.rand.nextInt(13));
-					if (Game.objetos.size() < Game.rand.nextInt(3)) {
-						Game.objetos.add(am);
+				if (rand.nextInt(25) == 0) {
+					ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() +64 + rand.nextInt(5));
+					am.setSpeed(rand.nextInt(13));
+					if (objetos.size() < rand.nextInt(3)) {
+						objetos.add(am);
 					}
 				}
 			} else {
-				if (Game.rand.nextInt(100) == 0) {
-					ObjetosComMovimento am = new Transito(Game.player.getX() - 1100, 2300 + Game.rand.nextInt(5));
-					am.setSpeed(Game.rand.nextInt(13));
-					if (Game.objetos.size() < Game.rand.nextInt(2)) {
-						Game.objetos.add(am);
+				if (rand.nextInt(100) == 0) {
+					ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() +64 + rand.nextInt(5));
+					am.setSpeed(rand.nextInt(13));
+					if (objetos.size() < rand.nextInt(2)) {
+						objetos.add(am);
 					}
 				}
 			}
@@ -265,6 +265,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void tick() {
+		Configuracoes.dia = true;
 		attMouse();
 		Loading.tick();
 		if (Loading.isLoading()) {
@@ -286,8 +287,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				for (int i = 0; i < objetos.size(); i++) {
 					objetos.get(i).tick();
 				}
-			}
-			else if (Configuracoes.estadoGame == TipoGame.MENU) {
+			} else if (Configuracoes.estadoGame == TipoGame.MENU) {
 				menu.tick();
 			}
 		}

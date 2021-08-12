@@ -12,6 +12,7 @@ import Entidades.Entity;
 import Main.Game;
 import Menu.Loading;
 import World.Camera;
+import enums.TipoAmbiente;
 
 public class EscadaEsgoto extends Entity {
 	public boolean emFrente;
@@ -54,6 +55,7 @@ public class EscadaEsgoto extends Entity {
 			if (Game.clicked) {
 				Game.clicked = false;
 				Loading.start();
+				Configuracoes.local = TipoAmbiente.RUA;
 				Game.player.setY(getY() - 955);
 				Game.player2.setY(getY() - 955);
 				Loading.stop();
