@@ -31,14 +31,14 @@ public class Menu {
 	public void applySave(String str) {
 		String[] spl = str.split("/");
 		for (int i = 0; i < spl.length; i++) {
-			String[] spl2 = spl[i].split(":");
-			switch (spl2[0]) {
-			case "level":
-				World.restartGame("level" + spl2[1] + ".png");
-				Configuracoes.estadoGame = TipoGame.NORMAL;
-				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
-				break;
-			}
+//			String[] spl2 = spl[i].split(":");
+//			switch (spl2[0]) {
+//			case "level":
+//				World.restartGame("level" + spl2[1] + ".png");
+//				Configuracoes.estadoGame = TipoGame.NORMAL;
+//				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
+//				break;
+//			}
 		}
 	}
 
@@ -115,7 +115,7 @@ public class Menu {
 				botoes[i].tick();
 			}
 			if (botoes[0].isClicked()) {
-				Game.world = new World("/niveis/mapaMundi.png");
+				Game.world = new World("/niveis/area1.png");
 				Configuracoes.estadoGame = TipoGame.NORMAL;
 				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
 				Game.player.visivel = true;

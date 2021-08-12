@@ -52,8 +52,8 @@ public class EscadaEsgoto extends Entity {
 			emFrente = true;
 			if (Game.clicked) {
 				Game.clicked = false;
-				Game.player.setY(getY() - 960);
-				Game.player2.setY(getY() - 960);
+				Game.player.setY(getY() - 955);
+				Game.player2.setY(getY() - 955);
 			}
 		} else {
 			emFrente = false;
@@ -64,7 +64,7 @@ public class EscadaEsgoto extends Entity {
 		if (this.distanciaX((int) x, Game.player.getX()) < 500 && this.distanciaY((int) y, Game.player.getY()) < 500) {
 			Graphics2D g2 = (Graphics2D) g;
 			for (int i = 0; i < 7; i++) {
-				g.drawImage(img[1], this.getX() - Camera.x - 27, this.getY() - Camera.y - (60 * i),
+				g.drawImage(img[1], this.getX() - Camera.x - 27, this.getY() - Camera.y -Configuracoes.TILE_SIZE- (Configuracoes.TILE_SIZE * i),
 						Configuracoes.TILE_SIZE * 2, Configuracoes.TILE_SIZE, null);
 			}
 			g.drawImage(img[0], this.getX() - Camera.x - 27, this.getY() - Camera.y, Configuracoes.TILE_SIZE * 2,
@@ -76,9 +76,6 @@ public class EscadaEsgoto extends Entity {
 				g.drawString("Cidade", this.getX() - Camera.x + 5, this.getY() - Camera.y - 20);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 			}
-			g.setColor(Color.red);
-			g.drawRect(this.getX() - Camera.x + maskx[0], this.getY() - Camera.y + masky[0], maskw[0], maskh[0]);
-
 		}
 	}
 

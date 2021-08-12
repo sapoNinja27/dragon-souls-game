@@ -27,7 +27,7 @@ public class Projetil extends Entity{
 		y+=dy*spd;
 		curLife++;
 		if(curLife == life) {
-			Game.bullets.remove(this);
+//			Game.bullets.remove(this);
 			return;
 		}
 	}

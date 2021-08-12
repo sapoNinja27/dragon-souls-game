@@ -20,6 +20,7 @@ import enums.TipoGame;
 import enums.TipoMenu;
 
 public class Player extends Entity {
+	private boolean primeiroSpaw = true;
 	public int px;
 	public int cont = 0, maxCont = 15, verif = 0, maxVerif = 2;
 	public int pos = 0;
@@ -76,6 +77,12 @@ public class Player extends Entity {
 
 	}
 
+	public void setPrimeiroSpawn() {
+		primeiroSpaw = false;
+	}
+	public boolean primeiroSpawn() {
+		return primeiroSpaw;
+	}
 	public void anim() {
 
 		if (right) {
@@ -206,6 +213,7 @@ public class Player extends Entity {
 	public void setDentro(boolean dentro) {
 		this.dentro = dentro;
 	}
+
 	public static void trocaPersonagem(Player p, Player p2) {
 		int x1 = p.getX();
 		int y1 = p.getY();
@@ -262,10 +270,9 @@ public class Player extends Entity {
 
 		Camera.x = Camera.clamp(this.getX() - (Configuracoes.WIDTH / 2) + camx + 250, 0,
 				World.WIDTH * Configuracoes.TILE_SIZE - Configuracoes.WIDTH);
-		Camera.y = Camera.clamp(this.getY() - (Configuracoes.HEIGHT / 2) - 53, 0, World.HEIGHT * Configuracoes.TILE_SIZE - Configuracoes.HEIGHT);
+		Camera.y = Camera.clamp(this.getY() - (Configuracoes.HEIGHT / 2) - 53, 0,
+				World.HEIGHT * Configuracoes.TILE_SIZE - Configuracoes.HEIGHT);
 	}
-
-	
 
 	public boolean isFreeY() {
 		for (int i = 0; i < Game.entities.size(); i++) {
@@ -338,8 +345,8 @@ public class Player extends Entity {
 		if (life <= 0) {
 			// Game over!
 			life = 0;
-			Configuracoes.estadoGame=TipoGame.MENU;
-			Configuracoes.estadoMenu=TipoMenu.GAMEOVER;
+			Configuracoes.estadoGame = TipoGame.MENU;
+			Configuracoes.estadoMenu = TipoMenu.GAMEOVER;
 		}
 	}
 
@@ -365,7 +372,7 @@ public class Player extends Entity {
 	public void CharEscuro(Graphics g, BufferedImage[] direcao) {
 		Graphics2D g2 = (Graphics2D) g;
 		float op = 0.6f;
-		if (Configuracoes.local==TipoAmbiente.RUA) {
+		if (Configuracoes.local == TipoAmbiente.RUA) {
 			if (Configuracoes.dia) {
 				op = 0f;
 			} else {
@@ -386,9 +393,9 @@ public class Player extends Entity {
 				}
 
 			}
-		} else if (Configuracoes.local==TipoAmbiente.ESGOTOS) {
+		} else if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
 			op = 0.6f;
-		} else if (Configuracoes.local==TipoAmbiente.TELHADO) {
+		} else if (Configuracoes.local == TipoAmbiente.TELHADO) {
 			if (Configuracoes.dia) {
 				op = 0f;
 			} else {
@@ -404,7 +411,7 @@ public class Player extends Entity {
 	public void Sombras(Graphics g, BufferedImage[] direcao) {
 		Graphics2D g2 = (Graphics2D) g;
 		float op = 0.1f;
-		if (Configuracoes.local==TipoAmbiente.RUA) {
+		if (Configuracoes.local == TipoAmbiente.RUA) {
 			if (Configuracoes.dia) {
 				op = 0.5f;
 			} else {
@@ -430,7 +437,7 @@ public class Player extends Entity {
 					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 				}
 			}
-		} else if (Configuracoes.local==TipoAmbiente.ESGOTOS) {
+		} else if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
 			op = 0.0f;
 			if (this == Game.player2) {
 				g.setColor(Color.black);
@@ -438,7 +445,7 @@ public class Player extends Entity {
 				g.fillRect(Game.player.getX() - Camera.x - 800, Game.player.getY() - Camera.y - 300, 2000, 1200);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 			}
-		} else if (Configuracoes.local==TipoAmbiente.TELHADO) {
+		} else if (Configuracoes.local == TipoAmbiente.TELHADO) {
 			if (Configuracoes.dia) {
 				op = 0.0f;
 			} else {
@@ -456,15 +463,18 @@ public class Player extends Entity {
 		if (!subindo && !caindo) {
 			if (Configuracoes.dia) {
 				g.drawImage(inverterV(Sombra(direcao[index])), this.getX() + pos - Camera.x + mov_das_cena,
-						this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2, null);
+						this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
+						Configuracoes.TILE_SIZE / 2, null);
 			} else {
 				g.drawImage(inverterV(Sombra(direcao[index])), this.getX() + pos - Camera.x + mov_das_cena,
-						this.getY() - Camera.y + Configuracoes.TILE_SIZE + 7, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2, null);
+						this.getY() - Camera.y + Configuracoes.TILE_SIZE + 7, Configuracoes.TILE_SIZE,
+						Configuracoes.TILE_SIZE / 2, null);
 			}
 
 		} else {
 			g.drawImage(Sombra(direcao[index]), this.getX() + pos - Camera.x + mov_das_cena + 10,
-					this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2, null);
+					this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
+					Configuracoes.TILE_SIZE / 2, null);
 		}
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
@@ -667,12 +677,12 @@ public class Player extends Entity {
 	}
 
 	public void movedX() {
-		if (right ) {
+		if (right) {
 			moved = true;
 			dir = right_dir;
 			correr(xDouble() + speed);
 		}
-		if (left ) {
+		if (left) {
 			moved = true;
 			dir = left_dir;
 			correr(xDouble() - speed);
@@ -701,7 +711,7 @@ public class Player extends Entity {
 	}
 
 	public void movedBot() {
-		if (right  && moved) {
+		if (right && moved) {
 			dir = right_dir;
 			correr(xDouble() + speed);
 		}

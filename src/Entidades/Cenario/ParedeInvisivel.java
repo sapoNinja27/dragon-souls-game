@@ -15,18 +15,22 @@ public class ParedeInvisivel extends Entity {
 	public ParedeInvisivel(int x, int y, int dist) {
 		super(x, y, 0, 0);
 		this.dist = dist;
+		setMask(0, 0 + larg, 0, 1, Configuracoes.HEIGHT * 11 + 8);
+		setMask(1, dist * Configuracoes.TILE_SIZE - 2 - larg, 0, 1, Configuracoes.HEIGHT * 11 + 8);
 	}
 
 	public void tick() {
-
-		setMask(0, 0 + larg, 0, 1, Configuracoes.HEIGHT * 11 + 8);
-		setMask(1, dist * Configuracoes.TILE_SIZE - 2 - larg, 0, 1, Configuracoes.HEIGHT * 11 + 8);
-
-		checkCollision();
+		if (this.distanciaX((int) x, Game.player.getX()) < 1000 && this.distanciaY((int) y, Game.player.getY()) < 150) {
+			if (!Game.player.getDentro()) {
+				checkCollision();
+			}
+		}
 	}
 
 	void setLarguraParede(int larg) {
 		this.larg = larg;
+		setMask(0, 0 + larg, 0, 1, Configuracoes.HEIGHT * 11 + 8);
+		setMask(1, dist * Configuracoes.TILE_SIZE - 2 - larg, 0, 1, Configuracoes.HEIGHT * 11 + 8);
 	}
 
 	public void checkCollision() {
@@ -44,7 +48,6 @@ public class ParedeInvisivel extends Entity {
 		g.setColor(Color.red);
 		g.drawRect(this.getX() - Camera.x + maskx[0], this.getY() - Camera.y + masky[0], maskw[0], maskh[0]);
 		g.drawRect(this.getX() - Camera.x + maskx[1], this.getY() - Camera.y + masky[1], maskw[1], maskh[1]);
-
 	}
 
 }

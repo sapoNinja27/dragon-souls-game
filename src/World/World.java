@@ -9,23 +9,25 @@ import javax.imageio.ImageIO;
 
 import Configuration.Configuracoes;
 import Entidades.Cenario.Bueiro;
+import Entidades.Cenario.CanoEsgoto;
 import Entidades.Cenario.EscadaEsgoto;
 import Entidades.Cenario.LataLixo;
 import Entidades.Cenario.LimiteDeCenarioAbismo;
 import Entidades.Cenario.ParedeInvisivel;
 import Entidades.Cenario.Plataforma;
 import Entidades.Cenario.Portao;
+import Entidades.Cenario.PosteLuz;
 import Entidades.Cenario.Predio;
 import Graficos.Spritesheet;
 import Main.Game;
-import enums.TipoAmbiente;
 
 public class World {
 	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
 	private int indexPredio = 0;
 	private Predio[] predios = { new Predio(1, 0, 0, 7, 4, new Spritesheet("/cenario/predioBranco.png")),
-			new Predio(3, 0, 0, 9, 4,  new Spritesheet("/cenario/stone.png")), new Predio(8, 0, 0, 7, 4,  new Spritesheet("/cenario/predioBranco.png")) };
+			new Predio(3, 0, 0, 9, 4, new Spritesheet("/cenario/stone.png")),
+			new Predio(8, 0, 0, 7, 4, new Spritesheet("/cenario/predioBranco.png")) };
 //	private Predio[] predios2 = {
 //			new Predio(2,0, 0, 6, 4, Texturas.MARMORE),
 //			new Predio(4,0, 0, 25, 4, Texturas.MARMORE),
@@ -78,7 +80,6 @@ public class World {
 		if (pixelAtual == 0xFF7F0000) {
 			Portao pack = new Portao(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
 			Game.entities.add(pack);
-			Game.portoes.add(pack);
 		}
 	}
 
@@ -97,14 +98,11 @@ public class World {
 	private void escadas(int pixelAtual, int x, int y) {
 		if (pixelAtual == 0xFFE50063) {
 			EscadaEsgoto pack = new EscadaEsgoto(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
-//			Game.escadasDeEsgoto.add(pack);
 			Game.entities.add(pack);
 		}
 	}
 
 	private void plataformas(int pixelAtual, int x, int y) {
-//		PosteLuz post = new PosteLuz(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
-//		Game.entities.add(post);
 		if (pixelAtual == 0xFFFFFFFF) {
 			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
 					Game.cenario.getSprite((2) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
@@ -118,26 +116,26 @@ public class World {
 			Game.entities.add(pack);
 		} else if (pixelAtual == 0xFFE5E5E5) {
 			// chao de esgoto com canos
-			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
-					Game.cenario.getSprite((3) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
-							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE));
-//			if (canoOn) {
-//				pack.setTipo(4);
-//				canoOn = false;
-//			} else {
-//				pack.setTipo(5);
-//				canoOn = true;
-//			}
+			BufferedImage[] img = {
+					Game.cenario.getSprite(3 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE),
+					Game.cenario.getSprite(4 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE) };
+			Plataforma plat = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, null);
+			CanoEsgoto pack = new CanoEsgoto(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, img);
 			Game.entities.add(pack);
+			Game.entities.add(plat);
 		} else if (pixelAtual == 0xFFAA004A) {
 			// bueiro
+			PosteLuz post = new PosteLuz(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
+			Game.entities.add(post);
 			BufferedImage[] img = {
 					Game.cenario.getSprite(0 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
 							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE),
 					Game.cenario.getSprite(1 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
 							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE) };
 
-			Bueiro pack = new Bueiro(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,img);
+			Bueiro pack = new Bueiro(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, img);
 			Plataforma plat = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, null);
 			Game.entities.add(pack);
 			Game.entities.add(plat);
@@ -165,49 +163,19 @@ public class World {
 	}
 
 	private void player(int pixelAtual, int x, int y) {
-		if (pixelAtual == 0xFF0026FF) {
-			if (Configuracoes.local == TipoAmbiente.RUA) {
-
-			} else if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
-				tiles[pixelAtual] = new FundoTile(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
-						Tile.colorir(Game.cenario.getSprite(0 * Configuracoes.TILE_SIZE, 4 * Configuracoes.TILE_SIZE,
-								Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE), new Color(0xFF3B4235)));
-			} else if (Configuracoes.local == TipoAmbiente.TELHADO) {
-				if (Configuracoes.dia) {
-					tiles[pixelAtual] = new FundoTile(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
-							Tile.colorir(Game.cenario.getSprite(1 * Configuracoes.TILE_SIZE,
-									1 * Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE),
-									Color.cyan));
-				}
-			}
+		if (pixelAtual == 0xFF0026FF && Game.player.primeiroSpawn()) {
 			Game.player.setX(x * Configuracoes.TILE_SIZE);
 			Game.player.setY(y * Configuracoes.TILE_SIZE);
 			Game.player2.setX(x * Configuracoes.TILE_SIZE - 20);
 			Game.player2.setY(y * Configuracoes.TILE_SIZE - 3);
+			Game.player.setPrimeiroSpawn();
+			Game.player2.setPrimeiroSpawn();
+			Configuracoes.p1=Game.player;
+			Configuracoes.p2=Game.player2;
 		}
 	}
 
-	public static boolean isFree(int xnext, int ynext) {
-
-		int x1 = xnext / Configuracoes.TILE_SIZE;
-		int y1 = ynext / Configuracoes.TILE_SIZE;
-
-		int x2 = (xnext + Configuracoes.TILE_SIZE - 1) / Configuracoes.TILE_SIZE;
-		int y2 = ynext / Configuracoes.TILE_SIZE;
-
-		int x3 = xnext / Configuracoes.TILE_SIZE;
-		int y3 = (ynext + Configuracoes.TILE_SIZE - 1) / Configuracoes.TILE_SIZE;
-
-		int x4 = (xnext + Configuracoes.TILE_SIZE - 1) / Configuracoes.TILE_SIZE;
-		int y4 = (ynext + Configuracoes.TILE_SIZE - 1) / Configuracoes.TILE_SIZE;
-
-		return !((tiles[x1 + (y1 * World.WIDTH)] instanceof FundoTile)
-				|| (tiles[x2 + (y2 * World.WIDTH)] instanceof FundoTile)
-				|| (tiles[x3 + (y3 * World.WIDTH)] instanceof FundoTile)
-				|| (tiles[x4 + (y4 * World.WIDTH)] instanceof FundoTile));
-	}
-
-	public static void restartGame(String level) {
+	public static void restartGame() {
 //		Game.entities.clear();
 //		Game.enemies.clear();
 //		Game.entities = new ArrayList<Entity>();
@@ -217,6 +185,11 @@ public class World {
 //		Game.entities.add(Game.player);
 //		Game.world = new World("/"+level);
 //		return;
+	}
+
+	public static void changeArea() {
+		Game.refreshListsSTC();
+		Game.world = new World("/niveis/area"+Configuracoes.rotear()+".png");
 	}
 
 	public void render(Graphics g) {

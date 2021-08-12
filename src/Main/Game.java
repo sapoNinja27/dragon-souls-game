@@ -27,11 +27,6 @@ import javax.swing.JFrame;
 
 import Configuration.Configuracoes;
 import Entidades.Entity;
-import Entidades.Projetil;
-import Entidades.Cenario.EscadaEsgoto;
-import Entidades.Cenario.Plataforma;
-import Entidades.Cenario.Porta;
-import Entidades.Cenario.Portao;
 import Entidades.Cenario.Predio;
 import Entidades.Cenario.ObjetosComMovimento.LixoEsgoto;
 import Entidades.Cenario.ObjetosComMovimento.ObjetosComMovimento;
@@ -50,9 +45,9 @@ import enums.TipoGame;
 import enums.TipoMenu;
 import jObjects.Mouse;
 
-public class Game extends Canvas implements Runnable,KeyListener,MouseListener,MouseMotionListener{
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
-	public static boolean podeClicar=true, clicked;
+	public static boolean podeClicar = true, clicked;
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
@@ -63,11 +58,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static List<Predio> predios;
 	public static List<ObjetosComMovimento> objetos;
 	public static List<Enemy> enemies;
-	public static List<Portao> portoes;
-	public static List<EscadaEsgoto> escadasDeEsgoto;
-	public static List<Plataforma> bueiros;
-	public static List<Projetil> bullets;
-	//personagens
+	// personagens
 	public static Spritesheet ace;
 	public static Spritesheet demonTai;
 	public static Spritesheet tai;
@@ -75,7 +66,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static Spritesheet light;
 	public static Spritesheet rouxie;
 	public static Spritesheet sander;
-	//menus
+	// menus
 	public static Spritesheet fundo;
 	public static Spritesheet fundoT;
 	public static Spritesheet fundoA;
@@ -83,38 +74,55 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static Spritesheet Menu;
 	public static Spritesheet icones;
 	public static Spritesheet tinyIcons;
-	//cenario
+	// cenario
 	public static Spritesheet cenario;
 	public static World world;
 	public static Player player;
 	public static Player player2;
 	public static Random rand;
-	//mouse
+	// mouse
 	Spritesheet mouse;
 	public UI ui;
 	public static Cutscene cen;
 	public static Menu menu;
-	public Game(){
-//		requestFocus();
-		rand = new Random();
-		loading=new Loading();
-		addKeyListener(this);
-		addMouseListener(this);
-		addMouseMotionListener(this);
-		setPreferredSize(new Dimension(Configuracoes.WIDTH*Configuracoes.SCALE,Configuracoes.HEIGHT*Configuracoes.SCALE));
-		initFrame();
-		//Inicializando objetos.
-		ui = new UI();
-		image = new BufferedImage(Configuracoes.WIDTH,Configuracoes.HEIGHT,BufferedImage.TYPE_INT_RGB);
+
+	public void refreshLists() {
 		entities = new ArrayList<Entity>();
 		predios = new ArrayList<Predio>();
 		enemies = new ArrayList<Enemy>();
-		bullets = new ArrayList<Projetil>();
-		portoes = new ArrayList<Portao>();
-		bueiros = new ArrayList<Plataforma>();
-		escadasDeEsgoto=new ArrayList<EscadaEsgoto>();
-		objetos=new ArrayList<ObjetosComMovimento>();
-		//personagens
+		objetos = new ArrayList<ObjetosComMovimento>();
+		player = new Tai(0, 0);
+		player2 = new Ace(0, 0);
+		entities.add(player);
+		entities.add(player2);
+	}
+
+	public static void refreshListsSTC() {
+		entities = new ArrayList<Entity>();
+		predios = new ArrayList<Predio>();
+		enemies = new ArrayList<Enemy>();
+		objetos = new ArrayList<ObjetosComMovimento>();
+		player =	Configuracoes.p1;
+		player2 =	Configuracoes.p2;
+		entities.add(player);
+		entities.add(player2);
+	}
+
+	public Game() {
+//		requestFocus();
+		rand = new Random();
+		loading = new Loading();
+		addKeyListener(this);
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		setPreferredSize(
+				new Dimension(Configuracoes.WIDTH * Configuracoes.SCALE, Configuracoes.HEIGHT * Configuracoes.SCALE));
+		initFrame();
+		// Inicializando objetos.
+		ui = new UI();
+		image = new BufferedImage(Configuracoes.WIDTH, Configuracoes.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		
+		// personagens
 		ace = new Spritesheet("/personagens/ace.png");
 		demonTai = new Spritesheet("/personagens/demonTai.png");
 		iron = new Spritesheet("/personagens/iron.png");
@@ -122,7 +130,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		rouxie = new Spritesheet("/personagens/rouxie.png");
 		sander = new Spritesheet("/personagens/sander.png");
 		tai = new Spritesheet("/personagens/tai.png");
-		//menus
+		// menus
 		tinyIcons = new Spritesheet("/menus/tinyIcons.png");
 		icones = new Spritesheet("/menus/icones.png");
 		Menu = new Spritesheet("/menus/Menu.png");
@@ -130,74 +138,67 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		fundoA = new Spritesheet("/menus/fundoace.png");
 		fundoT = new Spritesheet("/menus/fundotai.png");
 		fundoS = new Spritesheet("/menus/fundosander.png");
-		//cenario
+		// cenario
 		cenario = new Spritesheet("/cenario/cenario.png");
-		//mouse
+		// mouse
 		mouse = new Spritesheet("/cursor.png");
 		
-		
-		
-		
-		player = new Tai(0,0);
-		player2=new Ace(0,0);
-		entities.add(player);
-		entities.add(player2);
-		
-		
 		menu = new Menu();
-		cen=new Cutscene();
+		cen = new Cutscene();
+		refreshLists();
 	}
+
 	public void gerarObj() {
-		if(Configuracoes.local==TipoAmbiente.ESGOTOS) {
-			if(Game.rand.nextInt(50)==0){
-				ObjetosComMovimento am= new LixoEsgoto(Game.player.getX()+500,3900+Game.rand.nextInt(2)*32);
+		if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
+			if (Game.rand.nextInt(50) == 0) {
+				ObjetosComMovimento am = new LixoEsgoto(Game.player.getX() + 500, 3900 + Game.rand.nextInt(2) * 32);
 				am.setSpeed(Game.rand.nextInt(3));
-				if(Game.objetos.size()<Game.rand.nextInt(10)) {
+				if (Game.objetos.size() < Game.rand.nextInt(10)) {
 					Game.objetos.add(am);
 				}
 			}
-			
-		}else if(Configuracoes.local==TipoAmbiente.RUA) {
-			if(Configuracoes.dia) {
-				if(Game.rand.nextInt(25)==0){
-					ObjetosComMovimento am= new Transito(Game.player.getX()-1100,2300+Game.rand.nextInt(5));
+
+		} else if (Configuracoes.local == TipoAmbiente.RUA) {
+			if (Configuracoes.dia) {
+				if (Game.rand.nextInt(25) == 0) {
+					ObjetosComMovimento am = new Transito(Game.player.getX() - 1100, 2300 + Game.rand.nextInt(5));
 					am.setSpeed(Game.rand.nextInt(13));
-					if(Game.objetos.size()<Game.rand.nextInt(3)) {
+					if (Game.objetos.size() < Game.rand.nextInt(3)) {
 						Game.objetos.add(am);
 					}
 				}
-			}else {
-				if(Game.rand.nextInt(100)==0){
-					ObjetosComMovimento am= new Transito(Game.player.getX()-1100,2300+Game.rand.nextInt(5));
+			} else {
+				if (Game.rand.nextInt(100) == 0) {
+					ObjetosComMovimento am = new Transito(Game.player.getX() - 1100, 2300 + Game.rand.nextInt(5));
 					am.setSpeed(Game.rand.nextInt(13));
-					if(Game.objetos.size()<Game.rand.nextInt(2)) {
+					if (Game.objetos.size() < Game.rand.nextInt(2)) {
 						Game.objetos.add(am);
 					}
 				}
 			}
-			
-			
+
 		}
 	}
+
 	/**
 	 * Atualiza a imagem do mouse
 	 */
 	public void attMouse() {
 		if (Mouse.hover) {
 			try {
-				//hover
+				// hover
 				Toolkit toolkit = Toolkit.getDefaultToolkit();
-				Image image = mouse.getSprite(32,0,32,32);
+				Image image = mouse.getSprite(32, 0, 32, 32);
 				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
 				frame.setCursor(c);
 			} catch (Exception e) {
 
 			}
 		} else {
-			//standart
+			// standart
 			try {
 				Toolkit toolkit = Toolkit.getDefaultToolkit();
-				Image image = mouse.getSprite(0,0,32,32);
+				Image image = mouse.getSprite(0, 0, 32, 32);
 				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
 				frame.setCursor(c);
 			} catch (Exception e) {
@@ -206,45 +207,46 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		}
 
 	}
-	public void initFrame(){
+
+	public void initFrame() {
 		frame = new JFrame("Dragon Soul I");
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
-		Image imagem=null;
+		Image imagem = null;
 		try {
-			LocalDate myObj = LocalDate.now(); 
-			String data= String.valueOf(myObj);
-			String mes= data.substring(5, 7);
-			String dia= data.substring(8, 10);
+			LocalDate myObj = LocalDate.now();
+			String data = String.valueOf(myObj);
+			String mes = data.substring(5, 7);
+			String dia = data.substring(8, 10);
 //			imagem=ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
-			if(mes.equals("12") && dia.equals("25")) {
-				imagem=ImageIO.read(getClass().getResource("/icone-jogo/iconNatalino.png"));
-			}else {
-				imagem=ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
+			if (mes.equals("12") && dia.equals("25")) {
+				imagem = ImageIO.read(getClass().getResource("/icone-jogo/iconNatalino.png"));
+			} else {
+				imagem = ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
 			}
-			
-		}catch (IOException e) {
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 //		Toolkit toolkit =Toolkit.getDefaultToolkit();
 //		Image image= toolkit.getImage(getClass().getResource("/icone-jogo/icon.png"));
 //		Cursor c= toolkit.createCustomCursor(image, new Point(0,0), "img");
-		
+
 		frame.setIconImage(imagem);
 //		frame.setAlwaysOnTop(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
-	
-	public synchronized void start(){
+
+	public synchronized void start() {
 		thread = new Thread(this);
 		isRunning = true;
 		thread.start();
 	}
-	
-	public synchronized void stop(){
+
+	public synchronized void stop() {
 		isRunning = false;
 		try {
 			thread.join();
@@ -252,35 +254,32 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String args[]){
+
+	public static void main(String args[]) {
 		Game game = new Game();
 		game.start();
 	}
-	
-	public void tick(){
+
+	public void tick() {
 		attMouse();
 		loading.tick();
-		if(isLoading) {
-			
-		}else {
-			if(Configuracoes.estadoGame==TipoGame.NORMAL) {
-				if(cen.CcRun()) {
+		if (isLoading) {
+
+		} else {
+			if (Configuracoes.estadoGame == TipoGame.NORMAL) {
+				if (cen.CcRun()) {
 					cen.tick();
 				}
-				for(int i = 0; i < entities.size(); i++) {
+				for (int i = 0; i < entities.size(); i++) {
 					Entity e = entities.get(i);
 					e.tick();
 				}
-				for(int i = 0; i < predios.size(); i++) {
+				for (int i = 0; i < predios.size(); i++) {
 					Entity e = predios.get(i);
 					e.tick();
 				}
-				for(int i = 0; i < bullets.size(); i++) {
-					bullets.get(i).tick();
-				}
 				gerarObj();
-				for(int i = 0; i < objetos.size(); i++) {
+				for (int i = 0; i < objetos.size(); i++) {
 					objetos.get(i).tick();
 				}
 			}
@@ -297,112 +296,100 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 ////					World.restartGame(newWorld);
 //				}
 //			}
-			else if(Configuracoes.estadoGame==TipoGame.MENU) {
+			else if (Configuracoes.estadoGame == TipoGame.MENU) {
 				menu.tick();
 			}
 		}
-		
+
 	}
-	
 
-	
+	public void render() {
 
-	
-	
-	
-	
-	
-	public void render(){
-		
 		BufferStrategy bs = this.getBufferStrategy();
-		if(bs == null){
+		if (bs == null) {
 			this.createBufferStrategy(3);
 			return;
 		}
 		Graphics g = image.getGraphics();
-		g.setColor(new Color(0,0,0));
-		g.fillRect(0, 0,Configuracoes.WIDTH,Configuracoes.HEIGHT);
-		if(Configuracoes.estadoGame==TipoGame.NORMAL) {
+		g.setColor(new Color(0, 0, 0));
+		g.fillRect(0, 0, Configuracoes.WIDTH, Configuracoes.HEIGHT);
+		if (Configuracoes.estadoGame == TipoGame.NORMAL) {
 //			world.render(g);
 
-			for(int i = 0; i < predios.size(); i++) {
+			for (int i = 0; i < predios.size(); i++) {
 				predios.get(i).render(g);
 			}
-			Collections.sort(entities,Entity.nodeSorter);
-			for(int i = 0; i < entities.size(); i++) {
+			Collections.sort(entities, Entity.nodeSorter);
+			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
 				e.render(g);
 			}
-			for(int i = 0; i < bullets.size(); i++) {
-				bullets.get(i).render(g);
-			}
-			for(int i = 0; i < objetos.size(); i++) {
+			for (int i = 0; i < objetos.size(); i++) {
 				objetos.get(i).render(g);
 			}
-//			ui.render(g);
-			if(cen.CcRun()) {
+			ui.render(g);
+			if (cen.CcRun()) {
 				cen.render(g);
 			}
 		}
-		if(Configuracoes.estadoGame==TipoGame.MENU) {
+		if (Configuracoes.estadoGame == TipoGame.MENU) {
 			menu.render(g);
 		}
 		g.dispose();
 		g = bs.getDrawGraphics();
-		g.drawImage(image, 0, 0,Configuracoes.WIDTH*Configuracoes.SCALE,Configuracoes.HEIGHT*Configuracoes.SCALE,null);
+		g.drawImage(image, 0, 0, Configuracoes.WIDTH * Configuracoes.SCALE, Configuracoes.HEIGHT * Configuracoes.SCALE,
+				null);
 
 		loading.render(g);
 
-		
-		
 		bs.show();
 	}
-	
-public void run() {
+
+	public void run() {
 		long lastTime = System.nanoTime();
 		double amongOfTicks = 60.0;
 		double delta = 0;
 		double ns = 1000000000 / amongOfTicks;
 		int frames = 0;
 		double timer = System.currentTimeMillis();
-		while(isRunning) {
-			
+		while (isRunning) {
+
 			long now = System.nanoTime();
-			delta+= (now-lastTime)/ns;
-			lastTime= now;
-			if(delta>=1) {
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			if (delta >= 1) {
 				tick();
 				render();
 				frames++;
-				delta--;				
+				delta--;
 			}
-			if(System.currentTimeMillis() - timer >= 1000) {
-				System.out.println("FPS:"+ frames);
-				frames=0;
-				timer+=1000;
+			if (System.currentTimeMillis() - timer >= 1000) {
+				System.out.println("FPS:" + frames);
+				frames = 0;
+				timer += 1000;
 			}
-			
+
 		}
-		
+
 		stop();
-		
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_X){
-			if(podeClicar) {
-				podeClicar=false;
-				clicked=true;
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			if (podeClicar) {
+				podeClicar = false;
+				clicked = true;
 			}
-			
+
 		}
-		if(e.getKeyCode() == KeyEvent.VK_P){
-			Player.trocaPersonagem(player,player2);
+		if (e.getKeyCode() == KeyEvent.VK_P) {
+			Player.trocaPersonagem(player, player2);
 		}
-		if(!cen.CcRun()) {
-			if(e.getKeyCode() == KeyEvent.VK_UP){
-				
+		if (!cen.CcRun()) {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+
 			}
 //			if(e.getKeyCode() == KeyEvent.VK_LEFT){
 //				player.camL=true;
@@ -411,102 +398,101 @@ public void run() {
 //				player.camR=true;
 //			}
 		}
-		if(!cen.CcRun()) {
-			if(e.getKeyCode() == KeyEvent.VK_D){
-				player.atacando=false;
-				player.combat=false;
-				player.frames=0;
+		if (!cen.CcRun()) {
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				player.atacando = false;
+				player.combat = false;
+				player.frames = 0;
 				player.right = true;
-				player.parado=false;
-				player.parando=false;
-				player.moved=true;
+				player.parado = false;
+				player.parando = false;
+				player.moved = true;
 //				if(player.isFreeX()!="esquerda") {
 //					player.parede=false;
 //				}
-				
+
 			}
-			if(e.getKeyCode() == KeyEvent.VK_E){
-				player.parado=false;
-				player.dash=true;
-				player.combat=false;
-				player.frames=0;
-				
+			if (e.getKeyCode() == KeyEvent.VK_E) {
+				player.parado = false;
+				player.dash = true;
+				player.combat = false;
+				player.frames = 0;
+
 			}
-			if(e.getKeyCode() == KeyEvent.VK_Q){
+			if (e.getKeyCode() == KeyEvent.VK_Q) {
 				player.framesAtk = 0;
-				player.parado=false;
-				player.combat=false;
-				player.frames=0;
-				if(player.dash) {
-					player.dashS=true;
-				}else if(player.subindo || player.caindo){
-					//jump atackk
-				}else {
-					player.atacando = true;					
+				player.parado = false;
+				player.combat = false;
+				player.frames = 0;
+				if (player.dash) {
+					player.dashS = true;
+				} else if (player.subindo || player.caindo) {
+					// jump atackk
+				} else {
+					player.atacando = true;
 				}
 			}
-			if(e.getKeyCode() == KeyEvent.VK_A){
+			if (e.getKeyCode() == KeyEvent.VK_A) {
 				player.left = true;
-				player.parado=false;
-				player.parando=false;
-				player.moved=true;
-				player.combat=false;
-				player.frames=0;
+				player.parado = false;
+				player.parando = false;
+				player.moved = true;
+				player.combat = false;
+				player.frames = 0;
 //				if(player.isFreeX()!="direita") {
 //					player.parede=false;
 //				}
 			}
 		}
-		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-			String[] opt1= {"level"};
-			int[] opt2= {1};
-			menu.saveGame(opt1,opt2,0);
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			String[] opt1 = { "level" };
+			int[] opt2 = { 1 };
+			menu.saveGame(opt1, opt2, 0);
 		}
-		
-		if(e.getKeyCode() == KeyEvent.VK_W){
-			if(!cen.CcRun()) {
-				player.parando=false;
-				player.parado=false;
-				player.caiu_no_chao=false;
+
+		if (e.getKeyCode() == KeyEvent.VK_W) {
+			if (!cen.CcRun()) {
+				player.parando = false;
+				player.parado = false;
+				player.caiu_no_chao = false;
 				player.up = true;
-			}else {
+			} else {
 				cen.up();
 			}
-		}else if(e.getKeyCode() == KeyEvent.VK_S) {
-			if(cen.CcRun()){
+		} else if (e.getKeyCode() == KeyEvent.VK_S) {
+			if (cen.CcRun()) {
 				cen.down();
 			}
-			
-			
+
 		}
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if(cen.CcRun()) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if (cen.CcRun()) {
 				cen.next();
 			}
 		}
-		
-		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			if(Configuracoes.estadoMenu != TipoMenu.INICIAL) {
-				if(Configuracoes.estadoGame == TipoGame.MENU) {
+
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			if (Configuracoes.estadoMenu != TipoMenu.INICIAL) {
+				if (Configuracoes.estadoGame == TipoGame.MENU) {
 					Configuracoes.estadoGame = TipoGame.NORMAL;
-				}else if(Configuracoes.estadoGame == TipoGame.NORMAL) {
+				} else if (Configuracoes.estadoGame == TipoGame.NORMAL) {
 					Configuracoes.estadoGame = TipoGame.MENU;
 				}
 			}
-			
+
 		}
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_X){
-			podeClicar=true;
-			clicked=false;
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			podeClicar = true;
+			clicked = false;
 		}
-		if(!cen.CcRun()) {
-			if(e.getKeyCode() == KeyEvent.VK_UP){
-				
+		if (!cen.CcRun()) {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+
 			}
 //			if(e.getKeyCode() == KeyEvent.VK_LEFT){
 //				player.camL=false;
@@ -517,45 +503,45 @@ public void run() {
 //				player.camx=0;
 //			}
 		}
-		if(!cen.CcRun()) {
-			if(e.getKeyCode() == KeyEvent.VK_D){
+		if (!cen.CcRun()) {
+			if (e.getKeyCode() == KeyEvent.VK_D) {
 				player.right = false;
-				player.moved=false;
-				if(!player.left) {
-					if(!player.caindo && !player.subindo) {
-						player.parando=true;
+				player.moved = false;
+				if (!player.left) {
+					if (!player.caindo && !player.subindo) {
+						player.parando = true;
 					}
 				}
 
 			}
-			if(e.getKeyCode() == KeyEvent.VK_A){
+			if (e.getKeyCode() == KeyEvent.VK_A) {
 				player.left = false;
-				player.moved=false;
-				if(!player.right) {
-					if(!player.caindo && !player.subindo) {
-						player.parando=true;
+				player.moved = false;
+				if (!player.right) {
+					if (!player.caindo && !player.subindo) {
+						player.parando = true;
 					}
 				}
 
 			}
-			
-			if(e.getKeyCode() == KeyEvent.VK_W){
+
+			if (e.getKeyCode() == KeyEvent.VK_W) {
 				player.up = false;
-				player.podepular=false;
-				if(!player.completou_pulo) {
+				player.podepular = false;
+				if (!player.completou_pulo) {
 //					player.caiu_no_chao=true;
 //					player.saiu_do_chao=false;
 				}
-				
-				player.moved=false;
+
+				player.moved = false;
 
 			}
-			if(e.getKeyCode() == KeyEvent.VK_S) {
+			if (e.getKeyCode() == KeyEvent.VK_S) {
 				player.down = false;
-				player.moved=false;
+				player.moved = false;
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -577,7 +563,7 @@ public void run() {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (e != null) {
-			Mouse.setCordinates(e.getX()/2, e.getY()/2);
+			Mouse.setCordinates(e.getX() / 2, e.getY() / 2);
 		}
 	}
 
@@ -589,7 +575,7 @@ public void run() {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (e != null ) {
+		if (e != null) {
 			Mouse.pressed = true;
 		}
 	}
@@ -597,7 +583,7 @@ public void run() {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e != null) {
-			Mouse.setCordinates(e.getX()/2, e.getY()/2);
+			Mouse.setCordinates(e.getX() / 2, e.getY() / 2);
 			Mouse.pressed = false;
 			Mouse.released = true;
 		}
@@ -608,5 +594,4 @@ public void run() {
 
 	}
 
-	
 }

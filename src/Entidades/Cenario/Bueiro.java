@@ -11,7 +11,6 @@ import Main.Game;
 import World.Camera;
 
 public class Bueiro extends Entity {
-	private int tipo = 0;
 	private boolean emFrente;
 	private BufferedImage[] img;
 	private int frames = 0;
@@ -49,8 +48,8 @@ public class Bueiro extends Entity {
 			emFrente = true;
 			if (Game.clicked) {
 				Game.clicked = false;
-				Game.player.setY(getY() + 895);
-				Game.player2.setY(getY() + 895);
+				Game.player.setY(getY() + 898);
+				Game.player2.setY(getY() + 898);
 			}
 		} else {
 			emFrente = false;
@@ -62,9 +61,9 @@ public class Bueiro extends Entity {
 		if (this.distanciaX((int) x, Game.player.getX()) < 1000 && this.distanciaY((int) y, Game.player.getY()) < 500) {
 			if (!Game.player.getDentro()) {
 				if (!emFrente) {
-					g.drawImage(img[tipo], this.getX() - Camera.x, this.getY() - Camera.y, null);
+					g.drawImage(img[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
 				} else {
-					g.drawImage(img[tipo + 1], this.getX() - Camera.x, this.getY() - Camera.y, null);
+					g.drawImage(img[1], this.getX() - Camera.x, this.getY() - Camera.y, null);
 					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
 					g.setFont(new Font("Cambria Math", Font.ROMAN_BASELINE, 20));
 					g.setColor(Color.white);
