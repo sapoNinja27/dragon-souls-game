@@ -12,7 +12,6 @@ public class Ace extends Player{
 	private BufferedImage[] rightAce;
 	private BufferedImage[] leftAce;
 	private BufferedImage[] direcao;
-	private BufferedImage playerDamage;
 	public int framesDash = 0,maxFramesDash = 5,indexDash = 19,maxIndexDash = 24;
 	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100

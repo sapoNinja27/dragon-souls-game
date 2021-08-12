@@ -8,7 +8,6 @@ import Main.Game;
 import World.Camera;
 
 public class Sander extends Player{
-	private double x,y;
 	private BufferedImage[] rightTai;
 	private BufferedImage[] leftTai;
 	private BufferedImage[] direcao;

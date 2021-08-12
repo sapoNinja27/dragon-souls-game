@@ -8,7 +8,6 @@ import Main.Game;
 import World.Camera;
 
 public class Tai extends Player{
-	private double x,y;
 	private BufferedImage[] rightTai;
 	private BufferedImage[] leftTai;
 	private BufferedImage[] direcao;
@@ -16,7 +15,7 @@ public class Tai extends Player{
 	public int framesDash = 0,maxFramesDash = 11,indexDash = 19,maxIndexDash = 20;
 	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
 	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100,stamina = 100,maxstamina=100;
-	
+	//TODO fazer animação de habilidades
 	
 	public Tai(int x, int y) {
 		super(x, y);
