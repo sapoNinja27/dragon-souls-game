@@ -7,19 +7,16 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
+import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
 import enums.TipoAmbiente;
 
 public class Transito extends ObjetosComMovimento{
-	private int speed=10;
 	private BufferedImage img;
-	public Transito(int x, int y) {
+	public Transito(int x, int y, Spritesheet spt) {
 		super(x, y);
-		img=inverter(Game.cenario.getSprite((Game.rand.nextInt(2))*Configuracoes.TILE_SIZE,(7+Game.rand.nextInt(2))*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE));
-	}
-	public void setSpeed(int speed){
-		this.speed=speed;
+		img=inverter(spt.getSprite((Game.rand.nextInt(2))*Configuracoes.TILE_SIZE,(7+Game.rand.nextInt(2))*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE));
 	}
 	public void tick() {
 		x+=speed+10;

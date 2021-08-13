@@ -56,24 +56,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static List<Predio> predios;
 	public static List<ObjetosComMovimento> objetos;
 	public static List<Enemy> enemies;
-	// personagens
-	public static Spritesheet ace;
-	public static Spritesheet demonTai;
-	public static Spritesheet tai;
-	public static Spritesheet iron;
-	public static Spritesheet light;
-	public static Spritesheet rouxie;
-	public static Spritesheet sander;
 	// menus
 	public static Spritesheet fundo;
 	public static Spritesheet fundoT;
 	public static Spritesheet fundoA;
 	public static Spritesheet fundoS;
 	public static Spritesheet Menu;
-	public static Spritesheet icones;
-	public static Spritesheet tinyIcons;
-	// cenario
-	public static Spritesheet cenario;
+	private static Spritesheet icones;
+	// cenario	
 	public static World world;
 	public static Player player;
 	public static Player player2;
@@ -123,30 +113,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				new Dimension(Configuracoes.WIDTH * Configuracoes.SCALE, Configuracoes.HEIGHT * Configuracoes.SCALE));
 		initFrame();
 		// Inicializando objetos.
-		ui = new UI();
 		image = new BufferedImage(Configuracoes.WIDTH, Configuracoes.HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-		// personagens
-		ace = new Spritesheet("/personagens/ace.png");
-		demonTai = new Spritesheet("/personagens/demonTai.png");
-		iron = new Spritesheet("/personagens/iron.png");
-		light = new Spritesheet("/personagens/light.png");
-		rouxie = new Spritesheet("/personagens/rouxie.png");
-		sander = new Spritesheet("/personagens/sander.png");
-		tai = new Spritesheet("/personagens/tai.png");
 		// menus
-		tinyIcons = new Spritesheet("/menus/tinyIcons.png");
 		icones = new Spritesheet("/menus/icones.png");
 		Menu = new Spritesheet("/menus/Menu.png");
 		fundo = new Spritesheet("/menus/fundo.png");
 		fundoA = new Spritesheet("/menus/fundoace.png");
 		fundoT = new Spritesheet("/menus/fundotai.png");
 		fundoS = new Spritesheet("/menus/fundosander.png");
-		// cenario
-		cenario = new Spritesheet("/cenario/cenario.png");
 		// mouse
 		mouse = new Spritesheet("/cursor.png");
 
+		ui = new UI(icones);
 		menu = new Menu();
 		cen = new Cutscene();
 		refreshLists();
@@ -155,7 +134,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public void gerarObj() {
 		if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
 			if (rand.nextInt(50) == 0) {
-				ObjetosComMovimento am = new LixoEsgoto(player.getX() + 500, player.getY() + 58 + rand.nextInt(2) * 32);
+				ObjetosComMovimento am = new LixoEsgoto(player.getX() + 500, player.getY() + 58 + rand.nextInt(2) * 32,new Spritesheet("/cenario/cenario.png"));
 				am.setSpeed(rand.nextInt(3));
 				if (objetos.size() < rand.nextInt(10)) {
 					objetos.add(am);
@@ -165,7 +144,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		} else if (Configuracoes.local == TipoAmbiente.RUA) {
 			if (Configuracoes.dia) {
 				if (rand.nextInt(25) == 0) {
-					ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() +64 + rand.nextInt(5));
+					ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5),new Spritesheet("/cenario/cenario.png"));
 					am.setSpeed(rand.nextInt(13));
 					if (objetos.size() < rand.nextInt(3)) {
 						objetos.add(am);
@@ -173,7 +152,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				}
 			} else {
 				if (rand.nextInt(100) == 0) {
-					ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() +64 + rand.nextInt(5));
+					ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5),new Spritesheet("/cenario/cenario.png"));
 					am.setSpeed(rand.nextInt(13));
 					if (objetos.size() < rand.nextInt(2)) {
 						objetos.add(am);
@@ -283,7 +262,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					Entity e = predios.get(i);
 					e.tick();
 				}
-				gerarObj();
+				if(player.caiu_no_chao) {
+					gerarObj();
+				}
 				for (int i = 0; i < objetos.size(); i++) {
 					objetos.get(i).tick();
 				}

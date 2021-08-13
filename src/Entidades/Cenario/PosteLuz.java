@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
 import Entidades.Entity;
+import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
 
@@ -17,14 +18,14 @@ public class PosteLuz extends Entity {
 	private float op = 0.1f;
 	private int frames = 0;
 
-	public PosteLuz(int x, int y) {
+	public PosteLuz(int x, int y, Spritesheet spt) {
 		super(x, y, 0, 0);
 		setMask(0, -47, -30, 32, 40);
-		lampada[0] = Game.cenario.getSprite((3) * Configuracoes.TILE_SIZE, (1) * Configuracoes.TILE_SIZE,
+		lampada[0] = spt.getSprite((3) * Configuracoes.TILE_SIZE, (1) * Configuracoes.TILE_SIZE,
 				Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2);
-		lampada[1] = Game.cenario.getSprite((3) * Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE + 31,
+		lampada[1] = spt.getSprite((3) * Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE + 31,
 				Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2 - 31);
-		lampada[2] = Game.cenario.getSprite((3) * Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE + 31,
+		lampada[2] = spt.getSprite((3) * Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE + 31,
 				Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE / 2);
 
 	}
@@ -55,7 +56,7 @@ public class PosteLuz extends Entity {
 
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		if (this.distanciaX((int) x, Game.player.getX()) < 1000 && this.distanciaY((int) y, Game.player.getY()) < 150) {
+		if (this.distanciaX((int) x, Game.player.getX()) < 1000 && this.distanciaY((int) y, Game.player.getY()) < 200) {
 			if (!Game.player.getDentro()) {
 				if (Configuracoes.dia) {
 					g.drawImage(lampada[0], this.getX() - Camera.x - Configuracoes.TILE_SIZE + 30,

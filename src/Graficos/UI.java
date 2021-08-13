@@ -10,61 +10,40 @@ import Configuration.Configuracoes;
 import Main.Game;
 
 public class UI {
-	private BufferedImage icon[] = new BufferedImage[5];
+	private BufferedImage icon[] = new BufferedImage[20];
 
+	public UI(Spritesheet img) {
+		for (int i = 0; i < 20; i++) {
+			icon[i] = img.getSprite(i * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+		}
+	}
+	public void tick() {
+		
+	}
 	public void render(Graphics g) {
 
 		if (Game.player.Hudvisivel) {
-			for (int i = 0; i < 5; i++) {
-//				icon[i]=Game.spritesheet.getSprite(i*Configuracoes.TILE_SIZE,18*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
-			}
+
 			Graphics2D g2 = (Graphics2D) g;
-			Rectangle barlife = new Rectangle(100, 55, (int) Game.player.totalife, 11);
-			Rectangle barspecial = new Rectangle(67, 94, 11, 120);
-			Rectangle barstamina = new Rectangle(100, 66, 120, 11);
+			Rectangle barlife = new Rectangle(100, 55, (int) Game.player.maxlife*2, 11);
+			Rectangle barstamina = new Rectangle(100, 66, (int)Game.player.stamina*2, 11);
 			g.setColor(Color.black);
-			g.fillRect(100, 55, (int) Game.player.totalife, 11);
-			g.fillRect(67, 94, 11, 120);
-			g.fillRect(100, 66, 120, 11);
+			g2.fill(barlife);
+			g2.fill(barstamina);
 			g.setColor(Color.red);
-			g.fillRect(100, 55, (int) ((Game.player.life / Game.player.maxlife) * 120), 11);
+			g.fillRect(100, 55, (int) ((Game.player.life*2)), 11);
 			g.setColor(Color.orange);
-			g.fillRect(67, 215 - (int) ((Game.player.special / Game.player.maxspecial) * 120), 11,
-					(int) ((Game.player.special / Game.player.maxspecial) * 120));
-			g.setColor(Color.green);
-			g.fillRect(100, 66, (int) ((Game.player.stamina / Game.player.maxstamina) * 120), 11);
+			g.fillRect(100, 66, (int) ((Game.player.stamina*2) ), 11);
 			g.setColor(Color.black);
-			g2.draw(barspecial);
 			g2.draw(barlife);
 			g2.draw(barstamina);
-			
 
-			
 			g.setColor(Color.white);
-			g.fillOval(43, 35, 60, 60);
-//TODO montar os huds
-//			if (!Game.player.transformado) {
-//				if (Game.player.special > (Game.player.maxspecial / 2)) {
-//					if (Game.player.life > (Game.player.maxlife / 2)) {
-//						g.drawImage(icon[2], 25, 18, Configuracoes.TILE_SIZE + 35, Configuracoes.TILE_SIZE + 35, null);
-//					} else {
-//						g.drawImage(icon[3], 25, 18, Configuracoes.TILE_SIZE + 35, Configuracoes.TILE_SIZE + 35, null);
-//					}
-//				} else {
-//					if (Game.player.life > (Game.player.maxlife / 2)) {
-//						g.drawImage(icon[0], 25, 18, Configuracoes.TILE_SIZE + 35, Configuracoes.TILE_SIZE + 35, null);
-//					} else {
-//						g.drawImage(icon[1], 25, 18, Configuracoes.TILE_SIZE + 35, Configuracoes.TILE_SIZE + 35, null);
-//					}
-//				}
-//			} else {
-//				g.drawImage(icon[4], 25, 18, Configuracoes.TILE_SIZE + 35, Configuracoes.TILE_SIZE + 35, null);
-//			}
-			g.drawImage(
-					Game.icones.getSprite(0 * Configuracoes.TILE_SIZE, 0 * Configuracoes.TILE_SIZE,
-							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE),40, 35, null);
+//			g.fillOval(43, 35, 60, 60);
+
+			g.drawImage(icon[Game.player.getId()], 40, 35, null);
 			g.setColor(Color.black);
-			g2.drawOval(41, 33, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+//			g2.drawOval(41, 33, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 
 	}

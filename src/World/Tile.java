@@ -5,11 +5,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
+import Graficos.Spritesheet;
 import Main.Game;
 
 public class Tile {
 	
-	public static BufferedImage TILE_FLOOR = Game.cenario.getSprite(0*Configuracoes.TILE_SIZE,0*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
+	public static BufferedImage TILE_FLOOR = (new Spritesheet("/cenario/cenario.png")).getSprite(0*Configuracoes.TILE_SIZE,0*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE);
 	private BufferedImage sprite;
 	private int x,y;
 	

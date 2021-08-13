@@ -25,6 +25,7 @@ public class World {
 	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
 	private int indexPredio = 0;
+	private Spritesheet cenario;
 	private Predio[] predios = { new Predio(1, 0, 0, 7, 4, new Spritesheet("/cenario/predioBranco.png")),
 			new Predio(3, 0, 0, 9, 4, new Spritesheet("/cenario/stone.png")),
 			new Predio(8, 0, 0, 7, 4, new Spritesheet("/cenario/predioBranco.png")) };
@@ -38,6 +39,7 @@ public class World {
 //	};
 
 	public World(String path) {
+		cenario= new Spritesheet("/cenario/cenario.png");
 		try {
 			BufferedImage map = ImageIO.read(getClass().getResource(path));
 			int[] pixels = new int[map.getWidth() * map.getHeight()];
@@ -69,14 +71,14 @@ public class World {
 
 	private void latas(int pixelAtual, int x, int y) {
 		if (pixelAtual == 0xFF5E0000) {
-			LataLixo pack = new LataLixo(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
+			LataLixo pack = new LataLixo(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,cenario);
 			Game.entities.add(pack);
 		}
 	}
 
 	private void portoes(int pixelAtual, int x, int y) {
 		if (pixelAtual == 0xFF7F0000) {
-			Portao pack = new Portao(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
+			Portao pack = new Portao(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,cenario);
 			Game.entities.add(pack);
 		}
 	}
@@ -95,7 +97,7 @@ public class World {
 
 	private void escadas(int pixelAtual, int x, int y) {
 		if (pixelAtual == 0xFFE50063) {
-			EscadaEsgoto pack = new EscadaEsgoto(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
+			EscadaEsgoto pack = new EscadaEsgoto(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,cenario);
 			Game.entities.add(pack);
 		}
 	}
@@ -103,21 +105,21 @@ public class World {
 	private void plataformas(int pixelAtual, int x, int y) {
 		if (pixelAtual == 0xFFFFFFFF) {
 			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
-					Game.cenario.getSprite((2) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+					cenario.getSprite((2) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
 							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE));
 			Game.entities.add(pack);
 		} else if (pixelAtual == 0xFFF2F2F2) {
 			// chao de esgoto
 			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
-					Game.cenario.getSprite((5) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+					(cenario).getSprite((5) * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
 							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE));
 			Game.entities.add(pack);
 		} else if (pixelAtual == 0xFFE5E5E5) {
 			// chao de esgoto com canos
 			BufferedImage[] img = {
-					Game.cenario.getSprite(3 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+					(cenario).getSprite(3 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
 							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE),
-					Game.cenario.getSprite(4 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+					(cenario).getSprite(4 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
 							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE) };
 			Plataforma plat = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, null);
 			CanoEsgoto pack = new CanoEsgoto(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, img);
@@ -125,12 +127,12 @@ public class World {
 			Game.entities.add(plat);
 		} else if (pixelAtual == 0xFFAA004A) {
 			// bueiro
-			PosteLuz post = new PosteLuz(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE);
+			PosteLuz post = new PosteLuz(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,cenario);
 			Game.entities.add(post);
 			BufferedImage[] img = {
-					Game.cenario.getSprite(0 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+					(cenario).getSprite(0 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
 							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE),
-					Game.cenario.getSprite(1 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
+					(cenario).getSprite(1 * Configuracoes.TILE_SIZE, 3 * Configuracoes.TILE_SIZE,
 							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE) };
 
 			Bueiro pack = new Bueiro(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, img);
@@ -141,9 +143,6 @@ public class World {
 			// Telhado
 			Plataforma pack = new Plataforma(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, null);
 			Game.entities.add(pack);
-			tiles[pixelAtual] = new FundoTile(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE,
-					Tile.colorir(Game.cenario.getSprite(1 * Configuracoes.TILE_SIZE, 1 * Configuracoes.TILE_SIZE,
-							Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE), Color.cyan));
 		}
 
 	}

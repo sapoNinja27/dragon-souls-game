@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
 import Entidades.Entity;
+import Graficos.Spritesheet;
 import Main.Game;
 import Menu.Loading;
 import World.Camera;
@@ -19,15 +20,14 @@ public class Portao extends Entity {
 	private boolean emFrente;
 	private float op = 0.1f;
 	private int frames = 0;
-	private BufferedImage[] porta1;
+	private BufferedImage[] img = new BufferedImage[2];
 
-	public Portao(int x, int y) {
+	public Portao(int x, int y, Spritesheet spt) {
 		super(x, y, 0, 0);
-		porta1 = new BufferedImage[2];
 		depth = 4;
 		setMask(0, 0, 20, 64, 40);
 		for (int i = 0; i < 2; i++) {
-			porta1[i] = Game.cenario.getSprite((0 + i) * Configuracoes.TILE_SIZE, 1 * Configuracoes.TILE_SIZE,
+			img[i] = spt.getSprite((i) * Configuracoes.TILE_SIZE, 5 * Configuracoes.TILE_SIZE,
 					Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 	}
@@ -82,16 +82,10 @@ public class Portao extends Entity {
 					g.drawString(Configuracoes.nextRota(), this.getX() - Camera.x, this.getY() - Camera.y);
 					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 				}
-				g.drawImage(
-						Game.cenario.getSprite(0, 5 * Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
-								Configuracoes.TILE_SIZE),
-						this.getX() - Camera.x - 29, this.getY() - Camera.y + 3, Configuracoes.TILE_SIZE,
+				g.drawImage(img[0], this.getX() - Camera.x - 29, this.getY() - Camera.y + 3, Configuracoes.TILE_SIZE,
 						Configuracoes.TILE_SIZE, null);
-				g.drawImage(
-						Game.cenario.getSprite(1 * Configuracoes.TILE_SIZE, 5 * Configuracoes.TILE_SIZE,
-								Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE),
-						this.getX() - Camera.x - 29 + 64, this.getY() - Camera.y + 3, Configuracoes.TILE_SIZE,
-						Configuracoes.TILE_SIZE, null);
+				g.drawImage(img[1], this.getX() - Camera.x - 29 + 64, this.getY() - Camera.y + 3,
+						Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE, null);
 			}
 			g.setColor(Color.red);
 			g.drawRect(this.getX() - Camera.x + maskx[0], this.getY() - Camera.y + masky[0], maskw[0], maskh[0]);

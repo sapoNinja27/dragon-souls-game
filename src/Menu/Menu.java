@@ -152,13 +152,13 @@ public class Menu {
 			g.drawImage(Game.fundo.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
 		} else if (Configuracoes.estadoMenu == TipoMenu.HABILIDADES || Configuracoes.estadoMenu == TipoMenu.INVENTARIO
 				|| Configuracoes.estadoMenu == TipoMenu.OPCOESPAUSE) {
-			if (Game.player.personagem == "Tai") {
+			if (Game.player.getId()==0) {
 				// menu do tai
 				g.drawImage(Game.fundoT.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
-			} else if (Game.player.personagem == "Ace") {
+			} else if (Game.player.getId()==2) {
 				// menu do ace
 				g.drawImage(Game.fundoA.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
-			} else if (Game.player.personagem == "Sander") {
+			} else if (Game.player.getId()==1) {
 				// menu do sander
 				g.drawImage(Game.fundoS.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
 			}

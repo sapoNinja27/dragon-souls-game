@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
 import Entidades.Entity;
+import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
 
@@ -15,12 +16,12 @@ public class LataLixo extends Entity {
 	private final int[] pos = { Game.rand.nextInt(2), Game.rand.nextInt(2), Game.rand.nextInt(2) };
 	private BufferedImage[] lata = new BufferedImage[2];
 
-	public LataLixo(int x, int y) {
+	public LataLixo(int x, int y, Spritesheet spt) {
 		super(x, y, 0, 0);
 		depth = 1;
 		setMask(0, 0 - 25, -20, 46, 80);
 		for (int i = 0; i < 2; i++) {
-			lata[i] = Game.cenario.getSprite((4 + i) * Configuracoes.TILE_SIZE, 1 * Configuracoes.TILE_SIZE,
+			lata[i] = spt.getSprite((4 + i) * Configuracoes.TILE_SIZE, 1 * Configuracoes.TILE_SIZE,
 					Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 	}

@@ -4,53 +4,55 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
+import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
 
 public class Tai extends Player{
 	private BufferedImage[] rightTai;
+	private Spritesheet spt;
 	private BufferedImage[] leftTai;
 	private BufferedImage[] direcao;
 	private BufferedImage[] sombra;
 	public int framesDash = 0,maxFramesDash = 11,indexDash = 19,maxIndexDash = 20;
 	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
-	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100,stamina = 100,maxstamina=100;
 	//TODO fazer animação de habilidades
 	
 	public Tai(int x, int y) {
 		super(x, y);
-		
+		identifier=0;
+		spt= new Spritesheet("/personagens/tai.png");
 		rightTai = new BufferedImage[50];
 		leftTai = new BufferedImage[50];
 		direcao= new BufferedImage[50];
 		sombra= new BufferedImage[50];
 		//respirando
 		for(int i =0; i < 4; i++){
-			rightTai[i] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightTai[i] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 		//correndo
 		for(int i =0; i < 9; i++){
-			rightTai[i+4] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*1, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightTai[i+4] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*1, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 		//pulando
 		for(int i =0; i < 6; i++){
-			rightTai[i+13] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*2, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightTai[i+13] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*2, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 		//dash
 		for(int i =0; i < 5; i++){
-			rightTai[i+19] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*3, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightTai[i+19] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*3, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 //		//parado soco
 		for(int i =0; i < 4; i++){
-			rightTai[i+24] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*4, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightTai[i+24] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*4, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 //		//socos
 		for(int i =0; i < 6; i++){
-			rightTai[i+28] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*5, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightTai[i+28] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*5, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 //		//hb1
 		for(int i =0; i < 9; i++){
-			rightTai[i+34] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*6, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightTai[i+34] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*6, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 //		//h2
 //		for(int i =0; i < 4; i++){

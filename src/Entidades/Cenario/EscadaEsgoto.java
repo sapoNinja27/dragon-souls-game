@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
 import Entidades.Entity;
+import Graficos.Spritesheet;
 import Main.Game;
 import Menu.Loading;
 import World.Camera;
@@ -20,13 +21,13 @@ public class EscadaEsgoto extends Entity {
 	private float op = 0.1f;
 	private int frames = 0;
 
-	public EscadaEsgoto(int x, int y) {
+	public EscadaEsgoto(int x, int y, Spritesheet spt) {
 		super(x, y, 0, 0);
 		depth = 0;
 		setMask(0, 18, 0, 31, 40);
-		img[0] = Game.cenario.getSprite(0 * Configuracoes.TILE_SIZE, (6) * Configuracoes.TILE_SIZE,
+		img[0] = spt.getSprite(0 * Configuracoes.TILE_SIZE, (6) * Configuracoes.TILE_SIZE,
 				Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
-		img[1] = Game.cenario.getSprite(0 * Configuracoes.TILE_SIZE, (6) * Configuracoes.TILE_SIZE,
+		img[1] = spt.getSprite(0 * Configuracoes.TILE_SIZE, (6) * Configuracoes.TILE_SIZE,
 				Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE - 3);
 	}
 

@@ -6,18 +6,15 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
+import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
 
 public class LixoEsgoto extends ObjetosComMovimento{
-	private int speed=10;
 	private BufferedImage img;
-	public LixoEsgoto(int x, int y) {
+	public LixoEsgoto(int x, int y, Spritesheet spt) {
 		super(x, y);
-		img=Game.cenario.getSprite(Configuracoes.TILE_SIZE+(32*Game.rand.nextInt(2)),6*Configuracoes.TILE_SIZE+32*Game.rand.nextInt(2),32,32);
-	}
-	public void setSpeed(int speed){
-		this.speed=speed;
+		img=spt.getSprite(Configuracoes.TILE_SIZE+(32*Game.rand.nextInt(2)),6*Configuracoes.TILE_SIZE+32*Game.rand.nextInt(2),32,32);
 	}
 	public void tick() {
 		x-=speed+1;

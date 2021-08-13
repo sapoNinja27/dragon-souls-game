@@ -4,48 +4,48 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
+import Graficos.Spritesheet;
 import Main.Game;
 import World.Camera;
 
 public class Ace extends Player{
-	
+	private Spritesheet spt;	
 	private BufferedImage[] rightAce;
 	private BufferedImage[] leftAce;
 	private BufferedImage[] direcao;
 	public int framesDash = 0,maxFramesDash = 5,indexDash = 19,maxIndexDash = 24;
 	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
-	public double life = 100,maxlife=100, totalife=120,special = 0,maxspecial=100
-			,stamina = 100,maxstamina=100;
 
 	public Ace(int x, int y) {
 		super(x, y);
-		
+		identifier=2;
+		spt= new Spritesheet("/personagens/ace.png");		
 		rightAce= new BufferedImage[35];
 		leftAce= new BufferedImage[35];
 		direcao= new BufferedImage[35];
 		//respirando
 		for(int i =0; i < 4; i++){
-			rightAce[i] =   Game.ace.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightAce[i] =  spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 		//correndo
 		for(int i =0; i < 9; i++){
-			rightAce[i+4] =   Game.ace.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*1, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightAce[i+4] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*1, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 		//pulando
 		for(int i =0; i < 6; i++){
-			rightAce[i+13] =   Game.ace.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*2, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightAce[i+13] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*2, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 		//dash
 		for(int i =0; i < 5; i++){
-			rightAce[i+19] =   Game.ace.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*3, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightAce[i+19] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*3, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 //		//parado soco
 		for(int i =0; i < 4; i++){
-			rightAce[i+24] =   Game.ace.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*4, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightAce[i+24] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*4, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 //		//socos
 		for(int i =0; i < 6; i++){
-			rightAce[i+28] =   Game.ace.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*5, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+			rightAce[i+28] =   spt.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*5, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 ////		//hb1
 //		for(int i =0; i < 9; i++){

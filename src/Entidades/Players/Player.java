@@ -20,6 +20,7 @@ import enums.TipoGame;
 import enums.TipoMenu;
 
 public class Player extends Entity {
+	protected int identifier;
 	private boolean primeiroSpaw = true;
 	public int px;
 	public int cont = 0, maxCont = 15, verif = 0, maxVerif = 2;
@@ -59,11 +60,9 @@ public class Player extends Entity {
 	public boolean Hudvisivel;
 	public double speed = 5;
 	public boolean visivel;
-	public String personagem = "Tai";
 	public boolean moved = false;
 	public boolean isDamaged = false;
-	public double life = 100, maxlife = 100, totalife = 120, special = 0, maxspecial = 100, stamina = 100,
-			maxstamina = 100;
+	public double life = 100,maxlife=100,stamina = 100,maxstamina=100;
 
 	public boolean H1[] = new boolean[3];
 	public boolean H2[] = new boolean[3];
@@ -76,7 +75,9 @@ public class Player extends Entity {
 		super(x, y, 0, 0);
 
 	}
-
+	public int getId() {
+		return identifier;
+	}
 	public void setPrimeiroSpawn() {
 		primeiroSpaw = false;
 	}
@@ -215,43 +216,10 @@ public class Player extends Entity {
 	}
 
 	public static void trocaPersonagem(Player p, Player p2) {
-		int x1 = p.getX();
-		int y1 = p.getY();
-		int x2 = p2.getX();
-		int y2 = p2.getY();
 		Game.entities.remove(Game.player);
 		Game.entities.remove(Game.player2);
-		if (p instanceof Ace) {
-			if (p2 instanceof Tai) {
-				Game.player = new Tai(x2, y2);
-				Game.player2 = new Ace(x1, y1);
-				Game.player.personagem = "Tai";
-			} else if (p2 instanceof Sander) {
-				Game.player = new Sander(x2, y2);
-				Game.player2 = new Ace(x1, y1);
-				Game.player.personagem = "Sander";
-			}
-		} else if (p instanceof Tai) {
-			if (p2 instanceof Ace) {
-				Game.player = new Ace(x2, y2);
-				Game.player2 = new Tai(x1, y1);
-				Game.player.personagem = "Tai";
-			} else if (p2 instanceof Sander) {
-				Game.player = new Sander(x2, y2);
-				Game.player2 = new Tai(x1, y1);
-				Game.player.personagem = "Sander";
-			}
-		} else if (p instanceof Sander) {
-			if (p2 instanceof Ace) {
-				Game.player = new Ace(x2, y2);
-				Game.player2 = new Sander(x1, y1);
-				Game.player.personagem = "Tai";
-			} else if (p2 instanceof Sander) {
-				Game.player = new Sander(x2, y2);
-				Game.player2 = new Sander(x1, y1);
-				Game.player.personagem = "Sander";
-			}
-		}
+		Game.player = p2;
+		Game.player2 = p;
 		Game.player.setHudvisivel(true);
 		Game.entities.add(Game.player);
 		Game.entities.add(Game.player2);
@@ -636,41 +604,21 @@ public class Player extends Entity {
 		setMask(0, 20, 11, 20, 52);
 		setMask(2, 11, 60, 40, 3);
 		// ataques melle
-		if (special > maxspecial / 2) {
-			if (dir == right_dir) {
-				if (atacando) {
-					if (indexAtk != 24) {
-						setMask(1, 50, 20, 30, 10);
-					}
-				} else {
-					setMask(1, 20, 20, 30, 10);
+		if (dir == right_dir) {
+			if (atacando) {
+				if (indexAtk != 24) {
+					setMask(1, 40, 20, 30, 10);
 				}
 			} else {
-				if (atacando) {
-					if (indexAtk != 24) {
-						setMask(1, -15, 20, 30, 10);
-					}
-				} else {
-					setMask(1, 20, 20, 30, 10);
-				}
+				setMask(1, 20, 20, 30, 10);
 			}
 		} else {
-			if (dir == right_dir) {
-				if (atacando) {
-					if (indexAtk != 24) {
-						setMask(1, 40, 20, 30, 10);
-					}
-				} else {
-					setMask(1, 20, 20, 30, 10);
+			if (atacando) {
+				if (indexAtk != 24) {
+					setMask(1, -5, 20, 30, 10);
 				}
 			} else {
-				if (atacando) {
-					if (indexAtk != 24) {
-						setMask(1, -5, 20, 30, 10);
-					}
-				} else {
-					setMask(1, 20, 20, 30, 10);
-				}
+				setMask(1, 20, 20, 30, 10);
 			}
 		}
 
