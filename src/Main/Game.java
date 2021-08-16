@@ -258,6 +258,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 					Entity e = entities.get(i);
 					e.tick();
 				}
+				for (int i = 0; i < enemies.size(); i++) {
+					enemies.get(i).tick();
+				}
 				for (int i = 0; i < predios.size(); i++) {
 					Entity e = predios.get(i);
 					e.tick();
@@ -290,6 +293,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 			for (int i = 0; i < predios.size(); i++) {
 				predios.get(i).render(g);
+			}
+			for (int i = 0; i < enemies.size(); i++) {
+				enemies.get(i).render(g);
 			}
 			Collections.sort(entities, Entity.nodeSorter);
 			for (int i = 0; i < entities.size(); i++) {

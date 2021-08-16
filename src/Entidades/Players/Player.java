@@ -12,6 +12,7 @@ import Entidades.Entity;
 import Entidades.Lifepack;
 import Entidades.Cenario.Plataforma;
 import Entidades.Cenario.PosteLuz;
+import Entidades.Enemies.Enemy;
 import Main.Game;
 import World.Camera;
 import World.World;
@@ -34,7 +35,6 @@ public class Player extends Entity {
 	protected double y;
 	boolean jaParou;
 	private boolean dentro;
-
 	public boolean camL, camR, camU;
 	public int framesMoved = 0, maxFramesMoved = 9, indexMoved = 4, maxIndexMoved = 12;
 	public int framesParan = 0, maxFramesParan = 15;
@@ -44,6 +44,8 @@ public class Player extends Entity {
 	public int framesCai2 = 0, maxFramesCai2 = 15;
 	public int framesAtk = 0;
 	public int maxFramesAtk = 6;
+
+	public int framesFur = 0;
 
 	public int indexAtk = 27;
 	public int maxIndexAtk = 33;
@@ -62,7 +64,9 @@ public class Player extends Entity {
 	public boolean visivel;
 	public boolean moved = false;
 	public boolean isDamaged = false;
-	public double life = 100,maxlife=100,stamina = 100,maxstamina=100;
+	public double vida, vidaAdicional;
+	public int defesa, defesaAdicional, defesaMaxima;
+	public int furia, maxFuria;
 
 	public boolean H1[] = new boolean[3];
 	public boolean H2[] = new boolean[3];
@@ -75,15 +79,19 @@ public class Player extends Entity {
 		super(x, y, 0, 0);
 
 	}
+
 	public int getId() {
 		return identifier;
 	}
+
 	public void setPrimeiroSpawn() {
 		primeiroSpaw = false;
 	}
+
 	public boolean primeiroSpawn() {
 		return primeiroSpaw;
 	}
+
 	public void anim() {
 
 		if (right) {
@@ -309,10 +317,56 @@ public class Player extends Entity {
 		}
 	}
 
+	public void checkCollisionEnemy() {
+		for (int i = 0; i < Game.enemies.size(); i++) {
+			Enemy atual = Game.enemies.get(i);
+			if (Entity.isColidding(this, atual, 1, 0)) {
+				if (atacando) {
+					if (furia >= maxFuria) {
+						furia = 100;
+						if (indexAtk == 28) {
+							defesa+=1;
+							if(defesa>=defesaMaxima) {
+								defesa=100;
+							}
+						}
+					} else {
+						if (indexAtk == 28) {
+							furia += 1;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected void furiaSistem() {
+//		furia =100;
+		if(furia >= maxFuria) {
+			
+		}else {
+			if(furia/3<10) {
+				defesa=10;
+			}else {
+				defesa=furia/3;
+			}
+		}
+		if (parado && !combat) {
+			framesFur++;
+			if (framesFur >= 10) {
+				framesFur = 0;
+				furia -= 1;
+				if (furia <= 0) {
+					furia = 0;
+				}
+			}
+
+		}
+	}
+
 	public void lifesistem() {
-		if (life <= 0) {
-			// Game over!
-			life = 0;
+		if (vida <= 0) {
+			vida = 0;
 			Configuracoes.estadoGame = TipoGame.MENU;
 			Configuracoes.estadoMenu = TipoMenu.GAMEOVER;
 		}

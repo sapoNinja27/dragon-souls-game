@@ -17,33 +17,31 @@ public class UI {
 			icon[i] = img.getSprite(i * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 	}
+
 	public void tick() {
-		
+
 	}
+
+	private void hudTai(Graphics2D g) {
+		Rectangle barstamina = new Rectangle(110, 66, (int) Game.player.furia * 2, 11);
+		g.setColor(Color.orange);
+		g.fill(barstamina);
+		Rectangle defense = new Rectangle(110, 79, (int) Game.player.defesa * 2 - Game.player.defesaAdicional, 5);
+		g.setColor(Color.LIGHT_GRAY);
+		g.fill(defense);
+	}
+
 	public void render(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
 
 		if (Game.player.Hudvisivel) {
-
-			Graphics2D g2 = (Graphics2D) g;
-			Rectangle barlife = new Rectangle(100, 55, (int) Game.player.maxlife*2, 11);
-			Rectangle barstamina = new Rectangle(100, 66, (int)Game.player.stamina*2, 11);
-			g.setColor(Color.black);
-			g2.fill(barlife);
-			g2.fill(barstamina);
+			if (Game.player.getId() == 0) {
+				hudTai(g2);
+			}
+			Rectangle barlife = new Rectangle(110, 54, (int) (Game.player.vida * 2 - Game.player.vidaAdicional), 11);
 			g.setColor(Color.red);
-			g.fillRect(100, 55, (int) ((Game.player.life*2)), 11);
-			g.setColor(Color.orange);
-			g.fillRect(100, 66, (int) ((Game.player.stamina*2) ), 11);
-			g.setColor(Color.black);
-			g2.draw(barlife);
-			g2.draw(barstamina);
-
-			g.setColor(Color.white);
-//			g.fillOval(43, 35, 60, 60);
-
+			g2.fill(barlife);
 			g.drawImage(icon[Game.player.getId()], 40, 35, null);
-			g.setColor(Color.black);
-//			g2.drawOval(41, 33, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 
 	}

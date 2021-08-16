@@ -18,6 +18,7 @@ public class Ace extends Player{
 
 	public Ace(int x, int y) {
 		super(x, y);
+		vida = 100;
 		identifier=2;
 		spt= new Spritesheet("/personagens/ace.png");		
 		rightAce= new BufferedImage[35];

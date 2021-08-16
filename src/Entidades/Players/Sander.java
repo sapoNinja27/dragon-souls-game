@@ -20,6 +20,7 @@ public class Sander extends Player{
 	
 	public Sander(int x, int y) {
 		super(x, y);
+		vida = 100;
 		identifier=1;
 		spt= new Spritesheet("/personagens/tai.png");
 		rightTai = new BufferedImage[50];

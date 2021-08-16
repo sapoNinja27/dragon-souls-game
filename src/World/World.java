@@ -18,6 +18,7 @@ import Entidades.Cenario.Plataforma;
 import Entidades.Cenario.Portao;
 import Entidades.Cenario.PosteLuz;
 import Entidades.Cenario.Predio;
+import Entidades.Enemies.Soldier_Enemy;
 import Graficos.Spritesheet;
 import Main.Game;
 
@@ -170,6 +171,8 @@ public class World {
 			Game.player.parado=true;
 			Configuracoes.p1=Game.player;
 			Configuracoes.p2=Game.player2;
+			Soldier_Enemy en = new Soldier_Enemy(x* Configuracoes.TILE_SIZE+100, y* Configuracoes.TILE_SIZE);
+			Game.enemies.add(en);
 		}
 	}
 
