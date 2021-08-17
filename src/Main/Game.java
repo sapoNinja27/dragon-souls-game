@@ -397,6 +397,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				player.frames = 0;
 
 			}
+			if (e.getKeyCode() == KeyEvent.VK_R) {
+				player.parado = false;
+				player.h1 = true;
+				player.combat = false;
+				player.frames = 0;
+			}
+			
 			if (e.getKeyCode() == KeyEvent.VK_Q) {
 				player.framesAtk = 0;
 				player.parado = false;

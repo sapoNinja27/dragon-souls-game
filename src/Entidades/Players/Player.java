@@ -43,7 +43,7 @@ public class Player extends Entity {
 	public int framesCai = 0, maxFramesCai = 15, indexCai = 16, maxIndexCai = 17;
 	public int framesCai2 = 0, maxFramesCai2 = 15;
 	public int framesAtk = 0;
-	public int maxFramesAtk = 6;
+	public int maxFramesAtk = 5;
 
 	public int framesFur = 0;
 
@@ -67,13 +67,7 @@ public class Player extends Entity {
 	public double vida, vidaAdicional;
 	public int defesa, defesaAdicional, defesaMaxima;
 	public int furia, maxFuria;
-
-	public boolean H1[] = new boolean[3];
-	public boolean H2[] = new boolean[3];
-	public boolean H3[] = new boolean[3];
-	public boolean A1[] = new boolean[3];
-	public boolean A2[] = new boolean[3];
-	public boolean A3[] = new boolean[3];
+	public boolean h1 = false;
 
 	public Player(int x, int y) {
 		super(x, y, 0, 0);
@@ -99,7 +93,9 @@ public class Player extends Entity {
 		} else if (left) {
 			dir = left_dir;
 		}
-		if (!isFreeY() && moved && !dash && !dashS) {
+		if (h1) {
+			index = index;
+		} else if (!isFreeY() && moved && !dash && !dashS) {
 			index = indexMoved;
 		} else if (caiu_no_chao) {
 //			index = index;
@@ -226,12 +222,12 @@ public class Player extends Entity {
 	public static void trocaPersonagem(Player p, Player p2) {
 		Game.entities.remove(Game.player);
 		Game.entities.remove(Game.player2);
-		p.right=false;
-		p.left=false;
-		p.moved=false;
-		p2.right=false;
-		p2.left=false;
-		p2.moved=false;
+		p.right = false;
+		p.left = false;
+		p.moved = false;
+		p2.right = false;
+		p2.left = false;
+		p2.moved = false;
 		Game.player = p2;
 		Game.player2 = p;
 		Game.player.setHudvisivel(true);
@@ -331,17 +327,17 @@ public class Player extends Entity {
 					if (furia >= maxFuria) {
 						furia = 100;
 						if (indexAtk == 28) {
-							defesa+=1;
-							if(defesa>=defesaMaxima) {
-								defesa=100;
+							defesa += 1;
+							if (defesa >= defesaMaxima) {
+								defesa = 100;
 							}
 						}
 					} else if (furia >= maxFuria) {
 						furia = 100;
 						if (indexAtk == 28) {
-							defesa+=1;
-							if(defesa>=defesaMaxima) {
-								defesa=100;
+							defesa += 1;
+							if (defesa >= defesaMaxima) {
+								defesa = 100;
 							}
 						}
 					} else {
@@ -356,16 +352,20 @@ public class Player extends Entity {
 
 	protected void furiaSistem() {
 //		furia =100;
-		if(furia >= maxFuria) {
-			
-		}else {
-			if(furia/3<10) {
-				defesa=10;
-			}else {
-				defesa=furia/3;
+		if (furia >= maxFuria) {
+
+		} else {
+			if (furia / 3 < 10) {
+				if(defesa<10) {
+					defesa ++;
+				}else {
+					defesa=10;
+				}
+			} else {
+				defesa = furia / 3;
 			}
 		}
-		if (parado && !combat) {
+		if (parado && !combat && !atacando) {
 			framesFur++;
 			if (framesFur >= 10) {
 				framesFur = 0;
