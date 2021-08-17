@@ -17,14 +17,14 @@ public class Tai extends Player {
 	private BufferedImage[] sombra;
 	public int framesDash = 0, maxFramesDash = 11, indexDash = 19, maxIndexDash = 20;
 	public int framesDashS = 0, maxFramesDashS2 = 15, maxFramesDashS = 4, indexDashS = 20, maxIndexDashS = 23;
-
+	private int indexH1 = 36, framesH1 = 0;
 	// TODO fazer animação de habilidades
 
 	public Tai(int x, int y) {
 		super(x, y);
 		vida = 100;
 		defesa = 10;
-		defesaMaxima=100;
+		defesaMaxima = 100;
 		furia = 100;
 		maxFuria = 100;
 		identifier = 0;
@@ -64,7 +64,7 @@ public class Tai extends Player {
 					Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 //		//hb1
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 8; i++) {
 			rightTai[i + 34] = spt.getSprite(Configuracoes.TILE_SIZE * i, Configuracoes.TILE_SIZE * 6,
 					Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
@@ -78,6 +78,29 @@ public class Tai extends Player {
 //		}
 		// ??
 
+	}
+
+	public void punchMeteor() {
+		if (h1 && furia > 61) {
+			defesa=0;
+			speed = 0;
+			index = indexH1;
+			framesH1++;
+			if (framesH1 >= 10) {
+				framesH1 = 0;
+				indexH1++;
+				if (indexH1 > 41) {
+					indexH1 = 36;
+					furia -= 60;
+					h1 = false;
+					parado = true;
+					combat = true;
+				}
+			}
+		} else {
+			h1 = false;
+			parado = true;
+		}
 	}
 
 	public void attsprite() {
@@ -112,22 +135,24 @@ public class Tai extends Player {
 			pos = 0;
 		}
 		if (dir == left_dir) {
-			for (int i = 0; i < 35; i++) {
+			for (int i = 0; i < 50; i++) {
 				direcao[i] = leftTai[i];
 			}
 		} else if (dir == right_dir) {
-			for (int i = 0; i < 35; i++) {
+			for (int i = 0; i < 50; i++) {
 				direcao[i] = (rightTai[i]);
 			}
 		}
 		if (leftTai[0] == null && leftTai[34] == null) {
-			for (int i = 0; i < 35; i++) {
+			for (int i = 0; i < 50; i++) {
 				leftTai[i] = inverter(rightTai[i]);
 			}
 		}
 
 	}
+
 	public void tick() {
+		punchMeteor();
 		attsprite();
 		setHitbox();
 		anim();
@@ -151,8 +176,8 @@ public class Tai extends Player {
 		g.drawImage(direcao[index], this.getX() + pos - Camera.x + mov_das_cena, this.getY() - Camera.y, null);
 		CharEscuro(g, direcao);
 		g.setColor(Color.red);
-		g.drawRect(getX()- Camera.x+maskx[2], getY()- Camera.y+masky[2], maskw[2], maskh[2]);
+		g.drawRect(getX() - Camera.x + maskx[2], getY() - Camera.y + masky[2], maskw[2], maskh[2]);
 		g.setColor(Color.BLUE);
-		g.drawRect(getX()- Camera.x+maskx[1], getY()- Camera.y+masky[1], maskw[1], maskh[1]);	
+		g.drawRect(getX() - Camera.x + maskx[1], getY() - Camera.y + masky[1], maskw[1], maskh[1]);
 	}
 }

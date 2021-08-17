@@ -19,7 +19,8 @@ public class UI {
 			icon[i] = img.getSprite(i * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}
 		for (int i = 0; i < 3; i++) {
-			hud[i] = img.getSprite((i*2+3) * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE*2, Configuracoes.TILE_SIZE);
+			hud[i] = img.getSprite((i * 2 + 3) * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE * 2,
+					Configuracoes.TILE_SIZE);
 		}
 	}
 
@@ -29,15 +30,15 @@ public class UI {
 
 	private void hudTai(Graphics2D g) {
 		int px = 11;
-		int py =2;
-		Game.player.furia=100;
-		Game.player.defesa=100;
+		int py = 2;
+//		Game.player.furia=100;
+//		Game.player.defesa=100;
 		g.setColor(Color.black);
-		g.fillRoundRect(108+px, 64 + py, 54, 8, 15, 5);
+		g.fillRoundRect(108 + px, 64 + py, 54, 8, 15, 5);
 		g.setColor(Color.orange);
-		g.fillRoundRect(110+px, 66 + py, (int) (Game.player.furia /2), 4, 15, 5);
+		g.fillRoundRect(110 + px, 66 + py, (int) (Game.player.furia / 2), 4, 15, 5);
 
-		Rectangle defense = new Rectangle(101, 39 + py, (int) Game.player.defesa  - Game.player.defesaAdicional, 2);
+		Rectangle defense = new Rectangle(101, 39 + py, (int) Game.player.defesa - Game.player.defesaAdicional, 2);
 		g.setColor(Color.black);
 		g.fillRect(100, 38 + py, 103, 4);
 		g.setColor(Color.LIGHT_GRAY);
@@ -71,7 +72,7 @@ public class UI {
 			 * Barra de vida
 			 */
 			int px = 11;
-			int py =2;
+			int py = 2;
 			g.setColor(Color.black);
 			g.fillRoundRect(108 + px, 52 + py, 54, 9, 15, 5);
 			g.setColor(corLife);
