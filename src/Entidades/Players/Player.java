@@ -226,6 +226,12 @@ public class Player extends Entity {
 	public static void trocaPersonagem(Player p, Player p2) {
 		Game.entities.remove(Game.player);
 		Game.entities.remove(Game.player2);
+		p.right=false;
+		p.left=false;
+		p.moved=false;
+		p2.right=false;
+		p2.left=false;
+		p2.moved=false;
 		Game.player = p2;
 		Game.player2 = p;
 		Game.player.setHudvisivel(true);
@@ -323,6 +329,14 @@ public class Player extends Entity {
 			if (Entity.isColidding(this, atual, 1, 0)) {
 				if (atacando) {
 					if (furia >= maxFuria) {
+						furia = 100;
+						if (indexAtk == 28) {
+							defesa+=1;
+							if(defesa>=defesaMaxima) {
+								defesa=100;
+							}
+						}
+					} else if (furia >= maxFuria) {
 						furia = 100;
 						if (indexAtk == 28) {
 							defesa+=1;

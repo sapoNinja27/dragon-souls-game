@@ -32,7 +32,7 @@ public class LimiteDeCenarioAbismo extends Entity {
 
 					Game.player.caindo = false;
 					Game.player.parado = true;
-					Game.player.life--;
+					Game.player.vida--;
 					Configuracoes.local = TipoAmbiente.TELHADO;
 
 				}

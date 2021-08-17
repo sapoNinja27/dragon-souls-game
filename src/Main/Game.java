@@ -125,7 +125,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		// mouse
 		mouse = new Spritesheet("/cursor.png");
 
-		ui = new UI(icones);
+		ui = new UI(new Spritesheet("/menus/icons.png"));
 		menu = new Menu();
 		cen = new Cutscene();
 		refreshLists();
