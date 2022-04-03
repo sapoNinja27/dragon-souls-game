@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import Configuration.Configuracoes;
 import Graficos.Spritesheet;
 
-public class Chama extends Entity{
+public class Chama extends Entidade {
 	private BufferedImage sprite[];
 	private int frames=0,index=0,maxIndex=15;
 	private Spritesheet chama;

@@ -1,8 +1,8 @@
 package Entidades.Cenario.ObjetosComMovimento;
 
-import Entidades.Entity;
+import Entidades.Entidade;
 
-public class ObjetosComMovimento extends Entity{
+public class ObjetosComMovimento extends Entidade {
 	protected int speed=10;
 	public ObjetosComMovimento(int x, int y) {
 		super(x, y,0,0);

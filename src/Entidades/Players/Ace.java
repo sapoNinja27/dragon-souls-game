@@ -6,10 +6,11 @@ import java.awt.image.BufferedImage;
 import Configuration.Configuracoes;
 import Graficos.Spritesheet;
 import Main.Game;
+import Menu.ImageUtils;
 import World.Camera;
 
 public class Ace extends Player{
-	private Spritesheet spt;	
+	private Spritesheet spt;
 	private BufferedImage[] rightAce;
 	private BufferedImage[] leftAce;
 	private BufferedImage[] direcao;
@@ -19,8 +20,7 @@ public class Ace extends Player{
 	public Ace(int x, int y) {
 		super(x, y);
 		vida = 100;
-		identifier=2;
-		spt= new Spritesheet("/personagens/ace.png");		
+		spt= new Spritesheet("/personagens/ace.png");
 		rightAce= new BufferedImage[35];
 		leftAce= new BufferedImage[35];
 		direcao= new BufferedImage[35];
@@ -61,35 +61,35 @@ public class Ace extends Player{
 ////			rightTai[i+37] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*8, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 ////		}
 //		//??
-		
-		
-		
+
+
+
 	}
 	public void attsprite(){
 		if(atacando) {
 			if(dir == left_dir) {
 				if( indexAtk== 29 || indexAtk == 30 ) {
-					pos=-7;
+					posicao =-7;
 				}else if(indexAtk==31 ) {
-					pos=-4;
+					posicao =-4;
 				}else {
-					pos=0;
+					posicao =0;
 				}
 			}else if(dir == right_dir) {
 				if( indexAtk== 29 || indexAtk == 30 ) {
-					pos=8;
+					posicao =8;
 				}else if(indexAtk==31 ) {
-					pos=2;
+					posicao =2;
 				}else {
-					pos=0;
+					posicao =0;
 				}
 			}
 		}else {
-			pos=0;
+			posicao = 0;
 		}
 		if(leftAce[0]==null && leftAce[34]==null) {
 			for(int i=0;i<35;i++) {
-				leftAce[i]=inverter(rightAce[i]);
+				leftAce[i]= ImageUtils.inverter(rightAce[i]);
 			}
 		}
 		if(dir == left_dir) {
@@ -106,21 +106,18 @@ public class Ace extends Player{
 			attsprite();
 			setHitbox();
 			anim();
-			cameraRoll();
 			movedY();
 			dash();
 			lifesistem();
-			if(this==Game.player) {
-				updateCamera(); 
+			if(!isPlayerDois) {
+				updateCamera();
 				nBot();
-				checkCollisionLifePack();
 			}else {
 				bot();
-//				longeDemais();
 			}
 	}
 	public void anim() {
-		
+
 		if(right) {
 			dir=right_dir;
 		}else if(left) {
@@ -156,7 +153,7 @@ public class Ace extends Player{
 				index=indexParado;
 			}
 		}
-		
+
 		if(dash) {
 			parando=false;
 			framesDash++;
@@ -170,7 +167,7 @@ public class Ace extends Player{
 					if(!moved) {
 						parando=true;
 					}
-					
+
 				}
 			}
 		}
@@ -197,7 +194,7 @@ public class Ace extends Player{
 				indexDashS=19;
 					dashS2=false;
 					parado=true;
-				
+
 				}
 		}
 		if(parando ) {
@@ -218,10 +215,10 @@ public class Ace extends Player{
 			}
 		}
 	}
-	
 
-	
-	
+
+
+
 
 	void dash() {
 		if(dash) {
@@ -248,8 +245,8 @@ public class Ace extends Player{
 	}
 	public void render(Graphics g) {
 		Sombras(g,direcao);
-		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
-		CharEscuro(g,direcao);
+		g.drawImage(direcao[index], this.getX()+ posicao - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
+		sombrear(g,direcao);
 	}
 
 }

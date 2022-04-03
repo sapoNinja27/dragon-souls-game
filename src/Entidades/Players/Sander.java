@@ -16,8 +16,8 @@ public class Sander extends Player{
 	private BufferedImage[] sombra;
 	public int framesDash = 0,maxFramesDash = 11,indexDash = 19,maxIndexDash = 20;
 	public int framesDashS = 0,maxFramesDashS2 = 15,maxFramesDashS = 4,indexDashS = 20,maxIndexDashS = 23;
-	
-	
+
+
 	public Sander(int x, int y) {
 		super(x, y);
 		vida = 100;
@@ -64,9 +64,9 @@ public class Sander extends Player{
 //			rightTai[i+37] =   Game.tai.getSprite(Configuracoes.TILE_SIZE*i, Configuracoes.TILE_SIZE*8, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 //		}
 		//??
-		
-		
-		
+
+
+
 	}
 	public void attsprite(){
 		for(int i=0;i<35;i++) {
@@ -75,29 +75,29 @@ public class Sander extends Player{
 		if(atacando) {
 			if(dir == left_dir) {
 				if( indexAtk== 30 || indexAtk == 29 || indexAtk==31) {
-					pos=-9;
+					posicao =-9;
 				}else if(indexAtk==28 || indexAtk==32 ) {
-					pos=-1;
+					posicao =-1;
 				}else {
-					pos=0;
+					posicao =0;
 				}
 				for(int i=0;i<35;i++) {
 					direcao[i]=leftTai[i];
 				}
 			}else if(dir == right_dir) {
 				if( indexAtk== 30 || indexAtk == 29 || indexAtk==31) {
-					pos=+9;
+					posicao =+9;
 				}else if(indexAtk==28 || indexAtk==32 ) {
-					pos=+1;
+					posicao =+1;
 				}else {
-					pos=0;
+					posicao =0;
 				}
 				for(int i=0;i<35;i++) {
 					direcao[i]=(rightTai[i]);
 				}
 			}
 		}else {
-			pos=0;
+			posicao =0;
 		}
 		if(dir == left_dir) {
 			for(int i=0;i<35;i++) {
@@ -113,7 +113,7 @@ public class Sander extends Player{
 				leftTai[i]=inverter(rightTai[i]);
 			}
 		}
-		
+
 	}
 	public void tick() {
 			attsprite();
@@ -124,7 +124,7 @@ public class Sander extends Player{
 			movedY();
 			lifesistem();
 			if(this==Game.player) {
-				updateCamera(); 
+				updateCamera();
 				nBot();
 				checkCollisionLifePack();
 			}else {
@@ -134,11 +134,11 @@ public class Sander extends Player{
 	}
 	public void render(Graphics g) {
 		Sombras(g,direcao);
-		g.drawImage(direcao[index], this.getX()+pos - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
-		CharEscuro(g,direcao);
-		
-		
-		
+		g.drawImage(direcao[index], this.getX()+ posicao - Camera.x+mov_das_cena,this.getY() - Camera.y, null);
+		sombrear(g,direcao);
+
+
+
 //		Color c=Color.green;
 //		g.setColor(c);
 //		g.fillOval(200, 200, 50, 50);

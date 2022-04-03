@@ -16,208 +16,76 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.Serial;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-
 import Configuration.Configuracoes;
-import Entidades.Entity;
-import Entidades.Cenario.Predio;
-import Entidades.Cenario.ObjetosComMovimento.LixoEsgoto;
-import Entidades.Cenario.ObjetosComMovimento.ObjetosComMovimento;
-import Entidades.Cenario.ObjetosComMovimento.Transito;
-import Entidades.Enemies.Enemy;
-import Entidades.Players.Ace;
-import Entidades.Players.Player;
-import Entidades.Players.Tai;
+import Menu.GerenciadorEstado;
 import Graficos.Spritesheet;
-import Graficos.UI;
 import Menu.Loading;
-import Menu.Menu;
-import World.World;
-import enums.TipoAmbiente;
-import enums.TipoGame;
-import enums.TipoMenu;
+import enums.TipoAcao;
 import jObjects.Mouse;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
+	@Serial
 	private static final long serialVersionUID = 1L;
-	public static boolean podeClicar = true, clicked;
-	public static JFrame frame;
+	public  JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
 	private BufferedImage image;
-	public static List<Entity> entities;
-	public static List<Predio> predios;
-	public static List<ObjetosComMovimento> objetos;
-	public static List<Enemy> enemies;
-	// menus
-	public static Spritesheet fundo;
-	public static Spritesheet fundoT;
-	public static Spritesheet fundoA;
-	public static Spritesheet fundoS;
-	public static Spritesheet Menu;
-	private static Spritesheet icones;
-	// cenario	
-	public static World world;
-	public static Player player;
-	public static Player player2;
-	public static Random rand;
-	// mouse
-	Spritesheet mouse;
-	public UI ui;
-	public static Cutscene cen;
-	public static Menu menu;
+	private final Spritesheet mouse = new Spritesheet("/cursor.png");;
+	public GerenciadorEstado gerenciadorEstado;
 
-	public void refreshLists() {
-		entities = new ArrayList<Entity>();
-		predios = new ArrayList<Predio>();
-		enemies = new ArrayList<Enemy>();
-		objetos = new ArrayList<ObjetosComMovimento>();
-		player = new Tai(0, 0);
-		player2 = new Ace(0, 0);
-		entities.add(player);
-		entities.add(player2);
-	}
 
-	public static void refreshListsSTC(boolean newWorld) {
-		entities = new ArrayList<Entity>();
-		predios = new ArrayList<Predio>();
-		enemies = new ArrayList<Enemy>();
-		objetos = new ArrayList<ObjetosComMovimento>();
-		if (!newWorld) {
-			player = Configuracoes.p1;
-			player2 = Configuracoes.p2;
-			entities.add(player);
-			entities.add(player2);
-		} else {
-			player = new Tai(0, 0);
-			player2 = new Ace(0, 0);
-			entities.add(player);
-			entities.add(player2);
-		}
-	}
-
-	public Game() {
-//		requestFocus();
-		rand = new Random();
+	private void setConfig() {
+		requestFocus();
 		addKeyListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setPreferredSize(
 				new Dimension(Configuracoes.WIDTH * Configuracoes.SCALE, Configuracoes.HEIGHT * Configuracoes.SCALE));
-		initFrame();
-		// Inicializando objetos.
+		try{
+			initFrame();
+		}catch (Exception ignored){}
 		image = new BufferedImage(Configuracoes.WIDTH, Configuracoes.HEIGHT, BufferedImage.TYPE_INT_RGB);
-
-		// menus
-		icones = new Spritesheet("/menus/icones.png");
-		Menu = new Spritesheet("/menus/Menu.png");
-		fundo = new Spritesheet("/menus/fundo.png");
-		fundoA = new Spritesheet("/menus/fundoace.png");
-		fundoT = new Spritesheet("/menus/fundotai.png");
-		fundoS = new Spritesheet("/menus/fundosander.png");
-		// mouse
-		mouse = new Spritesheet("/cursor.png");
-
-		ui = new UI(new Spritesheet("/menus/icons.png"));
-		menu = new Menu();
-		cen = new Cutscene();
-		refreshLists();
 	}
 
-	public void gerarObj() {
-		if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
-			if (rand.nextInt(50) == 0) {
-				ObjetosComMovimento am = new LixoEsgoto(player.getX() + 500, player.getY() + 58 + rand.nextInt(2) * 32,new Spritesheet("/cenario/cenario.png"));
-				am.setSpeed(rand.nextInt(3));
-				if (objetos.size() < rand.nextInt(10)) {
-					objetos.add(am);
-				}
-			}
-
-		} else if (Configuracoes.local == TipoAmbiente.RUA) {
-			if (Configuracoes.dia) {
-				if (rand.nextInt(25) == 0) {
-					ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5),new Spritesheet("/cenario/cenario.png"));
-					am.setSpeed(rand.nextInt(13));
-					if (objetos.size() < rand.nextInt(3)) {
-						objetos.add(am);
-					}
-				}
-			} else {
-				if (rand.nextInt(100) == 0) {
-					ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5),new Spritesheet("/cenario/cenario.png"));
-					am.setSpeed(rand.nextInt(13));
-					if (objetos.size() < rand.nextInt(2)) {
-						objetos.add(am);
-					}
-				}
-			}
-
-		}
+	public Game() {
+		setConfig();
+		gerenciadorEstado.iniciar();
 	}
 
-	/**
-	 * Atualiza a imagem do mouse
-	 */
 	public void attMouse() {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		if (Mouse.hover) {
-			try {
-				// hover
-				Toolkit toolkit = Toolkit.getDefaultToolkit();
-				Image image = mouse.getSprite(32, 0, 32, 32);
-				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-				frame.setCursor(c);
-			} catch (Exception e) {
-
-			}
+			Image image = mouse.getSprite(32, 0, 32, 32);
+			Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+			frame.setCursor(c);
 		} else {
-			// standart
-			try {
-				Toolkit toolkit = Toolkit.getDefaultToolkit();
-				Image image = mouse.getSprite(0, 0, 32, 32);
-				Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-				frame.setCursor(c);
-			} catch (Exception e) {
-
-			}
+			Image image = mouse.getSprite(0, 0, 32, 32);
+			Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+			frame.setCursor(c);
 		}
 
 	}
 
-	public void initFrame() {
+	public void initFrame() throws IOException {
 		frame = new JFrame("Dragon Soul I");
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
 		Image imagem = null;
-		try {
-			LocalDate myObj = LocalDate.now();
-			String data = String.valueOf(myObj);
-			String mes = data.substring(5, 7);
-			String dia = data.substring(8, 10);
-//			imagem=ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
-			if (mes.equals("12") && dia.equals("25")) {
-				imagem = ImageIO.read(getClass().getResource("/icone-jogo/iconNatalino.png"));
-			} else {
-				imagem = ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
+		LocalDate myObj = LocalDate.now();
+		String data = String.valueOf(myObj);
+		String mes = data.substring(5, 7);
+		String dia = data.substring(8, 10);
+		if (mes.equals("12") && dia.equals("25")) {
+			imagem = ImageIO.read(getClass().getResource("/icone-jogo/iconNatalino.png"));
+		} else {
+			imagem = ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
 		}
-//		Toolkit toolkit =Toolkit.getDefaultToolkit();
-//		Image image= toolkit.getImage(getClass().getResource("/icone-jogo/icon.png"));
-//		Cursor c= toolkit.createCustomCursor(image, new Point(0,0), "img");
-
 		frame.setIconImage(imagem);
-//		frame.setAlwaysOnTop(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -238,48 +106,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 	}
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		Game game = new Game();
 		game.start();
 	}
 
 	public void tick() {
-		Configuracoes.dia = true;
+		Configuracoes.dia = false;
 		attMouse();
-		Loading.tick();
-		if (Loading.isLoading()) {
-
-		} else {
-			if (Configuracoes.estadoGame == TipoGame.NORMAL) {
-				if (cen.CcRun()) {
-					cen.tick();
-				}
-				for (int i = 0; i < entities.size(); i++) {
-					Entity e = entities.get(i);
-					e.tick();
-				}
-				for (int i = 0; i < enemies.size(); i++) {
-					enemies.get(i).tick();
-				}
-				for (int i = 0; i < predios.size(); i++) {
-					Entity e = predios.get(i);
-					e.tick();
-				}
-				if(player.caiu_no_chao) {
-					gerarObj();
-				}
-				for (int i = 0; i < objetos.size(); i++) {
-					objetos.get(i).tick();
-				}
-			} else if (Configuracoes.estadoGame == TipoGame.MENU) {
-				menu.tick();
-			}
-		}
-
+		gerenciadorEstado.tick();
 	}
 
 	public void render() {
-
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) {
 			this.createBufferStrategy(3);
@@ -288,38 +126,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		Graphics g = image.getGraphics();
 		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, Configuracoes.WIDTH, Configuracoes.HEIGHT);
-		if (Configuracoes.estadoGame == TipoGame.NORMAL) {
-//			world.render(g);
 
-			for (int i = 0; i < predios.size(); i++) {
-				predios.get(i).render(g);
-			}
-			for (int i = 0; i < enemies.size(); i++) {
-				enemies.get(i).render(g);
-			}
-			Collections.sort(entities, Entity.nodeSorter);
-			for (int i = 0; i < entities.size(); i++) {
-				Entity e = entities.get(i);
-				e.render(g);
-			}
-			for (int i = 0; i < objetos.size(); i++) {
-				objetos.get(i).render(g);
-			}
-			ui.render(g);
-			if (cen.CcRun()) {
-				cen.render(g);
-			}
-		}
-		if (Configuracoes.estadoGame == TipoGame.MENU) {
-			menu.render(g);
-		}
+		gerenciadorEstado.render(g);
+
 		g.dispose();
 		g = bs.getDrawGraphics();
-		g.drawImage(image, 0, 0, Configuracoes.WIDTH * Configuracoes.SCALE, Configuracoes.HEIGHT * Configuracoes.SCALE,
+		g.drawImage(image, 0, 0,
+				Configuracoes.WIDTH * Configuracoes.SCALE,
+				Configuracoes.HEIGHT * Configuracoes.SCALE,
 				null);
-
 		Loading.render(g);
-
 		bs.show();
 	}
 
@@ -331,7 +147,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		int frames = 0;
 		double timer = System.currentTimeMillis();
 		while (isRunning) {
-
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
@@ -346,192 +161,22 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				frames = 0;
 				timer += 1000;
 			}
-
 		}
-
 		stop();
-
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_X) {
-			if (podeClicar) {
-				podeClicar = false;
-				clicked = true;
-			}
-
-		}
-		if (e.getKeyCode() == KeyEvent.VK_P) {
-			Player.trocaPersonagem(player, player2);
-		}
-		if (!cen.CcRun()) {
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-
-			}
-//			if(e.getKeyCode() == KeyEvent.VK_LEFT){
-//				player.camL=true;
-//			}
-//			if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-//				player.camR=true;
-//			}
-		}
-		if (!cen.CcRun()) {
-			if (e.getKeyCode() == KeyEvent.VK_D) {
-				player.atacando = false;
-				player.combat = false;
-				player.frames = 0;
-				player.right = true;
-				player.parado = false;
-				player.parando = false;
-				player.moved = true;
-//				if(player.isFreeX()!="esquerda") {
-//					player.parede=false;
-//				}
-
-			}
-			if (e.getKeyCode() == KeyEvent.VK_E) {
-				player.parado = false;
-				player.dash = true;
-				player.combat = false;
-				player.frames = 0;
-
-			}
-			if (e.getKeyCode() == KeyEvent.VK_R) {
-				player.parado = false;
-				player.h1 = true;
-				player.combat = false;
-				player.frames = 0;
-			}
-			
-			if (e.getKeyCode() == KeyEvent.VK_Q) {
-				player.framesAtk = 0;
-				player.parado = false;
-				player.combat = false;
-				player.frames = 0;
-				if (player.dash) {
-					player.dashS = true;
-				} else if (player.subindo || player.caindo) {
-					// jump atackk
-				} else {
-					player.atacando = true;
-				}
-			}
-			if (e.getKeyCode() == KeyEvent.VK_A) {
-				player.left = true;
-				player.parado = false;
-				player.parando = false;
-				player.moved = true;
-				player.combat = false;
-				player.frames = 0;
-//				if(player.isFreeX()!="direita") {
-//					player.parede=false;
-//				}
-			}
-		}
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			String[] opt1 = { "level" };
-			int[] opt2 = { 1 };
-			menu.saveGame(opt1, opt2, 0);
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_W) {
-			if (!cen.CcRun()) {
-				player.parando = false;
-				player.parado = false;
-				player.caiu_no_chao = false;
-				player.up = true;
-			} else {
-				cen.up();
-			}
-		} else if (e.getKeyCode() == KeyEvent.VK_S) {
-			if (cen.CcRun()) {
-				cen.down();
-			}
-
-		}
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (cen.CcRun()) {
-				cen.next();
-			}
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			if (Configuracoes.estadoMenu != TipoMenu.INICIAL) {
-				if (Configuracoes.estadoGame == TipoGame.MENU) {
-					Configuracoes.estadoGame = TipoGame.NORMAL;
-				} else if (Configuracoes.estadoGame == TipoGame.NORMAL) {
-					Configuracoes.estadoGame = TipoGame.MENU;
-				}
-			}
-
-		}
-
+		gerenciadorEstado.gerenciarCliques(e, TipoAcao.PRESSIONAR);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_X) {
-			podeClicar = true;
-			clicked = false;
-		}
-		if (!cen.CcRun()) {
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-
-			}
-//			if(e.getKeyCode() == KeyEvent.VK_LEFT){
-//				player.camL=false;
-//				player.camx=0;
-//			}
-//			if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-//				player.camR=false;
-//				player.camx=0;
-//			}
-		}
-		if (!cen.CcRun()) {
-			if (e.getKeyCode() == KeyEvent.VK_D) {
-				player.right = false;
-				player.moved = false;
-				if (!player.left) {
-					if (!player.caindo && !player.subindo) {
-						player.parando = true;
-					}
-				}
-
-			}
-			if (e.getKeyCode() == KeyEvent.VK_A) {
-				player.left = false;
-				player.moved = false;
-				if (!player.right) {
-					if (!player.caindo && !player.subindo) {
-						player.parando = true;
-					}
-				}
-
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_W) {
-				player.up = false;
-				player.podepular = false;
-				if (!player.completou_pulo) {
-//					player.caiu_no_chao=true;
-//					player.saiu_do_chao=false;
-				}
-
-				player.moved = false;
-
-			}
-			if (e.getKeyCode() == KeyEvent.VK_S) {
-				player.down = false;
-				player.moved = false;
-			}
-		}
-
+		gerenciadorEstado.gerenciarCliques(e, TipoAcao.SOLTAR);
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

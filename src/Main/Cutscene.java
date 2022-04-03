@@ -157,7 +157,7 @@ public class Cutscene {
 			if(passo[2]) {
 				boxright=true;
 				avatarL=16;
-				dialog="Agora só falta a garota";
+				dialog="Agora sï¿½ falta a garota";
 				if(next) {
 					esvaziar();
 					fade(true);
@@ -290,7 +290,7 @@ public class Cutscene {
 			if(passo[10]) {
 				boxright=true;
 				avatarL=17;
-				dialog="Não vai";
+				dialog="Nï¿½o vai";
 				if(next) {
 					esvaziar();
 					fade(true);
@@ -361,7 +361,7 @@ public class Cutscene {
 				avatarL=0;
 				avatarC=1;
 				dialog="Cuidado onde aponta isso ai";
-				dialog2="amigão";
+				dialog2="amigï¿½o";
 				if(next) {
 					esvaziar();
 					cont=0;
@@ -462,7 +462,7 @@ public class Cutscene {
 			if(passo[21]) {
 				boxright=true;
 				dialog="Qual era seu plano depois";
-				dialog2="que descobrisse que não";
+				dialog2="que descobrisse que nï¿½o";
 				dialog3="pode me machucar?";
 				if(next) {
 					esvaziar();
@@ -576,7 +576,7 @@ public class Cutscene {
 					frames=0;
 					Pupkin_Boss.index++;
 					if(Pupkin_Boss.index==10) {
-						//fumaça=true;
+						//fumaï¿½a=true;
 						passo[27]=false;
 						passo[28]=true;
 					}
@@ -584,7 +584,7 @@ public class Cutscene {
 				if(next) {
 					esvaziar();
 					Pupkin_Boss.index=10;
-					//fumaça=true;
+					//fumaï¿½a=true;
 					passo[27]=false;
 					passo[28]=true;
 				}
@@ -677,7 +677,7 @@ public class Cutscene {
 				boxleft=true;
 				avatarL=0;
 				avatarC=6;
-				dialog="Não";
+				dialog="Nï¿½o";
 				if(next) {
 					esvaziar();
 					soldier_npc.index=17;

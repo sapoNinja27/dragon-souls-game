@@ -3,12 +3,12 @@ package Entidades.Bosses;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import Entidades.Entity;
+import Entidades.Entidade;
 
-public class Pupkin_Boss extends Entity {
+public class Pupkin_Boss extends Entidade {
 	public static int index;
 	int indexF;
-	public static boolean fumaça;
+//	public static boolean fumaï¿½a;
 	int framesFumacinha;
 	public static boolean queimou;
 	public static boolean parado;
@@ -24,8 +24,8 @@ public class Pupkin_Boss extends Entity {
 	BufferedImage fogo[]= new BufferedImage[19];
 	private BufferedImage[] Fright= new BufferedImage[19];
 	private BufferedImage[] Fleft= new BufferedImage[19];
-	public Pupkin_Boss(int x, int y, int width, int height, BufferedImage[] sprite) {
-		super(x, y, width, height, null);
+	public Pupkin_Boss(int x, int y, int width, int height) {
+		super(x, y, width, height);
 		
 	}
 	public static void setPos(int x, int y) {
@@ -98,7 +98,7 @@ public class Pupkin_Boss extends Entity {
 	}
 	public void render(Graphics g) {
 //		g.drawImage(img[index], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
-//		if(fumaça) {
+//		if(fumaï¿½a) {
 //			g.drawImage(fumacinha[indexF], this.getX()- Camera.x+px,this.getY()+py - Camera.y-Game.TILE_SIZE+4, null);
 //		}
 //		if(aceso[0]) {

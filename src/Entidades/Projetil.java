@@ -4,10 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import Main.Game;
 import World.Camera;
 
-public class Projetil extends Entity{
+public class Projetil extends Entidade {
 
 	private double dx;
 	private double dy;

@@ -1,9 +1,6 @@
 package Graficos;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
@@ -14,7 +11,8 @@ public class UI {
 	private BufferedImage hud[] = new BufferedImage[3];
 	private Color colorAtual, corLife;
 
-	public UI(Spritesheet img) {
+	public UI() {
+		Spritesheet img = new Spritesheet("/menus/icons.png");
 		for (int i = 0; i < 3; i++) {
 			icon[i] = img.getSprite(i * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
 		}

@@ -8,13 +8,14 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
-import Entidades.Entity;
+import Entidades.Entidade;
 import Main.Game;
 import Menu.Loading;
+import Menu.MascaraHitBox;
 import World.Camera;
 import enums.TipoAmbiente;
 
-public class Bueiro extends Entity {
+public class Bueiro extends Entidade {
 	private boolean emFrente;
 	private BufferedImage[] img;
 	private int frames = 0;
@@ -24,7 +25,7 @@ public class Bueiro extends Entity {
 		super(x, y, 0, 0);
 		this.img = img;
 		depth = 3;
-		setMask(0, 17, -30, 32, 40);
+		adicionarMascara(new MascaraHitBox("padrao", 17, -30, 32, 40));
 	}
 
 	public void tick() {
@@ -48,7 +49,7 @@ public class Bueiro extends Entity {
 	}
 
 	public void checkCollision() {
-		if (Entity.isColidding(Game.player, this, 0, 0)) {
+		if (Entidade.corpoColidindo(Game.player, this, 0, 0)) {
 			emFrente = true;
 			if (Game.clicked) {
 				Game.clicked = false;
@@ -65,8 +66,7 @@ public class Bueiro extends Entity {
 
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		if (this.distanciaX((int) x, Game.player.getX()) < 1000 && this.distanciaY((int) y, Game.player.getY()) < 500) {
-			if (!Game.player.getDentro()) {
+		if (!Game.player.getDentro()) {
 				if (!emFrente) {
 					g.drawImage(img[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
 				} else {
@@ -79,5 +79,4 @@ public class Bueiro extends Entity {
 				}
 			}
 		}
-	}
 }

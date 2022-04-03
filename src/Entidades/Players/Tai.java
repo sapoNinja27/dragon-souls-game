@@ -18,7 +18,7 @@ public class Tai extends Player {
 	public int framesDash = 0, maxFramesDash = 11, indexDash = 19, maxIndexDash = 20;
 	public int framesDashS = 0, maxFramesDashS2 = 15, maxFramesDashS = 4, indexDashS = 20, maxIndexDashS = 23;
 	private int indexH1 = 36, framesH1 = 0;
-	// TODO fazer animação de habilidades
+	// TODO fazer animaï¿½ï¿½o de habilidades
 
 	public Tai(int x, int y) {
 		super(x, y);
@@ -27,7 +27,6 @@ public class Tai extends Player {
 		defesaMaxima = 100;
 		furia = 100;
 		maxFuria = 100;
-		identifier = 0;
 		spt = new Spritesheet("/personagens/tai.png");
 		rightTai = new BufferedImage[50];
 		leftTai = new BufferedImage[50];
@@ -110,29 +109,29 @@ public class Tai extends Player {
 		if (atacando) {
 			if (dir == left_dir) {
 				if (indexAtk == 30 || indexAtk == 29 || indexAtk == 31) {
-					pos = -9;
+					posicao = -9;
 				} else if (indexAtk == 28 || indexAtk == 32) {
-					pos = -1;
+					posicao = -1;
 				} else {
-					pos = 0;
+					posicao = 0;
 				}
 				for (int i = 0; i < 35; i++) {
 					direcao[i] = leftTai[i];
 				}
 			} else if (dir == right_dir) {
 				if (indexAtk == 30 || indexAtk == 29 || indexAtk == 31) {
-					pos = +9;
+					posicao = +9;
 				} else if (indexAtk == 28 || indexAtk == 32) {
-					pos = +1;
+					posicao = +1;
 				} else {
-					pos = 0;
+					posicao = 0;
 				}
 				for (int i = 0; i < 35; i++) {
 					direcao[i] = (rightTai[i]);
 				}
 			}
 		} else {
-			pos = 0;
+			posicao = 0;
 		}
 		if (dir == left_dir) {
 			for (int i = 0; i < 50; i++) {
@@ -156,7 +155,6 @@ public class Tai extends Player {
 		attsprite();
 		setHitbox();
 		anim();
-		cameraRoll();
 		dash();
 		movedY();
 		lifesistem();
@@ -173,11 +171,11 @@ public class Tai extends Player {
 
 	public void render(Graphics g) {
 		Sombras(g, direcao);
-		g.drawImage(direcao[index], this.getX() + pos - Camera.x + mov_das_cena, this.getY() - Camera.y, null);
-		CharEscuro(g, direcao);
+		g.drawImage(direcao[index], this.getX() + posicao - Camera.x + mov_das_cena, this.getY() - Camera.y, null);
+		sombrear(g, direcao);
 		g.setColor(Color.red);
-		g.drawRect(getX() - Camera.x + maskx[2], getY() - Camera.y + masky[2], maskw[2], maskh[2]);
+		g.drawRect(getX() - Camera.x + mascaracaX[2], getY() - Camera.y + mascaraY[2], mascaraAltura[2], mascaraLargura[2]);
 		g.setColor(Color.BLUE);
-		g.drawRect(getX() - Camera.x + maskx[1], getY() - Camera.y + masky[1], maskw[1], maskh[1]);
+		g.drawRect(getX() - Camera.x + mascaracaX[1], getY() - Camera.y + mascaraY[1], mascaraAltura[1], mascaraLargura[1]);
 	}
 }

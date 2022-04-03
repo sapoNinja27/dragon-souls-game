@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
-import Entidades.Entity;
+import Entidades.Entidade;
 import Graficos.Spritesheet;
 
 public class Loading {
@@ -73,7 +73,7 @@ public class Loading {
 			g.setColor(Color.black);
 			g.fillRect(0, 0, 1500, 1000);
 			g.setFont(new Font("", Font.LAYOUT_LEFT_TO_RIGHT, 20));
-			g.drawImage(Entity.inverter(pixels[index]), 95, 535, Configuracoes.TILE_SIZE * 2,
+			g.drawImage(Entidade.inverter(pixels[index]), 95, 535, Configuracoes.TILE_SIZE * 2,
 					Configuracoes.TILE_SIZE * 2, null);
 		}
 	}
