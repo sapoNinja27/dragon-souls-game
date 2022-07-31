@@ -3,7 +3,7 @@ package Menu;
 
 import Configuration.Configuracoes;
 import Entidades.GerenciadorEntidades;
-import Main.Cutscene;
+import World.World;
 import enums.AcaoPlayer;
 import enums.TipoAcao;
 import enums.TipoGame;
@@ -15,20 +15,27 @@ import java.awt.event.KeyEvent;
 public class GerenciadorEstado {
 
     private Menu menu;
-    private Cutscene cutscene;
+    World world = new World("/niveis/area1.png");
+//    private Cutscene cutscene;
     private GerenciadorEntidades gerenciadorEntidades;
     private GerenciadorSave gerenciadorSave;
 
     public void iniciar() {
         menu = new Menu();
-        cutscene = new Cutscene();
-        gerenciadorEntidades.iniciarListas();
+        world.startGame();
+//        cutscene = new Cutscene();
+        gerenciadorEntidades = world.getGerenciadorEntidades();
     }
+
+    public GerenciadorEntidades getGerenciadorEntidades(){
+        return gerenciadorEntidades;
+    }
+
     public void tick(){
         Loading.tick();
         if (!Loading.isLoading()) {
             if(Configuracoes.estadoGame == TipoGame.CUTSCENE){
-                cutscene.tick();
+//                cutscene.tick();
             }
             if (Configuracoes.estadoGame == TipoGame.NORMAL) {
                 gerenciadorEntidades.tick();
@@ -40,7 +47,7 @@ public class GerenciadorEstado {
     }
     public void render(Graphics g){
         if (Configuracoes.estadoGame.equals(TipoGame.CUTSCENE)){
-            cutscene.render(g);
+//            cutscene.render(g);
         }
         if (Configuracoes.estadoGame == TipoGame.NORMAL) {
             gerenciadorEntidades.render(g);
@@ -122,7 +129,7 @@ public class GerenciadorEstado {
 //			}
         }
         if(Configuracoes.estadoGame.equals(TipoGame.NORMAL)){
-            if (e.getKeyCode() == KeyEvent.VK_D && e.getKeyCode() == KeyEvent.VK_A) {
+            if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_A) {
                 gerenciadorEntidades.acaoPlayer(AcaoPlayer.PARAR);
             }
 

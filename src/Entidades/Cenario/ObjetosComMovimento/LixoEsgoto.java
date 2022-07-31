@@ -30,7 +30,7 @@ public class LixoEsgoto extends ObjetosComMovimento{
 		Graphics2D g2 = (Graphics2D) g;
 		g.drawImage(img,this.getX()-Camera.x+20+(20),this.getY()-Camera.y+10,32,32,null);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f));
-		g.drawImage(ImageUtils.Sombra(img),this.getX()-Camera.x+20+(20),this.getY()-Camera.y+10,32,32,null);
+		g.drawImage(ImageUtils.sombreamento(img),this.getX()-Camera.x+20+(20),this.getY()-Camera.y+10,32,32,null);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 	}

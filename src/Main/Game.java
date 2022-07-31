@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serial;
 import java.time.LocalDate;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import Configuration.Configuracoes;
@@ -34,8 +35,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private Thread thread;
 	private boolean isRunning = true;
 	private BufferedImage image;
-	private final Spritesheet mouse = new Spritesheet("/cursor.png");;
-	public GerenciadorEstado gerenciadorEstado;
+	private final Spritesheet mouse = new Spritesheet("/cursor.png");
+	private final GerenciadorEstado gerenciadorEstado = new GerenciadorEstado();
 
 
 	private void setConfig() {
@@ -75,15 +76,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
-		Image imagem = null;
+		Image imagem;
 		LocalDate myObj = LocalDate.now();
 		String data = String.valueOf(myObj);
 		String mes = data.substring(5, 7);
 		String dia = data.substring(8, 10);
 		if (mes.equals("12") && dia.equals("25")) {
-			imagem = ImageIO.read(getClass().getResource("/icone-jogo/iconNatalino.png"));
+			imagem = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icone-jogo/iconNatalino.png")));
 		} else {
-			imagem = ImageIO.read(getClass().getResource("/icone-jogo/icon.png"));
+			imagem = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icone-jogo/icon.png")));
 		}
 		frame.setIconImage(imagem);
 		frame.setLocationRelativeTo(null);
@@ -176,19 +177,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
@@ -198,10 +193,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseExited(MouseEvent arg0) {}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -220,8 +212,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-
-	}
+	public void mouseDragged(MouseEvent e) {}
 
 }

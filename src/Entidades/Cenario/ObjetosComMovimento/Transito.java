@@ -41,7 +41,7 @@ public class Transito extends ObjetosComMovimento{
 			}else {
 				g.drawImage(img,this.getX()-Camera.x+20+(20),this.getY()-Camera.y-100,Configuracoes.TILE_SIZE*3,Configuracoes.TILE_SIZE*3,null);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.5f));
-				g.drawImage(ImageUtils.Sombra(img),this.getX()-Camera.x+20+(20),this.getY()-Camera.y-100,Configuracoes.TILE_SIZE*3,Configuracoes.TILE_SIZE*3,null);
+				g.drawImage(ImageUtils.sombreamento(img),this.getX()-Camera.x+20+(20),this.getY()-Camera.y-100,Configuracoes.TILE_SIZE*3,Configuracoes.TILE_SIZE*3,null);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
 				g.setColor(Color.yellow);
 				g.fillPolygon(new int[]{

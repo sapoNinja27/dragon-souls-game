@@ -30,6 +30,13 @@ public class Menu {
 
 
 	public void tick() {
+		//TODO apagar
+//		Loading.start();
+//				world.startGame();
+//		Loading.stop();
+		Configuracoes.estadoGame = TipoGame.NORMAL;
+
+
 		posx++;
 		if (posx == 2976 - 1440) {
 			posx = 0;
@@ -40,13 +47,13 @@ public class Menu {
 			}
 			if (botoes[0].isClicked()) {
 				Loading.start();
-				World.startGame();
+//				world.startGame();
 				Loading.stop();
 				Configuracoes.estadoGame = TipoGame.NORMAL;
 				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
-				Game.player.visivel = true;
-				Game.player.Hudvisivel = true;
-				Game.player.depth = 7;
+//				Game.player.visivel = true;
+//				Game.player.Hudvisivel = true;
+//				Game.player.depth = 7;
 //				Game.cen.CenaStart(0);
 			}
 			if (botoes[1].isClicked()) {
@@ -73,24 +80,14 @@ public class Menu {
 	public void render(Graphics g) {
 		if (Configuracoes.estadoMenu == TipoMenu.LOAD || Configuracoes.estadoMenu == TipoMenu.INICIAL
 				|| Configuracoes.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
-			g.drawImage(Game.fundo.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
+//			g.drawImage(fundo.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
 		} else if (Configuracoes.estadoMenu == TipoMenu.HABILIDADES || Configuracoes.estadoMenu == TipoMenu.INVENTARIO
 				|| Configuracoes.estadoMenu == TipoMenu.OPCOESPAUSE) {
-			if (Game.player.getId()==0) {
-				// menu do tai
-				g.drawImage(Game.fundoT.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
-			} else if (Game.player.getId()==2) {
-				// menu do ace
-				g.drawImage(Game.fundoA.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
-			} else if (Game.player.getId()==1) {
-				// menu do sander
-				g.drawImage(Game.fundoS.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
-			}
 		}
 		if (Configuracoes.estadoMenu == TipoMenu.INICIAL) {
-			g.drawImage(Game.Menu.getSprite(2700, 0, 400, 200), 720 / 2 - 200, 30, null);
-			for (int i = 0; i < botoes.length; i++) {
-				botoes[i].render(g);
+//			g.drawImage(Game.Menu.getSprite(2700, 0, 400, 200), 720 / 2 - 200, 30, null);
+			for (Botao botoe : botoes) {
+				botoe.render(g);
 			}
 		} else if (Configuracoes.estadoMenu == TipoMenu.LOAD) {
 			menLo.render(g);

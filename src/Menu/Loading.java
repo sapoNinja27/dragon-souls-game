@@ -6,15 +6,14 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import Configuration.Configuracoes;
-import Entidades.Entidade;
 import Graficos.Spritesheet;
 
 public class Loading {
 	private static boolean iniciando;
 	private static boolean carregando;
 	private static boolean finalizando;
-	private static BufferedImage[] pixels = new BufferedImage[7];
-	private static Spritesheet loading = new Spritesheet("/loading.png");
+	private static final BufferedImage[] pixels = new BufferedImage[7];
+	private static final Spritesheet loading = new Spritesheet("/loading.png");
 	private static int frames = 0, index = 0;
 
 	public static void tick() {
@@ -72,8 +71,8 @@ public class Loading {
 		if (carregando || iniciando) {
 			g.setColor(Color.black);
 			g.fillRect(0, 0, 1500, 1000);
-			g.setFont(new Font("", Font.LAYOUT_LEFT_TO_RIGHT, 20));
-			g.drawImage(Entidade.inverter(pixels[index]), 95, 535, Configuracoes.TILE_SIZE * 2,
+			g.setFont(new Font("", Font.PLAIN, 20));
+			g.drawImage(ImageUtils.inverter(pixels[index]), 95, 535, Configuracoes.TILE_SIZE * 2,
 					Configuracoes.TILE_SIZE * 2, null);
 		}
 	}

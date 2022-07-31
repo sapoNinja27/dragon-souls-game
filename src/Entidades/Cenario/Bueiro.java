@@ -6,18 +6,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-
-import Configuration.Configuracoes;
 import Entidades.Entidade;
-import Main.Game;
-import Menu.Loading;
 import Menu.MascaraHitBox;
 import World.Camera;
-import enums.TipoAmbiente;
 
 public class Bueiro extends Entidade {
-	private boolean emFrente;
-	private BufferedImage[] img;
+	private final BufferedImage[] img;
 	private int frames = 0;
 	private float op = 0.1f;
 
@@ -25,58 +19,36 @@ public class Bueiro extends Entidade {
 		super(x, y, 0, 0);
 		this.img = img;
 		depth = 3;
-		adicionarMascara(new MascaraHitBox("padrao", 17, -30, 32, 40));
+		adicionarMascara(new MascaraHitBox(17, -30, 32, 40));
 	}
 
+	@Override
 	public void tick() {
-		if (this.distanciaX((int) x, Game.player.getX()) < 50 && this.distanciaY((int) y, Game.player.getY()) < 100) {
-			if (!Game.player.getDentro()) {
-				checkCollision();
-				if (emFrente) {
-					frames++;
-					if (frames >= 10) {
-						if (op < 0.9f) {
-							op += 0.1f;
-						}
-					}
-
-				} else {
-					frames = 0;
-					op = 0.1f;
+		if (colidindo) {
+			frames++;
+			if (frames >= 10) {
+				if (op < 0.9f) {
+					op += 0.1f;
 				}
 			}
-		}
-	}
 
-	public void checkCollision() {
-		if (Entidade.corpoColidindo(Game.player, this, 0, 0)) {
-			emFrente = true;
-			if (Game.clicked) {
-				Game.clicked = false;
-				Loading.start();
-				Configuracoes.local = TipoAmbiente.ESGOTOS;
-				Game.player.setY(getY() + 898);
-				Game.player2.setY(getY() + 898);
-				Loading.stop();
-			}
 		} else {
-			emFrente = false;
+			frames = 0;
+			op = 0.1f;
 		}
 	}
 
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		if (!Game.player.getDentro()) {
-				if (!emFrente) {
-					g.drawImage(img[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
-				} else {
-					g.drawImage(img[1], this.getX() - Camera.x, this.getY() - Camera.y, null);
-					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
-					g.setFont(new Font("Cambria Math", Font.ROMAN_BASELINE, 20));
-					g.setColor(Color.white);
-					g.drawString("Esgotos", this.getX() - Camera.x - 10, this.getY() - Camera.y + 30);
-					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-				}
-			}
+		if (!colidindo) {
+			g.drawImage(img[0], this.getX() - Camera.x, this.getY() - Camera.y, null);
+		} else {
+			g.drawImage(img[1], this.getX() - Camera.x, this.getY() - Camera.y, null);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
+			g.setFont(new Font("Cambria Math", Font.PLAIN, 20));
+			g.setColor(Color.white);
+			g.drawString("Esgotos", this.getX() - Camera.x - 10, this.getY() - Camera.y + 30);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		}
 		}
 }

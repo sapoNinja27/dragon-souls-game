@@ -2,24 +2,31 @@ package Entidades;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import Menu.MascaraHitBox;
+import World.Camera;
+import enums.DirecaoPlayer;
 
 public class Entidade {
 
-	protected float sombreamento;
-	protected float sombras;
+	protected float sombreamento = 0.2f;
+	protected float sombras = 0.2f;
 	protected double x;
 	protected double y;
 	protected int width;
 	protected int height;
-	
+	protected boolean colidindo;
 	protected int depth;
 	protected List<MascaraHitBox> mascaras;
-	
+	protected DirecaoPlayer direcaoPlayer = DirecaoPlayer.DIREITA;
+	protected boolean parado;
+	protected int drawLimitX = 1000;
+	protected int drawLimitY = 500;
+
 	public Entidade(int x, int y, int width, int height){
 		this.x = x;
 		this.y = y;
@@ -29,11 +36,15 @@ public class Entidade {
 	}
 	public static Comparator<Entidade> nodeSorter = Comparator.comparingInt(n0 -> n0.depth);
 
+	public void limparMascaras(){
+		this.mascaras.clear();
+	}
+
 	public void adicionarMascara(MascaraHitBox mascara){
 		this.mascaras.add(mascara);
 	}
 
-	public void correr(double x) {
+	public void mover(double x) {
 		this.x = x;
 	}
 
@@ -64,10 +75,35 @@ public class Entidade {
 	public int getHeight() {
 		return this.height;
 	}
-	
-	public void tick(){
-		
+
+
+	public boolean isParado() {
+		return parado;
 	}
+
+	public void setParado(boolean parado) {
+		this.parado = parado;
+	}
+
+	public DirecaoPlayer getDirecaoPlayer() {
+		return direcaoPlayer;
+	}
+
+	public void setDirecaoPlayer(DirecaoPlayer direcaoPlayer) {
+		this.direcaoPlayer = direcaoPlayer;
+	}
+
+	public void teleportarPlayer(Entidade player) {
+//		if (player.direcaoPlayer.equals(DirecaoPlayer.DIREITA)) {
+//			player.setX(this.getX() - 15 + larg);
+//			player.parado = true;
+//		}
+//		if (playerdirecaoPlayer.equals(DirecaoPlayer.ESQUERDA)) {
+//			player.setX(this.getX() + (dist * Configuracoes.TILE_SIZE) - 47 - larg);
+//			player.parado = true;
+//		}
+	}
+
 	public double distanciaX(int destino) {
 		return Math.abs(this.x-destino);
 	}
@@ -80,6 +116,9 @@ public class Entidade {
 		return Math.sqrt(this.x-x)*(this.x-x)+(this.y-y)*(this.y-y);
 	}
 
+	public boolean dependeControleDePosicaoPlayer(){
+		return false;
+	}
 	public Rectangle getMascara(){
 		return new Rectangle(
 				this.getX() + this.mascaras.get(0).getPosicaoX(),
@@ -88,13 +127,47 @@ public class Entidade {
 				this.mascaras.get(0).getLargura());
 	}
 
+	public List<Rectangle> getMascaras(List<MascaraHitBox> mascarasEscolhidas){
+		return mascarasEscolhidas.stream().map(mascaraHitBox -> new Rectangle(
+				this.getX() + mascarasEscolhidas.get(0).getPosicaoX(),
+				this.getY()+ mascarasEscolhidas.get(0).getPosicaoY(),
+				mascarasEscolhidas.get(0).getAutura(),
+				mascarasEscolhidas.get(0).getLargura())).collect(Collectors.toList());
+	}
+
+	public void checarColisao(Entidade player) {
+		colidindo = corpoColidindo(player);
+	}
+
+	public void checarInteracao(Entidade player){
+
+	}
+
 	public boolean corpoColidindo(Entidade entidade){
 		Rectangle mascaraAtual = getMascara();
 		Rectangle mascaraAlvo = entidade.getMascara();
 		return mascaraAtual.intersects(mascaraAlvo);
 	}
-	
-	
+
+	public boolean corpoColidindo(Entidade entidade, List<String> mascaras){
+		List<MascaraHitBox> mascarasEscolhidas = entidade.mascaras.stream().filter(s -> {
+			for (String mask: mascaras
+				 ) {
+				if(s.getNome().equals(mask)){
+					return true;
+				}
+			}
+			return false;
+		}).collect(Collectors.toList());
+		Rectangle mascaraAtual = getMascara();
+		List<Rectangle> mascarasAlvo = entidade.getMascaras(mascarasEscolhidas);
+		return mascarasAlvo.stream().filter(mascaraAtual::intersects).findAny().stream().findAny().isPresent();
+	}
+
+	public void tick(){
+
+	}
+
 	public void render(Graphics g) {
 
 	}

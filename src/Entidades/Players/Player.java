@@ -1,18 +1,17 @@
 package Entidades.Players;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import Configuration.Configuracoes;
 import Entidades.Entidade;
-import Entidades.Cenario.PosteLuz;
 import Entidades.ObjetoLuminoso;
-import Main.Game;
-import Menu.Animacao;
+import Graficos.Spritesheet;
+import Graficos.UI;
 import Menu.ImageUtils;
 import Menu.MascaraHitBox;
 import World.Camera;
@@ -22,47 +21,57 @@ import enums.*;
 public class Player extends Entidade {
 	protected int posicao = 0;
 	protected boolean jaParou;
+	protected int index = 0;
+	protected double speed = 5;
+	private int limiteAltura = 0;
+	private String ultimaAcao = "respirando";
+	private String acaoAtual = "respirando";
 
+	private final UI ui;
+	protected Spritesheet spritesheet;
+
+	//TODO adicionar variação de vida pra cada personagem
+	protected int vida = 958, vidaMaxima = 1000;
+	//TODO o nome desse atributo varia visualmente para cada personagem, sendo ace concentração, tai furia e sander foco
+	protected int mana = 500, manaMaxima = 1000;
+	//TODO reduz valor fixo de dano
+	protected int defesa = 10;
+	//TODO reduz porcentagem de dano
+	protected int resistencia = 1;
+
+	protected List<BufferedImage> spritesDireita = new ArrayList<>();
+	protected  List<BufferedImage> spritesEsquerda = new ArrayList<>();
+
+	private boolean ePrimeiroSpawn;
 	private boolean dentro;
-	private Animacao andar = new Animacao(0, 4, 12, 6);
-	private Animacao parar = new Animacao(0, 4, 12, 6);
-	private Animacao pular = new Animacao(0, 4, 12, 6);
 
-	public int framesMoved = 0, indexMoved = 4, maxIndexMoved = 12;
-	public int framesParan = 0, maxFramesParan = 15;
-	public int framesParado = 0, maxFramesParado = 17, indexParado = 0, maxIndexParado = 4;
-	public int framesPulo = 0, maxFramesPulo = 15, indexPul = 13, maxIndexPul = 15;
-	public int framesCai = 0, maxFramesCai = 15, indexCai = 16, maxIndexCai = 17;
-	public int framesCai2 = 0, maxFramesCai2 = 15;
-	public int framesAtk = 0;
-	public int maxFramesAtk = 5;
-	public int framesFur = 0;
-	public int indexAtk = 27;
-	public int maxIndexAtk = 33;
-	public int framesDash = 0, maxFramesDash = 11, indexDash = 19, maxIndexDash = 20;
-	public int framesDashS = 0, maxFramesDashS2 = 15, maxFramesDashS = 4, indexDashS = 20, maxIndexDashS = 23;
-	public boolean caindo, subindo, podepular, completou_pulo, saiu_do_chao, caiu_no_chao, atacando, dash, dashS,
-			dashS2;
-	public boolean combat;
-	public boolean right, up, left, down, parado, parando;
+	//Atributos de execução de acão de direção
+	private boolean direita, cima, esquerda, baixo;
+	//Atributos de executando ação
+	public boolean caindo, subindo, pousando, andando, parando, atacando, respirando = true, respirandoEmCombate, investindo;
+
 	private Player playerUm;
-	private DirecaoPlayer direcaoPlayer = DirecaoPlayer.DIREITA;
-	public int index = 0;
-	public int frames = 0;
-	public boolean Hudvisivel;
-	public double speed = 5;
-	public boolean visivel;
-	public boolean moved = false;
-	public double vida, vidaAdicional;
-	public int defesa, defesaAdicional, defesaMaxima;
-	public int furia, maxFuria;
-	public boolean h1 = false;
 	protected boolean isPlayerDois;
-	private boolean isFree;
+	protected boolean isFreeX, isFreeY;
+	private int frames = 0;
 
-	public Player(int x, int y) {
-		super(x, y, 0, 0);
 
+
+
+	public boolean isDireita() {
+		return direita;
+	}
+
+	public boolean isCima() {
+		return cima;
+	}
+
+	public boolean isEsquerda() {
+		return esquerda;
+	}
+
+	public boolean isBaixo() {
+		return baixo;
 	}
 
 	public void setPlayerUm(){
@@ -73,7 +82,46 @@ public class Player extends Entidade {
 		this.isPlayerDois = true;
 	}
 
-	public void tick(){;
+
+
+	public Player(int x, int y) {
+		super(x, y, 0, 0);
+		atualizarSprites();
+		ui = new UI(this);
+	}
+
+	public void tick(){
+		depth = 1;
+		ui.tick(this);
+		verificarAcao();
+
+		adicionarMascaras();
+		atualizarDirecaoPlayer();
+
+		lifesistem();
+		if(!isPlayerDois) {
+			updateCamera();
+//				nBot();
+		}else {
+			bot();
+		}
+	}
+
+	public void render(Graphics g) {
+		ui.render(g);
+		sombrasChao(g, spriteAtual().get(index));
+		g.drawImage(spriteAtual().get(index), this.getX() + posicao - Camera.x,this.getY() - Camera.y, 64, 64, null);
+		atualizarIluminacao(g, spriteAtual());
+	}
+
+	public void atualizarSprites(){
+
+	}
+
+
+
+	protected List<BufferedImage> spriteAtual(){
+		return direcaoPlayer.equals(DirecaoPlayer.DIREITA) ? spritesDireita : spritesEsquerda;
 	}
 
 	public void teleportar(int x, int y) {
@@ -92,147 +140,180 @@ public class Player extends Entidade {
 		}
 	}
 
-	public void anim() {
-
-		if (right) {
-			direcaoPlayer = DirecaoPlayer.DIREITA;
-		} else if (left) {
-			direcaoPlayer = DirecaoPlayer.ESQUERDA;
-		}
-		if (h1) {
-			index = index;
-		} else if (!isFree && moved && !dash && !dashS) {
-			index = indexMoved;
-		} else if (caiu_no_chao) {
-//			index = index;
-		} else if (dash) {
-			index = indexDash;
-		} else if (dashS) {
-			index = indexDashS;
-		} else if (dashS2) {
-			index = indexDashS;
-		} else if (subindo) {
-			index = indexPul;
-		} else if (caindo) {
-			index = indexCai;
-		} else if (!isFree && moved && !dash && !dashS) {
-			index = indexMoved;
-		} else if (atacando) {
-			index = indexAtk;
-		} else if (parado) {
-			if (combat) {
-				index = indexParado + 24;
-				frames++;
-				if (frames >= 200) {
-					frames = 0;
-					combat = false;
-				}
-			} else {
-				index = indexParado;
+	public void verificarAcao() {
+		if (direita || esquerda) {
+			if (isFreeY) {
+				setarAnimacao("andando");
 			}
-		}
-
-		if (dash) {
-			parando = false;
-			framesDash++;
-			if (framesDash == maxFramesDash) {
-				framesDash = 0;
-				indexDash++;
-				if (indexDash == maxIndexDash) {
-					indexDash = 19;
-					dash = false;
-					if (!moved) {
-						parando = true;
-					}
-
-				}
-			}
-		}
-		if (dashS) {
-			dash = false;
-			indexDash = 19;
-			framesDash = 0;
-			framesDashS++;
-			if (framesDashS == maxFramesDashS) {
-				framesDashS = 0;
-				indexDashS++;
-				if (indexDashS == maxIndexDashS) {
-					indexDashS = 23;
-					dashS = false;
-					dashS2 = true;
-				}
-			}
-		}
-		if (dashS2) {
-			dash = false;
-			framesDashS++;
-			if (framesDashS == maxFramesDashS2) {
-				framesDashS = 0;
-				indexDashS = 19;
-				dashS2 = false;
-				parado = true;
-
+			mover(direcaoPlayer.equals(DirecaoPlayer.DIREITA) ? xDouble() + speed : xDouble() - speed);
+		} else {
+			if (isFreeY && andando) {
+				setarAnimacao("parando");
 			}
 		}
 		if (parando) {
-			index = 12;
-			framesParan++;
-			if (direcaoPlayer.equals(DirecaoPlayer.ESQUERDA)) {
-				setX(getX() - 1);
-			} else {
-				setX(getX() + 1);
-			}
-			if (framesParan == maxFramesParan) {
-				framesParan = 0;
-				parado = true;
-				parando = false;
-				if (isPlayerDois) {
-					jaParou = true;
-				}
-			}
+			mover(direcaoPlayer.equals(DirecaoPlayer.DIREITA) ? xDouble() + speed / 2 : xDouble() - speed / 2);
+		}
+		controlaMovimentosPulo();
+		executarAnimacao();
+	}
+	private void controlaMovimentosPulo(){
+		if (cima && !ultimaAcao.equals("caindo")) {
+			setarAnimacao("subindo");
+		} else if(limiteAltura != 0){
+			setarAnimacao("caindo");
+		}
+		if(limiteAltura == 96){
+			cima = false;
+			setarAnimacao("caindo");
+		}
+		if(limiteAltura == 0 && ultimaAcao.equals("caindo")){
+			setarAnimacao("pousando");
+		}
+	}
+	public void executarAnimacao() {
+		if(andando){
+			caminhar();
+		}
+		if(parando){
+			parar();
+		}
+		if(respirando){
+			respirar();
+		}
+		if(subindo){
+			pular();
+		}
+		if(caindo){
+			cair();
+		}
+		if(pousando){
+			pousar();
 		}
 	}
 
-	void dash() {
-		if (dash) {
-			if (direcaoPlayer == DirecaoPlayer.DIREITA) {
-				setX(getX() + 8);
-			} else {
-				setX(getX() - 8);
-			}
+	private void pular(){
+		index = Math.max(index, 13);
+		frames++;
+		limiteAltura += 4;
+		this.y -= 4;
+		if(frames >= 12){
+			index++;
+			frames = 0;
 		}
-		if (dashS) {
-			if (direcaoPlayer == DirecaoPlayer.DIREITA) {
-				setX(getX() + 6);
-			} else {
-				setX(getX() - 6);
-			}
-		}
-		if (dashS2) {
-			if (direcaoPlayer == DirecaoPlayer.DIREITA) {
-				setX(getX() + 4);
-			} else {
-				setX(getX() - 4);
-			}
+		if(index >= 15){
+			index = 13;
 		}
 	}
 
-	public boolean getDentro() {
+	private void cair(){
+		index = Math.max(index, 15);
+		frames++;
+		limiteAltura -= 4;
+		this.y += 4;
+		if(frames >= 8){
+			index++;
+			frames = 0;
+		}
+		if(index >= 18){
+			index = 15;
+		}
+	}
+
+	private void pousar(){
+		index = Math.max(index, 18);
+		frames++;
+		if(frames >= 20){
+			setarAnimacao("respirando");
+			frames = 0;
+		}
+	}
+
+	private void caminhar(){
+		index = Math.max(index, 4);
+		frames++;
+		if(frames >= 6){
+			index++;
+			frames = 0;
+		}
+		if(index >= 12){
+			index = 5;
+		}
+	}
+
+	private void parar(){
+		index = 12;
+		frames++;
+		if(frames >= 15){
+			frames = 0;
+			index = 0;
+			setarAnimacao("respirando");
+		}
+	}
+
+	private void respirar(){
+		index = Math.max(index, 0);
+		frames++;
+		if(frames >= 15){
+			index++;
+			frames = 0;
+		}
+		if(index >= 4){
+			index = 0;
+		}
+	}
+
+	public void executarAcao(Boolean isFree, AcaoPlayer acaoPlayer){
+		this.isFreeY = isFree;
+		if (acaoPlayer.equals(AcaoPlayer.DIREITA)){
+			direita = true;
+		}
+		if (acaoPlayer.equals(AcaoPlayer.ESQUERDA)){
+			esquerda = true;
+		}
+
+		if (acaoPlayer.equals(AcaoPlayer.PARAR)){
+			esquerda = false;
+			direita = false;
+		}
+
+		if (acaoPlayer.equals(AcaoPlayer.DASH)){
+
+		}
+		if(acaoPlayer.equals(AcaoPlayer.CIMA)){
+			cima = true;
+		}
+		if(acaoPlayer.equals(AcaoPlayer.ULTIMATE)){
+
+		}
+		if (acaoPlayer.equals(AcaoPlayer.SOCO_FRACO)){
+
+		}
+
+		if (acaoPlayer.equals(AcaoPlayer.PARAR_PULO)){
+			cima = false;
+//			moved = false;
+		}
+	}
+
+	public boolean isDentro() {
 		return dentro;
 	}
 
-	public void setDentro(boolean dentro) {
-		this.dentro = dentro;
+	public boolean isPrimeiroSpawn() {
+		return ePrimeiroSpawn;
 	}
 
-
-
-	public boolean isHudvisivel() {
-		return Hudvisivel;
+	public void setPrimeiroSpawn() {
+		this.ePrimeiroSpawn = true;
 	}
 
-	public void setHudvisivel(boolean hudvisivel) {
-		Hudvisivel = hudvisivel;
+	public void atualizarDirecaoPlayer() {
+		if (direita) {
+			direcaoPlayer = DirecaoPlayer.DIREITA;
+		} else if (esquerda) {
+			direcaoPlayer = DirecaoPlayer.ESQUERDA;
+		}
 	}
 
 	public void updateCamera() {
@@ -244,58 +325,11 @@ public class Player extends Entidade {
 	}
 
 
-	protected void furiaSistem() {
-//		furia =100;
-		if (furia >= maxFuria) {
-
-		} else {
-			if (furia / 3 < 10) {
-				if(defesa<10) {
-					defesa ++;
-				}else {
-					defesa=10;
-				}
-			} else {
-				defesa = furia / 3;
-			}
-		}
-		if (parado && !combat && !atacando) {
-			framesFur++;
-			if (framesFur >= 10) {
-				framesFur = 0;
-				furia -= 1;
-				if (furia <= 0) {
-					furia = 0;
-				}
-			}
-
-		}
-	}
-
 	public void lifesistem() {
 		if (vida <= 0) {
 			vida = 0;
 			Configuracoes.estadoGame = TipoGame.MENU;
 			Configuracoes.estadoMenu = TipoMenu.GAMEOVER;
-		}
-	}
-
-	public void nBot() {
-		movedX();
-		depth = 6;
-		speed = 6;
-		if (atacando) {
-			framesAtk++;
-			if (framesAtk == maxFramesAtk) {
-				framesAtk = 0;
-				indexAtk++;
-				if (indexAtk == maxIndexAtk) {
-					indexAtk = 26;
-					atacando = false;
-					parado = true;
-					combat = true;
-				}
-			}
 		}
 	}
 
@@ -352,29 +386,28 @@ public class Player extends Entidade {
 		}
 	}
 
-	public void sombrear(Graphics g, BufferedImage[] direcao) {
+	public void atualizarIluminacao(Graphics g, List<BufferedImage> sprite) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, sombreamento));
-		g.drawImage(ImageUtils.Sombra(direcao[index]), this.getX() + posicao - Camera.x, this.getY() - Camera.y, null);
+		g.drawImage(ImageUtils.sombreamento(sprite.get(index)), this.getX() + posicao - Camera.x, this.getY() - Camera.y, null);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
 
-	public void Sombras(Graphics g, BufferedImage[] direcao) {
+	public void sombrasChao(Graphics g, BufferedImage sprite) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, sombras));
 		if (!subindo && !caindo) {
 			if (Configuracoes.dia) {
-				g.drawImage(ImageUtils.inverterV(ImageUtils.Sombra(direcao[index])), this.getX() + posicao - Camera.x,
+				g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite)), this.getX() + posicao - Camera.x,
 						this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
 						Configuracoes.TILE_SIZE / 2, null);
 			} else {
-				g.drawImage(ImageUtils.inverterV(ImageUtils.Sombra(direcao[index])), this.getX() + posicao - Camera.x,
+				g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite)), this.getX() + posicao - Camera.x,
 						this.getY() - Camera.y + Configuracoes.TILE_SIZE + 7, Configuracoes.TILE_SIZE,
 						Configuracoes.TILE_SIZE / 2, null);
 			}
-
 		} else {
-			g.drawImage(ImageUtils.Sombra(direcao[index]), this.getX() + posicao - Camera.x + 10,
+			g.drawImage(ImageUtils.sombreamento(sprite), this.getX() + posicao - Camera.x + 10,
 					this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
 					Configuracoes.TILE_SIZE / 2, null);
 		}
@@ -382,103 +415,13 @@ public class Player extends Entidade {
 
 	}
 
-	public void movedY() {
-
-		if (up && podepular) {
-			subindo = true;
-		} else {
-			subindo = false;
-			// cainimation=true;
-		}
-		if (isFree) {
-			podepular = true;
-		}
-
-		if (subindo) {
-			caiu_no_chao = false;
-			saiu_do_chao = true;
-			framesPulo++;
-			if (framesPulo == maxFramesPulo) {
-				framesPulo = 0;
-				if (indexPul != maxIndexPul) {
-					indexPul++;
-				}
-				if (indexPul == maxIndexPul) {
-					subindo = false;
-					podepular = false;
-					completou_pulo = true;
-
-				}
-			}
-			setY(getY() - 4);
-		}
-		if (down) {
-			// cair da plat
-		}
-
-		if (isFree && !subindo) {
-			caindo = true;
-		} else {
-
-			caindo = false;
-
-		}
-		if (isFree && saiu_do_chao) {
-			caiu_no_chao = true;
-		}
-
-		if (caindo) {
-			framesCai++;
-			if (framesCai == maxFramesCai) {
-				framesCai = 0;
-				if (indexCai != maxIndexCai) {
-					indexCai++;
-				}
-				if (indexCai == maxIndexCai) {
-					caindo = false;
-				}
-			}
-			setY(getY() + 4);
-		}
-		if (caiu_no_chao) {
-			indexCai = 16;
-			indexPul = 13;
-			saiu_do_chao = false;
-			index = 18;
-			framesCai2++;
-			if (framesCai2 == maxFramesCai2) {
-				framesCai2 = 0;
-				parado = true;
-				caiu_no_chao = false;
-			}
-		}
-
-	}
 
 
-	public void setHitbox() {
+
+	public void adicionarMascaras() {
 		MascaraHitBox padrao = new MascaraHitBox("padrao", 20, 11, 20 ,52);
 //		MascaraHitBox padrao = new MascaraHitBox("padrao", 20, 11, 20 ,52);
 		adicionarMascara(padrao);
-//		adicionarMascara(2, 11, 60, 40, 3);
-		// ataques melle
-//		if (dir == right_dir) {
-//			if (atacando) {
-//				if (indexAtk != 24) {
-//					adicionarMascara(1, 40, 20, 30, 10);
-//				}
-//			} else {
-//				adicionarMascara(1, 20, 20, 30, 10);
-//			}
-//		} else {
-//			if (atacando) {
-//				if (indexAtk != 24) {
-//					adicionarMascara(1, -5, 20, 30, 10);
-//				}
-//			} else {
-//				adicionarMascara(1, 20, 20, 30, 10);
-//			}
-//		}
 
 	}
 
@@ -487,7 +430,7 @@ public class Player extends Entidade {
 	}
 
 	public void bot() {
-		movedBot();
+//		movedBot();
 		depth = 5;
 //		if(distanciaX(Game.player.getX(),Game.player2.getX())<100 && Game.player.up) {
 //			up=true;
@@ -497,45 +440,45 @@ public class Player extends Entidade {
 //
 //		}
 		if (distanciaX(playerUm.getX()) < 20) {
-			moved = false;
+//			moved = false;
 		}
-		if (playerUm.moved) {
-			if (distanciaX(playerUm.getX()) / 20 > 4) {
-				speed = distanciaX(playerUm.getX()) / 25;
-			}
-		} else {
-			if (distanciaX(playerUm.getX()) / 25 > 4) {
-				speed = distanciaX(playerUm.getX()) / 30;
-			}
-		}
+//		if (playerUm.moved) {
+//			if (distanciaX(playerUm.getX()) / 20 > 4) {
+//				speed = distanciaX(playerUm.getX()) / 25;
+//			}
+//		} else {
+//			if (distanciaX(playerUm.getX()) / 25 > 4) {
+//				speed = distanciaX(playerUm.getX()) / 30;
+//			}
+//		}
 
-		if (playerUm.dash) {
-			parado = false;
-			dash = true;
-			jaParou = false;
-		} else {
-			dash = false;
-			if (!moved) {
-				if (!jaParou) {
-					parando = true;
-				}
-			}
-
-		}
+//		if (playerUm.dash) {
+//			parado = false;
+//			dash = true;
+//			jaParou = false;
+//		} else {
+//			dash = false;
+//			if (!moved) {
+//				if (!jaParou) {
+//					parando = true;
+//				}
+//			}
+//
+//		}
 		if (playerUm.direcaoPlayer == DirecaoPlayer.ESQUERDA) {
 			if (playerUm.getX() < getX()) {
 				direcaoPlayer = DirecaoPlayer.ESQUERDA;
 				if (playerUm.getX() < getX() && distanciaX(playerUm.getX()) > 70) {
 					parado = false;
-					left = true;
-					right = false;
-					moved = true;
+					esquerda = true;
+					direita = false;
+//					moved = true;
 					jaParou = false;
 				} else {
 					if (!jaParou) {
-						left = false;
-						moved = false;
-						parando = true;
+						esquerda = false;
+//						moved = false;
+//						parando = true;
 					}
 				}
 			} else {
@@ -546,155 +489,74 @@ public class Player extends Entidade {
 				direcaoPlayer = DirecaoPlayer.DIREITA;
 				if (playerUm.getX() > getX() && distanciaX(playerUm.getX()) > 70) {
 					parado = false;
-					right = true;
-					left = false;
-					moved = true;
+					direita = true;
+					esquerda = false;
+//					moved = true;
 					jaParou = false;
 				} else {
 					if (!jaParou) {
-						right = false;
-						moved = false;
-						parando = true;
+						direita = false;
+//						moved = false;
+//						parando = true;
 					}
 				}
 			} else {
 				direcaoPlayer = DirecaoPlayer.DIREITA;
 			}
-
-		}
-		visivel = true;
-	}
-
-	public void movedX() {
-		if (right) {
-			moved = true;
-			direcaoPlayer = DirecaoPlayer.DIREITA;
-			correr(xDouble() + speed);
-		}
-		if (left) {
-			moved = true;
-			direcaoPlayer = DirecaoPlayer.ESQUERDA;
-			correr(xDouble() - speed);
-		}
-		if (parado) {
-			framesParado++;
-			if (framesParado == maxFramesParado) {
-				framesParado = 0;
-				indexParado++;
-				if (indexParado == maxIndexParado) {
-					indexParado = 0;
-				}
-			}
-		}
-		if (moved) {
-			framesMoved++;
-			if (framesMoved >= 6) {
-				framesMoved = 0;
-				indexMoved++;
-				if (indexMoved == maxIndexMoved) {
-					indexMoved = 4;
-				}
-
-			}
 		}
 	}
+	private void setarAnimacao(String movimento){
+		ultimaAcao = acaoAtual;
+		acaoAtual = caindo ? "caindo" :
+					subindo ? "subindo" :
+					pousando ? "pousando" :
+					andando ? "andando" :
+					parando ? "parando" :
+					atacando ? "atacando" :
+					respirando ? "respirando" :
+					respirandoEmCombate ? "respirandoEmCombate" :
+					investindo ? "investindo" : "";
 
-	public void movedBot() {
-		if (right && moved) {
-			direcaoPlayer = DirecaoPlayer.DIREITA;
-			correr(xDouble() + speed);
-		}
-		if (left && moved) {
-			direcaoPlayer = DirecaoPlayer.ESQUERDA;
-			correr(xDouble() - speed);
-		}
-		if (parado) {
-			framesParado++;
-			if (framesParado == maxFramesParado) {
-				framesParado = 0;
-				indexParado++;
-				if (indexParado == maxIndexParado) {
-					indexParado = 0;
-				}
-			}
-		}
-		if (moved) {
-			framesMoved++;
-			if (framesMoved >= 6) {
-				framesMoved = 0;
-				indexMoved++;
-				if (indexMoved == maxIndexMoved) {
-					indexMoved = 4;
-				}
-
-			}
-		}
+		caindo = movimento.equals("caindo");
+		subindo = movimento.equals("subindo");
+		pousando = movimento.equals("pousando");
+		andando = movimento.equals("andando");
+		parando = movimento.equals("parando");
+		atacando = movimento.equals("atacando");
+		respirando = movimento.equals("respirando");
+		respirandoEmCombate = movimento.equals("respirandoEmCombate");
+		investindo = movimento.equals("investindo");
 	}
 
-	public void executarAcao(Boolean isFree, AcaoPlayer acaoPlayer){
+	public Tai asTai() {
+		return (Tai) this;
+	}
 
-		if (acaoPlayer.equals(AcaoPlayer.DIREITA)){
-			atacando = false;
-			combat = false;
-			frames = 0;
-			right = true;
-			parado = false;
-			parando = false;
-			moved = true;
-		}
-		if (acaoPlayer.equals(AcaoPlayer.ESQUERDA)){
-			left = true;
-			parado = false;
-			parando = false;
-			moved = true;
-			combat = false;
-			frames = 0;
-		}
-		if (acaoPlayer.equals(AcaoPlayer.DASH)){
-			parado = false;
-			dash = true;
-			combat = false;
-			frames = 0;
-		}
-		if(acaoPlayer.equals(AcaoPlayer.CIMA)){
-			parando = false;
-			parado = false;
-			caiu_no_chao = false;
-			up = true;
-		}
-		if(acaoPlayer.equals(AcaoPlayer.ULTIMATE)){
-			parado = false;
-			h1 = true;
-			combat = false;
-			frames = 0;
-		}
-		if (acaoPlayer.equals(AcaoPlayer.SOCO_FRACO)){
-			framesAtk = 0;
-			parado = false;
-			combat = false;
-			frames = 0;
-			if (dash) {
-				dashS = true;
-			}
-			atacando = true;
-		}
+	public Ace asAce() {
+		return (Ace) this;
+	}
 
-		if (acaoPlayer.equals(AcaoPlayer.PARAR)){
-			moved = false;
-			parando = true;
-//            player.left = false;
-//            player.moved = false;
-//            if (!player.right) {
-//                if (!player.caindo && !player.subindo) {
-//                    player.parando = true;
-//                }
-//            }
-		}
+	public int getVidaMaxima() {
+		return vidaMaxima;
+	}
 
-		if (acaoPlayer.equals(AcaoPlayer.PARAR_PULO)){
-			up = false;
-			podepular = false;
-			moved = false;
-		}
+	public int getVida() {
+		return vida;
+	}
+
+	public int getMana() {
+		return mana;
+	}
+
+	public int getManaMaxima() {
+		return manaMaxima;
+	}
+
+	public int getDefesa() {
+		return defesa;
+	}
+
+	public int getResistencia() {
+		return resistencia;
 	}
 }
