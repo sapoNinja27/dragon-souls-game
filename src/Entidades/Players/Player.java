@@ -1,8 +1,6 @@
 package Entidades.Players;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,6 @@ public class Player extends Entidade {
 	private int limiteAltura = 0;
 	private String ultimaAcao = "respirando";
 	private String acaoAtual = "respirando";
-
 	private final UI ui;
 	protected Spritesheet spritesheet;
 
@@ -87,7 +84,7 @@ public class Player extends Entidade {
 	public Player(int x, int y) {
 		super(x, y, 0, 0);
 		atualizarSprites();
-		ui = new UI(this);
+		ui = new UI();
 	}
 
 	public void tick(){
@@ -108,7 +105,9 @@ public class Player extends Entidade {
 	}
 
 	public void render(Graphics g) {
-		ui.render(g);
+		if(!isPlayerDois){
+			ui.render(g);
+		}
 		sombrasChao(g, spriteAtual().get(index));
 		g.drawImage(spriteAtual().get(index), this.getX() + posicao - Camera.x,this.getY() - Camera.y, 64, 64, null);
 		atualizarIluminacao(g, spriteAtual());
@@ -317,7 +316,6 @@ public class Player extends Entidade {
 	}
 
 	public void updateCamera() {
-
 		Camera.x = Camera.clamp(250 + this.getX() - (Configuracoes.WIDTH / 2), 0,
 				World.WIDTH * Configuracoes.TILE_SIZE - Configuracoes.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Configuracoes.HEIGHT / 2) - 53, 0,
@@ -334,84 +332,29 @@ public class Player extends Entidade {
 	}
 
 	public void atualizarSombreamento(ObjetoLuminoso objetoLuminoso){
-		if (distanciaX(objetoLuminoso.getX()) < 150 && distanciaY( objetoLuminoso.getY()) < 500) {
-			int[] dist = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-			float[] opac = { 0.8f, 0.8f, 0.7f, 0.7f, 0.6f, 0.6f, 0.5f, 0.5f, 0.4f, 0.4f, 0.3f, 0.3f,
-					0.2f, 0.2f, 0.1f, 0.1f };
-			for (int c = 0; c < 15; c++) {
-				if (Configuracoes.local == TipoAmbiente.RUA) {
-					if (Configuracoes.dia) {
-						sombras = 0.5f;
-					} else {
-						if ((int) distanciaX( objetoLuminoso.getX()) / 10 == dist[c]) {
-							sombras = opac[c];
-						}
-					}
-				} else if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
-					sombras = 0.0f;
-				} else if (Configuracoes.local == TipoAmbiente.TELHADO) {
-					if (Configuracoes.dia) {
-						sombras = 0.0f;
-					} else {
-						sombras = 0.2f;
-					}
-				}
-			}
+		if (distanciaX(objetoLuminoso.getX()) < 300 && distanciaY( objetoLuminoso.getY()) < 500) {
+			sombreamento = (int)distanciaX(objetoLuminoso.getX()) * 255 / 300;
+			sombras =  Math.abs(sombreamento - 255);
 		}
-		if (distanciaX(objetoLuminoso.getX()) < 150 && distanciaY(objetoLuminoso.getY()) < 500) {
-			//TODO descobrir oq a função faz e deixar ela bonita
-			int[] dist = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-			float[] opac = { 0.1f, 0.1f, 0.2f, 0.2f, 0.3f, 0.3f, 0.4f, 0.4f, 0.5f, 0.5f, 0.6f, 0.6f };
-			for (int c = 0; c < 11; c++) {
-				if (Configuracoes.local == TipoAmbiente.ESGOTOS) {
-					sombreamento = 0.6f;
-				}
-				if (Configuracoes.local == TipoAmbiente.TELHADO) {
-					if (Configuracoes.dia) {
-						sombreamento = 0f;
-					} else {
-						sombreamento = 0.6f;
-					}
-				}
-				if ((int) distanciaX(objetoLuminoso.getX()) / 10 == dist[c]) {
-					if (Configuracoes.local == TipoAmbiente.RUA) {
-						if (Configuracoes.dia) {
-							sombreamento = 0f;
-						} else {
-							sombreamento = opac[c];
-						}
-					}
-				}
-			}
+		if(sombreamento > 204){
+			sombreamento = 204;
 		}
 	}
 
 	public void atualizarIluminacao(Graphics g, List<BufferedImage> sprite) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, sombreamento));
-		g.drawImage(ImageUtils.sombreamento(sprite.get(index)), this.getX() + posicao - Camera.x, this.getY() - Camera.y, null);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		g.drawImage(ImageUtils.sombreamento(sprite.get(index), new Color(0,0,0, sombreamento)), this.getX() + posicao - Camera.x, this.getY() - Camera.y, null);
 	}
 
 	public void sombrasChao(Graphics g, BufferedImage sprite) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, sombras));
 		if (!subindo && !caindo) {
-			if (Configuracoes.dia) {
-				g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite)), this.getX() + posicao - Camera.x,
-						this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
-						Configuracoes.TILE_SIZE / 2, null);
-			} else {
-				g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite)), this.getX() + posicao - Camera.x,
-						this.getY() - Camera.y + Configuracoes.TILE_SIZE + 7, Configuracoes.TILE_SIZE,
-						Configuracoes.TILE_SIZE / 2, null);
-			}
+			g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite, new Color(0,0,0, sombreamento))), this.getX() + posicao - Camera.x,
+					this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
+					Configuracoes.TILE_SIZE / 2, null);
 		} else {
-			g.drawImage(ImageUtils.sombreamento(sprite), this.getX() + posicao - Camera.x + 10,
+			g.drawImage(ImageUtils.sombreamento(sprite, new Color(0,0,0, sombreamento)), this.getX() + posicao - Camera.x + 10,
 					this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
 					Configuracoes.TILE_SIZE / 2, null);
 		}
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 	}
 
@@ -558,5 +501,17 @@ public class Player extends Entidade {
 
 	public int getResistencia() {
 		return resistencia;
+	}
+
+	public boolean isTai() {
+		return this instanceof Tai;
+	}
+
+	public boolean isAce() {
+		return this instanceof Ace;
+	}
+
+	public boolean isSander() {
+		return false;
 	}
 }
