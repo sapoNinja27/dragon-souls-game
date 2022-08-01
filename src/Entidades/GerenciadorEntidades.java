@@ -66,7 +66,7 @@ public class GerenciadorEntidades {
             player2 = Configuracoes.p2;
         } else {
             player = new Ace(0, 0);
-            player2 = new Ace(0, 0);
+            player2 = new Tai(0, 0);
         }
         player.setPlayerUm();
         player2.setPlayerDois();
@@ -81,7 +81,7 @@ public class GerenciadorEntidades {
         enemies = new ArrayList<Enemy>();
         objetos = new ArrayList<ObjetosComMovimento>();
         player = new Tai(0, 0);
-        player2 = new Ace(0, 0);
+        player2 = new Tai(0, 0);
         player.setPlayerUm();
         player2.setPlayerDois();
         entities.add(player);

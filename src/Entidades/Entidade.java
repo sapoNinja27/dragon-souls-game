@@ -8,13 +8,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import Menu.MascaraHitBox;
-import World.Camera;
 import enums.DirecaoPlayer;
 
 public class Entidade {
 
-	protected float sombreamento = 0.2f;
-	protected float sombras = 0.2f;
+	protected int sombreamento = 50;
+	protected int sombras = 200;
 	protected double x;
 	protected double y;
 	protected int width;

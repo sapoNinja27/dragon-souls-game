@@ -113,7 +113,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void tick() {
-		Configuracoes.dia = false;
 		attMouse();
 		gerenciadorEstado.tick();
 	}

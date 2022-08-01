@@ -16,14 +16,16 @@ import World.Camera;
 import World.World;
 import enums.*;
 
+import static enums.MovimentoPlayer.*;
+
 public class Player extends Entidade {
 	protected int posicao = 0;
 	protected boolean jaParou;
 	protected int index = 0;
 	protected double speed = 5;
 	private int limiteAltura = 0;
-	private String ultimaAcao = "respirando";
-	private String acaoAtual = "respirando";
+	private MovimentoPlayer ultimaAcao = RESPIRANDO;
+	private MovimentoPlayer acaoAtual = RESPIRANDO;
 	private final UI ui;
 	protected Spritesheet spritesheet;
 
@@ -142,12 +144,12 @@ public class Player extends Entidade {
 	public void verificarAcao() {
 		if (direita || esquerda) {
 			if (isFreeY) {
-				setarAnimacao("andando");
+				setarAnimacao(ANDANDO);
 			}
 			mover(direcaoPlayer.equals(DirecaoPlayer.DIREITA) ? xDouble() + speed : xDouble() - speed);
 		} else {
 			if (isFreeY && andando) {
-				setarAnimacao("parando");
+				setarAnimacao(PARANDO);
 			}
 		}
 		if (parando) {
@@ -157,17 +159,17 @@ public class Player extends Entidade {
 		executarAnimacao();
 	}
 	private void controlaMovimentosPulo(){
-		if (cima && !ultimaAcao.equals("caindo")) {
-			setarAnimacao("subindo");
+		if (cima) {
+			setarAnimacao(SUBINDO);
 		} else if(limiteAltura != 0){
-			setarAnimacao("caindo");
+			setarAnimacao(CAINDO);
 		}
 		if(limiteAltura == 96){
 			cima = false;
-			setarAnimacao("caindo");
+			setarAnimacao(CAINDO);
 		}
-		if(limiteAltura == 0 && ultimaAcao.equals("caindo")){
-			setarAnimacao("pousando");
+		if(limiteAltura == 0){
+			setarAnimacao(POUSANDO);
 		}
 	}
 	public void executarAnimacao() {
@@ -223,7 +225,7 @@ public class Player extends Entidade {
 		index = Math.max(index, 18);
 		frames++;
 		if(frames >= 20){
-			setarAnimacao("respirando");
+			setarAnimacao(RESPIRANDO);
 			frames = 0;
 		}
 	}
@@ -246,7 +248,7 @@ public class Player extends Entidade {
 		if(frames >= 15){
 			frames = 0;
 			index = 0;
-			setarAnimacao("respirando");
+			setarAnimacao(RESPIRANDO);
 		}
 	}
 
@@ -332,12 +334,20 @@ public class Player extends Entidade {
 	}
 
 	public void atualizarSombreamento(ObjetoLuminoso objetoLuminoso){
-		if (distanciaX(objetoLuminoso.getX()) < 300 && distanciaY( objetoLuminoso.getY()) < 500) {
-			sombreamento = (int)distanciaX(objetoLuminoso.getX()) * 255 / 300;
-			sombras =  Math.abs(sombreamento - 255);
-		}
-		if(sombreamento > 204){
-			sombreamento = 204;
+		if(Configuracoes.dia){
+			sombras = 130;
+			sombreamento = 5;
+		} else {
+			if (distanciaX(objetoLuminoso.getX()) < 300 && distanciaY( objetoLuminoso.getY()) < 500) {
+				sombreamento = (int)distanciaX(objetoLuminoso.getX()) * 255 / 300;
+				sombras =  Math.abs(sombreamento - 255);
+			}
+			if(sombreamento > 204){
+				sombreamento = 204;
+			}
+			if(sombras < 51){
+				sombras = 51;
+			}
 		}
 	}
 
@@ -347,11 +357,11 @@ public class Player extends Entidade {
 
 	public void sombrasChao(Graphics g, BufferedImage sprite) {
 		if (!subindo && !caindo) {
-			g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite, new Color(0,0,0, sombreamento))), this.getX() + posicao - Camera.x,
+			g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite, new Color(0,0,0, sombras))), this.getX() + posicao - Camera.x,
 					this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
 					Configuracoes.TILE_SIZE / 2, null);
 		} else {
-			g.drawImage(ImageUtils.sombreamento(sprite, new Color(0,0,0, sombreamento)), this.getX() + posicao - Camera.x + 10,
+			g.drawImage(ImageUtils.sombreamento(sprite, new Color(0,0,0, sombras)), this.getX() + posicao - Camera.x + 10,
 					this.getY() - Camera.y + Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE,
 					Configuracoes.TILE_SIZE / 2, null);
 		}
@@ -448,27 +458,30 @@ public class Player extends Entidade {
 			}
 		}
 	}
-	private void setarAnimacao(String movimento){
+	private void setarAnimacao(MovimentoPlayer movimento){
+		if(movimento.equals(ANDANDO) &&
+				(acaoAtual.equals(SUBINDO) || acaoAtual.equals(CAINDO))){
+			return;
+		}
+		if(movimento.equals(POUSANDO) && !ultimaAcao.equals(CAINDO)){
+			return;
+		}
+		if(movimento.equals(SUBINDO) &&
+				(ultimaAcao.equals(CAINDO) || ultimaAcao.equals(SUBINDO))){
+			return;
+		}
 		ultimaAcao = acaoAtual;
-		acaoAtual = caindo ? "caindo" :
-					subindo ? "subindo" :
-					pousando ? "pousando" :
-					andando ? "andando" :
-					parando ? "parando" :
-					atacando ? "atacando" :
-					respirando ? "respirando" :
-					respirandoEmCombate ? "respirandoEmCombate" :
-					investindo ? "investindo" : "";
+		acaoAtual = movimento;
 
-		caindo = movimento.equals("caindo");
-		subindo = movimento.equals("subindo");
-		pousando = movimento.equals("pousando");
-		andando = movimento.equals("andando");
-		parando = movimento.equals("parando");
-		atacando = movimento.equals("atacando");
-		respirando = movimento.equals("respirando");
-		respirandoEmCombate = movimento.equals("respirandoEmCombate");
-		investindo = movimento.equals("investindo");
+		caindo = movimento.equals(CAINDO);
+		subindo = movimento.equals(SUBINDO);
+		pousando = movimento.equals(POUSANDO);
+		andando = movimento.equals(ANDANDO);
+		parando = movimento.equals(PARANDO);
+		atacando = movimento.equals(ATACANDO);
+		respirando = movimento.equals(RESPIRANDO);
+		respirandoEmCombate = movimento.equals(RESPIRANDO_EM_COMBATE);
+		investindo = movimento.equals(INVESTINDO);
 	}
 
 	public Tai asTai() {
