@@ -65,7 +65,7 @@ public class GerenciadorEntidades {
             player = Configuracoes.p1;
             player2 = Configuracoes.p2;
         } else {
-            player = new Ace(0, 0);
+            player = new Tai(0, 0);
             player2 = new Tai(0, 0);
         }
         player.setPlayerUm();

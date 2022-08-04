@@ -46,11 +46,10 @@ public class UI {
 
 	private void hudTai(Graphics2D g, Tai tai) {
 
-		Rectangle defense = new Rectangle(101, 41, 0, 2);
-		g.setColor(Color.black);
-		g.fillRect(100, 40, 103, 4);
-		g.setColor(Color.LIGHT_GRAY);
-		g.fill(defense);
+		g.setColor(new Color(16, 16, 16));
+		g.fillRect(95, 84, 101, 4);
+		g.setColor(new Color(194, 194, 194));
+		g.fillRect(95, 84, 101, 2);
 	}
 
 	private void hudAce(Graphics2D g, Ace ace) {
