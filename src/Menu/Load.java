@@ -32,8 +32,8 @@ public class Load {
 		botoes[0].setText(String.valueOf(file));
 		if (botoes[0].isClicked()) {
 			if (file.exists()) {
-				String saver = Game.menu.loadGame(0);
-				Game.menu.applySave(saver);
+//				String saver = Game.menu.loadGame(0);
+//				Game.menu.applySave(saver);
 			}
 		}
 		if (botoes[3].isClicked()) {

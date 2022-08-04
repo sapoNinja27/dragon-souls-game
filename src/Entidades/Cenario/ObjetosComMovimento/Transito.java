@@ -5,10 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import Configuration.Configuracoes;
 import Graficos.Spritesheet;
-import Main.Game;
+import Menu.ImageUtils;
 import World.Camera;
 import enums.TipoAmbiente;
 
@@ -16,18 +17,20 @@ public class Transito extends ObjetosComMovimento{
 	private BufferedImage img;
 	public Transito(int x, int y, Spritesheet spt) {
 		super(x, y);
-		img=inverter(spt.getSprite((Game.rand.nextInt(2))*Configuracoes.TILE_SIZE,(7+Game.rand.nextInt(2))*Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE,Configuracoes.TILE_SIZE));
+        Random random = new Random();
+		img = ImageUtils.inverter(
+                spt.getSprite(
+                    (random.nextInt(2)) * Configuracoes.TILE_SIZE,
+                    (7 + random.nextInt(2)) * Configuracoes.TILE_SIZE,
+                    Configuracoes.TILE_SIZE,
+                    Configuracoes.TILE_SIZE
+                )
+        );
 	}
 	public void tick() {
 		x+=speed+10;
-		if(distanciaX(getX(),Game.player.getX())>1200) {
-			Game.objetos.remove(this);
-		}
-		if(distanciaX(getY(),Game.player.getY())>1200) {
-			Game.objetos.remove(this);
-		}
 	}
-	
+
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 //		g.setColor(Color.red);
@@ -38,14 +41,14 @@ public class Transito extends ObjetosComMovimento{
 			}else {
 				g.drawImage(img,this.getX()-Camera.x+20+(20),this.getY()-Camera.y-100,Configuracoes.TILE_SIZE*3,Configuracoes.TILE_SIZE*3,null);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.5f));
-				g.drawImage(Sombra(img),this.getX()-Camera.x+20+(20),this.getY()-Camera.y-100,Configuracoes.TILE_SIZE*3,Configuracoes.TILE_SIZE*3,null);
+				g.drawImage(ImageUtils.sombreamento(img),this.getX()-Camera.x+20+(20),this.getY()-Camera.y-100,Configuracoes.TILE_SIZE*3,Configuracoes.TILE_SIZE*3,null);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
 				g.setColor(Color.yellow);
 				g.fillPolygon(new int[]{
 						this.getX()-Camera.x-Configuracoes.TILE_SIZE+3+300,
 						this.getX()-Camera.x-Configuracoes.TILE_SIZE+5+295,
 						this.getX()-Camera.x-Configuracoes.TILE_SIZE+8+300,
-						
+
 						this.getX()-Camera.x-Configuracoes.TILE_SIZE+40+500,
 						this.getX()-Camera.x-Configuracoes.TILE_SIZE+40+500,
 						this.getX()-Camera.x-Configuracoes.TILE_SIZE-40+500+70}
@@ -53,7 +56,7 @@ public class Transito extends ObjetosComMovimento{
 						this.getY()-Camera.y-Configuracoes.TILE_SIZE*3+220,
 						this.getY()-Camera.y-Configuracoes.TILE_SIZE*3+230,
 						this.getY()-Camera.y-Configuracoes.TILE_SIZE*3+240,
-						
+
 						this.getY()-Camera.y-Configuracoes.TILE_SIZE*3+260,
 						this.getY()-Camera.y-Configuracoes.TILE_SIZE*3+230,
 						this.getY()-Camera.y-Configuracoes.TILE_SIZE*3+200},

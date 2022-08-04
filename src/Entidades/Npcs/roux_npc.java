@@ -2,9 +2,9 @@ package Entidades.Npcs;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import Entidades.Entity;
+import Entidades.Entidade;
 
-public class roux_npc extends Entity {
+public class roux_npc extends Entidade {
 	public static int index;
 	public static boolean parado;
 	private int framesParado = 0,maxFramesParado = 17,indexParado = 0, maxIndexParado=4;
@@ -14,8 +14,8 @@ public class roux_npc extends Entity {
 	BufferedImage img[]= new BufferedImage[18];
 	private BufferedImage[] right= new BufferedImage[19];
 	private BufferedImage[] left= new BufferedImage[19];
-	public roux_npc(int x, int y, int width, int height, BufferedImage[] sprite) {
-		super(x, y, width, height, null);
+	public roux_npc(int x, int y, int width, int height) {
+		super(x, y, width, height);
 		
 	}
 	public static void setPos(int x, int y) {

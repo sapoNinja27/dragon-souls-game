@@ -28,84 +28,15 @@ public class Menu {
 			new Botao(720 / 2 - 200 + 91 * 2 + 12 * 2, 250, 90, 30, "Opções", Color.red, 2, 13, 20, 30, 50),
 			new Botao(720 / 2 - 200 + 91 * 3 + 12 * 3, 250, 90, 30, "Sair", Color.red, 2, 26, 20, 30, 50), };
 
-	public void applySave(String str) {
-		String[] spl = str.split("/");
-		for (int i = 0; i < spl.length; i++) {
-//			String[] spl2 = spl[i].split(":");
-//			switch (spl2[0]) {
-//			case "level":
-//				World.restartGame("level" + spl2[1] + ".png");
-//				Configuracoes.estadoGame = TipoGame.NORMAL;
-//				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
-//				break;
-//			}
-		}
-	}
-
-	public String loadGame(int encode) {
-		String line = "";
-		File file = new File("save.txt");
-		if (file.exists()) {
-			try {
-				String singleLine = null;
-				BufferedReader reader = new BufferedReader(new FileReader("save.txt"));
-				try {
-					while ((singleLine = reader.readLine()) != null) {
-						String[] trans = singleLine.split(":");
-						char[] val = trans[1].toCharArray();
-						trans[1] = "";
-						for (int i = 0; i < val.length; i++) {
-							val[i] -= encode;
-							trans[1] += val[i];
-						}
-						line += trans[0];
-						line += ":";
-						line += trans[1];
-						line += "/";
-					}
-				} catch (IOException e) {
-
-				}
-			} catch (FileNotFoundException e) {
-
-			}
-		}
-		return line;
-	}
-
-	public void saveGame(String[] val1, int[] val2, int encode) {
-		BufferedWriter write = null;
-		try {
-			write = new BufferedWriter(new FileWriter("save.txt"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		for (int i = 0; i < val1.length; i++) {
-			String current = val1[i];
-			current += ":";
-			char[] value = Integer.toString(val2[i]).toCharArray();
-			for (int n = 0; n < value.length; n++) {
-				value[n] += encode;
-				current += value[n];
-			}
-			try {
-				write.write(current);
-				if (i < val1.length - 1) {
-					write.newLine();
-				}
-			} catch (IOException e) {
-
-			}
-			try {
-				write.flush();
-				write.close();
-			} catch (IOException e) {
-
-			}
-		}
-	}
 
 	public void tick() {
+		//TODO apagar
+//		Loading.start();
+//				world.startGame();
+//		Loading.stop();
+		Configuracoes.estadoGame = TipoGame.NORMAL;
+
+
 		posx++;
 		if (posx == 2976 - 1440) {
 			posx = 0;
@@ -116,13 +47,13 @@ public class Menu {
 			}
 			if (botoes[0].isClicked()) {
 				Loading.start();
-				World.startGame();
+//				world.startGame();
 				Loading.stop();
 				Configuracoes.estadoGame = TipoGame.NORMAL;
 				Configuracoes.estadoMenu = TipoMenu.HABILIDADES;
-				Game.player.visivel = true;
-				Game.player.Hudvisivel = true;
-				Game.player.depth = 7;
+//				Game.player.visivel = true;
+//				Game.player.Hudvisivel = true;
+//				Game.player.depth = 7;
 //				Game.cen.CenaStart(0);
 			}
 			if (botoes[1].isClicked()) {
@@ -149,24 +80,14 @@ public class Menu {
 	public void render(Graphics g) {
 		if (Configuracoes.estadoMenu == TipoMenu.LOAD || Configuracoes.estadoMenu == TipoMenu.INICIAL
 				|| Configuracoes.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
-			g.drawImage(Game.fundo.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
+//			g.drawImage(fundo.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
 		} else if (Configuracoes.estadoMenu == TipoMenu.HABILIDADES || Configuracoes.estadoMenu == TipoMenu.INVENTARIO
 				|| Configuracoes.estadoMenu == TipoMenu.OPCOESPAUSE) {
-			if (Game.player.getId()==0) {
-				// menu do tai
-				g.drawImage(Game.fundoT.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
-			} else if (Game.player.getId()==2) {
-				// menu do ace
-				g.drawImage(Game.fundoA.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
-			} else if (Game.player.getId()==1) {
-				// menu do sander
-				g.drawImage(Game.fundoS.getSprite(posx, posy, 1440, 720), 0, 0, 720, 360, null);
-			}
 		}
 		if (Configuracoes.estadoMenu == TipoMenu.INICIAL) {
-			g.drawImage(Game.Menu.getSprite(2700, 0, 400, 200), 720 / 2 - 200, 30, null);
-			for (int i = 0; i < botoes.length; i++) {
-				botoes[i].render(g);
+//			g.drawImage(Game.Menu.getSprite(2700, 0, 400, 200), 720 / 2 - 200, 30, null);
+			for (Botao botoe : botoes) {
+				botoe.render(g);
 			}
 		} else if (Configuracoes.estadoMenu == TipoMenu.LOAD) {
 			menLo.render(g);

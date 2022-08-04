@@ -3,9 +3,9 @@ package Entidades.Npcs;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import Entidades.Entity;
+import Entidades.Entidade;
 
-public class light_npc extends Entity {
+public class light_npc extends Entidade {
 	public static int index;
 	static int px,py;
 	public static boolean parado;
@@ -15,8 +15,8 @@ public class light_npc extends Entity {
 	BufferedImage img[]= new BufferedImage[18];
 	private BufferedImage[] right= new BufferedImage[19];
 	private BufferedImage[] left= new BufferedImage[19];
-	public light_npc(int x, int y, int width, int height, BufferedImage[] sprite) {
-		super(x, y, width, height, null);
+	public light_npc(int x, int y, int width, int height) {
+		super(x, y, width, height);
 		
 	}
 	public static void setPos(int x, int y) {
