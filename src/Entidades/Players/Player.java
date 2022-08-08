@@ -3,6 +3,7 @@ package Entidades.Players;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import Configuration.Configuracoes;
@@ -18,7 +19,7 @@ import enums.*;
 
 import static enums.MovimentoPlayer.*;
 
-public class Player extends Entidade {
+public abstract class Player extends Entidade {
 	protected int posicao = 0;
 	protected boolean jaParou;
 	protected int index = 0;
@@ -29,6 +30,11 @@ public class Player extends Entidade {
 	private final UI ui;
 	protected Spritesheet spritesheet;
 
+	private int nivel = 1;
+	private int xp = 64;
+	private int pontosHabilidade = 2;
+
+	protected final BufferedImage[] icone = new BufferedImage[3];
 	//TODO adicionar variação de vida pra cada personagem
 	protected int vida = 958, vidaMaxima = 1000;
 	//TODO o nome desse atributo varia visualmente para cada personagem, sendo ace concentração, tai furia e sander foco
@@ -47,15 +53,44 @@ public class Player extends Entidade {
 	//Atributos de execução de acão de direção
 	private boolean direita, cima, esquerda, baixo;
 	//Atributos de executando ação
-	public boolean caindo, subindo, pousando, andando, parando, atacando, respirando = true, respirandoEmCombate, investindo;
+	protected boolean caindo, subindo, pousando, andando, parando, atacando, respirando = true, respirandoEmCombate, investindo;
 
 	private Player playerUm;
 	protected boolean isPlayerDois;
 	protected boolean isFreeX, isFreeY;
 	private int frames = 0;
 
+	public HashMap<String, Color> getCoresSet(){
+		return null;
+	}
 
+	public BufferedImage getIcone(){
+		return null;
+	}
 
+	public int getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(int nivel) {
+		this.nivel = nivel;
+	}
+
+	public int getXp() {
+		return xp;
+	}
+
+	public void setXp(int xp) {
+		this.xp = xp;
+	}
+
+	public int getPontosHabilidade() {
+		return pontosHabilidade;
+	}
+
+	public void setPontosHabilidade(int pontosHabilidade) {
+		this.pontosHabilidade = pontosHabilidade;
+	}
 
 	public boolean isDireita() {
 		return direita;
@@ -81,17 +116,29 @@ public class Player extends Entidade {
 		this.isPlayerDois = true;
 	}
 
+	public List<Habilidade> getHabilidades(){
+		return null;
+	}
 
+	public String tipoPlayer(){
+		return "null";
+	}
 
 	public Player(int x, int y) {
 		super(x, y, 0, 0);
 		atualizarSprites();
+		Spritesheet sprites = new Spritesheet("/menus/icons.png");
+		for (int i = 0; i < 3; i++) {
+			icone[i] = sprites.getSprite(i * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+		}
 		ui = new UI();
+		ui.atualizarPlayer(this);
 	}
 
 	public void tick(){
 		depth = 1;
-		ui.tick(this);
+		ui.tick();
+		ui.atualizarPlayer(this);
 		verificarAcao();
 
 		adicionarMascaras();
@@ -113,6 +160,10 @@ public class Player extends Entidade {
 		sombrasChao(g, spriteAtual().get(index));
 		g.drawImage(spriteAtual().get(index), this.getX() + posicao - Camera.x,this.getY() - Camera.y, 64, 64, null);
 		atualizarIluminacao(g, spriteAtual());
+	}
+
+	public void drawHud(Graphics g) {
+
 	}
 
 	public void atualizarSprites(){

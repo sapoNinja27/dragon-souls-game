@@ -33,7 +33,7 @@ public class GerenciadorEntidades {
 
     private List<Enemy> enemies;
 
-    private  Player player = new Player(0, 0);
+    private  Player player = new Tai(0, 0);
 
     private Player player2;
 

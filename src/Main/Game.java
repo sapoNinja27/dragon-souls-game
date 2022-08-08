@@ -127,14 +127,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, Configuracoes.WIDTH, Configuracoes.HEIGHT);
 
-		gerenciadorEstado.render(g);
-
+		gerenciadorEstado.renderBaixo(g);
 		g.dispose();
 		g = bs.getDrawGraphics();
-		g.drawImage(image, 0, 0,
+		g.drawImage(
+				image,
+				0,
+				0,
 				Configuracoes.WIDTH * Configuracoes.SCALE,
 				Configuracoes.HEIGHT * Configuracoes.SCALE,
-				null);
+				null
+		);
+		gerenciadorEstado.renderHD(g);
 		Loading.render(g);
 		bs.show();
 	}

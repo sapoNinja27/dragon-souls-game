@@ -9,7 +9,7 @@ import Main.Game;
 import enums.TipoMenu;
 import jObjects.Botao;
 
-public class Load {
+public class MenuCarregamento {
 	private Botao[] botoes = { new Botao(720 / 2 - 200 + 91, 120, 90, 30, "Espaço 1", Color.DARK_GRAY, 2, 5, 20, 0, 0),
 			new Botao(720 / 2 - 200 + 91, 170, 90, 30, "Espaço 2", Color.DARK_GRAY, 2, 5, 20, 0, 0),
 			new Botao(720 / 2 - 200 + 91, 220, 90, 30, "Espaço 3", Color.DARK_GRAY, 2, 5, 20, 0, 0),

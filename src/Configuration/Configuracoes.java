@@ -13,9 +13,9 @@ public class Configuracoes {
 	public static int vida;
 	public static int posx;
 	public static int posy;
-	public static final int WIDTH = 180 * 4;
-	public static final int HEIGHT = 90 * 4;
-	public static final int SCALE = 2;
+	public static final int WIDTH = 720;
+	public static final int HEIGHT = 360;
+	public static int SCALE = 2;
 	public static TipoMenu estadoMenu = TipoMenu.INICIAL;
 	public static TipoGame estadoGame = TipoGame.MENU;
 	public static boolean dia = true;
@@ -24,6 +24,14 @@ public class Configuracoes {
 	private static int rota = 1;
 	public static Player p1;
 	public static Player p2;
+
+	public static void mudarEscala(int escala){
+		if(escala != 2 || escala != 1){
+
+		} else {
+			SCALE = escala;
+		}
+	}
 	public static int rotear() {
 		rota++;
 		if (rota > 3) {
