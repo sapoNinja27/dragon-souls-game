@@ -16,7 +16,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.Serial;
 import java.time.LocalDate;
 import java.util.Objects;
 import javax.imageio.ImageIO;
@@ -29,7 +28,7 @@ import enums.TipoAcao;
 import jObjects.Mouse;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
-	@Serial
+
 	private static final long serialVersionUID = 1L;
 	public  JFrame frame;
 	private Thread thread;

@@ -160,7 +160,7 @@ public class Entidade {
 		}).collect(Collectors.toList());
 		Rectangle mascaraAtual = getMascara();
 		List<Rectangle> mascarasAlvo = entidade.getMascaras(mascarasEscolhidas);
-		return mascarasAlvo.stream().filter(mascaraAtual::intersects).findAny().stream().findAny().isPresent();
+		return mascarasAlvo.stream().anyMatch(mascaraAtual::intersects);
 	}
 
 	public void tick(){
