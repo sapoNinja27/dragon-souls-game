@@ -14,14 +14,14 @@ import java.awt.event.KeyEvent;
 
 public class GerenciadorEstado {
 
-    private Menu menu;
+    private GerenciadorMenu gerenciadorMenu;
     World world = new World("/niveis/area1.png");
 //    private Cutscene cutscene;
     private GerenciadorEntidades gerenciadorEntidades;
     private GerenciadorSave gerenciadorSave;
 
     public void iniciar() {
-        menu = new Menu();
+        gerenciadorMenu = new GerenciadorMenu();
         world.startGame();
 //        cutscene = new Cutscene();
         gerenciadorEntidades = world.getGerenciadorEntidades();
@@ -41,19 +41,22 @@ public class GerenciadorEstado {
                 gerenciadorEntidades.tick();
             }
             if (Configuracoes.estadoGame == TipoGame.MENU) {
-                menu.tick();
+                gerenciadorMenu.atualizarPlayer(gerenciadorEntidades.getPlayer());
+                gerenciadorMenu.tick();
             }
         }
     }
-    public void render(Graphics g){
+    public void renderBaixo(Graphics g){
         if (Configuracoes.estadoGame.equals(TipoGame.CUTSCENE)){
 //            cutscene.render(g);
         }
         if (Configuracoes.estadoGame == TipoGame.NORMAL) {
             gerenciadorEntidades.render(g);
         }
+    }
+    public void renderHD(Graphics g){
         if (Configuracoes.estadoGame == TipoGame.MENU) {
-            menu.render(g);
+            gerenciadorMenu.render(g);
         }
     }
 
@@ -93,7 +96,7 @@ public class GerenciadorEstado {
             }
         }
         if (Configuracoes.estadoGame == TipoGame.MENU) {
-            menu.tick();
+            gerenciadorMenu.tick();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_R) {

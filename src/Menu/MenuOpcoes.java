@@ -8,7 +8,7 @@ import enums.TipoGame;
 import enums.TipoMenu;
 import jObjects.Botao;
 
-public class Options {
+public class MenuOpcoes {
 	public int mx, my;
 	private Botao[] principal = {
 //			new Botao(720 / 2 - 200 + 91, 220, 90, 30, "Portugues", Color.DARK_GRAY, 2, 5, 20, 30, 50),

@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import Menu.ImageUtils;
+
+import java.util.HashMap;
 import java.util.List;
 
 import Configuration.Configuracoes;
@@ -70,6 +72,28 @@ public class Ace extends Player{
 		spritesEsquerda.addAll(inverter(spritesDireita));
 		super.atualizarSprites();
 	}
+
+	@Override
+	public String tipoPlayer(){
+		return "Ace";
+	}
+
+	@Override
+	public BufferedImage getIcone(){
+		return icone[1];
+	}
+
+	@Override
+	public HashMap<String, Color> getCoresSet(){
+		HashMap<String, Color> cores = new HashMap<>();
+		cores.put("bordaMenu", new Color(0, 152, 79));
+		cores.put("corBarraVida", new Color(0, 152, 79));
+		cores.put("corBarraVidaVazia", new Color(0, 38, 17));
+		cores.put("corBarraMana", new Color(133, 148, 144));
+		cores.put("corBarraManaVazia", new Color(34, 38, 36));
+
+		return cores;
+	}
 	@Override
 	public void tick() {
 		super.tick();
@@ -106,5 +130,26 @@ public class Ace extends Player{
 			);
 		}
 		super.render(g);
+	}
+	@Override
+	public void drawHud(Graphics g) {
+		for(int i = 1; i <= getMaxNivelFoco(); i++){
+			g.setColor(Color.BLACK);
+			g.fillRect(79 + (i * 25), 84, 18, 8);
+			if(i == getMaxNivelFoco()){
+				if(getNivelFoco() == i){
+					g.setColor(new Color(239, 239, 29));
+				} else {
+					g.setColor(new Color(162, 162, 17));
+				}
+			} else {
+				if(getNivelFoco() >= i){
+					g.setColor(new Color(218, 218, 185));
+				} else {
+					g.setColor(new Color(122, 122, 101));
+				}
+			}
+			g.fillRect(79 + (i * 25), 84, 16, 6);
+		}
 	}
 }

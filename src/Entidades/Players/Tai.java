@@ -1,8 +1,10 @@
 package Entidades.Players;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import Configuration.Configuracoes;
@@ -11,6 +13,17 @@ import Graficos.Spritesheet;
 import static Menu.ImageUtils.inverter;
 
 public class Tai extends Player {
+
+	//basicas
+	private Habilidade atacar = new Habilidade(true);
+	private Habilidade bloquear = new Habilidade(true);
+	private Habilidade transformar = new Habilidade(true);
+
+	//luva de metal
+	private Habilidade upgrade = new Habilidade();
+	private Habilidade ondaDeChoque = new Habilidade();
+	private Habilidade tempestadeDeRaios = new Habilidade();
+	private Habilidade pulsoGravitacional = new Habilidade();
 
 	public Tai(int x, int y) {
 		super(x, y);
@@ -56,6 +69,35 @@ public class Tai extends Player {
 		spritesEsquerda.addAll(inverter(spritesDireita));
 		super.atualizarSprites();
 	}
+	@Override
+	public List<Habilidade> getHabilidades(){
+		return Arrays.asList(atacar,bloquear, transformar, upgrade, ondaDeChoque, tempestadeDeRaios, pulsoGravitacional);
+	}
+
+	@Override
+	public HashMap<String, Color> getCoresSet(){
+		HashMap<String, Color> cores = new HashMap<>();
+		cores.put("bordaMenu", new Color(173, 8, 0));
+		cores.put("fundoMenu", new Color(173, 8, 0, 34));
+
+
+		cores.put("corBarraVida", new Color(189, 21, 0));
+		cores.put("corBarraVidaVazia", new Color(45, 6, 0));
+		cores.put("corBarraMana", new Color(206, 126, 0));
+		cores.put("corBarraManaVazia", new Color(100, 57, 0));
+
+		return cores;
+	}
+
+	@Override
+	public String tipoPlayer(){
+		return "Tai";
+	}
+
+	@Override
+	public BufferedImage getIcone(){
+		return icone[0];
+	}
 //	public void punchMeteor() {
 //		if (furia > 61) {
 //			defesa=0;
@@ -93,5 +135,12 @@ public class Tai extends Player {
 ////				mascaras.get(0).getAutura(),
 ////				mascaras.get(0).getLargura());
 //		g.setColor(Color.BLUE);
+	}
+	@Override
+	public void drawHud(Graphics g) {
+		g.setColor(new Color(16, 16, 16));
+		g.fillRect(95, 84, 101, 4);
+		g.setColor(new Color(194, 194, 194));
+		g.fillRect(95, 84, 101, 2);
 	}
 }

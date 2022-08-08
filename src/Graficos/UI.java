@@ -1,77 +1,25 @@
 package Graficos;
 
-import Configuration.Configuracoes;
-import Entidades.Players.Ace;
 import Entidades.Players.Player;
-import Entidades.Players.Tai;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class UI {
-	private final BufferedImage[] icone = new BufferedImage[20];
-	private final BufferedImage[] hud = new BufferedImage[3];
 	private Color corBarraMana, corBarraVida, corBarraManaVazia, corBarraVidaVazia;
 	private Player player;
+	public UI() {}
 
-	public UI() {
-		Spritesheet img = new Spritesheet("/menus/icons.png");
-		for (int i = 0; i < 3; i++) {
-			icone[i] = img.getSprite(i * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
-		}
-		for (int i = 0; i < 3; i++) {
-			hud[i] = img.getSprite((i * 2 + 3) * Configuracoes.TILE_SIZE, 0, Configuracoes.TILE_SIZE * 2,
-					Configuracoes.TILE_SIZE);
-		}
-	}
-
-	public void tick(Player player) {
+	public void atualizarPlayer(Player player){
 		this.player = player;
-		if (player.isTai()) {
-			corBarraVida = new Color(189, 21, 0);
-			corBarraVidaVazia = new Color(45, 6, 0);
-			corBarraMana = new Color(206, 126, 0);
-			corBarraManaVazia = new Color(100, 57, 0);
-		}
-		if (player.isAce()) {
-			corBarraVida = new Color(0, 152, 79);
-			corBarraVidaVazia = new Color(0, 38, 17);
-			corBarraMana = new Color(133, 148, 144);
-			corBarraManaVazia = new Color(34, 38, 36);
-		}
 	}
-
-	private void hudTai(Graphics2D g, Tai tai) {
-
-		Rectangle defense = new Rectangle(101, 41, 0, 2);
-		g.setColor(Color.black);
-		g.fillRect(100, 40, 103, 4);
-		g.setColor(Color.LIGHT_GRAY);
-		g.fill(defense);
-	}
-
-	private void hudAce(Graphics2D g, Ace ace) {
-		for(int i = 1; i <= ace.getMaxNivelFoco(); i++){
-			g.setColor(Color.BLACK);
-			g.fillRect(79 + (i * 25), 84, 18, 8);
-			if(i == ace.getMaxNivelFoco()){
-				if(ace.getNivelFoco() == i){
-					g.setColor(new Color(239, 239, 29));
-				} else {
-					g.setColor(new Color(162, 162, 17));
-				}
-			} else {
-				if(ace.getNivelFoco() >= i){
-					g.setColor(new Color(218, 218, 185));
-				} else {
-					g.setColor(new Color(122, 122, 101));
-				}
-			}
-			g.fillRect(79 + (i * 25), 84, 16, 6);
-		}
+	public void tick() {
+		corBarraVida = player.getCoresSet().get("corBarraVida");
+		corBarraVidaVazia = player.getCoresSet().get("corBarraVidaVazia");
+		corBarraMana = player.getCoresSet().get("corBarraMana");
+		corBarraManaVazia = player.getCoresSet().get("corBarraManaVazia");
 	}
 
 	private void desenharBarra(Graphics g, int x, int y, int atual, int max, Color corBarra, Color corBarraVazia){
@@ -93,20 +41,11 @@ public class UI {
 	}
 
 	public void render(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
 		g.setFont(new Font("Cambria Math", Font.PLAIN, 12));
-		int indexPlayer = 0;
 		/*
 			Hud
 		 */
-		if (player.isTai()) {
-			hudTai(g2, player.asTai());
-			indexPlayer = 0;
-		}
-		if (player.isAce()) {
-			hudAce(g2, player.asAce());
-			indexPlayer = 2;
-		}
+		player.drawHud(g);
 		/*
 			Barra de vida e de mana
 		 */
@@ -116,9 +55,9 @@ public class UI {
 			Icone
 		 */
 		g.setColor(Color.black);
-		g2.fillOval(38, 34, 67, 66);
+		g.fillOval(38, 34, 67, 66);
 		g.setColor(corBarraMana);
-		g2.fillOval(40, 35, 64, 64);
-		g.drawImage(icone[indexPlayer], 40, 35, null);
+		g.fillOval(40, 35, 64, 64);
+		g.drawImage(player.getIcone(), 40, 35, null);
 	}
 }
