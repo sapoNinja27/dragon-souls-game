@@ -1,21 +1,25 @@
-package Entidades.Players;
+package Entidades.Players.tai;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
 import Configuration.Configuracoes;
+import Entidades.Players.Habilidade;
+import Entidades.Players.Player;
+import Entidades.Players.tai.habilidades.Atacar;
+import Menu.ImageUtils;
 import Graficos.Spritesheet;
+import enums.MovimentoPlayer;
 
 import static Menu.ImageUtils.inverter;
+import static Menu.StringUtils.write;
 
 public class Tai extends Player {
 
 	//basicas
-	private Habilidade atacar = new Habilidade(true);
+	private Habilidade atacar = new Atacar();
 	private Habilidade bloquear = new Habilidade(true);
 	private Habilidade transformar = new Habilidade(true);
 
@@ -71,6 +75,45 @@ public class Tai extends Player {
 	}
 	@Override
 	public List<Habilidade> getHabilidades(){
+
+		;
+		bloquear.montar(
+				Collections.singletonList(sprite.getSprite(128,0,128,128)),
+				"Bloquear",
+				"Tai defende 70% do dano do proximo ataque",
+				MovimentoPlayer.ANDANDO
+		);
+		transformar.montar(
+				Collections.singletonList(sprite.getSprite(128 * 2,0,128,128)),
+				"Transformar",
+				"",
+				MovimentoPlayer.ANDANDO
+		);
+
+		tempestadeDeRaios.montar(
+				Collections.singletonList(sprite.getSprite(128 * 5,0,128,128)),
+				"Postura calma",
+				"",
+				MovimentoPlayer.ANDANDO
+		);
+		pulsoGravitacional.montar(
+				Collections.singletonList(sprite.getSprite(128 * 5,0,128,128)),
+				"Pulso gravitacional",
+				"",
+				MovimentoPlayer.ANDANDO
+		);
+		upgrade.montar(
+				Collections.singletonList(sprite.getSprite(128 * 3,0,128,128)),
+				"Tempestade de raios",
+				"",
+				MovimentoPlayer.ANDANDO
+		);
+		ondaDeChoque.montar(
+				Collections.singletonList(sprite.getSprite(128 * 4,0,128,128)),
+				"Onda de choque",
+				"",
+				MovimentoPlayer.ANDANDO
+		);
 		return Arrays.asList(atacar,bloquear, transformar, upgrade, ondaDeChoque, tempestadeDeRaios, pulsoGravitacional);
 	}
 
@@ -142,5 +185,28 @@ public class Tai extends Player {
 		g.fillRect(95, 84, 101, 4);
 		g.setColor(new Color(194, 194, 194));
 		g.fillRect(95, 84, 101, 2);
+	}
+
+	@Override
+	public void desenharInfo(int x, int y, Graphics g, Color bordaMenu, Color fundoMenu){
+		g.setColor(Color.white);
+		g.fillRect(x + 1050, y + 30, 300, Configuracoes.TILE_SIZE * 3);
+		g.setColor(bordaMenu);
+		g.drawRect(x + 1050, y + 30, 300, 500);
+		g.setColor(fundoMenu);
+		g.fillRect(x + 1050, y + 30, 300, 500);
+
+		g.setColor(bordaMenu);
+		g.drawRect(x + 1050, y + 30 + Configuracoes.TILE_SIZE * 3, 300, 50);
+		g.setColor(fundoMenu);
+		g.fillRect(x + 1050, y + 30 + Configuracoes.TILE_SIZE * 3, 300, 50);
+
+
+		setarAnimacao(MovimentoPlayer.RESPIRANDO);
+		g.drawImage(spriteAtual().get(index), x + 1110, y + 95, 64 * 2, 64 * 2, null);
+
+		ImageUtils.draw(g, "Tai", x + 1075, y + 255, Color.WHITE, 20);
+		String descricao = "Tai aumenta sua furia em combate com inimigos, acumulos de furia concedem a ele 15% da furia atual como resistencias, 10 de armadura e 30 de dano de ataque, ao atingir o maximo de furia os efeitos decaem ate acabarem";
+		write(g, descricao, 14, x, y);
 	}
 }

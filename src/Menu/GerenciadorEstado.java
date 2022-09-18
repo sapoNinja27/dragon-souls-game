@@ -43,6 +43,8 @@ public class GerenciadorEstado {
             if (Configuracoes.estadoGame == TipoGame.MENU) {
                 gerenciadorMenu.atualizarPlayer(gerenciadorEntidades.getPlayer());
                 gerenciadorMenu.tick();
+                gerenciadorEntidades.getPlayer().tick();
+                gerenciadorEntidades.getPlayer().tick();
             }
         }
     }

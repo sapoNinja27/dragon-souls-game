@@ -8,13 +8,12 @@ import Entidades.Cenario.ObjetosComMovimento.Transito;
 import Entidades.Cenario.PosteLuz;
 import Entidades.Enemies.Enemy;
 import Menu.Loading;
-import Entidades.Players.Ace;
 import Entidades.Players.Player;
-import Entidades.Players.Tai;
+import Entidades.Players.tai.Tai;
 import Graficos.Spritesheet;
 import enums.AcaoPlayer;
 import enums.TipoAmbiente;
-import enums.TipoGame;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -132,21 +131,22 @@ public class GerenciadorEntidades {
         if(player.isDentro()){
             //renderiza dentro
         }
-        if (Configuracoes.estadoGame == TipoGame.NORMAL) {
-            for (Entidade e : entities) {
-                e.tick();
-                if(e instanceof ParedeInvisivel){
-                    if(e.corpoColidindo(player, Arrays.asList("esquerda", "direita"))){
-                        e.teleportarPlayer(player);
-                    }
-                }
-                if(e.corpoColidindo(player)){
-                    verificaOpcoesColisao(e);
+
+        for (Entidade e : entities) {
+            e.tick();
+            if(e instanceof ParedeInvisivel){
+                if(e.corpoColidindo(player, Arrays.asList("esquerda", "direita"))){
+                    e.teleportarPlayer(player);
                 }
             }
-            for (Enemy enemy : enemies) {
-                enemy.tick();
+            if(e.corpoColidindo(player)){
+                verificaOpcoesColisao(e);
             }
+        }
+        for (Enemy enemy : enemies) {
+            enemy.tick();
+        }
+
 //            for (Entidade e : predios) {
 //                e.tick();
 //            }
@@ -156,7 +156,6 @@ public class GerenciadorEntidades {
 //            for (ObjetosComMovimento objeto : objetos) {
 //                objeto.tick();
 //            }
-        }
     }
 
     public void render(Graphics g){

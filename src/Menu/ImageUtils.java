@@ -1,5 +1,7 @@
 package Menu;
 
+import Configuration.Configuracoes;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -18,7 +20,7 @@ public class ImageUtils {
             int[] imageP = ((DataBufferInt)newImage.getAlphaRaster().getDataBuffer()).getData();
             for(int xx = image.getTileWidth(); xx > 0; xx--) {
                 for(int yy = 0; yy < image.getHeight(); yy++) {
-                    int x2=(xx-image.getWidth())*(-1);
+                    int x2 = (xx - image.getWidth()) * (-1);
                     Color color=new Color(image.getRGB(x2, yy),true);
                     imageP[xx-1+(yy*image.getWidth())]=color.hashCode();
                 }
@@ -66,7 +68,22 @@ public class ImageUtils {
         }
         return null;
     }
+    public static void draw(Graphics g, BufferedImage image, int x, int y){
+        draw(g, image, x, y, Configuracoes.TILE_SIZE, Configuracoes.TILE_SIZE);
+    }
+    public static void draw(Graphics g, String texto, int x, int y, Color color, int font){
+        g.setColor(color);
+        g.setFont(new Font("arial", Font.BOLD, font));
+        g.drawString(texto, x, y);
+    }
+    public static void draw(Graphics g, int x, int y, Color color, int w, int h){
+        g.setColor(color);
+        g.drawRect(x, y, w, h);
+    }
 
+    public static void draw(Graphics g, BufferedImage image, int x, int y, int w, int h){
+        g.drawImage(image, x, y, w, h, null);
+    }
     public static BufferedImage inverterV(BufferedImage image) {
         if(image!=null) {
             BufferedImage newImage=new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);

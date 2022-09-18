@@ -1,5 +1,7 @@
 package jObjects;
 
+import jObjects.Mouse.Mouse;
+
 import java.awt.Color;
 import java.awt.Graphics;
 

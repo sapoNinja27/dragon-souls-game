@@ -9,6 +9,7 @@ import java.util.List;
 import Configuration.Configuracoes;
 import Entidades.Entidade;
 import Entidades.ObjetoLuminoso;
+import Entidades.Players.tai.Tai;
 import Graficos.Spritesheet;
 import Graficos.UI;
 import Menu.ImageUtils;
@@ -509,7 +510,7 @@ public abstract class Player extends Entidade {
 			}
 		}
 	}
-	private void setarAnimacao(MovimentoPlayer movimento){
+	protected void setarAnimacao(MovimentoPlayer movimento){
 		if(movimento.equals(ANDANDO) &&
 				(acaoAtual.equals(SUBINDO) || acaoAtual.equals(CAINDO))){
 			return;
@@ -578,4 +579,7 @@ public abstract class Player extends Entidade {
 	public boolean isSander() {
 		return false;
 	}
+
+    public void desenharInfo(int x, int y, Graphics g, Color bordaMenu, Color fundoMenu) {
+    }
 }

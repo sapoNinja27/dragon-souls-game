@@ -1,15 +1,14 @@
 package Menu;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-
-import Entidades.Habilidade;
+import Entidades.Players.Habilidade;
 import Entidades.Players.Player;
+
+import java.awt.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MenuHabilidades {
 	private Color bordaMenu, fundoMenu;
-	private Habilidade arvoreHabilidade = new Habilidade();
 	private Player player;
 
 	public void atualizarPlayer(Player player){
@@ -25,7 +24,7 @@ public class MenuHabilidades {
 
 		desenharTextosInfo(x, y, g);
 		desenharFundoMenu(x, y, g);
-
+		desenharInfo(x, y, g);
 		g.setColor(bordaMenu);
 		g.drawRect(x, y + 30, 1000, 50);
 		g.setColor(fundoMenu);
@@ -42,7 +41,14 @@ public class MenuHabilidades {
 		g.setFont(new Font("arial", Font.BOLD, 25));
 		g.drawString("Avançado", x + 30, y + 265);
 
-		arvoreHabilidade.render(g);
+		List<Habilidade> basicas = player.getHabilidades().stream().filter(Habilidade::isBasica).collect(Collectors.toList());
+		List<Habilidade> avancadas = player.getHabilidades().stream().filter(habilidade -> !habilidade.isBasica()).collect(Collectors.toList());
+		for(int i = 0; i < basicas.size(); i++){
+			basicas.get(i).render(g, 120 + (i *20) + (i * 1000/basicas.size()), 220);
+		}
+		for(int i = 0; i < avancadas.size(); i++){
+			avancadas.get(i).render(g, 120 + (i *20) + (i * 1000/avancadas.size()), 420);
+		}
 	}
 	private void desenharTextosInfo(int x, int y, Graphics g){
 		g.setColor(Color.WHITE);
@@ -62,5 +68,21 @@ public class MenuHabilidades {
 		g.drawRect(x, y + 30, 1000, 500);
 		g.setColor(fundoMenu);
 		g.fillRect(x, y + 30, 1000, 500);
+	}
+
+	private void desenharInfo(int x, int y, Graphics g){
+		if(noneSelected(player.getHabilidades())){
+			player.desenharInfo(x, y, g, bordaMenu, fundoMenu);
+		} else {
+			getSelected(player.getHabilidades()).desenharInfo(x, y, g, bordaMenu, fundoMenu, player);
+		}
+	}
+
+	private boolean noneSelected(List<Habilidade> list){
+		return list.stream().noneMatch(Habilidade::isOver);
+	}
+
+	private Habilidade getSelected(List<Habilidade> list){
+		return list.stream().filter(Habilidade::isOver).findFirst().orElse(null);
 	}
 }

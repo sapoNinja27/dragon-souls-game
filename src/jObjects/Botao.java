@@ -1,10 +1,13 @@
 package jObjects;
 
+import jObjects.Mouse.Mouse;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Optional;
 
 /**
  * Botão
@@ -153,7 +156,7 @@ public class Botao {
 			}
 		} else if (Mouse.released) {
 			mousePressed = false;
-			if (mx > x && mx < x + w && my > y && my < y + h) {
+			if (isHover(mx, my)) {
 				if (overPressed) {
 					Mouse.released = false;
 					overPressed = false;
@@ -169,7 +172,7 @@ public class Botao {
 				mouseOver = false;
 			}
 		} else {
-			if (mx > x && mx < x + w && my > y && my < y + h) {
+			if (isHover(mx, my)) {
 				mouseOver = true;
 				lastBotao = true;
 			} else {
@@ -178,6 +181,9 @@ public class Botao {
 		}
 	}
 
+	private boolean isHover(int mx, int my){
+		return mx > x && mx < x + w && my > y && my < y + h;
+	}
 	/**
 	 * Renderiza o objeto
 	 * 
@@ -201,8 +207,12 @@ public class Botao {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		g.setColor(Color.black);
 		g.setFont(new Font("arial", Font.BOLD, 18));
-		g.drawString(text, (x + spacingX), y + spacingY);
+		g.drawString(Optional.ofNullable(text).orElse("Vazio"), (x + spacingX), y + spacingY);
 
 	}
 
+	public void setXY(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 }

@@ -25,7 +25,7 @@ import Menu.GerenciadorEstado;
 import Graficos.Spritesheet;
 import Menu.Loading;
 import enums.TipoAcao;
-import jObjects.Mouse;
+import jObjects.Mouse.Mouse;
 
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
@@ -190,7 +190,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (e != null) {
-			Mouse.setCordinates(e.getX() / 2, e.getY() / 2);
+			Mouse.setCordinates(e.getX(), e.getY());
 		}
 	}
 
@@ -207,7 +207,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e != null) {
-			Mouse.setCordinates(e.getX() / 2, e.getY() / 2);
+			Mouse.setCordinates(e.getX(), e.getY());
 			Mouse.pressed = false;
 			Mouse.released = true;
 		}

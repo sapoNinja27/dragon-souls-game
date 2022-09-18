@@ -18,7 +18,7 @@ public class Configuracoes {
 	public static int SCALE = 2;
 	public static TipoMenu estadoMenu = TipoMenu.INICIAL;
 	public static TipoGame estadoGame = TipoGame.MENU;
-	public static boolean dia = true;
+	public static boolean dia = false;
 	public static int TILE_SIZE = 64;
 	public static TipoAmbiente local = TipoAmbiente.RUA;
 	private static int rota = 1;
