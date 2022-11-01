@@ -33,8 +33,8 @@ public class Botao {
 	 * 
 	 * @param x      : posição horizontal
 	 * @param y      : posição vertical
-	 * @param width  : tamanho horizontal
-	 * @param height : tamanho vertical
+	 * @param w  : tamanho horizontal
+	 * @param h : tamanho vertical
 	 */
 	public Botao(int x, int y, int w, int h) {
 		this.x = x;
@@ -48,8 +48,8 @@ public class Botao {
 	 * 
 	 * @param x      : posição horizontal
 	 * @param y      : posição vertical
-	 * @param width  : tamanho horizontal
-	 * @param height : tamanho vertical
+	 * @param w  : tamanho horizontal
+	 * @param h : tamanho vertical
 	 * @param text   : texto do botão
 	 * @param cor    : cor do botão
 	 * @param borda  : tamanho da borda
@@ -138,10 +138,10 @@ public class Botao {
 		mx = Mouse.getX();
 		my = Mouse.getY();
 		if (mouseOver) {
-			Mouse.hover = true;
+			Mouse.over = true;
 		} else {
 			if (lastBotao) {
-				Mouse.hover = false;
+				Mouse.over = false;
 				lastBotao = false;
 			}
 		}
@@ -160,7 +160,7 @@ public class Botao {
 				if (overPressed) {
 					Mouse.released = false;
 					overPressed = false;
-					Mouse.hover = false;
+					Mouse.over = false;
 					clicked = true;
 				}
 				mouseOver = true;

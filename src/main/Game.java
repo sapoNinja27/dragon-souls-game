@@ -58,7 +58,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	public void attMouse() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		if (Mouse.hover) {
+		if (Mouse.over) {
 			Image image = mouse.getSprite(32, 0, 32, 32);
 			Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
 			frame.setCursor(c);

@@ -3,6 +3,7 @@ package utils;
 import configuracoes.Configuracao;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class ImageUtils {
 
     }
 
+    public static void drawPolygon(Color color, Graphics g, Polygon polygon) {
+        g.setColor(color);
+        g.fillPolygon(polygon);
+    }
     public static List<BufferedImage> inverter(List<BufferedImage> imageList) {
         List<BufferedImage> invertidas = new ArrayList<>();
         for (BufferedImage image: imageList) {
