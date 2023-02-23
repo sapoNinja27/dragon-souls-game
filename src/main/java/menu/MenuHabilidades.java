@@ -48,10 +48,12 @@ public class MenuHabilidades {
 		List<Habilidade> basicas = player.getHabilidades().stream().filter(Habilidade::isBasica).collect(Collectors.toList());
 		List<Habilidade> avancadas = player.getHabilidades().stream().filter(habilidade -> !habilidade.isBasica()).collect(Collectors.toList());
 		for(int i = 0; i < basicas.size(); i++){
-			basicas.get(i).render(g, 120 + (i *20) + (i * 1000/basicas.size()), 220);
+			basicas.get(i).setXY(120 + (i *20) + (i * 1000/basicas.size()), 220);
+			basicas.get(i).render(g);
 		}
 		for(int i = 0; i < avancadas.size(); i++){
-			avancadas.get(i).render(g, 120 + (i *20) + (i * 1000/avancadas.size()), 420);
+			avancadas.get(i).setXY(120 + (i *20) + (i * 1000/avancadas.size()), 420);
+			avancadas.get(i).render(g);
 		}
 	}
 	private void desenharTextosInfo(int x, int y, Graphics g){
@@ -90,6 +92,7 @@ public class MenuHabilidades {
 	private Habilidade getSelected(List<Habilidade> list){
 		return list.stream().filter(Habilidade::isOver).findFirst().orElse(null);
 	}
+
 	private void desenharLayoutDescricaoHabilidade(int x, int y, Graphics g){
 		fill(g, x + 1050, y + 30, Color.WHITE, 300, Configuracao.TILE_SIZE * 3);
 		draw(g, x + 1050, y + 30, bordaMenu, 300, 500);
