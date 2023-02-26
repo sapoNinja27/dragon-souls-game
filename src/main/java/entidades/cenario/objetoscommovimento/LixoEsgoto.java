@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import configuracoes.Configuracao;
 import graficos.Spritesheet;
 import utils.ImageUtils;
 import world.Camera;
@@ -16,11 +15,11 @@ public class LixoEsgoto extends ObjetosComMovimento{
 	public LixoEsgoto(int x, int y, Spritesheet spt) {
 		super(x, y);
         Random random = new Random();
-		img=spt.getSprite(
-                Configuracao.TILE_SIZE+(32 * random.nextInt(2)),
-                6* Configuracao.TILE_SIZE+32 * random.nextInt(2),
-                32,
-                32);
+//		img=spt.getSprite(
+//                Configuracao.TILE_SIZE+(32 * random.nextInt(2)),
+//                6* Configuracao.TILE_SIZE+32 * random.nextInt(2),
+//                32,
+//                32);
 	}
 	public void tick() {
 		x-=speed+1;

@@ -1,26 +1,23 @@
 package world;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
-
-import javax.imageio.ImageIO;
-import configuracoes.Configuracao;
+import configuracoes.DadosGame;
 import entidades.cenario.*;
 import entidades.cenario.limitescenario.LimiteDeCenarioAbismo;
 import entidades.cenario.limitescenario.ParedeInvisivel;
 import entidades.cenario.objetosluminosos.PosteLuz;
-import processamento.GerenciadorEntidades;
 import entidades.players.Player;
 import graficos.Spritesheet;
+import processamento.GerenciadorEntidades;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
 
 public class World {
-	public static Tile[] tiles;
-	public static int WIDTH, HEIGHT;
-	private final Spritesheet cenario;
-	private final String path;
-	private final GerenciadorEntidades gerenciadorEntidades = new GerenciadorEntidades();
-	private Predio[] predios = { new Predio(1, 0, 7, 7, new Spritesheet("/cenario/predioBranco.png")),
+	private int tileSize;
+	private final Spritesheet cenario= new Spritesheet("/cenario/cenario.png");
+	private final Predio[] predios = { new Predio(1, 0, 7, 7, new Spritesheet("/cenario/predioBranco.png")),
 			new Predio(3, 0, 0, 9,new Spritesheet("/cenario/stone.png")),
 			new Predio(8, 0, 0, 7, new Spritesheet("/cenario/predioBranco.png")) };
 //	private Predio[] predios2 = {
@@ -32,116 +29,108 @@ public class World {
 //			new Predio(9,0, 0, 7, 4, Texturas.MARMORE)
 //	};
 
-	public World(String path) {
-		gerenciadorEntidades.iniciarListas();
-		cenario= new Spritesheet("/cenario/cenario.png");
-		this.path = path;
-	}
-
-	private void fundo(int pixelAtual, int x, int y) {
+	private void fundo(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades) {
 //		tiles[pixelAtual] = new FundoTile(x * Configuracoes.TILE_SIZE, y * Configuracoes.TILE_SIZE, Tile.TILE_FLOOR);
 	}
 
-	private void latas(int pixelAtual, int x, int y) {
+	private void latas(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades) {
 		if (pixelAtual == 0xFF5E0000) {
-			LataLixo pack = new LataLixo(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE,cenario);
+			LataLixo pack = new LataLixo(x * tileSize, y * tileSize,cenario);
 			gerenciadorEntidades.addEntidade(pack);
 		}
 	}
 
-	private void portoes(int pixelAtual, int x, int y) {
+	private void portoes(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades) {
 		if (pixelAtual == 0xFF7F0000) {
-			Portao pack = new Portao(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE,cenario);
+			Portao pack = new Portao(x * tileSize, y * tileSize,cenario);
 			gerenciadorEntidades.addEntidade(pack);
 		}
 	}
 
-	private void limiteCenario(int pixelAtual, int x, int y) {
+	private void limiteCenario(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades, DadosGame dadosGame) {
 		if (pixelAtual == 0xFF8E8E34) {
-			LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(x * Configuracao.TILE_SIZE,
-					y * Configuracao.TILE_SIZE, Configuracao.TILE_SIZE, Configuracao.TILE_SIZE);
+			LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(x * tileSize,
+					y * tileSize, tileSize, tileSize);
 			gerenciadorEntidades.addEntidade(pack);
 		} else if (pixelAtual == 0xFFFF0000) {
-			ParedeInvisivel pack = new ParedeInvisivel(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE, WIDTH);
+			ParedeInvisivel pack = new ParedeInvisivel(x * tileSize, y * tileSize, dadosGame.getWordWidth());
 			gerenciadorEntidades.addEntidade(pack);
 
 		}
 	}
 
-	private void escadas(int pixelAtual, int x, int y) {
+	private void escadas(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades) {
 		if (pixelAtual == 0xFFE50063) {
-			EscadaEsgoto pack = new EscadaEsgoto(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE,cenario);
+			EscadaEsgoto pack = new EscadaEsgoto(x * tileSize, y * tileSize,cenario);
 			gerenciadorEntidades.addEntidade(pack);
 		}
 	}
 
-	private void plataformas(int pixelAtual, int x, int y) {
+	private void plataformas(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades) {
 		if (pixelAtual == 0xFFFFFFFF) {
-			Plataforma pack = new Plataforma(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE,
-					cenario.getSprite((2) * Configuracao.TILE_SIZE, 3 * Configuracao.TILE_SIZE,
-							Configuracao.TILE_SIZE, Configuracao.TILE_SIZE));
+			Plataforma pack = new Plataforma(x * tileSize, y * tileSize,
+					cenario.getSprite((2) * tileSize, 3 * tileSize,
+							tileSize, tileSize));
 			gerenciadorEntidades.addEntidade(pack);
 		} else if (pixelAtual == 0xFFF2F2F2) {
 			// chao de esgoto
-			Plataforma pack = new Plataforma(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE,
-					(cenario).getSprite((5) * Configuracao.TILE_SIZE, 3 * Configuracao.TILE_SIZE,
-							Configuracao.TILE_SIZE, Configuracao.TILE_SIZE));
+			Plataforma pack = new Plataforma(x * tileSize, y * tileSize,
+					(cenario).getSprite((5) * tileSize, 3 * tileSize,
+							tileSize, tileSize));
 			gerenciadorEntidades.addEntidade(pack);
 		} else if (pixelAtual == 0xFFE5E5E5) {
 			// chao de esgoto com canos
 			BufferedImage[] img = {
-					(cenario).getSprite(3 * Configuracao.TILE_SIZE, 3 * Configuracao.TILE_SIZE,
-							Configuracao.TILE_SIZE, Configuracao.TILE_SIZE),
-					(cenario).getSprite(4 * Configuracao.TILE_SIZE, 3 * Configuracao.TILE_SIZE,
-							Configuracao.TILE_SIZE, Configuracao.TILE_SIZE) };
-			Plataforma plat = new Plataforma(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE, null);
-			CanoEsgoto pack = new CanoEsgoto(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE, img);
+					(cenario).getSprite(3 * tileSize, 3 * tileSize,
+							tileSize, tileSize),
+					(cenario).getSprite(4 * tileSize, 3 * tileSize,
+							tileSize, tileSize) };
+			Plataforma plat = new Plataforma(x * tileSize, y * tileSize, null);
+			CanoEsgoto pack = new CanoEsgoto(x * tileSize, y * tileSize, img);
 			gerenciadorEntidades.addEntidade(pack);
 			gerenciadorEntidades.addEntidade(plat);
 		} else if (pixelAtual == 0xFFAA004A) {
 			// bueiro
-			PosteLuz post = new PosteLuz(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE,cenario);
+			PosteLuz post = new PosteLuz(x * tileSize, y * tileSize,cenario);
 			gerenciadorEntidades.addEntidade(post);
 			BufferedImage[] img = {
-					(cenario).getSprite(0, 3 * Configuracao.TILE_SIZE,
-							Configuracao.TILE_SIZE, Configuracao.TILE_SIZE),
-					(cenario).getSprite(Configuracao.TILE_SIZE, 3 * Configuracao.TILE_SIZE,
-							Configuracao.TILE_SIZE, Configuracao.TILE_SIZE) };
+					(cenario).getSprite(0, 3 * tileSize,
+							tileSize, tileSize),
+					(cenario).getSprite(tileSize, 3 * tileSize,
+							tileSize, tileSize) };
 
-			Bueiro pack = new Bueiro(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE, img);
-			Plataforma plat = new Plataforma(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE, null);
+			Bueiro pack = new Bueiro(x * tileSize, y * tileSize, img);
+			Plataforma plat = new Plataforma(x * tileSize, y * tileSize, null);
 			gerenciadorEntidades.addEntidade(pack);
 			gerenciadorEntidades.addEntidade(plat);
 		} else if (pixelAtual == 0xFFD8D8D8) {
 			// Telhado
-			Plataforma pack = new Plataforma(x * Configuracao.TILE_SIZE, y * Configuracao.TILE_SIZE, null);
+			Plataforma pack = new Plataforma(x * tileSize, y * tileSize, null);
 			gerenciadorEntidades.addEntidade(pack);
 		}
 
 	}
 
-	private void predios(int pixelAtual, int x, int y) {
+	private void predios(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades) {
 		if (pixelAtual == 0xFF494949) {
-			predios[0].setX(x * Configuracao.TILE_SIZE);
-			predios[0].setY(y * Configuracao.TILE_SIZE);
+			predios[0].setX(x * tileSize);
+			predios[0].setY(y * tileSize);
 			Predio pack = predios[0];
 			pack.generateObjects(1);
 			gerenciadorEntidades.addEntidade(pack);
 		}
 	}
 
-	private void player(int pixelAtual, int x, int y) {
-		Player player = gerenciadorEntidades.getPlayer();
+	private void player(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades, DadosGame dadosGame) {
+		Player player = dadosGame.getPlayer();
 		if (pixelAtual == 0xFF0026FF && !player.isPrimeiroSpawn()) {
-			player.setX(x * Configuracao.TILE_SIZE);
-			player.setY(y * Configuracao.TILE_SIZE);
-			player.setX(x * Configuracao.TILE_SIZE - 20);
-			player.setY(y * Configuracao.TILE_SIZE + 3);
+			player.setX(x * tileSize);
+			player.setY(y * tileSize);
+			player.setX(x * tileSize - 20);
+			player.setY(y * tileSize + 3);
 			player.setPrimeiroSpawn();
 			player.setParado(true);
-			Configuracao.p1 = player;
-//			Configuracoes.p2 = player2;
-			gerenciadorEntidades.setPlayer(player);
+			dadosGame.setPlayer(player);
 		}
 	}
 
@@ -157,38 +146,32 @@ public class World {
 //		return;
 	}
 
-	public void criarMundo(){
+	public void startGame(DadosGame dadosGame, GerenciadorEntidades gerenciadorEntidades){
+		this.tileSize = dadosGame.getTileSize();
 		try {
-			BufferedImage map = ImageIO.read(Objects.requireNonNull(getClass().getResource(path)));
+			BufferedImage map = ImageIO.read(Objects.requireNonNull(getClass().getResource(dadosGame.getPath())));
 			int[] pixels = new int[map.getWidth() * map.getHeight()];
-			WIDTH = map.getWidth();
-			HEIGHT = map.getHeight();
-			tiles = new Tile[map.getWidth() * map.getHeight()];
+			dadosGame.setWordWidth(map.getWidth());
+			dadosGame.setWordHeight(map.getHeight());
+			
+//			Tile[] tiles = new Tile[map.getWidth() * map.getHeight()];
 			map.getRGB(0, 0, map.getWidth(), map.getHeight(), pixels, 0, map.getWidth());
-			for (int xx = 0; xx < WIDTH; xx++) {
-				for (int yy = 0; yy < HEIGHT; yy++) {
-					int pixelAtual = pixels[xx + (yy * WIDTH)];
-					player(pixelAtual, xx, yy);
-					plataformas(pixelAtual, xx, yy);
-					predios(pixelAtual, xx, yy);
-					escadas(pixelAtual, xx, yy);
-					limiteCenario(pixelAtual, xx, yy);
-					portoes(pixelAtual, xx, yy);
-					latas(pixelAtual, xx, yy);
-					fundo(pixelAtual, xx, yy);
+			for (int xx = 0; xx < dadosGame.getWordWidth(); xx++) {
+				for (int yy = 0; yy < dadosGame.getWordHeight(); yy++) {
+					int pixelAtual = pixels[xx + (yy * dadosGame.getWordWidth())];
+					player(pixelAtual, xx, yy, gerenciadorEntidades, dadosGame);
+					plataformas(pixelAtual, xx, yy, gerenciadorEntidades);
+					predios(pixelAtual, xx, yy, gerenciadorEntidades);
+					escadas(pixelAtual, xx, yy, gerenciadorEntidades);
+					limiteCenario(pixelAtual, xx, yy, gerenciadorEntidades, dadosGame);
+					portoes(pixelAtual, xx, yy, gerenciadorEntidades);
+					latas(pixelAtual, xx, yy, gerenciadorEntidades);
+					fundo(pixelAtual, xx, yy, gerenciadorEntidades);
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public GerenciadorEntidades getGerenciadorEntidades(){
-		return gerenciadorEntidades;
-	}
-	public void startGame() {
-		gerenciadorEntidades.refreshListsSTC(true);
-		criarMundo();
 	}
 
 //	public static void changeArea() {

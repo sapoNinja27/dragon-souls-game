@@ -3,11 +3,10 @@ package enums;
 public enum TipoMenu {
 	INICIAL(1), 
 	HABILIDADES(2),
-	OPCOESPRINCIPAL(3),
-	OPCOESPAUSE(4),
-	LOAD(5),
-	INVENTARIO(6),
-	GAMEOVER(7);
+	OPCOES(3),
+	LOAD(4),
+	INVENTARIO(5),
+	GAMEOVER(6);
 
 	private int cod;
 

@@ -3,7 +3,6 @@ package entidades.cenario;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import configuracoes.Configuracao;
 import entidades.Entidade;
 import entidades.mascaras.MascaraHitBox;
 import world.Camera;
@@ -19,8 +18,8 @@ public class Janela extends Entidade {
 	}
 
 	public void render(Graphics g) {
-        g.drawImage(img, this.getX() - Camera.x - Configuracao.TILE_SIZE,
-                this.getY() - Camera.y - Configuracao.TILE_SIZE, Configuracao.TILE_SIZE * 2,
-                Configuracao.TILE_SIZE * 2, null);
+//        g.drawImage(img, this.getX() - Camera.x - Configuracao.TILE_SIZE,
+//                this.getY() - Camera.y - Configuracao.TILE_SIZE, Configuracao.TILE_SIZE * 2,
+//                Configuracao.TILE_SIZE * 2, null);
 	}
 }

@@ -1,9 +1,7 @@
 package utils;
 
-import configuracoes.Configuracao;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
@@ -74,8 +72,8 @@ public class ImageUtils {
         return null;
     }
 
-    public static void draw(Graphics g, BufferedImage image, int x, int y){
-        draw(g, image, x, y, Configuracao.TILE_SIZE, Configuracao.TILE_SIZE);
+    public static void draw(Graphics g, BufferedImage image, int x, int y, int size){
+        draw(g, image, x, y, size, size);
     }
 
     public static void draw(Graphics g, String texto, int x, int y, Color color, int font){

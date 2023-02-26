@@ -1,53 +1,61 @@
 package processamento;
 
-import java.awt.Graphics;
-
-import configuracoes.Configuracao;
-import entidades.players.Player;
+import configuracoes.DadosGame;
 import menu.*;
-import enums.TipoMenu;
+
+import java.awt.*;
+
+import static enums.TipoMenu.INICIAL;
 
 public class GerenciadorMenu {
-	private MenuPrincipal menuPrincipal = new MenuPrincipal();
-	private MenuOpcoes menuOpcoes = new MenuOpcoes();
-	private MenuCarregamento menuCarregamento = new MenuCarregamento();
-	private MenuHabilidades menuHabilidades = new MenuHabilidades();
-	private MenuInventario inv = new MenuInventario();
+    private final MenuPrincipal menuPrincipal = new MenuPrincipal();
+    private final MenuOpcoes menuOpcoes = new MenuOpcoes();
+    private final MenuCarregamento menuCarregamento = new MenuCarregamento();
+    private final MenuHabilidades menuHabilidades = new MenuHabilidades();
+    private final MenuInventario inv = new MenuInventario();
 
-	public GerenciadorMenu() {
+    public void tick(DadosGame dadosGame) {
+        dadosGame.getPlayer().tick(dadosGame);
+        switch (dadosGame.getEstadoMenu()) {
+            case INICIAL:
+                menuPrincipal.tick(dadosGame);
+                break;
+            case LOAD:
+                menuCarregamento.tick(dadosGame);
+                break;
+            case GAMEOVER:
+                break;
+            case INVENTARIO:
+                inv.tick(dadosGame);
+                break;
+            case OPCOES:
+                menuOpcoes.tick(dadosGame, dadosGame.getLastEstadoMenu().equals(INICIAL));
+                break;
+            case HABILIDADES:
+                menuHabilidades.tick();
+                break;
+        }
+    }
 
-	}
-
-	public void atualizarPlayer(Player player){
-		menuHabilidades.atualizarPlayer(player);
-	}
-
-	public void tick() {
-		if (Configuracao.estadoMenu == TipoMenu.INICIAL) {
-			menuPrincipal.tick();
-		}else if (Configuracao.estadoMenu == TipoMenu.LOAD) {
-			menuCarregamento.tick();
-		} else if (Configuracao.estadoMenu == TipoMenu.OPCOESPAUSE
-				|| Configuracao.estadoMenu == TipoMenu.OPCOESPRINCIPAL) {
-			menuOpcoes.tick();
-		} else if (Configuracao.estadoMenu == TipoMenu.HABILIDADES) {
-			menuHabilidades.tick();
-		} else if (Configuracao.estadoMenu == TipoMenu.INVENTARIO) {
-			inv.tick();
-		}
-	}
-
-	public void render(Graphics g) {
-		if (Configuracao.estadoMenu == TipoMenu.INICIAL) {
-			menuPrincipal.render(g);
-		} else if (Configuracao.estadoMenu == TipoMenu.LOAD) {
-			menuCarregamento.render(g);
-		} else if (Configuracao.estadoMenu == TipoMenu.OPCOESPRINCIPAL || Configuracao.estadoMenu == TipoMenu.OPCOESPAUSE) {
-			menuOpcoes.render(g);
-		} else if (Configuracao.estadoMenu == TipoMenu.HABILIDADES) {
-			menuHabilidades.render(g);
-		} else if (Configuracao.estadoMenu == TipoMenu.INVENTARIO) {
-			inv.render(g);
-		}
-	}
+    public void render(Graphics g, DadosGame dadosGame) {
+        switch (dadosGame.getEstadoMenu()) {
+            case INICIAL:
+                menuPrincipal.render(g);
+                break;
+            case LOAD:
+                menuCarregamento.render(g);
+                break;
+            case GAMEOVER:
+                break;
+            case INVENTARIO:
+                inv.render(g);
+                break;
+            case OPCOES:
+                menuOpcoes.render(g, dadosGame, dadosGame.getLastEstadoMenu().equals(INICIAL));
+                break;
+            case HABILIDADES:
+                menuHabilidades.render(g, dadosGame);
+                break;
+        }
+    }
 }

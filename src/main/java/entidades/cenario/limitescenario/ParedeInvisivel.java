@@ -1,6 +1,5 @@
 package entidades.cenario.limitescenario;
 
-import configuracoes.Configuracao;
 import entidades.Entidade;
 import entidades.mascaras.MascaraHitBox;
 import enums.DirecaoPlayer;
@@ -12,8 +11,8 @@ public class ParedeInvisivel extends Entidade {
 
 	public ParedeInvisivel(int x, int y, int dist) {
 		super(x, y, dist, 0);
-		adicionarMascara(new MascaraHitBox("esquerdo", 0, 0, 1, Configuracao.HEIGHT * 19));
-		adicionarMascara(new MascaraHitBox("direito", dist * Configuracao.TILE_SIZE - 2, 0, 1, Configuracao.HEIGHT * 19));
+//		adicionarMascara(new MascaraHitBox("esquerdo", 0, 0, 1, Configuracao.HEIGHT * 19));
+//		adicionarMascara(new MascaraHitBox("direito", dist * Configuracao.TILE_SIZE - 2, 0, 1, Configuracao.HEIGHT * 19));
 	}
 
     @Override
@@ -25,7 +24,7 @@ public class ParedeInvisivel extends Entidade {
             player.setParado(true);
         }
         if (player.getDirecaoPlayer().equals(DirecaoPlayer.ESQUERDA)) {
-           player.setX(this.getX() + (distanciaEntreAsParedes * Configuracao.TILE_SIZE) - 47 - largura);
+//           player.setX(this.getX() + (distanciaEntreAsParedes * Configuracao.TILE_SIZE) - 47 - largura);
            player.setParado(true);
         }
 	}
@@ -34,8 +33,8 @@ public class ParedeInvisivel extends Entidade {
 		this.height = largura;
         limparMascaras();
         int distanciaEntreAsParedes = width;
-		adicionarMascara(new MascaraHitBox("esquerdo", largura, 0, 1, Configuracao.HEIGHT * 19));
-		adicionarMascara(new MascaraHitBox("direito", distanciaEntreAsParedes * Configuracao.TILE_SIZE - 2 - largura, 0, 1, Configuracao.HEIGHT * 19));
+//		adicionarMascara(new MascaraHitBox("esquerdo", largura, 0, 1, Configuracao.HEIGHT * 19));
+//		adicionarMascara(new MascaraHitBox("direito", distanciaEntreAsParedes * Configuracao.TILE_SIZE - 2 - largura, 0, 1, Configuracao.HEIGHT * 19));
 	}
 
 

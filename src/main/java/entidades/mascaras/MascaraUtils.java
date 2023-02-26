@@ -1,8 +1,5 @@
 package entidades.mascaras;
 
-import entidades.Entidade;
-import javafx.scene.shape.TriangleMesh;
-
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;

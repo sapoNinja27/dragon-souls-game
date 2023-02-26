@@ -1,22 +1,16 @@
 package processamento;
 
-import configuracoes.Configuracao;
+import configuracoes.DadosGame;
 import entidades.Entidade;
-import entidades.cenario.limitescenario.LimiteDeCenarioAbismo;
+import entidades.cenario.Plataforma;
+import entidades.cenario.Predio;
 import entidades.cenario.limitescenario.ParedeInvisivel;
-import entidades.cenario.objetosluminosos.ObjetoLuminoso;
-import entidades.cenario.*;
-import entidades.cenario.objetoscommovimento.LixoEsgoto;
 import entidades.cenario.objetoscommovimento.ObjetosComMovimento;
-import entidades.cenario.objetoscommovimento.Transito;
+import entidades.cenario.objetosluminosos.ObjetoLuminoso;
 import entidades.cenario.objetosluminosos.PosteLuz;
 import entidades.inimigos.Inimigo;
 import entidades.players.Player;
-import entidades.players.tai.Tai;
 import enums.AcaoPlayer;
-import enums.TipoAmbiente;
-import graficos.Loading;
-import graficos.Spritesheet;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -36,115 +30,105 @@ public class GerenciadorEntidades {
 
     private List<Inimigo> inimigos;
 
-    private  Player player = new Tai(0, 0);
+    private final Random rand = new Random();
 
-    private Player player2;
+    public GerenciadorEntidades() {
+        entities = new ArrayList<>();
+        predios = new ArrayList<>();
+        inimigos = new ArrayList<>();
+        objetos = new ArrayList<>();
+//        player = new Tai(0, 0);
+//        player2 = new Tai(0, 0);
+//        player.setPlayerUm();
+//        player2.setPlayerDois();
+//        entities.add(player);
+//        entities.add(player2);
+    }
 
-    private final Random rand= new Random();
-
-    private boolean interagiu(){
+    private boolean interagiu() {
         boolean aux = interagiu;
         interagiu = false;
         return aux;
     }
 
-    public Player getPlayer(){
-        return player;
-    }
-
-    public void setPlayer(Player player){
-        this.player = player;
-    }
-
-    public void addEntidade(Entidade entidade){
+    public void addEntidade(Entidade entidade) {
         this.entities.add(entidade);
     }
+
     public void refreshListsSTC(boolean newWorld) {
-        entities = new ArrayList<Entidade>();
-        predios = new ArrayList<Predio>();
-        inimigos = new ArrayList<Inimigo>();
-        objetos = new ArrayList<ObjetosComMovimento>();
-        if (!newWorld) {
-            player = Configuracao.p1;
-            player2 = Configuracao.p2;
-        } else {
-            player = new Tai(0, 0);
-            player2 = new Tai(0, 0);
-        }
-        player.setPlayerUm();
-        player2.setPlayerDois();
-        player2.setPlayer(player);
-        entities.add(player);
-        entities.add(player2);
+        entities = new ArrayList<>();
+        predios = new ArrayList<>();
+        inimigos = new ArrayList<>();
+        objetos = new ArrayList<>();
+//        if (!newWorld) {
+////            player = Configuracao.p1;
+////            player2 = Configuracao.p2;
+//        } else {
+//            player = new Tai(0, 0);
+//            player2 = new Tai(0, 0);
+//        }
+//        player.setPlayerUm();
+//        player2.setPlayerDois();
+//        player2.setPlayer(player);
+//        entities.add(player);
+//        entities.add(player2);
     }
 
-    public void iniciarListas() {
-        entities = new ArrayList<Entidade>();
-        predios = new ArrayList<Predio>();
-        inimigos = new ArrayList<Inimigo>();
-        objetos = new ArrayList<ObjetosComMovimento>();
-        player = new Tai(0, 0);
-        player2 = new Tai(0, 0);
-        player.setPlayerUm();
-        player2.setPlayerDois();
-        entities.add(player);
-        entities.add(player2);
-    }
-
-    private boolean drawDistance(Entidade e){
+    private boolean drawDistance(Entidade e, Player player) {
         return (e.distanciaX(player.getX()) < e.getDrawLimitX() && e.distanciaY(player.getY()) < e.getDrawLimitY()) || e instanceof Player;
     }
 
-    private void verificaOpcoesColisao(Entidade atual){
-        if(atual instanceof Bueiro){
-            if (interagiu()) {
-                Loading.start();
-                Configuracao.local = TipoAmbiente.ESGOTOS;
-                int destino = player.getY() + 898;
-                player.setY(destino);
-                player2.setY(destino);
-                Loading.stop();
-            }
-        }
-        if(atual instanceof EscadaEsgoto){
-            if (interagiu()) {
-                Loading.start();
-                Configuracao.local = TipoAmbiente.RUA;
-                int destino = player.getY() - 955;
-                player.setY(destino);
-                player2.setY(destino);
-                Loading.stop();
-            }
-        }
-        if(atual instanceof Portao){
-            Configuracao.p1 = player;
-            Configuracao.p2 =  player2;
-//            Loading.start();
-//            World.changeArea();
-//            Loading.stop();
-        }
-        if(atual instanceof LimiteDeCenarioAbismo){
-//            player.caindo = false;
-//            player.parado = true;
-//            player.vida--;
-            Configuracao.local = TipoAmbiente.TELHADO;
-        }
+    private void verificaOpcoesColisao(Entidade atual, DadosGame dadosGame) {
+//        if (atual instanceof Bueiro) {
+//            if (interagiu()) {
+//                Loading.start();
+//                Configuracao.local = TipoAmbiente.ESGOTOS;
+//                int destino = player.getY() + 898;
+//                player.setY(destino);
+//                player2.setY(destino);
+//                Loading.stop();
+//            }
+//        }
+//        if (atual instanceof EscadaEsgoto) {
+//            if (interagiu()) {
+//                Loading.start();
+//                Configuracao.local = TipoAmbiente.RUA;
+//                int destino = player.getY() - 955;
+//                player.setY(destino);
+//                player2.setY(destino);
+//                Loading.stop();
+//            }
+//        }
+//        if (atual instanceof Portao) {
+//            Configuracao.p1 = player;
+//            Configuracao.p2 = player2;
+////            Loading.start();
+////            World.changeArea();
+////            Loading.stop();
+//        }
+//        if (atual instanceof LimiteDeCenarioAbismo) {
+////            player.caindo = false;
+////            player.parado = true;
+////            player.vida--;
+//            Configuracao.local = TipoAmbiente.TELHADO;
+//        }
     }
 
-    public void tick(){
-        if(player.isDentro()){
+    public void tick(DadosGame dadosGame) {
+        Player player = dadosGame.getPlayer();
+        if (player.isDentro()) {
             //renderiza dentro
         }
 
         for (Entidade e : entities) {
             e.tick();
-            if(e instanceof ParedeInvisivel){
-                if(e.corpoColidindo(player, Arrays.asList("esquerda", "direita"))){
+            if (e instanceof ParedeInvisivel) {
+                if (e.corpoColidindo(player, Arrays.asList("esquerda", "direita"))) {
                     e.teleportarPlayer(player);
                 }
             }
-            if(e.corpoColidindo(player)){
-                verificaOpcoesColisao(e);
+            if (e.corpoColidindo(player)) {
+                verificaOpcoesColisao(e, dadosGame);
             }
         }
         for (Inimigo inimigo : inimigos) {
@@ -162,8 +146,8 @@ public class GerenciadorEntidades {
 //            }
     }
 
-    public void render(Graphics g){
-        avaliarSombreamentoPlayer();
+    public void render(Graphics g, DadosGame dadosGame) {
+        avaliarSombreamentoPlayer(dadosGame);
 //        for (Predio predio : predios) {
 //            if (drawDistance(predio)) {
 //                predio.render(g);
@@ -176,93 +160,74 @@ public class GerenciadorEntidades {
 //        }
         entities.sort(Entidade.nodeSorter);
         for (Entidade e : entities) {
-            if (drawDistance(e)) {
+            if (drawDistance(e, dadosGame.getPlayer())) {
                 e.render(g);
             }
         }
 
-        player.render(g);
+        dadosGame.getPlayer().render(g);
 
 //        for (ObjetosComMovimento objeto : objetos) {
 //            objeto.render(g);
 //        }
     }
 
-    public void trocaPersonagem() {
-//        Player p = player;
-//        Player p2 = player2;
-//        entities.remove(player);
-//        entities.remove(player2);
-//        p.direita = false;
-//        p.esquerda = false;
-//        p.moved = false;
-//        p2.direita = false;
-//        p2.esquerda = false;
-//        p2.moved = false;
-//        player = p2;
-//        player2 = p;
-//        player.setHudvisivel(true);
-//        entities.add(player);
-//        entities.add(player2);
-//        player.parado = true;
+
+    public void gerarObj(DadosGame dadosGame) {
+//        if (Configuracao.local == TipoAmbiente.ESGOTOS) {
+//            if (rand.nextInt(50) == 0) {
+//                ObjetosComMovimento am = new LixoEsgoto(player.getX() + 500, player.getY() + 58 + rand.nextInt(2) * 32, new Spritesheet("/cenario/cenario.png"));
+//                am.setSpeed(rand.nextInt(3));
+//                if (objetos.size() < rand.nextInt(10)) {
+//                    objetos.add(am);
+//                }
+//            }
+//
+//        } else if (Configuracao.local == TipoAmbiente.RUA) {
+//            if (Configuracao.dia) {
+//                if (rand.nextInt(25) == 0) {
+//                    ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5), new Spritesheet("/cenario/cenario.png"));
+//                    am.setSpeed(rand.nextInt(13));
+//                    if (objetos.size() < rand.nextInt(3)) {
+//                        objetos.add(am);
+//                    }
+//                }
+//            } else {
+//                if (rand.nextInt(100) == 0) {
+//                    ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5), new Spritesheet("/cenario/cenario.png"));
+//                    am.setSpeed(rand.nextInt(13));
+//                    if (objetos.size() < rand.nextInt(2)) {
+//                        objetos.add(am);
+//                    }
+//                }
+//            }
+//
+//        }
+//        limparObjetos();
     }
 
-
-    public void gerarObj() {
-        if (Configuracao.local == TipoAmbiente.ESGOTOS) {
-            if (rand.nextInt(50) == 0) {
-                ObjetosComMovimento am = new LixoEsgoto(player.getX() + 500, player.getY() + 58 + rand.nextInt(2) * 32,new Spritesheet("/cenario/cenario.png"));
-                am.setSpeed(rand.nextInt(3));
-                if (objetos.size() < rand.nextInt(10)) {
-                    objetos.add(am);
-                }
-            }
-
-        } else if (Configuracao.local == TipoAmbiente.RUA) {
-            if (Configuracao.dia) {
-                if (rand.nextInt(25) == 0) {
-                    ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5),new Spritesheet("/cenario/cenario.png"));
-                    am.setSpeed(rand.nextInt(13));
-                    if (objetos.size() < rand.nextInt(3)) {
-                        objetos.add(am);
-                    }
-                }
-            } else {
-                if (rand.nextInt(100) == 0) {
-                    ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5),new Spritesheet("/cenario/cenario.png"));
-                    am.setSpeed(rand.nextInt(13));
-                    if (objetos.size() < rand.nextInt(2)) {
-                        objetos.add(am);
-                    }
-                }
-            }
-
-        }
-        limparObjetos();
+    private void limparObjetos() {
+//        for (ObjetosComMovimento objeto : objetos) {
+//            if (player.distanciaX(objeto.getX()) > 1200) {
+//                objetos.remove(objeto);
+//            }
+//            if (player.distanciaY(objeto.getY()) > 1200) {
+//                objetos.remove(objeto);
+//            }
+//        }
     }
 
-    private void limparObjetos(){
-        for (ObjetosComMovimento objeto: objetos) {
-            if(player.distanciaX(objeto.getX())>1200) {
-                objetos.remove(objeto);
-            }
-            if(player.distanciaY(objeto.getY())>1200) {
-                objetos.remove(objeto);
-            }
-        }
-    }
-    private void avaliarSombreamentoPlayer(){
+    private void avaliarSombreamentoPlayer(DadosGame dadosGame) {
         for (Entidade atual : entities) {
             if (atual instanceof PosteLuz) {
-                player.atualizarSombreamento((ObjetoLuminoso) atual);
+                dadosGame.getPlayer().atualizarSombreamento((ObjetoLuminoso) atual, dadosGame);
             }
         }
     }
 
-    public void acaoPlayer(AcaoPlayer acaoPlayer){
-        player.executarAcao(isFreeY(), acaoPlayer);
+    public void acaoPlayer(AcaoPlayer acaoPlayer, Player player) {
+        player.executarAcao(isFreeY(player), acaoPlayer);
     }
-
 
 
 //    public void checkCollisionEnemy() {
@@ -297,7 +262,7 @@ public class GerenciadorEntidades {
 //    }
 
     //TODO Verifica se está em cima de uma plataforma, falta verificar se há objetos impeditivos acima
-    private boolean isFreeY() {
+    private boolean isFreeY(Player player) {
         for (Entidade atual : entities) {
             if (atual instanceof Plataforma) {
                 if (player.corpoColidindo(atual)) {
@@ -307,6 +272,10 @@ public class GerenciadorEntidades {
             }
         }
         return true;
+    }
+
+    public DadosGame getDadosGame() {
+        return new DadosGame();
     }
 
 }

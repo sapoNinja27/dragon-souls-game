@@ -7,13 +7,8 @@ import java.awt.*;
 import java.util.List;
 
 public interface MenuCommons {
-
-	default void desenharInfo(int x, int y, Graphics g, Player player){}
 	default void desenharInfo(int x, int y, Graphics g){}
 	default List<Habilidade> getHabilidades(){
 		return null;
-	}
-	default String tipoPlayer(){
-		return "null";
 	}
 }

@@ -1,5 +1,6 @@
 package jObjects.Mouse;
 
+
 import entidades.mascaras.MascaraUtils;
 
 import java.awt.*;

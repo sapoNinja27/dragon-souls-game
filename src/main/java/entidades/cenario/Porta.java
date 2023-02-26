@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import configuracoes.Configuracao;
 import entidades.Entidade;
 import entidades.mascaras.MascaraHitBox;
 import world.Camera;
@@ -45,20 +44,20 @@ public class Porta extends Entidade {
 
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		if (!colidindo) {
-			g.drawImage(porta[0], this.getX() - Camera.x - Configuracao.TILE_SIZE,
-					this.getY() - Camera.y - Configuracao.TILE_SIZE, Configuracao.TILE_SIZE * 2,
-					Configuracao.TILE_SIZE * 2, null);
-		} else {
-			g.drawImage(porta[1], this.getX() - Camera.x - Configuracao.TILE_SIZE,
-					this.getY() - Camera.y - Configuracao.TILE_SIZE, Configuracao.TILE_SIZE * 2,
-					Configuracao.TILE_SIZE * 2, null);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
-			g.setFont(new Font("Cambria Math", Font.ROMAN_BASELINE, 20));
-			g.setColor(Color.blue);
-			g.drawString(acao, this.getX() - Camera.x - 27, this.getY() - Camera.y - 65);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-		}
+//		if (!colidindo) {
+//			g.drawImage(porta[0], this.getX() - Camera.x - Configuracao.TILE_SIZE,
+//					this.getY() - Camera.y - Configuracao.TILE_SIZE, Configuracao.TILE_SIZE * 2,
+//					Configuracao.TILE_SIZE * 2, null);
+//		} else {
+//			g.drawImage(porta[1], this.getX() - Camera.x - Configuracao.TILE_SIZE,
+//					this.getY() - Camera.y - Configuracao.TILE_SIZE, Configuracao.TILE_SIZE * 2,
+//					Configuracao.TILE_SIZE * 2, null);
+//			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
+//			g.setFont(new Font("Cambria Math", Font.ROMAN_BASELINE, 20));
+//			g.setColor(Color.blue);
+//			g.drawString(acao, this.getX() - Camera.x - 27, this.getY() - Camera.y - 65);
+//			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+//		}
 
 	}
 }
