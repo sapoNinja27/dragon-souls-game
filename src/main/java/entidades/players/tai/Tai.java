@@ -84,32 +84,4 @@ public class Tai extends Player {
 //			parado = true;
 //		}
 //	}
-    @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @Override
-    public void render(Graphics g) {
-        super.render(g);
-//		Sombras(g, direcao);
-//		g.drawImage(direcao[index], this.getX() + posicao - Camera.x, this.getY() - Camera.y, null);
-//		sombrear(g, direcao);
-//		g.setColor(Color.red);
-////		g.drawRect(
-////				this.getX() - Camera.x + mascaras.get(0).getPosicaoX(),
-////				this.getY() - Camera.y + mascaras.get(0).getPosicaoY(),
-////				mascaras.get(0).getAutura(),
-////				mascaras.get(0).getLargura());
-//		g.setColor(Color.BLUE);
-    }
-
-    @Override
-    public void desenharInfo(int x, int y, Graphics g) {
-        setarAnimacao(MovimentoPlayer.RESPIRANDO);
-        g.drawImage(spriteAtual().get(index), x + 1110, y + 40, 64 * 2, 64 * 2, null);
-        ImageUtils.draw(g, "Tai", x + 1075, y + 255, Color.WHITE, 20);
-        String descricao = "Tai aumenta sua furia em combate com inimigos, acumulos de furia concedem a ele 15% da furia atual como resistencias, 10 de armadura e 30 de dano de ataque, ao atingir o maximo de furia os efeitos decaem ate acabarem";
-        write(g, descricao, 14, x + 1075, y + 255);
-    }
 }

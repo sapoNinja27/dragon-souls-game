@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import configuracoes.DadosGame;
 import world.Camera;
 
 public class Projetil extends Entidade {
@@ -30,8 +31,9 @@ public class Projetil extends Entidade {
 			return;
 		}
 	}
-	
-	public void render(Graphics g){
+
+	@Override
+	public void render(Graphics g, DadosGame dadosGame){
 		g.setColor(Color.YELLOW);
 		g.fillOval(this.getX() - Camera.x,this.getY() - Camera.y,width,height);
 	}

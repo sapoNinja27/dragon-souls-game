@@ -8,6 +8,8 @@ import enums.TipoMenu;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
+
 import static enums.TipoGame.MENU;
 import static enums.TipoGame.NORMAL;
 import static enums.TipoMenu.*;
@@ -23,7 +25,7 @@ public class DadosGame {
     private final int tileSize = 64;
     private int scale = 2;
 
-    private TipoMenu estadoMenu = HABILIDADES;
+    private TipoMenu estadoMenu = INVENTARIO;
     private TipoMenu lastEstadoMenu = TipoMenu.INICIAL;
     private TipoGame estadoGame = MENU;
     private TipoAmbiente local = TipoAmbiente.RUA;
@@ -74,7 +76,17 @@ public class DadosGame {
     }
 
     public void escPressed() {
-        if (!estadoMenu.equals(TipoMenu.INICIAL)) {
+        changeState(OPCOES, INICIAL);
+        inventario();
+    }
+
+    public void tabPressed() {
+        changeState(HABILIDADES, INICIAL, OPCOES);
+    }
+
+    private void changeState(TipoMenu novo, TipoMenu ... menusDesabilitar){
+        if (NORMAL.equals(estadoGame) || Arrays.stream(menusDesabilitar).noneMatch(tipoMenu -> tipoMenu.equals(estadoMenu))) {
+            estadoMenu = novo;
             switch (estadoGame) {
                 case MENU:
                     estadoGame = NORMAL;

@@ -74,6 +74,10 @@ public class GerenciadorEstado {
             dadosGame.escPressed();
         }
 
+        if (e.getKeyCode() == KeyEvent.VK_TAB) {
+            dadosGame.tabPressed();
+        }
+
         switch (dadosGame.getEstadoGame()) {
             case CUTSCENE:
             case MENU:

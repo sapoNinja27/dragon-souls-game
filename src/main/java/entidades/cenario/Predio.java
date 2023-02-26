@@ -1,5 +1,6 @@
 package entidades.cenario;
 
+import configuracoes.DadosGame;
 import entidades.Entidade;
 import entidades.cenario.limitescenario.ParedeInvisivel;
 import entidades.mascaras.MascaraHitBox;
@@ -63,11 +64,12 @@ public class Predio extends Entidade {
 //		paredeInvisivel.setLarguraParede(10);
     }
 
-    public void tick() {
+    @Override
+    public void tick(DadosGame dadosGame) {
         adicionarMascara(new MascaraHitBox(0, 0, 0, 0));
-        porta.tick();
+//        porta.tick();
         if (dentro) {
-            paredeInvisivel.tick();
+            paredeInvisivel.tick(dadosGame);
         }
     }
 
@@ -99,7 +101,7 @@ public class Predio extends Entidade {
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g, DadosGame dadosGame) {
         g.setColor(Color.darkGray);
 //		if (dentro) {
 //            desenharPredio(g);

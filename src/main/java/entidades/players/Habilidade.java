@@ -12,9 +12,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utils.ImageUtils.draw;
-import static utils.StringUtils.write;
-
 public class Habilidade implements HabilidadesCommons, MenuCommons {
     private int x, y;
     protected Spritesheet sprite = new Spritesheet("/menus/Menu.png");
@@ -93,18 +90,5 @@ public class Habilidade implements HabilidadesCommons, MenuCommons {
         } else {
             return new Color(0, 0, 0, 0);
         }
-    }
-
-    public void desenharInfo(int x, int y, Graphics g, Player player) {
-        player.setarAnimacao(getMovimentoPlayer());
-        g.drawImage(player.spriteAtual().get(player.index), x + 1110, y + 95, 64 * 2, 64 * 2, null);
-
-        draw(g, getTitulo(), x + 1075, y + 255, Color.WHITE, 20);
-
-        write(g, getDescricao(), 14, x + 1075, y + 255);
-
-        draw(g, getCusto(), x + 1075, y + 500, Color.YELLOW, 10);
-
-//		draw(g, "45", x + 1300, y + 500, Color.orange, 10);
     }
 }

@@ -29,6 +29,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
     private void setConfig() {
         requestFocus();
+        setFocusTraversalKeysEnabled(false);
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -36,8 +37,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
                 new Dimension(dadosGame.getScaleWidth(), dadosGame.getScaleHeight()));
         try {
             initFrame();
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
         image = new BufferedImage(dadosGame.getWidth(), dadosGame.getHeight(), BufferedImage.TYPE_INT_RGB);
     }
 
@@ -191,6 +191,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (e != null) {
+            Mouse.setCordinates(e.getX(), e.getY());
+        }
     }
 
 }

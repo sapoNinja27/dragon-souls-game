@@ -4,62 +4,69 @@ import configuracoes.DadosGame;
 import graficos.Loading;
 import graficos.Spritesheet;
 import jObjects.Botao;
+import utils.MatematicaUtils;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class MenuPrincipal {
-    private final Spritesheet fundo;
-    private final Spritesheet logo;
-    private int posx = 0;
-    private final Botao[] botoes = {
-            new Botao(720 / 2 - 200, 250, 91, 30, "Jogar", Color.red, 2, 20, 20, 30, 50),
-            new Botao(720 / 2 - 200 + 91 + 12, 250, 90, 30, "Continuar", Color.red, 2, 3, 20, 30, 50),
-            new Botao(720 / 2 - 200 + 91 * 2 + 12 * 2, 250, 90, 30, "Opções", Color.red, 2, 13, 20, 30, 50),
-            new Botao(720 / 2 - 200 + 91 * 3 + 12 * 3, 250, 90, 30, "Sair", Color.red, 2, 26, 20, 30, 50)
-    };
+public class MenuPrincipal extends Menu {
+    private final BufferedImage logo;
+    private final List<Botao> botoes = new ArrayList<>(0);
+    private final int widthLogo = 366;
+    private final int heigthLogo = 153;
 
     public MenuPrincipal() {
+        Spritesheet spritesheet = new Spritesheet("/menus/logo compacto.png");
+        logo = spritesheet.getSprite(0, 0, widthLogo, heigthLogo);
         fundo = new Spritesheet("/menus/fundo.png");
-        logo = new Spritesheet("/menus/Menu.png");
     }
 
-    private void atualizarFundo() {
-        posx++;
-        if (posx == 1536) {
-            posx = 0;
-        }
-    }
-
+    @Override
     public void tick(DadosGame dadosGame) {
-        atualizarFundo();
-        for (int i = 0; i < botoes.length; i++) {
-            botoes[i].tick();
-        }
-        if (botoes[0].isClicked()) {
-            Loading.start(dadosGame);
-//				world.startGame();
-            Loading.stop();
-            dadosGame.jogar();
-//				Game.player.visivel = true;
-//				Game.player.Hudvisivel = true;
-//				Game.player.depth = 7;
-//				Game.cen.CenaStart(0);
-        }
-        if (botoes[1].isClicked()) {
-            dadosGame.carregarJogo();
-        }
-        if (botoes[2].isClicked()) {
-            dadosGame.configuracoes();
-        }
-        if (botoes[3].isClicked()) {
-            System.exit(1);
+        super.tick(dadosGame);
+        for (Botao botao : getBotoes(dadosGame)) {
+            botao.tick();
+            if (botao.isClicked()) {
+                botao.doAction();
+            }
         }
     }
 
-    public void render(Graphics g) {
-        g.drawImage(logo.getSprite(2700, 0, 400, 200), 720 / 2 - 200, 30, null);
-        for (Botao botoe : botoes) {
-            botoe.render(g);
+    @Override
+    public void render(Graphics g, DadosGame dadosGame) {
+        super.render(g, dadosGame);
+        g.drawImage(logo,
+                MatematicaUtils.posicaoMeio(widthLogo * 2, dadosGame.getScaleWidth()), 100,
+                widthLogo * 2, heigthLogo * 2,
+                null);
+        for (Botao botao : getBotoes(dadosGame)) {
+            botao.render(g);
         }
+    }
+
+    private List<Botao> getBotoes(DadosGame dadosGame) {
+        int posicaoY = 435;
+        int posicaoMeioTela = MatematicaUtils.posicaoMeio(399, dadosGame.getScaleWidth());
+        if (botoes.isEmpty()) {
+            botoes.addAll(Arrays.asList(
+                    new Botao(posicaoMeioTela, posicaoY, 91, 30, "Jogar", Color.red, 2, 20, 20, 30, 50, () -> {
+                        Loading.start(dadosGame);
+                        Loading.stop();
+                        dadosGame.jogar();
+                        //TODO verificar o por que disso
+                        //				Game.player.visivel = true;
+                        //				Game.player.Hudvisivel = true;
+                        //				Game.player.depth = 7;
+                        //				Game.cen.CenaStart(0);
+                    }),
+                    new Botao(posicaoMeioTela + 103, posicaoY, 90, 30, "Continuar", Color.red, 2, 3, 20, 30, 50, dadosGame::carregarJogo),
+                    new Botao(posicaoMeioTela + 206, posicaoY, 90, 30, "Opções", Color.red, 2, 13, 20, 30, 50, dadosGame::configuracoes),
+                    new Botao(posicaoMeioTela + 309, posicaoY, 90, 30, "Sair", Color.red, 2, 26, 20, 30, 50, () -> System.exit(1))
+            ));
+        }
+        return botoes;
     }
 }

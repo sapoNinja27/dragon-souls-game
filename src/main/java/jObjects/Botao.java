@@ -1,6 +1,8 @@
 package jObjects;
 
 import jObjects.Mouse.Mouse;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -8,6 +10,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Botão
@@ -16,6 +19,8 @@ import java.util.Optional;
  * @apiNote Configurações do objeto assim como sua inclusão na lista do main são
  *          feitas no init() da pagina
  */
+@Setter
+@Getter
 public class Botao {
 	private int x, y, w, h, aw, ah;
 	private Color cor = Color.white;
@@ -27,6 +32,7 @@ public class Botao {
 	private boolean clicked;
 	private int mx, my;
 	private boolean lastBotao = false;
+	private Runnable acao;
 
 	/**
 	 * Cria um botão
@@ -45,7 +51,7 @@ public class Botao {
 
 	/**
 	 * Cria um botão mais elaborado
-	 * 
+	 *
 	 * @param x      : posição horizontal
 	 * @param y      : posição vertical
 	 * @param w  : tamanho horizontal
@@ -66,6 +72,54 @@ public class Botao {
 		this.spacingY = py;
 		this.aw = aw;
 		this.ah = ah;
+	}
+
+	/**
+	 * Cria um botão mais elaborado
+	 *
+	 * @param x      : posição horizontal
+	 * @param y      : posição vertical
+	 * @param w  : tamanho horizontal
+	 * @param h : tamanho vertical
+	 * @param text   : texto do botão
+	 * @param cor    : cor do botão
+	 * @param runnable  : acao
+	 */
+	public Botao(int x, int y, int w, int h, String text, Color cor, Runnable runnable) {
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		this.text = text;
+		this.cor = cor;
+		this.acao = runnable;
+	}
+
+	/**
+	 * Cria um botão mais elaborado
+	 *
+	 * @param x      : posição horizontal
+	 * @param y      : posição vertical
+	 * @param w  : tamanho horizontal
+	 * @param h : tamanho vertical
+	 * @param text   : texto do botão
+	 * @param cor    : cor do botão
+	 * @param borda  : tamanho da borda
+	 * @param runnable  : ação onclick
+	 */
+	public Botao(int x, int y, int w, int h, String text, Color cor, int borda, int px, int py, int aw, int ah, Runnable runnable) {
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		this.text = text;
+		this.cor = cor;
+		this.borda = borda;
+		this.spacingX = px;
+		this.spacingY = py;
+		this.aw = aw;
+		this.ah = ah;
+		this.acao = runnable;
 	}
 
 	/**
@@ -123,6 +177,9 @@ public class Botao {
 		return false;
 	}
 
+	public boolean isPressed(){
+		return mousePressed;
+	}
 	/**
 	 * Retorna verdadeiro quando o mouse esta acima do botão
 	 */
@@ -214,5 +271,9 @@ public class Botao {
 	public void setXY(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public void doAction() {
+		acao.run();
 	}
 }

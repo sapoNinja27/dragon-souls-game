@@ -13,6 +13,69 @@ import static java.util.Objects.nonNull;
 public class ImageUtils {
 
     private static final HashMap<BufferedImage, HashMap<Color, BufferedImage>> cacheSombra = new HashMap<>();
+
+    public static void drawPolygon(Color color, Graphics g, Polygon polygon) {
+        g.setColor(color);
+        g.fillPolygon(polygon);
+    }
+
+
+    public static void draw(Graphics g, BufferedImage image, int x, int y, int size){
+        draw(g, image, x, y, size, size);
+    }
+
+    public static void draw(Graphics g, String texto, int x, int y, Color color, int font){
+        draw(g, texto, x, y, color, new Font("arial", Font.BOLD, font));
+    }
+
+    public static void draw(Graphics g, String texto, int x, int y, Color color, Font font){
+        g.setColor(color);
+        g.setFont(font);
+        g.drawString(texto, x, y);
+    }
+
+    public static void draw(Graphics g, int x, int y, Color color, int w, int h){
+        g.setColor(color);
+        g.drawRect(x, y, w, h);
+    }
+
+    public static void fill(Graphics g, int x, int y, Color color, int w, int h){
+        g.setColor(color);
+        g.fillRect(x, y, w, h);
+    }
+
+    public static void draw(Graphics g, BufferedImage image, int x, int y, int w, int h){
+        g.drawImage(image, x, y, w, h, null);
+    }
+
+    //TODO verificar performance com cache
+    public static BufferedImage inverterV(BufferedImage image) {
+        if(image!=null) {
+            BufferedImage newImage=new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
+            int[] imageP=((DataBufferInt)newImage.getAlphaRaster().getDataBuffer()).getData();
+            for(int xx=0; xx<image.getTileWidth(); xx++) {
+                for(int yy = image.getHeight(); yy >0; yy--) {
+                    int y2=(yy-image.getHeight())*(-1);
+                    Color color=new Color(image.getRGB(xx, y2),true);
+                    if(xx+(yy*image.getWidth())-1>=4096) {
+                        continue;
+                    }
+                    imageP[xx+(yy*image.getWidth())-1]=color.hashCode();
+                }
+            }
+            return newImage;
+        }
+        return null;
+    }
+
+    public static List<BufferedImage> inverter(List<BufferedImage> imageList) {
+        List<BufferedImage> invertidas = new ArrayList<>();
+        for (BufferedImage image: imageList) {
+            invertidas.add(inverter(image));
+        }
+        return invertidas;
+    }
+
     public static BufferedImage inverter(BufferedImage image) {
         if(image!=null) {
             BufferedImage newImage=new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
@@ -27,19 +90,6 @@ public class ImageUtils {
             return newImage;
         }
         return null;
-
-    }
-
-    public static void drawPolygon(Color color, Graphics g, Polygon polygon) {
-        g.setColor(color);
-        g.fillPolygon(polygon);
-    }
-    public static List<BufferedImage> inverter(List<BufferedImage> imageList) {
-        List<BufferedImage> invertidas = new ArrayList<>();
-        for (BufferedImage image: imageList) {
-            invertidas.add(inverter(image));
-        }
-        return invertidas;
     }
 
     public static BufferedImage sombreamento(BufferedImage image) {
@@ -68,49 +118,6 @@ public class ImageUtils {
             cache.put(color, newImage);
             cacheSombra.put(image, cache);
             return (newImage);
-        }
-        return null;
-    }
-
-    public static void draw(Graphics g, BufferedImage image, int x, int y, int size){
-        draw(g, image, x, y, size, size);
-    }
-
-    public static void draw(Graphics g, String texto, int x, int y, Color color, int font){
-        g.setColor(color);
-        g.setFont(new Font("arial", Font.BOLD, font));
-        g.drawString(texto, x, y);
-    }
-
-    public static void draw(Graphics g, int x, int y, Color color, int w, int h){
-        g.setColor(color);
-        g.drawRect(x, y, w, h);
-    }
-
-    public static void fill(Graphics g, int x, int y, Color color, int w, int h){
-        g.setColor(color);
-        g.fillRect(x, y, w, h);
-    }
-
-    public static void draw(Graphics g, BufferedImage image, int x, int y, int w, int h){
-        g.drawImage(image, x, y, w, h, null);
-    }
-
-    public static BufferedImage inverterV(BufferedImage image) {
-        if(image!=null) {
-            BufferedImage newImage=new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
-            int[] imageP=((DataBufferInt)newImage.getAlphaRaster().getDataBuffer()).getData();
-            for(int xx=0; xx<image.getTileWidth(); xx++) {
-                for(int yy = image.getHeight(); yy >0; yy--) {
-                    int y2=(yy-image.getHeight())*(-1);
-                    Color color=new Color(image.getRGB(xx, y2),true);
-                    if(xx+(yy*image.getWidth())-1>=4096) {
-                        continue;
-                    }
-                    imageP[xx+(yy*image.getWidth())-1]=color.hashCode();
-                }
-            }
-            return newImage;
         }
         return null;
     }

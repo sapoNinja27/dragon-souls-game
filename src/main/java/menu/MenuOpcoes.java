@@ -1,11 +1,12 @@
 package menu;
 
 import configuracoes.DadosGame;
+import enums.TipoMenu;
 import jObjects.Botao;
 
 import java.awt.*;
 
-public class MenuOpcoes {
+public class MenuOpcoes extends Menu{
     private final Botao[] principal = {
 //			new Botao(720 / 2 - 200 + 91, 220, 90, 30, "Portugues", Color.DARK_GRAY, 2, 5, 20, 30, 50),
             new Botao(580, 312, 68, 28, "Voltar", Color.red, 2, 10, 20, 30, 50)
@@ -21,7 +22,9 @@ public class MenuOpcoes {
             new Botao(720 / 2 - 9, 170, 90, 30, "On", Color.green, 2, 5, 20, 30, 50)
     };
 
-    public void tick(DadosGame dadosGame, boolean isPrincipal) {
+    @Override
+    public void tick(DadosGame dadosGame) {
+        boolean isPrincipal = dadosGame.getLastEstadoMenu().equals(TipoMenu.INICIAL);
         for (Botao botoe : botoes) {
             botoe.tick();
         }
@@ -77,7 +80,10 @@ public class MenuOpcoes {
         }
     }
 
-    public void render(Graphics g, DadosGame dadosGame, boolean isPrincipal) {
+    @Override
+    public void render(Graphics g, DadosGame dadosGame) {
+        super.render(g, dadosGame);
+        boolean isPrincipal = dadosGame.getLastEstadoMenu().equals(TipoMenu.INICIAL);
         g.setColor(Color.black);
         g.fillRoundRect(720 / 3 - 40, 65, 260 + 20, 200 + 20, 30, 50);
         g.setColor(Color.LIGHT_GRAY);

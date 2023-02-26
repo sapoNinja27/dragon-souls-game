@@ -5,13 +5,12 @@ import entidades.Entidade;
 import entidades.cenario.objetosluminosos.ObjetoLuminoso;
 import entidades.mascaras.MascaraHitBox;
 import entidades.players.tai.Tai;
-import enums.AcaoPlayer;
-import enums.DirecaoPlayer;
-import enums.MovimentoPlayer;
+import enums.*;
 import graficos.Spritesheet;
 import graficos.UI;
 import interfaces.HudCommons;
 import interfaces.MenuCommons;
+import utils.FonteUtils;
 import utils.ImageUtils;
 import world.Camera;
 
@@ -21,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static enums.MovimentoPlayer.*;
+import static java.util.Objects.nonNull;
+import static utils.ImageUtils.draw;
+import static utils.StringUtils.write;
 
 public abstract class Player extends Entidade implements MenuCommons, HudCommons {
     protected int posicao = 0;
@@ -37,9 +39,9 @@ public abstract class Player extends Entidade implements MenuCommons, HudCommons
     private int xp = 64;
     private int pontosHabilidade = 2;
 
-    //TODO adicionar variaÃ§Ã£o de vida pra cada personagem
+    //TODO adicionar variação de vida pra cada personagem
     protected int vida = 958, vidaMaxima = 1000;
-    //TODO o nome desse atributo varia visualmente para cada personagem, sendo ace concentraÃ§Ã£o, tai furia e sander foco
+    //TODO o nome desse atributo varia visualmente para cada personagem, sendo ace concentração, tai furia e sander foco
     protected int mana = 500, manaMaxima = 1000;
     //TODO reduz valor fixo de dano
     protected int defesa = 10;
@@ -52,9 +54,9 @@ public abstract class Player extends Entidade implements MenuCommons, HudCommons
     private boolean ePrimeiroSpawn;
     private boolean dentro;
 
-    //Atributos de execuÃ§Ã£o de acÃ£o de direÃ§Ã£o
+    //Atributos de execução de acão de direção
     private boolean direita, cima, esquerda, baixo;
-    //Atributos de executando aÃ§Ã£o
+    //Atributos de executando ação
     protected boolean caindo, subindo, pousando, andando, parando, atacando, respirando = true, respirandoEmCombate, investindo;
 
     private Player playerUm;
@@ -113,31 +115,86 @@ public abstract class Player extends Entidade implements MenuCommons, HudCommons
     public Player(int x, int y, DadosGame dadosGame) {
         super(x, y, 0, 0);
         atualizarSprites(dadosGame);
+        adicionarMascaras();
     }
 
+    @Override
     public void tick(DadosGame dadosGame) {
         depth = 1;
         verificarAcao();
+        updateCamera(dadosGame);
+        if (dadosGame.getEstadoGame().equals(TipoGame.NORMAL)) {
+            atualizarDirecaoPlayer();
 
-        adicionarMascaras();
-        atualizarDirecaoPlayer();
-
-        lifesistem(dadosGame);
-        if (!isPlayerDois) {
-            updateCamera(dadosGame);
+            lifesistem(dadosGame);
+            if (!isPlayerDois) {
 //				nBot();
-        } else {
-            bot();
+            } else {
+                bot();
+            }
         }
     }
 
-    public void render(Graphics g, DadosGame dadosGame) {
-        if (!isPlayerDois) {
-            ui.render(g, dadosGame.getPlayer());
+    public void desenharInfo(int x, int y, Graphics g, DadosGame dadosGame, Habilidade habilidade) {
+        x = x - 10;
+        String titulo = "Tai";
+        String descricao = "Tai aumenta sua fúria em combate." +
+                "\n" +
+                "\n" +
+                "Acúmulos de fúria conceden a ele:" +
+                "\n" +
+                "* 15% da fúria atual como resistências" +
+                "\n" +
+                "* 10 de armadura" +
+                "\n" +
+                "* 30 de dano de ataque" +
+                "\n" +
+                "\n" +
+                "Ao atingir o máximo de fúria, o " +
+                "\n" +
+                "medidor de fúria decai, junto com" +
+                "\n" +
+                "os atributos, e só poderá voltar a" +
+                "\n" +
+                "ser acumulada ao esvaziar" +
+                "\n" +
+                "completamente.";
+        String custo = "";
+        MovimentoPlayer animacao = RESPIRANDO;
+
+        if (nonNull(habilidade)) {
+            titulo = habilidade.getTitulo();
+            descricao = habilidade.getDescricao();
+            custo = habilidade.getCusto();
+            animacao = habilidade.getMovimentoPlayer();
         }
-        sombrasChao(g, spriteAtual().get(index), dadosGame);
-        g.drawImage(spriteAtual().get(index), this.getX() + posicao - Camera.x, this.getY() - Camera.y, 64, 64, null);
-        atualizarIluminacao(g, spriteAtual());
+
+        render(g, dadosGame);
+
+        setarAnimacao(animacao);
+        Font font = FonteUtils.CrimsonText(TipoFonte.REGULAR, 25);
+        draw(g, titulo, x + 1075, y + 257, Color.WHITE, font);
+        write(g, descricao, font.deriveFont(18f), x + 1075, y + 250);
+        draw(g, custo, x + 1075, y + 530, Color.YELLOW, font.deriveFont(15f));
+//		draw(g, "45", x + 1300, y + 500, Color.orange, 10);
+    }
+
+    @Override
+    public void render(Graphics g, DadosGame dadosGame) {
+        int tileSize = dadosGame.getTileSize(2);
+        int x = 1150;
+        int y = 132;
+        if (dadosGame.getEstadoGame().equals(TipoGame.NORMAL)) {
+            tileSize = tileSize / 2;
+            if (!isPlayerDois) {
+                ui.render(g, dadosGame.getPlayer());
+            }
+            x = this.getX() + posicao - Camera.x;
+            y = this.getY() - Camera.y;
+        }
+        sombrasChao(g, spriteAtual().get(index), x, y, tileSize);
+        g.drawImage(spriteAtual().get(index), x, y, tileSize, tileSize, null);
+        atualizarIluminacao(g, spriteAtual(), x, y, tileSize);
     }
 
     protected List<BufferedImage> spriteAtual() {
@@ -145,19 +202,19 @@ public abstract class Player extends Entidade implements MenuCommons, HudCommons
     }
 
     public void teleportar(int x, int y) {
-        if (!isPlayerDois) {
-            setX(x);
-            setY(y);
-        } else {
-            if (this.direcaoPlayer.equals(DirecaoPlayer.ESQUERDA)) {
-                setX(x + 20);
-                setY(y);
-            }
-            if (this.direcaoPlayer.equals(DirecaoPlayer.DIREITA)) {
-                setX(x - 20);
-                setY(y);
-            }
-        }
+//        if (!isPlayerDois) {
+//            setX(x);
+//            setY(y);
+//        } else {
+//            if (this.direcaoPlayer.equals(DirecaoPlayer.ESQUERDA)) {
+//                setX(x + 20);
+//                setY(y);
+//            }
+//            if (this.direcaoPlayer.equals(DirecaoPlayer.DIREITA)) {
+//                setX(x - 20);
+//                setY(y);
+//            }
+//        }
     }
 
     public void verificarAcao() {
@@ -371,19 +428,21 @@ public abstract class Player extends Entidade implements MenuCommons, HudCommons
         }
     }
 
-    public void atualizarIluminacao(Graphics g, List<BufferedImage> sprite) {
-        g.drawImage(ImageUtils.sombreamento(sprite.get(index), new Color(0, 0, 0, sombreamento)), this.getX() + posicao - Camera.x, this.getY() - Camera.y, null);
+    public void atualizarIluminacao(Graphics g, List<BufferedImage> sprite, int x, int y, int tileSize) {
+        g.drawImage(
+                ImageUtils.sombreamento(sprite.get(index), new Color(0, 0, 0, sombreamento)),
+                x,
+                y,
+                tileSize,
+                tileSize,
+                null);
     }
 
-    public void sombrasChao(Graphics g, BufferedImage sprite, DadosGame dadosGame) {
-        int tileSize = dadosGame.getTileSize();
+    public void sombrasChao(Graphics g, BufferedImage sprite, int x, int y, int tileSize) {
         if (!subindo && !caindo) {
-            g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite, new Color(0, 0, 0, sombras))), this.getX() + posicao - Camera.x,
-                    this.getY() - Camera.y + tileSize, tileSize, tileSize / 2, null);
+            g.drawImage(ImageUtils.inverterV(ImageUtils.sombreamento(sprite, new Color(0, 0, 0, sombras))), x, y + tileSize, tileSize, tileSize / 2, null);
         } else {
-            g.drawImage(ImageUtils.sombreamento(sprite, new Color(0, 0, 0, sombras)), this.getX() + posicao - Camera.x + 10,
-                    this.getY() - Camera.y + tileSize, tileSize,
-                    tileSize / 2, null);
+            g.drawImage(ImageUtils.sombreamento(sprite, new Color(0, 0, 0, sombras)), x + 10, y + tileSize, tileSize, tileSize / 2, null);
         }
 
     }

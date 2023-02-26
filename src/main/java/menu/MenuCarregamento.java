@@ -6,7 +6,7 @@ import jObjects.Botao;
 import java.awt.*;
 import java.io.File;
 
-public class MenuCarregamento {
+public class MenuCarregamento  extends Menu{
     private final Botao[] botoes = {
             new Botao(720 / 2 - 200 + 91, 120, 90, 30, "Espaço 1", Color.DARK_GRAY, 2, 5, 20, 0, 0),
             new Botao(720 / 2 - 200 + 91, 170, 90, 30, "Espaço 2", Color.DARK_GRAY, 2, 5, 20, 0, 0),

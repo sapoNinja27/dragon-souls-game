@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import configuracoes.DadosGame;
 import entidades.Entidade;
 import entidades.mascaras.MascaraHitBox;
 import world.Camera;
@@ -19,7 +20,7 @@ public class Plataforma extends Entidade {
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public void render(Graphics g, DadosGame dadosGame) {
 		g.drawImage(img, this.getX() - Camera.x, this.getY() - Camera.y, null);
 		g.setColor(Color.red);
 		g.drawRect(

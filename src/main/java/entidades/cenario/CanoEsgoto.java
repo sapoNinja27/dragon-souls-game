@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import configuracoes.DadosGame;
 import entidades.Entidade;
 import entidades.mascaras.MascaraHitBox;
 import world.Camera;
@@ -26,7 +27,7 @@ public class CanoEsgoto extends Entidade {
 	}
 
     @Override
-	public void tick() {
+	public void tick(DadosGame dadosGame) {
         frames++;
         if (index == 1) {
             if (frames >= rand[ciclo] + 50) {
@@ -51,7 +52,7 @@ public class CanoEsgoto extends Entidade {
 	}
 
     @Override
-	public void render(Graphics g) {
+	public void render(Graphics g, DadosGame dadosGame) {
         g.drawImage(img[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 	}
 }

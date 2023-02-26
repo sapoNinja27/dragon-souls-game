@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import configuracoes.DadosGame;
 import entidades.mascaras.MascaraHitBox;
 import enums.DirecaoPlayer;
 
@@ -94,12 +96,12 @@ public class Entidade {
 		return direcaoPlayer;
 	}
 
-	public void teleportarPlayer(Entidade player) {
+	public void teleportarPlayer(DadosGame dadosGame) {
 //		if (player.direcaoPlayer.equals(DirecaoPlayer.DIREITA)) {
 //			player.setX(this.getX() - 15 + larg);
 //			player.parado = true;
 //		}
-//		if (playerdirecaoPlayer.equals(DirecaoPlayer.ESQUERDA)) {
+//		if (player.direcaoPlayer.equals(DirecaoPlayer.ESQUERDA)) {
 //			player.setX(this.getX() + (dist * Configuracoes.TILE_SIZE) - 47 - larg);
 //			player.parado = true;
 //		}
@@ -165,11 +167,11 @@ public class Entidade {
 		return mascarasAlvo.stream().anyMatch(mascaraAtual::intersects);
 	}
 
-	public void tick(){
+	public void tick(DadosGame dadosGame){
 
 	}
 
-	public void render(Graphics g) {
+	public void render(Graphics g, DadosGame dadosGame) {
 
 	}
 	

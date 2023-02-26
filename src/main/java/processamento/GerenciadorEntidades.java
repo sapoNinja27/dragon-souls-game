@@ -121,10 +121,10 @@ public class GerenciadorEntidades {
         }
 
         for (Entidade e : entities) {
-            e.tick();
+            e.tick(dadosGame);
             if (e instanceof ParedeInvisivel) {
                 if (e.corpoColidindo(player, Arrays.asList("esquerda", "direita"))) {
-                    e.teleportarPlayer(player);
+                    e.teleportarPlayer(dadosGame);
                 }
             }
             if (e.corpoColidindo(player)) {
@@ -161,11 +161,11 @@ public class GerenciadorEntidades {
         entities.sort(Entidade.nodeSorter);
         for (Entidade e : entities) {
             if (drawDistance(e, dadosGame.getPlayer())) {
-                e.render(g);
+                e.render(g, dadosGame);
             }
         }
 
-        dadosGame.getPlayer().render(g);
+        dadosGame.getPlayer().render(g, dadosGame);
 
 //        for (ObjetosComMovimento objeto : objetos) {
 //            objeto.render(g);
