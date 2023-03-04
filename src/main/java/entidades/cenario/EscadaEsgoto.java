@@ -1,10 +1,9 @@
 package entidades.cenario;
 
-import configuracoes.DadosGame;
+import main.DadosGame;
 import entidades.Entidade;
-import entidades.mascaras.MascaraHitBox;
 import graficos.Spritesheet;
-import world.Camera;
+import main.world.Camera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,9 +17,9 @@ public class EscadaEsgoto extends Entidade {
         super(x, y, 0, 0);
         int tileSize = dadosGame.getTileSize();
         depth = 0;
-        adicionarMascara(new MascaraHitBox(18, 0, 31, 40));
-        img[0] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize);
-        img[1] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize - 3);
+//        adicionarMascara(new MascaraHitBox(18, 0, 31, 40));
+//        img[0] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize);
+//        img[1] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize - 3);
     }
 
     @Override
@@ -54,6 +53,7 @@ public class EscadaEsgoto extends Entidade {
             g.drawString("Cidade", this.getX() - Camera.x + 5, this.getY() - Camera.y - 20);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
+        super.render(g, dadosGame);
     }
 
 }

@@ -1,15 +1,10 @@
 package entidades.cenario;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import entidades.Entidade;
-import entidades.mascaras.MascaraHitBox;
-import world.Camera;
 
 public class Porta extends Entidade {
 	public boolean emFrente;
@@ -24,7 +19,7 @@ public class Porta extends Entidade {
 		super(x, y, 0, 0);
 		this.porta = porta;
 		depth = 1;
-		adicionarMascara(new MascaraHitBox(- 25, -20, 46, 80));
+//		adicionarMascara(new MascaraHitBox(- 25, -20, 46, 80));
 	}
 
 	public void tick() {

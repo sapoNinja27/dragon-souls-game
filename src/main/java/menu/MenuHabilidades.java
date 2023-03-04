@@ -1,16 +1,15 @@
 package menu;
 
-import configuracoes.DadosGame;
-import entidades.players.Habilidade;
-import enums.TipoFonte;
+import main.DadosGame;
+import entidades.players.principal.habilidades.Habilidade;
+import main.enums.TipoFonte;
 import graficos.Spritesheet;
-import utils.FonteUtils;
-import utils.StringUtils;
+import main.utils.FonteUtils;
+import main.utils.StringUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MenuHabilidades extends Menu {
 

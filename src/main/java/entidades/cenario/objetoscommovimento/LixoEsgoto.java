@@ -7,8 +7,8 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import graficos.Spritesheet;
-import utils.ImageUtils;
-import world.Camera;
+import main.utils.ImageUtils;
+import main.world.Camera;
 
 public class LixoEsgoto extends ObjetosComMovimento{
 	private BufferedImage img;

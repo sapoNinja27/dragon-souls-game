@@ -1,7 +1,7 @@
 package menu;
 
-import configuracoes.DadosGame;
-import enums.TipoMenu;
+import main.DadosGame;
+import main.enums.TipoMenu;
 import jObjects.Botao;
 
 import java.awt.*;
@@ -9,17 +9,17 @@ import java.awt.*;
 public class MenuOpcoes extends Menu{
     private final Botao[] principal = {
 //			new Botao(720 / 2 - 200 + 91, 220, 90, 30, "Portugues", Color.DARK_GRAY, 2, 5, 20, 30, 50),
-            new Botao(580, 312, 68, 28, "Voltar", Color.red, 2, 10, 20, 30, 50)
+//            new Botao(580, 312, 68, 28, "Voltar", Color.red, 2, 10, 20, 30, 50)
     };
     private final Botao[] pause = {
-            new Botao(25, 50, 105, 25, "Habilidade", Color.red, 2, 9, 18, 30, 50),
-            new Botao(618 - 25, 50, 100, 25, "Inventario", Color.red, 2, 9, 18, 30, 50),
-            new Botao(618 - 70, 265, 150, 25, "Voltar Ao Jogo", Color.red, 2, 13, 18, 30, 50),
-            new Botao(618 - 70, 300, 150, 25, "Menu Principal", Color.red, 2, 13, 18, 30, 50)
+//            new Botao(25, 50, 105, 25, "Habilidade", Color.red, 2, 9, 18, 30, 50),
+//            new Botao(618 - 25, 50, 100, 25, "Inventario", Color.red, 2, 9, 18, 30, 50),
+//            new Botao(618 - 70, 265, 150, 25, "Voltar Ao Jogo", Color.red, 2, 13, 18, 30, 50),
+//            new Botao(618 - 70, 300, 150, 25, "Menu Principal", Color.red, 2, 13, 18, 30, 50)
     };
     private final Botao[] botoes = {
-            new Botao(720 / 2 - 9, 120, 90, 30, "On", Color.green, 2, 5, 20, 30, 50),
-            new Botao(720 / 2 - 9, 170, 90, 30, "On", Color.green, 2, 5, 20, 30, 50)
+//            new Botao(720 / 2 - 9, 120, 90, 30, "On", Color.green, 2, 5, 20, 30, 50),
+//            new Botao(720 / 2 - 9, 170, 90, 30, "On", Color.green, 2, 5, 20, 30, 50)
     };
 
     @Override
@@ -29,17 +29,18 @@ public class MenuOpcoes extends Menu{
             botoe.tick();
         }
         if (botoes[0].isClicked()) {
-            if (dadosGame.isMusica()) {
-                botoes[0].setText("Off");
-                botoes[0].setCor(Color.red);
-                botoes[0].setSpacing(60, 20);
-                dadosGame.setMusica(false);
-            } else {
-                botoes[0].setText("On");
-                botoes[0].setCor(Color.green);
-                botoes[0].setSpacing(5, 20);
-                dadosGame.setMusica(true);
-            }
+            //TODO criar botão padrçao swith
+//            if (dadosGame.isMusica()) {
+//                botoes[0].setTexto("Off");
+//                botoes[0].setCor(Color.red);
+//                botoes[0].setSpacing(60, 20);
+//                dadosGame.setMusica(false);
+//            } else {
+//                botoes[0].setText("On");
+//                botoes[0].setCor(Color.green);
+//                botoes[0].setSpacing(5, 20);
+//                dadosGame.setMusica(true);
+//            }
         }
         if (botoes[1].isClicked()) {
 //            if (Configuracao.efeitos) {

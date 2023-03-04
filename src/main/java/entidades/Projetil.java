@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import configuracoes.DadosGame;
-import world.Camera;
+import main.DadosGame;
+import main.world.Camera;
 
 public class Projetil extends Entidade {
 

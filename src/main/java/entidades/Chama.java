@@ -3,7 +3,7 @@ package entidades;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import configuracoes.DadosGame;
+import main.DadosGame;
 import graficos.Spritesheet;
 
 public class Chama extends Entidade {

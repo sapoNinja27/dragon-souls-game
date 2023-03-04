@@ -1,6 +1,6 @@
 package entidades;
 
-import enums.TipoItem;
+import main.enums.TipoItem;
 import lombok.*;
 
 import java.awt.*;

@@ -1,29 +1,13 @@
 package menu;
 
 import java.awt.*;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import configuracoes.DadosGame;
-import enums.TipoFonte;
-import enums.TipoMenu;
-import graficos.Loading;
-import graficos.Spritesheet;
+import main.DadosGame;
+import main.enums.TipoFonte;
 import jObjects.Botao;
-import jObjects.Mouse.Mouse;
-import lombok.Builder;
-import utils.FonteUtils;
-import utils.ListUtils;
+import main.utils.FonteUtils;
 
 public class MenuInventario extends Menu {
-    Botao[] botoes = {
-            new Botao(618 - 70, 265, 150, 25, "Voltar Ao Jogo", Color.red, 2, 13, 18, 30, 50),
-            new Botao(618 - 70, 300, 150, 25, "Menu Principal", Color.red, 2, 13, 18, 30, 50)
-    };
 
     //16 itens chave
     //14 itens para companions

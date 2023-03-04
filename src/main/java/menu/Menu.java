@@ -1,13 +1,13 @@
 package menu;
 
-import configuracoes.DadosGame;
-import enums.TipoMenu;
+import main.DadosGame;
+import main.enums.TipoMenu;
 import graficos.Spritesheet;
 
 import java.awt.*;
 
-import static utils.ImageUtils.draw;
-import static utils.ImageUtils.fill;
+import static main.utils.ImageUtils.draw;
+import static main.utils.ImageUtils.fill;
 
 public class Menu {
     protected final Color bordaMenu;

@@ -1,19 +1,16 @@
 package graficos;
 
-import entidades.players.Player;
+import entidades.players.principal.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class UI {
-    final private Color corBarraMana = new Color(206, 126, 0);
-    final private Color corBarraVida = new Color(189, 21, 0);
-    final private Color corBarraManaVazia = new Color(100, 57, 0);
-    final private Color corBarraVidaVazia = new Color(45, 6, 0);
-    BufferedImage icone;
+    private final Color corBarraMana = new Color(206, 126, 0);
+    private final Color corBarraVida = new Color(189, 21, 0);
+    private final Color corBarraManaVazia = new Color(100, 57, 0);
+    private final Color corBarraVidaVazia = new Color(45, 6, 0);
+    private final BufferedImage icone;
 
     public UI() {
         Spritesheet sprites = new Spritesheet("/menus/icons.png");
@@ -55,14 +52,5 @@ public class UI {
         g.fillRect(x + 1, y + 1, 100, 15);
         g.setColor(corBarra);
         g.fillRect(x + 1, y + 1, 100 * atual / max, 15);
-        g.setColor(Color.white);
-        List<String> chars = Arrays.asList(String.valueOf(atual).split(""));
-        Collections.reverse(chars);
-        for (int i = 0; i < chars.size(); i++) {
-            String casa = chars.get(i);
-            g.drawString(casa, x + 40 - (7 * i), y + 12);
-        }
-        g.drawString("|", x + 50, y + 12);
-        g.drawString(String.valueOf(max), x + 55, y + 12);
     }
 }

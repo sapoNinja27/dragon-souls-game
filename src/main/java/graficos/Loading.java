@@ -1,7 +1,7 @@
 package graficos;
 
-import configuracoes.DadosGame;
-import utils.ImageUtils;
+import main.DadosGame;
+import main.utils.ImageUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -57,7 +57,7 @@ public class Loading {
 
     public static void start(DadosGame dadosGame) {
         for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = loading.getSprite(dadosGame.getTileSize(i), 535, dadosGame.getTileSize(), dadosGame.getTileSize());
+//            pixels[i] = loading.getSprite(dadosGame.getTileSize(i), 535, dadosGame.getTileSize(), dadosGame.getTileSize());
         }
         iniciando = true;
     }

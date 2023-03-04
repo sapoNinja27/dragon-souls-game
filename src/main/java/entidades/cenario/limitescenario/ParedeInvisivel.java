@@ -1,10 +1,9 @@
 package entidades.cenario.limitescenario;
 
-import configuracoes.DadosGame;
+import main.DadosGame;
 import entidades.Entidade;
-import entidades.mascaras.MascaraHitBox;
-import enums.DirecaoPlayer;
-import world.Camera;
+import main.enums.DirecaoPlayer;
+import main.world.Camera;
 
 import java.awt.*;
 
@@ -12,8 +11,8 @@ public class ParedeInvisivel extends Entidade {
 
     public ParedeInvisivel(int x, int y, DadosGame dadosGame) {
         super(x, y, dadosGame.getWordWidth(), 0);
-        adicionarMascara(new MascaraHitBox("esquerdo", 0, 0, 1, dadosGame.getHeight() * 19));
-        adicionarMascara(new MascaraHitBox("direito", dadosGame.getWordWidth() * dadosGame.getTileSize() - 2, 0, 1, dadosGame.getHeight() * 19));
+//        adicionarMascara(new MascaraHitBox("esquerdo", 0, 0, 1, dadosGame.getHeight() * 19));
+//        adicionarMascara(new MascaraHitBox("direito", dadosGame.getWordWidth() * dadosGame.getTileSize() - 2, 0, 1, dadosGame.getHeight() * 19));
     }
 
     //TODO mover a responsabilidade de validar pra ca
@@ -22,11 +21,11 @@ public class ParedeInvisivel extends Entidade {
         Entidade player = dadosGame.getPlayer();
         int distanciaEntreAsParedes = width;
         int largura = height;
-        if (player.getDirecaoPlayer().equals(DirecaoPlayer.DIREITA)) {
+        if (player.getDirecao().equals(DirecaoPlayer.DIREITA)) {
             player.setX(this.getX() - 15 + largura);
             player.setParado(true);
         }
-        if (player.getDirecaoPlayer().equals(DirecaoPlayer.ESQUERDA)) {
+        if (player.getDirecao().equals(DirecaoPlayer.ESQUERDA)) {
             player.setX(this.getX() + (distanciaEntreAsParedes * dadosGame.getTileSize()) - 47 - largura);
             player.setParado(true);
         }
@@ -44,8 +43,9 @@ public class ParedeInvisivel extends Entidade {
     @Override
     public void render(Graphics g, DadosGame dadosGame) {
         g.setColor(Color.red);
-        g.drawRect(this.getX() - Camera.x + mascaras.get(0).getPosicaoX(), this.getY() - Camera.y + mascaras.get(0).getPosicaoY(), mascaras.get(0).getAutura(), mascaras.get(0).getLargura());
-        g.drawRect(this.getX() - Camera.x + mascaras.get(1).getPosicaoX(), this.getY() - Camera.y + mascaras.get(1).getPosicaoY(), mascaras.get(1).getAutura(), mascaras.get(1).getLargura());
+        g.drawRect(this.getX() - Camera.x + mascaras.get(0).getX(), this.getY() - Camera.y + mascaras.get(0).getY(), mascaras.get(0).getAltura(), mascaras.get(0).getLargura());
+        g.drawRect(this.getX() - Camera.x + mascaras.get(1).getX(), this.getY() - Camera.y + mascaras.get(1).getY(), mascaras.get(1).getAltura(), mascaras.get(1).getLargura());
+        super.render(g, dadosGame);
     }
 
 }

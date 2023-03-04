@@ -1,9 +1,6 @@
 package entidades.cenario.objetoscommovimento;
 
-import enums.TipoAmbiente;
 import graficos.Spritesheet;
-import utils.ImageUtils;
-import world.Camera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

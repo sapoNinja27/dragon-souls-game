@@ -1,15 +1,12 @@
 package entidades.cenario;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import main.DadosGame;
 import entidades.Entidade;
 import graficos.Spritesheet;
-import entidades.mascaras.MascaraHitBox;
-import world.Camera;
 
 public class Portao extends Entidade {
 	private float op = 0.1f;
@@ -19,7 +16,7 @@ public class Portao extends Entidade {
 	public Portao(int x, int y, Spritesheet spt) {
 		super(x, y, 0, 0);
 		depth = 4;
-		adicionarMascara(new MascaraHitBox(0, 20, 64, 40));
+//		adicionarMascara(new MascaraHitBox(0, 20, 64, 40));
 		for (int i = 0; i < 2; i++) {
 //			img[i] = spt.getSprite((i) * Configuracao.TILE_SIZE, 5 * Configuracao.TILE_SIZE,
 //					Configuracao.TILE_SIZE, Configuracao.TILE_SIZE);
@@ -40,9 +37,10 @@ public class Portao extends Entidade {
 			op = 0.1f;
 		}
 	}
-
-	public void render(Graphics g) {
+	@Override
+	public void render(Graphics g, DadosGame dadosGame) {
 		Graphics2D g2 = (Graphics2D) g;
+		super.render(g, dadosGame);
 //		if (colidindo) {
 //			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
 //			g.setFont(new Font("Cambria Math", Font.PLAIN, 15));

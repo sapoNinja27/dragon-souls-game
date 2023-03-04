@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import entidades.Entidade;
-import entidades.mascaras.MascaraHitBox;
-import world.Camera;
 
 public class Janela extends Entidade {
 	private final BufferedImage img;
@@ -13,7 +11,7 @@ public class Janela extends Entidade {
 	public Janela(int x, int y, BufferedImage img) {
 		super(x, y, 0, 0);
 		depth = 1;
-		adicionarMascara(new MascaraHitBox(-25, -20, 46, 80));
+//		adicionarMascara(new MascaraHitBox(-25, -20, 46, 80));
 		this.img = img;
 	}
 

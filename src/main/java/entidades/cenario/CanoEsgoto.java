@@ -4,10 +4,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import configuracoes.DadosGame;
+import main.DadosGame;
 import entidades.Entidade;
-import entidades.mascaras.MascaraHitBox;
-import world.Camera;
+import main.world.Camera;
 
 public class CanoEsgoto extends Entidade {
 	private int index;
@@ -23,7 +22,7 @@ public class CanoEsgoto extends Entidade {
 		for(int i=0;i<3;i++) {
 			rand[i] = random.nextInt(300);
 		}
-		adicionarMascara(new MascaraHitBox(17, -30, 32, 40));
+//		adicionarMascara(new MascaraHitBox(17, -30, 32, 40));
 	}
 
     @Override
@@ -54,5 +53,6 @@ public class CanoEsgoto extends Entidade {
     @Override
 	public void render(Graphics g, DadosGame dadosGame) {
         g.drawImage(img[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+        super.render(g, dadosGame);
 	}
 }

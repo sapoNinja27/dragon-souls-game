@@ -1,11 +1,10 @@
 package entidades.cenario;
 
-import configuracoes.DadosGame;
+import main.DadosGame;
 import entidades.Entidade;
-import entidades.mascaras.MascaraHitBox;
 import graficos.Spritesheet;
-import utils.ImageUtils;
-import world.Camera;
+import main.utils.ImageUtils;
+import main.world.Camera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,8 +19,8 @@ public class LataLixo extends Entidade {
     public LataLixo(int x, int y, Spritesheet spt, DadosGame dadosGame) {
         super(x, y, 0, 0);
         int tileSize = dadosGame.getTileSize();
-        depth = 1;
-        adicionarMascara(new MascaraHitBox(-25, -20, 46, 80));
+        depth = 2;
+//        adicionarMascara(new MascaraHitBox(-25, -20, 46, 80));
         for (int i = 0; i < 2; i++) {
             lata[i] = spt.getSprite((4 + i) * tileSize, tileSize, tileSize, tileSize);
         }
@@ -29,23 +28,40 @@ public class LataLixo extends Entidade {
 
     @Override
     public void render(Graphics g, DadosGame dadosGame) {
-        int tileSize = dadosGame.getTileSize();
         for (int i = 0; i < 3; i++) {
-            if (pos[i] == 1) {
-                g.drawImage(lata[index[i]], this.getX() - Camera.x + 20 + (-i * 20), this.getY() - Camera.y + 7, tileSize, tileSize, null);
-            } else {
-                g.drawImage(ImageUtils.inverter(lata[index[i]]), this.getX() - Camera.x + 20 + (-i * 20),
-                        this.getY() - Camera.y + 7, tileSize, tileSize, null);
-            }
-
+            final int ni = i;
+            final int x = this.getX() - Camera.x + 20 + (-i * 20);
+            final int y = this.getY() - Camera.y + 7;
+            int tileSize = dadosGame.getTileSize();
+            ImageUtils.applySombreamento(
+                    g,
+                    imageAtualizada(ni),
+                    tileSize,
+                    x,
+                    y,
+                    sombreamento,
+                    sombras,
+                    () -> g.drawImage(imageAtualizada(ni),
+                            x,
+                            y,
+                            tileSize, tileSize, null),
+                    dadosGame.isDia(),
+                    () -> drawMoscas(g)
+            );
         }
-        if (dadosGame.isDia()) {
-            for (int i = 0; i < 3; i++) {
-                if (index[i] == 0) {
-                    g.setColor(Color.LIGHT_GRAY);
-                    g.fillOval(this.getX() - Camera.x + 40 + random.nextInt(25) + (-i * 20),
-                            this.getY() - Camera.y + 7 + random.nextInt(20), 3, 3);
-                }
+        super.render(g, dadosGame);
+    }
+
+    private BufferedImage imageAtualizada(int i) {
+        return pos[i] == 1 ? lata[index[i]] : ImageUtils.inverter(lata[index[i]]);
+    }
+
+    private void drawMoscas(Graphics g) {
+        for (int i = 0; i < 3; i++) {
+            if (index[i] == 0) {
+                g.setColor(Color.LIGHT_GRAY);
+                g.fillOval(this.getX() - Camera.x + 40 + random.nextInt(25) + (-i * 20),
+                        this.getY() - Camera.y + 7 + random.nextInt(20), 3, 3);
             }
         }
     }

@@ -1,12 +1,12 @@
 package processamento;
 
 
-import configuracoes.DadosGame;
-import enums.AcaoPlayer;
-import enums.TipoAcao;
-import enums.TipoGame;
+import main.DadosGame;
+import main.enums.AcaoPlayer;
+import main.enums.TipoAcao;
+import main.enums.TipoGame;
 import graficos.Loading;
-import world.World;
+import main.world.World;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

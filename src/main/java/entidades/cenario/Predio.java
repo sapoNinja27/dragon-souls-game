@@ -1,9 +1,9 @@
 package entidades.cenario;
 
-import configuracoes.DadosGame;
+import main.DadosGame;
 import entidades.Entidade;
+import entidades.Mascara;
 import entidades.cenario.limitescenario.ParedeInvisivel;
-import entidades.mascaras.MascaraHitBox;
 import graficos.Spritesheet;
 
 import java.awt.*;
@@ -66,7 +66,7 @@ public class Predio extends Entidade {
 
     @Override
     public void tick(DadosGame dadosGame) {
-        adicionarMascara(new MascaraHitBox(0, 0, 0, 0));
+        adicionarMascara(Mascara.builder().build());
 //        porta.tick();
         if (dentro) {
             paredeInvisivel.tick(dadosGame);

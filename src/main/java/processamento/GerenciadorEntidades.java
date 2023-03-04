@@ -1,22 +1,22 @@
 package processamento;
 
-import configuracoes.DadosGame;
+import main.DadosGame;
 import entidades.Entidade;
 import entidades.cenario.Plataforma;
 import entidades.cenario.Predio;
-import entidades.cenario.limitescenario.ParedeInvisivel;
 import entidades.cenario.objetoscommovimento.ObjetosComMovimento;
-import entidades.cenario.objetosluminosos.ObjetoLuminoso;
-import entidades.cenario.objetosluminosos.PosteLuz;
 import entidades.inimigos.Inimigo;
-import entidades.players.Player;
-import enums.AcaoPlayer;
+import entidades.players.principal.Player;
+import main.enums.AcaoPlayer;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.nonNull;
 
 public class GerenciadorEntidades {
 
@@ -119,17 +119,22 @@ public class GerenciadorEntidades {
         if (player.isDentro()) {
             //renderiza dentro
         }
-
-        for (Entidade e : entities) {
+        List<Entidade> tickDistance = entities.stream().filter(entidade -> drawDistance(entidade, dadosGame.getPlayer())).collect(Collectors.toList());
+        for (Entidade e : tickDistance) {
             e.tick(dadosGame);
-            if (e instanceof ParedeInvisivel) {
-                if (e.corpoColidindo(player, Arrays.asList("esquerda", "direita"))) {
-                    e.teleportarPlayer(dadosGame);
-                }
-            }
-            if (e.corpoColidindo(player)) {
-                verificaOpcoesColisao(e, dadosGame);
-            }
+            avaliarSombreamento(e, dadosGame);
+            avaliarColisaoSimples(e, dadosGame);
+            avaliarGravidade(e, dadosGame);
+
+
+//                if (e instanceof ParedeInvisivel) {
+//                    if (e.corpoColidindo(player, Arrays.asList("esquerda", "direita"))) {
+//                        e.teleportarPlayer(dadosGame);
+//                    }
+//                }
+//                if (e.corpoColidindo(player)) {
+//                    verificaOpcoesColisao(e, dadosGame);
+//                }
         }
         for (Inimigo inimigo : inimigos) {
             inimigo.tick();
@@ -147,7 +152,6 @@ public class GerenciadorEntidades {
     }
 
     public void render(Graphics g, DadosGame dadosGame) {
-        avaliarSombreamentoPlayer(dadosGame);
 //        for (Predio predio : predios) {
 //            if (drawDistance(predio)) {
 //                predio.render(g);
@@ -159,13 +163,10 @@ public class GerenciadorEntidades {
 //            }
 //        }
         entities.sort(Entidade.nodeSorter);
-        for (Entidade e : entities) {
-            if (drawDistance(e, dadosGame.getPlayer())) {
-                e.render(g, dadosGame);
-            }
+        List<Entidade> renderDistance = entities.stream().filter(entidade -> drawDistance(entidade, dadosGame.getPlayer())).collect(Collectors.toList());
+        for (Entidade e : renderDistance) {
+            e.render(g, dadosGame);
         }
-
-        dadosGame.getPlayer().render(g, dadosGame);
 
 //        for (ObjetosComMovimento objeto : objetos) {
 //            objeto.render(g);
@@ -217,16 +218,57 @@ public class GerenciadorEntidades {
 //        }
     }
 
-    private void avaliarSombreamentoPlayer(DadosGame dadosGame) {
-        for (Entidade atual : entities) {
-            if (atual instanceof PosteLuz) {
-                dadosGame.getPlayer().atualizarSombreamento((ObjetoLuminoso) atual, dadosGame);
+    private void avaliarSombreamento(Entidade entidade, DadosGame dadosGame) {
+        if (entidade.isObjetoLuminoso()) return;
+        Integer distanciaMinima = entities
+                .stream()
+                .filter(Entidade::isObjetoLuminoso)
+                .map(
+                        e -> (int) e.distanciaX(entidade.getX())
+                )
+                .sorted()
+                .findFirst()
+                .orElse(500);
+        entidade.atualizarSombreamento(distanciaMinima > 500 ? 500 : distanciaMinima, dadosGame.isDia());
+    }
+
+    private void avaliarColisaoSimples(Entidade entidade, DadosGame dadosGame) {
+        if (entidade instanceof Player) {
+            Entidade target = entities
+                    .stream()
+                    .filter(e ->  !(e instanceof Player))
+                    .filter(e -> e.buscarColisao(entidade))
+                    .findFirst()
+                    .orElse(null);
+            if (nonNull(target)) {
+                entidade.atualizarColisao(target);
             }
+        }else {
+            entidade.atualizarColisao(dadosGame.getPlayer());
+        }
+    }
+
+    private void avaliarGravidade(Entidade entidade, DadosGame dadosGame) {
+        if (entidade instanceof Player) {
+            Plataforma target = (Plataforma) entities
+                    .stream()
+                    .filter(e -> drawDistance(e, dadosGame.getPlayer()))
+                    .filter(e -> e.isClasseRelativa(Plataforma.class))
+                    .min(Comparator.comparingInt(e -> e.calculateDistance(entidade)))
+                    .orElse(null);
+
+            if (nonNull(target)) {
+                entidade.atualizarGravidade(target);
+            }
+        }else {
+//            if(entidade instanceof Bueiro){
+//                entidade.atualizarColisao(dadosGame.getPlayer());
+//            }
         }
     }
 
     public void acaoPlayer(AcaoPlayer acaoPlayer, Player player) {
-        player.executarAcao(isFreeY(player), acaoPlayer);
+        player.executarAcao(acaoPlayer);
     }
 
 
@@ -261,18 +303,6 @@ public class GerenciadorEntidades {
 //        }
 //    }
 
-    //TODO Verifica se está em cima de uma plataforma, falta verificar se há objetos impeditivos acima
-    private boolean isFreeY(Player player) {
-        for (Entidade atual : entities) {
-            if (atual instanceof Plataforma) {
-                if (player.corpoColidindo(atual)) {
-                    return false;
-                }
-
-            }
-        }
-        return true;
-    }
 
     public DadosGame getDadosGame() {
         return new DadosGame();

@@ -1,18 +1,13 @@
 package menu;
 
-import configuracoes.DadosGame;
+import main.DadosGame;
 import jObjects.Botao;
 
 import java.awt.*;
 import java.io.File;
 
 public class MenuCarregamento  extends Menu{
-    private final Botao[] botoes = {
-            new Botao(720 / 2 - 200 + 91, 120, 90, 30, "Espaço 1", Color.DARK_GRAY, 2, 5, 20, 0, 0),
-            new Botao(720 / 2 - 200 + 91, 170, 90, 30, "Espaço 2", Color.DARK_GRAY, 2, 5, 20, 0, 0),
-            new Botao(720 / 2 - 200 + 91, 220, 90, 30, "Espaço 3", Color.DARK_GRAY, 2, 5, 20, 0, 0),
-            new Botao(580, 312, 68, 28, "Voltar", Color.red, 2, 10, 20, 30, 50)
-    };
+    private final Botao[] botoes = {};
     private boolean saveGame = false;
 
     public void tick(DadosGame dadosGame) {
@@ -24,7 +19,7 @@ public class MenuCarregamento  extends Menu{
 
         // pra deletar file=new File("save.txt"); file.delete();
 
-        botoes[0].setText(String.valueOf(file));
+        botoes[0].setTexto(String.valueOf(file));
         if (botoes[0].isClicked()) {
             if (saveExists) {
 //				String saver = Game.menu.loadGame(0);

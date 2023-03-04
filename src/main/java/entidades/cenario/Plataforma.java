@@ -1,13 +1,13 @@
 package entidades.cenario;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import configuracoes.DadosGame;
+import main.DadosGame;
 import entidades.Entidade;
-import entidades.mascaras.MascaraHitBox;
-import world.Camera;
+import entidades.Mascara;
+import main.enums.TipoMascara;
+import main.world.Camera;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Plataforma extends Entidade {
 	private final BufferedImage img;
@@ -16,17 +16,18 @@ public class Plataforma extends Entidade {
 		super(x, y, 0, 0);
 		this.img = img;
 		depth = 1;
-		adicionarMascara(new MascaraHitBox(0, 0, 64, 3));
+		adicionarMascara(Mascara.builder()
+				.tipoMascara(TipoMascara.HITBOX)
+				.x(0)
+				.y(0)
+				.altura(3)
+				.largura(64)
+				.build());
 	}
 
 	@Override
 	public void render(Graphics g, DadosGame dadosGame) {
 		g.drawImage(img, this.getX() - Camera.x, this.getY() - Camera.y, null);
-		g.setColor(Color.red);
-		g.drawRect(
-				this.getX() - Camera.x + mascaras.get(0).getPosicaoX(),
-				this.getY() - Camera.y + mascaras.get(0).getPosicaoY(),
-				mascaras.get(0).getAutura(),
-				mascaras.get(0).getLargura());
+		super.render(g, dadosGame);
 	}
 }

@@ -1,7 +1,6 @@
 package main;
 
-import configuracoes.DadosGame;
-import enums.TipoAcao;
+import main.enums.TipoAcao;
 import graficos.Spritesheet;
 import jObjects.Mouse.Mouse;
 import processamento.GerenciadorEstado;

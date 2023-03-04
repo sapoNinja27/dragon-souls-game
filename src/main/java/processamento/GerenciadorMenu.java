@@ -1,14 +1,14 @@
 package processamento;
 
-import configuracoes.DadosGame;
-import enums.TipoMenu;
+import main.DadosGame;
+import main.enums.TipoMenu;
 import menu.*;
 import menu.Menu;
 
 import java.awt.*;
 import java.util.HashMap;
 
-import static enums.TipoMenu.*;
+import static main.enums.TipoMenu.*;
 
 public class GerenciadorMenu {
     private final HashMap<TipoMenu, Menu> menus = new HashMap<TipoMenu, Menu>() {{
