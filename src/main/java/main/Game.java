@@ -1,9 +1,9 @@
 package main;
 
-import main.enums.TipoAcao;
-import graficos.Spritesheet;
+import main.menu.graficos.Spritesheet;
 import jObjects.Mouse.Mouse;
-import processamento.GerenciadorEstado;
+import main.enums.TipoAcao;
+import main.processamento.GerenciadorEstado;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static java.util.Objects.nonNull;
+
 public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
     private static final long serialVersionUID = 1L;
@@ -21,9 +23,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     private Thread thread;
     private boolean isRunning = true;
     private BufferedImage image;
-    private final Spritesheet mouse = new Spritesheet("/cursor.png");
     private final DadosGame dadosGame = new DadosGame();
     private final GerenciadorEstado gerenciadorEstado = new GerenciadorEstado();
+    private final Mouse mouse = new Mouse();
 
 
     private void setConfig() {
@@ -43,20 +45,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     public Game() {
         setConfig();
         gerenciadorEstado.iniciar(dadosGame);
-    }
-
-    public void attMouse() {
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        if (Mouse.over) {
-            Image image = mouse.getSprite(32, 0, 32, 32);
-            Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-            frame.setCursor(c);
-        } else {
-            Image image = mouse.getSprite(0, 0, 32, 32);
-            Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
-            frame.setCursor(c);
-        }
-
     }
 
     public void initFrame() throws IOException {
@@ -101,8 +89,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     }
 
     public void tick() {
-        attMouse();
-        gerenciadorEstado.tick();
+        mouse.tick(frame);
+        gerenciadorEstado.tick(mouse);
     }
 
     public void render() {
@@ -155,44 +143,44 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        if (e != null) {
-            Mouse.setCordinates(e.getX(), e.getY());
+        if(nonNull(e)){
+            mouse.mouseClicked(e.getX(), e.getY());
         }
     }
 
     @Override
-    public void mouseExited(MouseEvent arg0) {
+    public void mouseEntered(MouseEvent e) {
+//        mouse.mouseEntered();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if (nonNull(e)) {
+            mouse.mouseMoved(e.getX(), e.getY());
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        mouse.mouseExited();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e != null) {
-            Mouse.pressed = true;
+        if (nonNull(e)) {
+            mouse.mousePressed();
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e != null) {
-            Mouse.setCordinates(e.getX(), e.getY());
-            Mouse.pressed = false;
-            Mouse.released = true;
+        if (nonNull(e)) {
+            mouse.mouseReleased(e.getX(), e.getY());
         }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (e != null) {
-            Mouse.setCordinates(e.getX(), e.getY());
-        }
+        mouse.mouseDragged(e.getX(), e.getY());
     }
-
 }

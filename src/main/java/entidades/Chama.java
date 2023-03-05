@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import main.DadosGame;
-import graficos.Spritesheet;
+import main.menu.graficos.Spritesheet;
 
 public class Chama extends Entidade {
     private BufferedImage sprite[];

@@ -4,7 +4,7 @@ import main.DadosGame;
 import entidades.Entidade;
 import entidades.Mascara;
 import main.enums.TipoMascara;
-import graficos.Spritesheet;
+import main.menu.graficos.Spritesheet;
 import main.world.Camera;
 
 import java.awt.*;

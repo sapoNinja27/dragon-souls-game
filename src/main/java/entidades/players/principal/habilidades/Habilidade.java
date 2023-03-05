@@ -1,8 +1,8 @@
 package entidades.players.principal.habilidades;
 
-import main.DadosGame;
-import graficos.Spritesheet;
+import jObjects.Botao;
 import jObjects.Mouse.Mouse;
+import lombok.Getter;
 import main.enums.MovimentoPlayer;
 import main.utils.ImageUtils;
 
@@ -11,101 +11,72 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Habilidade  {
-    private int x, y;
-    protected Spritesheet sprite = new Spritesheet("/menus/Menu.png");
+import static java.util.Objects.isNull;
+
+@Getter
+public class Habilidade {
+    private final int x;
+    private final int y;
+    private final int width;
+    private final int heigth;
     private int nivel;
     private int melhoria;
     private final List<BufferedImage> filhas = new ArrayList<>();
+    private Botao habilidade;
 
-    public int getNivel() {
-        return nivel;
+    private final String titulo;
+    private final String descricao;
+    private final String custo;
+    private final BufferedImage icone;
+    private final MovimentoPlayer movimentoPlayer;
+    private final boolean basica;
+
+    public Habilidade(int x, int y, int width, int heigth, String titulo, String descricao, String custo, BufferedImage icone, MovimentoPlayer movimentoPlayer, boolean basica) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.heigth = heigth;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.custo = custo;
+        this.icone = icone;
+        this.movimentoPlayer = movimentoPlayer;
+        this.basica = basica;
     }
 
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
+    public void tick(Mouse mouse) {
+        getBotao().tick(mouse);
     }
 
-    public int getMelhoria() {
-        return melhoria;
-    }
-
-    public void setMelhoria(int melhoria) {
-        this.melhoria = melhoria;
+    public void render(Graphics g) {
+        getBotao().render(g);
     }
 
     public boolean isOver() {
-        if (Mouse.isOver(getShape(x, y))) {
-            Mouse.over = true;
-            return true;
-        } else {
-            Mouse.over = false;
-            return false;
+        return getBotao().isOver();
+    }
+
+    private Botao getBotao() {
+        if (isNull(habilidade)) {
+            habilidade = Botao.builder()
+                    .custom(true)
+                    .x(x)
+                    .y(y)
+                    .altura(width)
+                    .largura(heigth)
+                    .mascara(
+                            ImageUtils.createPolygon(
+                                    x, y + 18,
+                                    x + 18, y,
+                                    x + 44, y,
+                                    x + 64, y + 18,
+                                    x + 64, y + 44,
+                                    x + 44, y + 64,
+                                    x + 18, y + 64,
+                                    x, y + 44))
+                    .image(icone)
+                    .build();
         }
-    }
-
-    public void setXY(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public void render(Graphics g, DadosGame dadosGame) {
-        g.fillRect(Mouse.getX(), Mouse.getY(), 1, 1);
-        g.drawImage(getIcone(), x, y, dadosGame.getTileSize(), dadosGame.getTileSize(), null);
-
-        ImageUtils.drawPolygon(getBlur(), g, getShape(x, y));
-    }
-
-    private Polygon getShape(int x, int y) {
-        return new Polygon(
-                new int[]
-                        {
-                                x,
-                                x + 18,
-                                x + 44,
-                                x + 64,
-                                x + 64,
-                                x + 44,
-                                x + 18,
-                                x
-                        },
-                new int[]
-                        {
-                                y + 18,
-                                y,
-                                y,
-                                y + 18,
-                                y + 44,
-                                y + 64,
-                                y + 64,
-                                y + 44
-                        },
-                8);
-    }
-
-    private Color getBlur() {
-        if (isOver()) {
-            return new Color(0, 0, 0, 60);
-        } else {
-            return new Color(0, 0, 0, 0);
-        }
-    }
-    public String getTitulo(){
-        return "";
-    }
-    public String getDescricao(){
-        return "";
-    }
-    public String getCusto(){
-        return "";
-    }
-    public BufferedImage getIcone() {
-        return null;
-    }
-    public MovimentoPlayer getMovimentoPlayer() {
-        return MovimentoPlayer.RESPIRANDO;
-    }
-    public boolean isBasica() {
-        return false;
+        return habilidade;
     }
 }

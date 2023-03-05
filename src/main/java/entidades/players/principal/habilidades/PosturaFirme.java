@@ -1,18 +1,21 @@
 package entidades.players.principal.habilidades;
 
 import main.enums.MovimentoPlayer;
+import main.menu.graficos.Spritesheet;
 
 import java.awt.image.BufferedImage;
 
 public class PosturaFirme extends Habilidade {
 
-    @Override
-    public String getTitulo() {
+    public PosturaFirme(int x, int y, int width, int heigth) {
+        super(x, y, width, heigth, titulo(), descricao(), custo(), icone(), movimentoPlayer(), basica());
+    }
+
+    private static String titulo() {
         return "Postura firme";
     }
 
-    @Override
-    public String getDescricao() {
+    private static String descricao() {
         return "Tai assume uma postura firme," +
                 "\n" +
                 "aumentando o equilibrio brevemente." +
@@ -23,23 +26,20 @@ public class PosturaFirme extends Habilidade {
                 "empurram alvos ao contato.";
     }
 
-    @Override
-    public String getCusto() {
+    private static String custo() {
         return "Custa 10 de fúria";
     }
 
-    @Override
-    public BufferedImage getIcone() {
+    private static BufferedImage icone() {
+        Spritesheet sprite = new Spritesheet("/menus/Menu.png");
         return sprite.getSprite(128 * 4, 0, 128, 128);
     }
 
-    @Override
-    public MovimentoPlayer getMovimentoPlayer() {
+    private static MovimentoPlayer movimentoPlayer() {
         return MovimentoPlayer.HABILIDADE_POSTURA_FIRME;
     }
 
-    @Override
-    public boolean isBasica() {
+    private static boolean basica() {
         return false;
     }
 }

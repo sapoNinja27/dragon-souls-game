@@ -4,8 +4,7 @@ import entidades.Entidade;
 import entidades.Mascara;
 import entidades.cenario.Plataforma;
 import entidades.players.principal.habilidades.Habilidade;
-import graficos.Spritesheet;
-import graficos.UI;
+import main.menu.graficos.Spritesheet;
 import lombok.Getter;
 import lombok.Setter;
 import main.DadosGame;
@@ -47,7 +46,7 @@ public class Player extends Entidade {
     private boolean firstSpawn;
     private boolean dentro;
 
-    //Atributos de execução de ação de direção
+    //Atributos de execu??o de a??o de dire??o
     private boolean cima;
     private int frames = 0;
 
@@ -192,7 +191,7 @@ public class Player extends Entidade {
         }
 
         if (acaoPlayer.equals(AcaoPlayer.PARAR_PULO)) {
-            if(gerenciadorMovimentos.noAr()){
+            if (gerenciadorMovimentos.noAr()) {
                 gerenciadorMovimentos.setarAnimacao(CAINDO, 0.3);
             }
         }

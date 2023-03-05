@@ -2,7 +2,7 @@ package entidades.cenario;
 
 import main.DadosGame;
 import entidades.Entidade;
-import graficos.Spritesheet;
+import main.menu.graficos.Spritesheet;
 import main.utils.ImageUtils;
 import main.world.Camera;
 

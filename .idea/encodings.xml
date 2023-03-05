@@ -1,44 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/inimigos/Inimigo.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/npcs/Companion.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/entidades/inimigos/Inimigo.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/npcs/Companion.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/GerenciadorMovimentos.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/GerenciadorMovimentos.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/HabilitySet.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/HabilitySet.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/Player.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/Player.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/Habilidade.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/Habilidade.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/Habilidade.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaCalma.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaCalma.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaDefensiva.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaDefensiva.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaFirme.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaFirme.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaIrritada.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaIrritada.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaOfensiva.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaOfensiva.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaSelvagem.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/principal/habilidades/PosturaSelvagem.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/entidades/players/tai/habilidades/TempestadeEletrica.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/jObjects/Botao.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/jObjects/RadioButton.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/main/menu/MenuHabilidades.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/main/menu/MenuInventario.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/java/main/menu/MenuPrincipal.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/java/main/utils/ImageUtils.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/main/utils/ImageUtils.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/Menu.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/MenuCarregamento.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/MenuHabilidades.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/MenuInventario.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/MenuOpcoes.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/MenuPrincipal.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/textos/TextosAtributos.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/textos/TextosHablidades.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/menu/textos/confirmacao.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/processamento/GerenciadorMenu.java" charset="windows-1252" />
+    <file url="PROJECT" charset="windows-1252" />
   </component>
 </project>

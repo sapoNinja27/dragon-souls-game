@@ -1,11 +1,15 @@
 package entidades;
 
+import entidades.cenario.Fundo;
+import entidades.cenario.objetoscommovimento.ObjetosComMovimento;
+import entidades.cenario.objetoscommovimento.Transito;
 import main.DadosGame;
 import entidades.cenario.Plataforma;
 import entidades.cenario.iluminacao.ObjetoLuminoso;
 import entidades.players.principal.Player;
 import main.enums.DirecaoPlayer;
 import main.enums.MovimentoPlayer;
+import main.enums.TipoGame;
 import main.enums.TipoMascara;
 import lombok.Getter;
 import main.world.Camera;
@@ -98,6 +102,13 @@ public class Entidade {
 //		}
     }
 
+    public boolean drawDistance(Player player) {
+        return (distanciaX(player.getX()) < getDrawLimitX() && distanciaY(player.getY()) < getDrawLimitY()) ||
+                this instanceof Player ||
+                this instanceof ObjetosComMovimento ||
+                this instanceof Fundo;
+    }
+
     public void atualizarSombreamento(int distancia, boolean isDia) {
         if (isDia) {
             sombras = 130;
@@ -167,6 +178,9 @@ public class Entidade {
     }
 
     public boolean isClasseRelativa(Class<?> alvo) {
+        if(alvo.isInstance(Transito.class)){
+            return true;
+        }
         return isClasseRelativa(this.getClass(), alvo);
     }
 
@@ -193,7 +207,7 @@ public class Entidade {
 
     public void render(Graphics g, DadosGame dadosGame) {
         g.setColor(Color.red);
-        if (temMascara()) {
+        if (temMascara() && dadosGame.getEstadoGame().equals(TipoGame.NORMAL)) {
             for (Mascara mascara : mascaras) {
                 g.drawRect(
                         this.getX() - Camera.x + mascara.getX(),
@@ -207,5 +221,9 @@ public class Entidade {
 
     public boolean isObjetoLuminoso() {
         return this instanceof ObjetoLuminoso;
+    }
+
+    public boolean isObjetoComMovimento() {
+        return this instanceof ObjetosComMovimento;
     }
 }

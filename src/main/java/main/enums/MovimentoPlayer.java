@@ -1,7 +1,7 @@
 package main.enums;
 
 import entidades.players.principal.Animacao;
-import graficos.Spritesheet;
+import main.menu.graficos.Spritesheet;
 import lombok.Getter;
 
 import java.awt.image.BufferedImage;
@@ -17,16 +17,16 @@ public enum MovimentoPlayer {
     ANDANDO(0, createAnimacao(6, 8, "/personagens/tai/correndo.png")),
     PARANDO(0, createAnimacao(0, 1, "/personagens/tai/parando.png")),
     RESPIRANDO(0, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
-    RESPIRANDO_EM_COMBATE(0, createAnimacao(0, 0, null)),
-    ATACANDO(1, createAnimacao(0, 0, null)),
-    INVESTINDO(0, createAnimacao(0, 0, null)),
+    RESPIRANDO_EM_COMBATE(0, createAnimacao(15, 4, "/personagens/tai/respirando_combat.png")),
+    ATACANDO(1, createAnimacao(15, 5, "/personagens/tai/atacando.png")),
+    INVESTINDO(5, createAnimacao(15, 2, "/personagens/tai/dash.png")),
 
-    HABILIDADE_POSTURA_OFENSIVA(20, createAnimacao(0, 0, null)),
-    HABILIDADE_POSTURA_DEFENSIVA(1.5, createAnimacao(0, 0, null)),
-    HABILIDADE_POSTURA_IRADA(8, createAnimacao(0, 0, null)),
-    HABILIDADE_POSTURA_CALMA(14, createAnimacao(0, 0, null)),
-    HABILIDADE_POSTURA_FIRME(2, createAnimacao(0, 0, null)),
-    HABILIDADE_POSTURA_SELVAGEM(90, createAnimacao(0, 0, null));
+    HABILIDADE_POSTURA_OFENSIVA(20, createAnimacao(10, 9, "/personagens/tai/postura_ofensiva.png")),
+    HABILIDADE_POSTURA_DEFENSIVA(1.5, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
+    HABILIDADE_POSTURA_IRADA(8, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
+    HABILIDADE_POSTURA_CALMA(14, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
+    HABILIDADE_POSTURA_FIRME(2, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
+    HABILIDADE_POSTURA_SELVAGEM(90, createAnimacao(15, 4, "/personagens/tai/postura_selvagem.png"));
 
     @Getter
     private final Animacao animacao;

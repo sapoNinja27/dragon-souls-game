@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import graficos.Spritesheet;
+import main.menu.graficos.Spritesheet;
 import main.utils.ImageUtils;
 import main.world.Camera;
 
@@ -33,6 +33,4 @@ public class LixoEsgoto extends ObjetosComMovimento{
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 	}
-
-
 }

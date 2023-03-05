@@ -17,14 +17,7 @@ public class Ilminacao extends ObjetoLuminoso {
         if (!dadosGame.isDia()) {
             int posX = this.getX() - Camera.x - width + 50;
             int posY = this.getY() - Camera.y - height * 3;
-            tipoIluminacao.getFunction().apply(
-                    DadosIluminacaoDto
-                            .builder()
-                            .graphics(g)
-                            .x(posX)
-                            .y(posY)
-                            .build()
-            );
+            tipoIluminacao.render(g, posX, posY);
         }
         super.render(g, dadosGame);
     }

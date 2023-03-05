@@ -1,11 +1,11 @@
 package main;
 
 import entidades.players.principal.Player;
+import lombok.Getter;
+import lombok.Setter;
 import main.enums.TipoAmbiente;
 import main.enums.TipoGame;
 import main.enums.TipoMenu;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Arrays;
 
@@ -24,11 +24,11 @@ public class DadosGame {
     private final int tileSize = 64;
     private int scale = 2;
 
-    private TipoMenu estadoMenu = INVENTARIO;
-    private TipoMenu lastEstadoMenu = TipoMenu.INICIAL;
+    private TipoMenu estadoMenu = INICIAL;
+    private TipoMenu lastEstadoMenu = INICIAL;
     private TipoGame estadoGame = MENU;
-    private TipoAmbiente local = TipoAmbiente.RUA;
-    private boolean dia = false;
+    private TipoAmbiente local = TipoAmbiente.PERIMETRO_SUPERIOR;
+    private boolean dia = true;
     private int rota = 1;
 
     private final String path = "/niveis/area1.png";

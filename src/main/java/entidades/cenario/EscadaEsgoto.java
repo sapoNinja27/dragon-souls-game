@@ -2,7 +2,7 @@ package entidades.cenario;
 
 import main.DadosGame;
 import entidades.Entidade;
-import graficos.Spritesheet;
+import main.menu.graficos.Spritesheet;
 import main.world.Camera;
 
 import java.awt.*;
@@ -18,8 +18,8 @@ public class EscadaEsgoto extends Entidade {
         int tileSize = dadosGame.getTileSize();
         depth = 0;
 //        adicionarMascara(new MascaraHitBox(18, 0, 31, 40));
-//        img[0] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize);
-//        img[1] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize - 3);
+        img[0] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize);
+        img[1] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize - 3);
     }
 
     @Override

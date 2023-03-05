@@ -29,7 +29,6 @@ public class ImageUtils {
         return new Polygon(x.stream().mapToInt(i -> i).toArray(), y.stream().mapToInt(i -> i).toArray(), qtnPosicoes);
     }
 
-
     public static void draw(Graphics g, BufferedImage image, int x, int y, int size) {
         draw(g, image, x, y, size, size);
     }
@@ -101,7 +100,7 @@ public class ImageUtils {
         return sombreamento(image, new Color(0, 0, 0));
     }
 
-    private static BufferedImage sombreamento(BufferedImage image, Color color) {
+    public static BufferedImage sombreamento(BufferedImage image, Color color) {
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
         int[] imageP = new int[image.getWidth() * image.getHeight()];
         image.getRGB(0, 0, image.getWidth(), image.getHeight(), imageP, 0, image.getWidth());

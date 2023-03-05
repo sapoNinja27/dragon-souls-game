@@ -1,6 +1,6 @@
 package main.enums;
 
-import entidades.cenario.iluminacao.DadosIluminacaoDto;
+import lombok.Builder;
 import lombok.Getter;
 import main.utils.ImageUtils;
 
@@ -33,11 +33,27 @@ public enum TipoIluminacao {
         return 0;
     });
 
-    @Getter
     private final Function<DadosIluminacaoDto, Integer> function;
 
     TipoIluminacao(Function<DadosIluminacaoDto, Integer> function) {
         this.function = function;
+    }
+
+    public void render(Graphics g, int x, int y) {
+        function.apply(DadosIluminacaoDto
+                .builder()
+                .graphics(g)
+                .x(x)
+                .y(y)
+                .build());
+    }
+
+    @Getter
+    @Builder
+    static class DadosIluminacaoDto {
+        private final int x;
+        private final int y;
+        private final Graphics graphics;
     }
 
 }

@@ -1,0 +1,35 @@
+package main.menu.graficos;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
+
+public class Spritesheet {
+
+    private BufferedImage spritesheet;
+
+    public Spritesheet(String path) {
+        try {
+            spritesheet = ImageIO.read(Objects.requireNonNull(getClass().getResource(path)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public BufferedImage getSprite(int x, int y, int width, int height) {
+        return spritesheet.getSubimage(x, y, width, height);
+    }
+
+    public int getHeight() {
+        return spritesheet.getHeight();
+    }
+
+    public int getWidth() {
+        return spritesheet.getWidth();
+    }
+
+    public BufferedImage getSprite(){
+        return getSprite(0,0, getWidth(), getHeight());
+    }
+}

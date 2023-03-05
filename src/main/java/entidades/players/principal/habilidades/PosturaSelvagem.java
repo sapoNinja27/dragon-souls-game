@@ -1,18 +1,21 @@
 package entidades.players.principal.habilidades;
 
 import main.enums.MovimentoPlayer;
+import main.menu.graficos.Spritesheet;
 
 import java.awt.image.BufferedImage;
 
 public class PosturaSelvagem extends Habilidade {
 
-    @Override
-    public String getTitulo() {
+    public PosturaSelvagem(int x, int y, int width, int heigth) {
+        super(x, y, width, heigth, titulo(), descricao(), custo(), icone(), movimentoPlayer(), basica());
+    }
+
+    private static String titulo() {
         return "Postura selvagem";
     }
 
-    @Override
-    public String getDescricao() {
+    private static String descricao() {
         return "Tai permite que seu lado maligno " +
                 "\n" +
                 "Assuma o controle." +
@@ -39,23 +42,20 @@ public class PosturaSelvagem extends Habilidade {
                 "Ficar sem fúria encerra a transformação.";
     }
 
-    @Override
-    public String getCusto() {
+    private static String custo() {
         return "";
     }
 
-    @Override
-    public BufferedImage getIcone() {
+    private static BufferedImage icone() {
+        Spritesheet sprite = new Spritesheet("/menus/Menu.png");
         return sprite.getSprite(128 * 2, 0, 128, 128);
     }
 
-    @Override
-    public MovimentoPlayer getMovimentoPlayer() {
+    private static MovimentoPlayer movimentoPlayer() {
         return MovimentoPlayer.HABILIDADE_POSTURA_SELVAGEM;
     }
 
-    @Override
-    public boolean isBasica() {
+    private static boolean basica() {
         return true;
     }
 }
