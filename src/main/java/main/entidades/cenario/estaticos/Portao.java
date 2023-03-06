@@ -1,4 +1,4 @@
-package main.entidades.cenario.estaticos.portas;
+package main.entidades.cenario.estaticos;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

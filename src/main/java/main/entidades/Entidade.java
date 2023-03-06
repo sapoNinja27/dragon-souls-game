@@ -5,7 +5,7 @@ import main.entidades.cenario.LimiteCenario;
 import main.entidades.cenario.moveis.ObjetosComMovimento;
 import main.entidades.cenario.moveis.Transito;
 import main.DadosGame;
-import main.entidades.cenario.estaticos.plataformas.Plataforma;
+import main.entidades.cenario.estaticos.Plataforma;
 import main.entidades.cenario.iluminacao.ObjetoLuminoso;
 import main.entidades.players.Player;
 import main.enums.DirecaoPlayer;

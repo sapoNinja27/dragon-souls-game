@@ -1,7 +1,9 @@
-package main.entidades.cenario.estaticos.plataformas;
+package main.entidades.cenario.estaticos;
 
 import main.DadosGame;
+import main.entidades.Entidade;
 import main.entidades.Mascara;
+import main.entidades.players.Player;
 import main.enums.TipoFonte;
 import main.enums.TipoMascara;
 import main.utils.Fontes;
@@ -9,8 +11,13 @@ import main.world.Camera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
+import java.util.List;
 
-public class Bueiro extends Plataforma {
+import static java.util.Objects.nonNull;
+import static main.enums.TipoAmbiente.ESGOTOS;
+
+public class Bueiro extends Plataforma implements HasInteraction{
     private final BufferedImage[] img;
     private int frames = 0;
     private float op = 0.1f;
@@ -59,5 +66,22 @@ public class Bueiro extends Plataforma {
             g.drawImage(img[0], posX, posY, null);
         }
         super.render(g, dadosGame);
+    }
+
+    @Override
+    public boolean applyInteraction(DadosGame dadosGame, List<Entidade> list) {
+        Player player = dadosGame.getPlayer();
+        EscadaEsgoto alvo = list
+                .stream()
+                .filter(e -> e instanceof EscadaEsgoto)
+                .map(e -> (EscadaEsgoto) e)
+                .min(Comparator.comparingInt(e -> (int) e.distanciaX(player.getX())))
+                .orElse(null);
+        if(nonNull(alvo)){
+            player.setX(alvo.getX());
+            player.setY(alvo.getY());
+            dadosGame.setLocal(ESGOTOS);
+        }
+        return false;
     }
 }

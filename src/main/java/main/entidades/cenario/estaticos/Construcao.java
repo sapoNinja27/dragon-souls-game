@@ -3,7 +3,6 @@ package main.entidades.cenario.estaticos;
 import main.DadosGame;
 import main.entidades.Entidade;
 import main.entidades.Mascara;
-import main.entidades.cenario.estaticos.portas.Porta;
 import main.utils.Spritesheet;
 
 import java.awt.*;

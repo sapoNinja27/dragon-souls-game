@@ -1,14 +1,24 @@
-package main.entidades.cenario.estaticos.portas;
+package main.entidades.cenario.estaticos;
 
 import main.DadosGame;
 import main.entidades.Entidade;
+import main.entidades.Mascara;
+import main.entidades.players.Player;
+import main.enums.TipoAmbiente;
+import main.enums.TipoMascara;
 import main.utils.Spritesheet;
 import main.world.Camera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
+import java.util.List;
 
-public class EscadaEsgoto extends Entidade {
+import static java.util.Objects.nonNull;
+import static main.enums.TipoAmbiente.CIDADE_DE_BAIXO;
+import static main.enums.TipoAmbiente.ESGOTOS;
+
+public class EscadaEsgoto extends Entidade implements HasInteraction{
     private final BufferedImage[] img = new BufferedImage[2];
     private float op = 0.1f;
     private int frames = 0;
@@ -16,8 +26,14 @@ public class EscadaEsgoto extends Entidade {
     public EscadaEsgoto(int x, int y, Spritesheet spt, DadosGame dadosGame) {
         super(x, y, 0, 0);
         int tileSize = dadosGame.getTileSize();
-        depth = 0;
-//        adicionarMascara(new MascaraHitBox(18, 0, 31, 40));
+        depth = 10;
+        adicionarMascara(Mascara.builder()
+                .tipoMascara(TipoMascara.HITBOX)
+                .x(17)
+                .y(-100)
+                .height(200)
+                .width(32)
+                .build());
         img[0] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize);
         img[1] = spt.getSprite(0, 6 * tileSize, tileSize, tileSize - 3);
     }
@@ -31,7 +47,6 @@ public class EscadaEsgoto extends Entidade {
                     op += 0.1f;
                 }
             }
-
         } else {
             frames = 0;
             op = 0.1f;
@@ -56,4 +71,20 @@ public class EscadaEsgoto extends Entidade {
         super.render(g, dadosGame);
     }
 
+    @Override
+    public boolean applyInteraction(DadosGame dadosGame, List<Entidade> list) {
+        Player player = dadosGame.getPlayer();
+        Bueiro alvo = list
+                .stream()
+                .filter(e -> e instanceof Bueiro)
+                .map(e -> (Bueiro) e)
+                .min(Comparator.comparingInt(e -> (int) e.distanciaX(player.getX())))
+                .orElse(null);
+        if(nonNull(alvo)){
+            player.setX(alvo.getX());
+            player.setY(alvo.getY());
+            dadosGame.setLocal(CIDADE_DE_BAIXO);
+        }
+        return false;
+    }
 }

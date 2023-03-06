@@ -1,7 +1,8 @@
 package main.processamento;
 
 import main.entidades.Entidade;
-import main.entidades.cenario.estaticos.plataformas.Plataforma;
+import main.entidades.cenario.estaticos.HasInteraction;
+import main.entidades.cenario.estaticos.Plataforma;
 import main.entidades.cenario.moveis.ObjetosComMovimento;
 import main.entidades.players.Player;
 import main.DadosGame;
@@ -9,6 +10,7 @@ import main.enums.AcaoPlayer;
 import main.enums.TipoAmbiente;
 
 import java.awt.*;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -18,15 +20,10 @@ import static java.util.Objects.nonNull;
 
 public class GerenciadorEntidades {
 
-    private boolean interagiu;
+    private boolean actionButtonClicked;
 
     private final List<Entidade> entities = new ArrayList<>();
 
-    private boolean interagiu() {
-        boolean aux = interagiu;
-        interagiu = false;
-        return aux;
-    }
     //    public void checkCollisionEnemy() {
 //        for (int i = 0; i < enemies.size(); i++) {
 //            Enemy atual = enemies.get(i);
@@ -141,6 +138,11 @@ public class GerenciadorEntidades {
             }
         } else {
             entidade.atualizarColisao(dadosGame.getPlayer());
+            if(HasInteraction.class.isAssignableFrom(entidade.getClass())){
+                if(actionButtonClicked){
+                    actionButtonClicked = ((HasInteraction) entidade).applyInteraction(dadosGame, entities);
+                }
+            }
         }
     }
 
@@ -189,7 +191,6 @@ public class GerenciadorEntidades {
             avaliarGravidade(e, dadosGame);
             limparObjetos(e, player);
         }
-
         gerarEntidadesCenario(dadosGame, tickDistance);
     }
 
@@ -199,5 +200,9 @@ public class GerenciadorEntidades {
         for (Entidade e : renderDistance) {
             e.render(g, dadosGame);
         }
+    }
+
+    public void interagir() {
+        actionButtonClicked = true;
     }
 }

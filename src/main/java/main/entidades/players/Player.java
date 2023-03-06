@@ -2,7 +2,7 @@ package main.entidades.players;
 
 import main.entidades.Entidade;
 import main.entidades.Mascara;
-import main.entidades.cenario.estaticos.plataformas.Plataforma;
+import main.entidades.cenario.estaticos.Plataforma;
 import main.entidades.players.habilidades.Habilidade;
 import main.utils.Spritesheet;
 import lombok.Getter;

@@ -82,7 +82,7 @@ public class GerenciadorEstado {
                 break;
             case NORMAL:
                 if (e.getKeyCode() == KeyEvent.VK_X) {
-                    //acao de clicar interagir
+                    gerenciadorEntidades.interagir();
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_1) {

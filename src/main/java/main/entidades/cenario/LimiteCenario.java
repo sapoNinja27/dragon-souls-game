@@ -17,7 +17,7 @@ public class LimiteCenario extends Entidade {
         super(x, y, width, height);
         depth = 30;
         this.tipo = TipoLimite.fromInt(tipo);
-        adicionarMascara(Mascara.builder().tipoMascara(TipoMascara.HITBOX).x(62).y(y).height(height).width(width).build());
+        adicionarMascara(Mascara.builder().tipoMascara(TipoMascara.HITBOX).x(tipo == 1 ? 0 : 62).y(y).height(height).width(width).build());
     }
 
     @Override
@@ -26,13 +26,13 @@ public class LimiteCenario extends Entidade {
         if (colidindo) {
             switch (tipo) {
                 case DIREITO:
-                    if(player.getDirecao().equals(DirecaoPlayer.DIREITA)){
+                    if (player.getDirecao().equals(DirecaoPlayer.DIREITA)) {
                         player.setX(player.getX() - 5);
                     }
                     break;
                 case ESQUERDO:
-                    if(player.getDirecao().equals(DirecaoPlayer.ESQUERDA)){
-                        player.setX(getX() - 19);
+                    if (player.getDirecao().equals(DirecaoPlayer.ESQUERDA)) {
+                        player.setX(player.getX() + 5);
                     }
                     break;
             }

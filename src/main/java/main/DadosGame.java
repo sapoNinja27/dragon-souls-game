@@ -27,6 +27,7 @@ public class DadosGame {
     private TipoMenu estadoMenu = INICIAL;
     private TipoMenu lastEstadoMenu = INICIAL;
     private TipoGame estadoGame = MENU;
+    @Setter
     private TipoAmbiente local = TipoAmbiente.PERIMETRO_SUPERIOR;
     private boolean dia = true;
     private int rota = 1;

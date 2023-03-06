@@ -1,4 +1,4 @@
-package main.entidades.cenario.estaticos.plataformas;
+package main.entidades.cenario.estaticos;
 
 import main.DadosGame;
 import main.entidades.Entidade;
