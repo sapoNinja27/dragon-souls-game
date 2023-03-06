@@ -10,15 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * Representa a mascara da entidade
- * */
 public class Mascara {
 
-    private String nome;
     private int x;
     private int y;
-    private int altura;
-    private int largura;
+    private int height;
+    private int width;
     private TipoMascara tipoMascara;
 }

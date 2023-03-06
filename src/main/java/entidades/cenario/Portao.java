@@ -21,8 +21,8 @@ public class Portao extends Entidade {
                 .builder()
                 .x(0)
                 .y(20)
-                .altura(40)
-                .largura(64)
+                .height(40)
+                .width(64)
                 .build()
         );
         for (int i = 0; i < 2; i++) {

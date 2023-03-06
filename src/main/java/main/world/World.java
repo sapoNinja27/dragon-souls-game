@@ -1,5 +1,6 @@
 package main.world;
 
+import entidades.cenario.limitescenario.LimiteCenario;
 import main.DadosGame;
 import entidades.cenario.*;
 import entidades.cenario.limitescenario.LimiteDeCenarioAbismo;
@@ -60,9 +61,11 @@ public class World {
             LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(x * tileSize, y * tileSize, tileSize, tileSize);
             gerenciadorEntidades.addEntidade(pack);
         } else if (pixelAtual == 0xFFFF0000) {
-            ParedeInvisivel pack = new ParedeInvisivel(x * tileSize, y * tileSize, dadosGame);
-            gerenciadorEntidades.addEntidade(pack);
-
+            LimiteCenario esquerda = new LimiteCenario(x * tileSize, y * tileSize, 1, 2, dadosGame.getWordHeight() * tileSize);
+            gerenciadorEntidades.addEntidade(esquerda);
+        } else if (pixelAtual == 0xFFCB0000) {
+            LimiteCenario direita = new LimiteCenario(x * tileSize, y * tileSize, 2, 2, dadosGame.getWordHeight() * tileSize);
+            gerenciadorEntidades.addEntidade(direita);
         }
     }
 
@@ -123,8 +126,7 @@ public class World {
         if (pixelAtual == 0xFF0026FF && !player.isFirstSpawn()) {
             player.setX(x * tileSize);
             player.setY(y * tileSize);
-//            player.setX(x * tileSize - 20);
-//            player.setY(y * tileSize + 3);
+//TODO criar companion
             player.setFirstSpawn(true);
             player.setParado(true);
             gerenciadorEntidades.addEntidade(player);

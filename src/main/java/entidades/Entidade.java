@@ -1,6 +1,7 @@
 package entidades;
 
 import entidades.cenario.Fundo;
+import entidades.cenario.limitescenario.LimiteCenario;
 import entidades.cenario.objetoscommovimento.ObjetosComMovimento;
 import entidades.cenario.objetoscommovimento.Transito;
 import main.DadosGame;
@@ -32,7 +33,6 @@ public class Entidade {
     protected int sombreamento = 180;
     protected int sombras = 30;
     protected boolean colidindo;
-    protected boolean colidindoCustom;
     protected Entidade entidadeColisora;
     protected List<Mascara> mascaras = new ArrayList<>(0);
     protected DirecaoPlayer direcao = DirecaoPlayer.DIREITA;
@@ -91,22 +91,12 @@ public class Entidade {
         return direcao;
     }
 
-    public void teleportarPlayer(DadosGame dadosGame) {
-//		if (player.direcaoPlayer.equals(DirecaoPlayer.DIREITA)) {
-//			player.setX(this.getX() - 15 + larg);
-//			player.parado = true;
-//		}
-//		if (player.direcaoPlayer.equals(DirecaoPlayer.ESQUERDA)) {
-//			player.setX(this.getX() + (dist * Configuracoes.TILE_SIZE) - 47 - larg);
-//			player.parado = true;
-//		}
-    }
-
     public boolean drawDistance(Player player) {
         return (distanciaX(player.getX()) < getDrawLimitX() && distanciaY(player.getY()) < getDrawLimitY()) ||
                 this instanceof Player ||
                 this instanceof ObjetosComMovimento ||
-                this instanceof Fundo;
+                this instanceof Fundo ||
+                this instanceof LimiteCenario;
     }
 
     public void atualizarSombreamento(int distancia, boolean isDia) {
@@ -193,7 +183,7 @@ public class Entidade {
         return mascaras
                 .stream()
                 .filter(mascara -> Arrays.asList(tipo).contains(mascara.getTipoMascara()))
-                .map(mascara -> new Rectangle(getX() + mascara.getX(), getY() + mascara.getY(), mascara.getLargura(), mascara.getAltura()))
+                .map(mascara -> new Rectangle(getX() + mascara.getX(), getY() + mascara.getY(), mascara.getWidth(), mascara.getHeight()))
                 .collect(Collectors.toList());
     }
 
@@ -210,10 +200,10 @@ public class Entidade {
         if (temMascara() && dadosGame.getEstadoGame().equals(TipoGame.NORMAL)) {
             for (Mascara mascara : mascaras) {
                 g.drawRect(
-                        this.getX() - Camera.x + mascara.getX(),
-                        this.getY() - Camera.y + mascara.getY(),
-                        mascara.getLargura(),
-                        mascara.getAltura());
+                        getX() - Camera.x + mascara.getX(),
+                        getY() - Camera.y + mascara.getY(),
+                        mascara.getWidth(),
+                        mascara.getHeight());
             }
         }
 

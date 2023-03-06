@@ -8,14 +8,12 @@ import main.enums.TipoFonte;
 import main.utils.FonteUtils;
 import main.utils.ImageUtils;
 import main.utils.MascaraUtils;
-import main.utils.MatematicaUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
 import static jObjects.Botao.State.*;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Setter
@@ -24,10 +22,10 @@ import static java.util.Objects.nonNull;
 public class Botao {
     private int x;
     private int y;
-    private int altura;
-    private int largura;
-    private int arcoAltura;
-    private int arcoLargura;
+    private int width;
+    private int height;
+    private int arcWidth;
+    private int arcHeight;
     private Color cor;
     private String texto;
     @Builder.Default
@@ -87,9 +85,9 @@ public class Botao {
     public void render(Graphics g) {
         if (!custom) {
             g.setColor(Color.black);
-            g.fillRoundRect(x - borda, y - borda, altura + borda * 2, largura + borda * 2, arcoAltura, arcoLargura);
+            g.fillRoundRect(x - borda, y - borda, width + borda * 2, height + borda * 2, arcWidth, arcHeight);
             g.setColor(cor);
-            g.fillRoundRect(x, y, altura, largura, arcoAltura, arcoLargura);
+            g.fillRoundRect(x, y, width, height, arcWidth, arcHeight);
             switch (state) {
                 case STANDART:
                     g.setColor(new Color(0, 0, 0, 0));
@@ -101,21 +99,26 @@ public class Botao {
                     g.setColor(new Color(0, 0, 0, 120));
                     break;
             }
-            g.fillRoundRect(x - borda, y - borda, altura + borda * 2, largura + borda * 2, arcoAltura, arcoLargura);
+            g.fillRoundRect(x - borda, y - borda, width + borda * 2, height + borda * 2, arcWidth, arcHeight);
             g.setColor(Color.black);
             g.setFont(FonteUtils.CrimsonText(TipoFonte.BOLD, 19));
             g.drawString(Optional.ofNullable(texto).orElse(""), x + spacingX, y + spacingY);
         } else {
-            g.drawImage(image, x, y, altura, largura, null);
-            if (state.equals(OVER)) {
-                g.drawImage(ImageUtils.sombreamento(image, new Color(0, 0, 0, 60)), x, y, altura, largura, null);
+            g.drawImage(image, x, y, width, height, null);
+            switch (state) {
+                case OVER:
+                    g.drawImage(ImageUtils.sombreamento(image, new Color(0, 0, 0, 60)), x, y, width, height, null);
+                    break;
+                case OVER_PRESSED:
+                    g.drawImage(ImageUtils.sombreamento(image, new Color(0, 0, 0, 120)), x, y, width, height, null);
+                    break;
             }
         }
     }
 
     private boolean isOver(int mx, int my) {
         if (!custom) {
-            return mx > x && mx < x + altura && my > y && my < y + largura;
+            return mx > x && mx < x + width && my > y && my < y + height;
         } else {
             return MascaraUtils.isColiding(mx, my, mascara);
         }

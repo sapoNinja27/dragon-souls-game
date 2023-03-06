@@ -51,10 +51,10 @@ public class MenuPrincipal extends Menu {
         if (botoes.isEmpty()) {
             botoes.addAll(Arrays.asList(
                     Botao.builder().x(posicaoMeioTela).y(posicaoY)
-                            .altura(91).largura(30)
+                            .width(91).height(30)
                             .texto("Jogar").cor(Color.red).borda(2)
                             .spacingX(22).spacingY(20)
-                            .arcoAltura(30).arcoLargura(50)
+                            .arcWidth(30).arcHeight(50)
                             .acao(() -> {
                                 Loading.start(dadosGame);
                                 Loading.stop();
@@ -66,22 +66,22 @@ public class MenuPrincipal extends Menu {
                                 //				Game.cen.CenaStart(0);
                             }).build(),
                     Botao.builder().x(posicaoMeioTela + 103).y(posicaoY)
-                            .altura(91).largura(30)
+                            .width(91).height(30)
                             .texto("Continuar").cor(Color.red).borda(2)
                             .spacingX(3).spacingY(20)
-                            .arcoAltura(30).arcoLargura(50)
+                            .arcWidth(30).arcHeight(50)
                             .acao(dadosGame::carregarJogo).build(),
                     Botao.builder().x(posicaoMeioTela + 206).y(posicaoY)
-                            .altura(91).largura(30)
+                            .width(91).height(30)
                             .texto("Opções").cor(Color.red).borda(2)
                             .spacingX(16).spacingY(20)
-                            .arcoAltura(30).arcoLargura(50)
+                            .arcWidth(30).arcHeight(50)
                             .acao(dadosGame::configuracoes).build(),
                     Botao.builder().x(posicaoMeioTela + 309).y(posicaoY)
-                            .altura(91).largura(30)
+                            .width(91).height(30)
                             .texto("Sair").cor(Color.red).borda(2)
                             .spacingX(29).spacingY(20)
-                            .arcoAltura(30).arcoLargura(50)
+                            .arcWidth(30).arcHeight(50)
                             .acao(() -> System.exit(1)).build()
             ));
         }

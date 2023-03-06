@@ -22,8 +22,8 @@ public class Poste extends Entidade {
                         .tipoMascara(TipoMascara.HURTBOX)
                         .x(25)
                         .y(-100)
-                        .altura(100)
-                        .largura(10)
+                        .height(100)
+                        .width(10)
                         .build()
         );
         lampada[0] = spt.getSprite((3) * tileSize, tileSize,

@@ -20,8 +20,8 @@ public class Plataforma extends Entidade {
 				.tipoMascara(TipoMascara.HITBOX)
 				.x(0)
 				.y(0)
-				.altura(3)
-				.largura(64)
+				.height(3)
+				.width(64)
 				.build());
 	}
 

@@ -86,6 +86,10 @@ public class GerenciadorEstado {
                     //acao de clicar interagir
                 }
 
+                if (e.getKeyCode() == KeyEvent.VK_1) {
+                    gerenciadorEntidades.acaoPlayer(AcaoPlayer.HABILIDADE_1, dadosGame.getPlayer());
+                }
+
                 if (e.getKeyCode() == KeyEvent.VK_D) {
                     gerenciadorEntidades.acaoPlayer(AcaoPlayer.DIREITA, dadosGame.getPlayer());
                 }

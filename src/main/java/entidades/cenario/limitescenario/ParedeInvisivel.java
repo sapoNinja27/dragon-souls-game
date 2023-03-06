@@ -16,7 +16,6 @@ public class ParedeInvisivel extends Entidade {
     }
 
     //TODO mover a responsabilidade de validar pra ca
-    @Override
     public void teleportarPlayer(DadosGame dadosGame) {
         Entidade player = dadosGame.getPlayer();
         int distanciaEntreAsParedes = width;
@@ -43,8 +42,8 @@ public class ParedeInvisivel extends Entidade {
     @Override
     public void render(Graphics g, DadosGame dadosGame) {
         g.setColor(Color.red);
-        g.drawRect(this.getX() - Camera.x + mascaras.get(0).getX(), this.getY() - Camera.y + mascaras.get(0).getY(), mascaras.get(0).getAltura(), mascaras.get(0).getLargura());
-        g.drawRect(this.getX() - Camera.x + mascaras.get(1).getX(), this.getY() - Camera.y + mascaras.get(1).getY(), mascaras.get(1).getAltura(), mascaras.get(1).getLargura());
+        g.drawRect(this.getX() - Camera.x + mascaras.get(0).getX(), this.getY() - Camera.y + mascaras.get(0).getY(), mascaras.get(0).getHeight(), mascaras.get(0).getWidth());
+        g.drawRect(this.getX() - Camera.x + mascaras.get(1).getX(), this.getY() - Camera.y + mascaras.get(1).getY(), mascaras.get(1).getHeight(), mascaras.get(1).getWidth());
         super.render(g, dadosGame);
     }
 

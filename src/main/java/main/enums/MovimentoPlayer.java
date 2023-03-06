@@ -11,22 +11,22 @@ import java.util.List;
 import static java.util.Objects.isNull;
 
 public enum MovimentoPlayer {
-    CAINDO(0, createAnimacao(8, 2, "/personagens/tai/caindo.png")),
-    SUBINDO(1, createAnimacao(12, 3, "/personagens/tai/subindo.png")),
-    POUSANDO(0, createAnimacao(0, 1, "/personagens/tai/landing.png")),
-    ANDANDO(0, createAnimacao(6, 8, "/personagens/tai/correndo.png")),
-    PARANDO(0, createAnimacao(0, 1, "/personagens/tai/parando.png")),
-    RESPIRANDO(0, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
-    RESPIRANDO_EM_COMBATE(0, createAnimacao(15, 4, "/personagens/tai/respirando_combat.png")),
-    ATACANDO(1, createAnimacao(15, 5, "/personagens/tai/atacando.png")),
-    INVESTINDO(5, createAnimacao(15, 2, "/personagens/tai/dash.png")),
+    CAINDO(0, createAnimacao(8, "/personagens/tai/caindo.png")),
+    SUBINDO(1, createAnimacao(12, "/personagens/tai/subindo.png")),
+    POUSANDO(0, createAnimacao(0, "/personagens/tai/landing.png")),
+    ANDANDO(0, createAnimacao(6, "/personagens/tai/correndo.png")),
+    PARANDO(0, createAnimacao(0, "/personagens/tai/parando.png")),
+    RESPIRANDO(0, createAnimacao(15, "/personagens/tai/respirando.png")),
+    RESPIRANDO_EM_COMBATE(0, createAnimacao(15, "/personagens/tai/respirando_combat.png")),
+    ATACANDO(1, createAnimacao(7, "/personagens/tai/atacando.png")),
+    INVESTINDO(5, createAnimacao(15, "/personagens/tai/dash.png")),
 
-    HABILIDADE_POSTURA_OFENSIVA(20, createAnimacao(10, 9, "/personagens/tai/postura_ofensiva.png")),
-    HABILIDADE_POSTURA_DEFENSIVA(1.5, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
-    HABILIDADE_POSTURA_IRADA(8, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
-    HABILIDADE_POSTURA_CALMA(14, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
-    HABILIDADE_POSTURA_FIRME(2, createAnimacao(15, 4, "/personagens/tai/respirando.png")),
-    HABILIDADE_POSTURA_SELVAGEM(90, createAnimacao(15, 4, "/personagens/tai/postura_selvagem.png"));
+    HABILIDADE_POSTURA_OFENSIVA(20, createAnimacao(10, "/personagens/tai/postura_ofensiva.png")),
+    HABILIDADE_POSTURA_DEFENSIVA(1.5, createAnimacao(15, "/personagens/tai/respirando.png")),
+    HABILIDADE_POSTURA_IRADA(8, createAnimacao(15, "/personagens/tai/respirando.png")),
+    HABILIDADE_POSTURA_CALMA(14, createAnimacao(15, "/personagens/tai/respirando.png")),
+    HABILIDADE_POSTURA_FIRME(2, createAnimacao(15, "/personagens/tai/respirando.png")),
+    HABILIDADE_POSTURA_SELVAGEM(90, createAnimacao(15, "/personagens/tai/postura_selvagem.png"));
 
     @Getter
     private final Animacao animacao;
@@ -38,8 +38,7 @@ public enum MovimentoPlayer {
         this.initialCooldown = initialCooldown;
     }
 
-    private static Animacao createAnimacao(int frameMaximo, int indexMaximo, String path) {
-        if (isNull(path)) return null;
+    private static Animacao createAnimacao(int frameMaximo, String path) {
         Spritesheet spritesheet = new Spritesheet(path);
         int quantidadeFrames = spritesheet.getWidth() / spritesheet.getHeight();
         int tileSize = spritesheet.getHeight();
@@ -47,6 +46,6 @@ public enum MovimentoPlayer {
         for (int i = 0; i < quantidadeFrames; i++) {
             frames.add(spritesheet.getSprite(i * tileSize, 0, tileSize, tileSize));
         }
-        return new Animacao(frameMaximo, indexMaximo, frames.toArray(new BufferedImage[0]));
+        return new Animacao(frameMaximo, frames.toArray(new BufferedImage[0]));
     }
 }

@@ -6,6 +6,7 @@ public enum AcaoPlayer {
     DIREITA,
     ESQUERDA,
     DASH,
+    HABILIDADE_1,
     ULTIMATE,
     SOCO_FRACO,
     PARAR,

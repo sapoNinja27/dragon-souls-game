@@ -23,8 +23,8 @@ public class Bueiro extends Plataforma {
                 .tipoMascara(TipoMascara.HITBOX)
                 .x(17)
                 .y(-15)
-                .altura(40)
-                .largura(32)
+                .height(40)
+                .width(32)
                 .build());
     }
 

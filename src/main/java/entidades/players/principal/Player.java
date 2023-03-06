@@ -72,7 +72,7 @@ public class Player extends Entidade {
 
         render(g, dadosGame);
 
-        gerenciadorMovimentos.setarAnimacao(animacao);
+        gerenciadorMovimentos.setarAnimacao(animacao, 100);
         Font font = FonteUtils.CrimsonText(TipoFonte.REGULAR, 25);
         draw(g, titulo, x + 1075, y + 257, Color.WHITE, font);
         write(g, descricao, font.deriveFont(18f), x + 1075, y + 250);
@@ -178,16 +178,20 @@ public class Player extends Entidade {
         }
 
         if (acaoPlayer.equals(AcaoPlayer.DASH)) {
-
+            gerenciadorMovimentos.setarAnimacao(INVESTINDO);
         }
         if (acaoPlayer.equals(AcaoPlayer.CIMA)) {
             gerenciadorMovimentos.setarAnimacao(SUBINDO);
         }
         if (acaoPlayer.equals(AcaoPlayer.ULTIMATE)) {
-
+            gerenciadorMovimentos.setarAnimacao(HABILIDADE_POSTURA_SELVAGEM);
         }
         if (acaoPlayer.equals(AcaoPlayer.SOCO_FRACO)) {
+            gerenciadorMovimentos.setarAnimacao(ATACANDO);
+        }
 
+        if (acaoPlayer.equals(AcaoPlayer.HABILIDADE_1)) {
+            gerenciadorMovimentos.setarAnimacao(HABILIDADE_POSTURA_OFENSIVA);
         }
 
         if (acaoPlayer.equals(AcaoPlayer.PARAR_PULO)) {
@@ -205,7 +209,7 @@ public class Player extends Entidade {
     }
 
     public void adicionarMascaras() {
-        Mascara padrao = Mascara.builder().tipoMascara(TipoMascara.HURTBOX).x(20).y(11).altura(52).largura(20).build();
+        Mascara padrao = Mascara.builder().tipoMascara(TipoMascara.HURTBOX).x(20).y(11).height(52).width(20).build();
 //		MascaraHitBox padrao = new MascaraHitBox("padrao", 20, 11, 20 ,52);
         adicionarMascara(padrao);
 

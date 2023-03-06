@@ -1,51 +1,69 @@
 package entidades.cenario.limitescenario;
 
 import entidades.Entidade;
+import entidades.Mascara;
+import entidades.players.principal.Player;
 import main.DadosGame;
 import main.enums.DirecaoPlayer;
+import main.enums.TipoMascara;
 import main.world.Camera;
 
 import java.awt.*;
 
 public class LimiteCenario extends Entidade {
 
-    public LimiteCenario(int x, int y, DadosGame dadosGame) {
-        super(x, y, dadosGame.getWordWidth(), 0);
-//        adicionarMascara(new MascaraHitBox("esquerdo", 0, 0, 1, dadosGame.getHeight() * 19));
-//        adicionarMascara(new MascaraHitBox("direito", dadosGame.getWordWidth() * dadosGame.getTileSize() - 2, 0, 1, dadosGame.getHeight() * 19));
+    private final TipoLimite tipo;
+
+    public LimiteCenario(int x, int y, int tipo, int width, int height) {
+        super(x, y, width, height);
+        depth = 30;
+        this.tipo = TipoLimite.fromInt(tipo);
+        adicionarMascara(Mascara.builder().tipoMascara(TipoMascara.HITBOX).x(62).y(y).height(height).width(width).build());
     }
 
-    //TODO mover a responsabilidade de validar pra ca
     @Override
-    public void teleportarPlayer(DadosGame dadosGame) {
-        Entidade player = dadosGame.getPlayer();
-        int distanciaEntreAsParedes = width;
-        int largura = height;
-        if (player.getDirecao().equals(DirecaoPlayer.DIREITA)) {
-            player.setX(this.getX() - 15 + largura);
-            player.setParado(true);
+    public void tick(DadosGame dadosGame) {
+        Player player = dadosGame.getPlayer();
+        if (colidindo) {
+            switch (tipo) {
+                case DIREITO:
+                    if(player.getDirecao().equals(DirecaoPlayer.DIREITA)){
+                        player.setX(player.getX() - 5);
+                    }
+                    break;
+                case ESQUERDO:
+                    if(player.getDirecao().equals(DirecaoPlayer.ESQUERDA)){
+                        player.setX(getX() - 19);
+                    }
+                    break;
+            }
         }
-        if (player.getDirecao().equals(DirecaoPlayer.ESQUERDA)) {
-            player.setX(this.getX() + (distanciaEntreAsParedes * dadosGame.getTileSize()) - 47 - largura);
-            player.setParado(true);
-        }
+        super.tick(dadosGame);
     }
-
-    public void setLarguraParede(int largura) {
-        this.height = largura;
-        limparMascaras();
-        int distanciaEntreAsParedes = width;
-//		adicionarMascara(new MascaraHitBox("esquerdo", largura, 0, 1, Configuracao.HEIGHT * 19));
-//		adicionarMascara(new MascaraHitBox("direito", distanciaEntreAsParedes * Configuracao.TILE_SIZE - 2 - largura, 0, 1, Configuracao.HEIGHT * 19));
-    }
-
 
     @Override
     public void render(Graphics g, DadosGame dadosGame) {
-        g.setColor(Color.red);
-        g.drawRect(this.getX() - Camera.x + mascaras.get(0).getX(), this.getY() - Camera.y + mascaras.get(0).getY(), mascaras.get(0).getAltura(), mascaras.get(0).getLargura());
-        g.drawRect(this.getX() - Camera.x + mascaras.get(1).getX(), this.getY() - Camera.y + mascaras.get(1).getY(), mascaras.get(1).getAltura(), mascaras.get(1).getLargura());
         super.render(g, dadosGame);
     }
 
+    enum TipoLimite {
+        ESQUERDO(1),
+        DIREITO(2),
+        ABISMO(3);
+
+        final int tipoLimite;
+
+        TipoLimite(int i) {
+            this.tipoLimite = i;
+        }
+
+        static TipoLimite fromInt(int i) {
+            for (TipoLimite t : TipoLimite.values()) {
+                if (t.tipoLimite == i) {
+                    return t;
+                }
+            }
+            return null;
+        }
+    }
 }

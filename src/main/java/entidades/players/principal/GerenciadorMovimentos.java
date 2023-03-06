@@ -1,16 +1,19 @@
 package entidades.players.principal;
 
-import main.enums.MovimentoPlayer;
 import lombok.Getter;
+import main.enums.MovimentoPlayer;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static main.enums.MovimentoPlayer.*;
 import static java.util.Objects.nonNull;
+import static main.enums.MovimentoPlayer.*;
 
 public class GerenciadorMovimentos {
     private MovimentoPlayer ultimaAcao = RESPIRANDO;
@@ -25,10 +28,10 @@ public class GerenciadorMovimentos {
         acaoAtual.getAnimacao().tick(criarAcoesAdicionais());
     }
 
-    private void atualizarCooldown(){
-        if(processando) return;
+    private void atualizarCooldown() {
+        if (processando) return;
         MovimentoPlayer acao = acoesEmCooldown.stream().findAny().orElse(null);
-        if(nonNull(acao)){
+        if (nonNull(acao)) {
             processando = true;
             esperar(acao.getInitialCooldown(), () -> {
                 acoesEmCooldown.remove(acao);
@@ -36,6 +39,7 @@ public class GerenciadorMovimentos {
             });
         }
     }
+
     public BufferedImage getSprite() {
         return acaoAtual.getAnimacao().getSprite();
     }
@@ -50,11 +54,16 @@ public class GerenciadorMovimentos {
             case SUBINDO:
                 acoes.add(() -> setarAnimacao(CAINDO));
                 break;
+            case ATACANDO:
+            case HABILIDADE_POSTURA_OFENSIVA:
+            case INVESTINDO:
+                acoes.add(() -> setarAnimacao(RESPIRANDO_EM_COMBATE));
+                break;
         }
         return acoes.toArray(new Runnable[0]);
     }
 
-    public void setarAnimacao(MovimentoPlayer movimento) {
+    public void setarAnimacao(MovimentoPlayer movimento, int coolDownReduction) {
         if (acoesEmCooldown.contains(movimento)) {
             return;
         }
@@ -69,9 +78,18 @@ public class GerenciadorMovimentos {
         }
         ultimaAcao = acaoAtual;
         acaoAtual = movimento;
-        if(movimento.getInitialCooldown() > 0){
+        if (calcularCooldown(coolDownReduction, movimento.getInitialCooldown()) > 0) {
             acoesEmCooldown.add(movimento);
         }
+    }
+
+    private double calcularCooldown(int coolDownReduction, double cooldown) {
+        double porcentagem = (double) coolDownReduction / 100;
+        return cooldown - porcentagem * cooldown;
+    }
+
+    public void setarAnimacao(MovimentoPlayer movimento) {
+        setarAnimacao(movimento, 0);
     }
 
     public void setarAnimacao(MovimentoPlayer movimentoPlayer, double segundosDelay) {

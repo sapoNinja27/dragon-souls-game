@@ -62,8 +62,8 @@ public class Habilidade {
                     .custom(true)
                     .x(x)
                     .y(y)
-                    .altura(width)
-                    .largura(heigth)
+                    .width(width)
+                    .height(heigth)
                     .mascara(
                             ImageUtils.createPolygon(
                                     x, y + 18,
