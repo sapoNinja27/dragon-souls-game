@@ -1,6 +1,6 @@
 package main.world;
 
-import entidades.players.principal.Player;
+import main.entidades.players.Player;
 import main.DadosGame;
 
 public class Camera {

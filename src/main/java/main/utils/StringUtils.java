@@ -18,13 +18,4 @@ public class StringUtils {
             ImageUtils.draw(g, descricoes[i], x, y + 50 + (i * font.getSize() + font.getSize() / 2), Color.WHITE, font);
         }
     }
-    private static int countOccurrences(String str, char ch) {
-        int count = 0;
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == ch) {
-                count++;
-            }
-        }
-        return count;
-    }
 }

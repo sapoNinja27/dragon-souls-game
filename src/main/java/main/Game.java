@@ -1,7 +1,6 @@
 package main;
 
-import main.menu.graficos.Spritesheet;
-import jObjects.Mouse.Mouse;
+import main.interfaces.mouse.Mouse;
 import main.enums.TipoAcao;
 import main.processamento.GerenciadorEstado;
 

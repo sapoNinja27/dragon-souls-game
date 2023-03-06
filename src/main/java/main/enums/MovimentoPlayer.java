@@ -1,14 +1,12 @@
 package main.enums;
 
-import entidades.players.principal.Animacao;
-import main.menu.graficos.Spritesheet;
+import main.entidades.players.Animacao;
+import main.utils.Spritesheet;
 import lombok.Getter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Objects.isNull;
 
 public enum MovimentoPlayer {
     CAINDO(0, createAnimacao(8, "/personagens/tai/caindo.png")),

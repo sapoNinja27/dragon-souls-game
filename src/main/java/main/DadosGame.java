@@ -1,6 +1,6 @@
 package main;
 
-import entidades.players.principal.Player;
+import main.entidades.players.Player;
 import lombok.Getter;
 import lombok.Setter;
 import main.enums.TipoAmbiente;

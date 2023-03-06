@@ -1,15 +1,15 @@
 package main.enums;
 
-import entidades.Entidade;
-import entidades.cenario.objetoscommovimento.LixoEsgoto;
-import entidades.cenario.objetoscommovimento.ObjetosComMovimento;
-import entidades.cenario.objetoscommovimento.Transito;
-import entidades.players.principal.Player;
+import main.entidades.Entidade;
+import main.entidades.cenario.moveis.LixoEsgoto;
+import main.entidades.cenario.moveis.ObjetosComMovimento;
+import main.entidades.cenario.moveis.Transito;
+import main.entidades.players.Player;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import main.DadosGame;
-import main.menu.graficos.Spritesheet;
+import main.utils.Spritesheet;
 
 import java.util.List;
 import java.util.Random;

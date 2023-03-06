@@ -1,9 +1,9 @@
 package main.processamento;
 
-import entidades.Entidade;
-import entidades.cenario.Plataforma;
-import entidades.cenario.objetoscommovimento.ObjetosComMovimento;
-import entidades.players.principal.Player;
+import main.entidades.Entidade;
+import main.entidades.cenario.estaticos.plataformas.Plataforma;
+import main.entidades.cenario.moveis.ObjetosComMovimento;
+import main.entidades.players.Player;
 import main.DadosGame;
 import main.enums.AcaoPlayer;
 import main.enums.TipoAmbiente;

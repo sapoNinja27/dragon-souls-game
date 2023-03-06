@@ -1,13 +1,12 @@
 package main.processamento;
 
 
-import jObjects.Mouse.Mouse;
+import main.interfaces.mouse.Mouse;
 import main.DadosGame;
 import main.enums.AcaoPlayer;
 import main.enums.TipoAcao;
 import main.enums.TipoGame;
-import main.menu.Menu;
-import main.menu.graficos.Loading;
+import main.Loading;
 import main.world.World;
 
 import java.awt.*;

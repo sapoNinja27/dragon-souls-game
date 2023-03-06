@@ -1,15 +1,21 @@
 package main.world;
 
-import entidades.cenario.limitescenario.LimiteCenario;
+import main.entidades.cenario.Fundo;
+import main.entidades.cenario.LimiteCenario;
+import main.entidades.cenario.estaticos.LataLixo;
+import main.entidades.cenario.estaticos.plataformas.Bueiro;
+import main.entidades.cenario.estaticos.plataformas.CanoEsgoto;
+import main.entidades.cenario.estaticos.plataformas.Plataforma;
+import main.entidades.cenario.estaticos.portas.EscadaEsgoto;
+import main.entidades.cenario.estaticos.portas.Portao;
 import main.DadosGame;
-import entidades.cenario.*;
 import entidades.cenario.limitescenario.LimiteDeCenarioAbismo;
 import entidades.cenario.limitescenario.ParedeInvisivel;
-import entidades.cenario.iluminacao.Ilminacao;
-import entidades.cenario.iluminacao.Poste;
-import entidades.players.principal.Player;
+import main.entidades.cenario.iluminacao.Ilminacao;
+import main.entidades.cenario.iluminacao.Poste;
+import main.entidades.players.Player;
 import main.enums.TipoIluminacao;
-import main.menu.graficos.Spritesheet;
+import main.utils.Spritesheet;
 import main.processamento.GerenciadorEntidades;
 
 import javax.imageio.ImageIO;
@@ -58,8 +64,8 @@ public class World {
 
     private void limiteCenario(int pixelAtual, int x, int y, GerenciadorEntidades gerenciadorEntidades, DadosGame dadosGame) {
         if (pixelAtual == 0xFF8E8E34) {
-            LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(x * tileSize, y * tileSize, tileSize, tileSize);
-            gerenciadorEntidades.addEntidade(pack);
+//            LimiteDeCenarioAbismo pack = new LimiteDeCenarioAbismo(x * tileSize, y * tileSize, tileSize, tileSize);
+//            gerenciadorEntidades.addEntidade(pack);
         } else if (pixelAtual == 0xFFFF0000) {
             LimiteCenario esquerda = new LimiteCenario(x * tileSize, y * tileSize, 1, 2, dadosGame.getWordHeight() * tileSize);
             gerenciadorEntidades.addEntidade(esquerda);

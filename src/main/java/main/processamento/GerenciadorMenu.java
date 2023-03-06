@@ -1,9 +1,10 @@
 package main.processamento;
 
-import jObjects.Mouse.Mouse;
+import main.interfaces.mouse.Mouse;
 import main.DadosGame;
 import main.enums.TipoMenu;
-import main.menu.Menu;
+import main.interfaces.menu.*;
+import main.interfaces.menu.Menu;
 import main.menu.*;
 
 import java.awt.*;

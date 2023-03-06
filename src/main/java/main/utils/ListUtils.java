@@ -20,9 +20,7 @@ public class ListUtils {
                         Field field = t.getClass().getDeclaredField(declaredField);
                         field.setAccessible(true);
                         o = field.get(t);
-                    } catch (Exception ignored) {
-                        String i = ignored.toString();
-                    }
+                    } catch (Exception ignored) {}
                     return nonNull(o) && o.equals(object);
                 })
                 .findFirst()
