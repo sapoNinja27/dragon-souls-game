@@ -1,5 +1,6 @@
 package main.world;
 
+import main.DadosGame;
 import main.entidades.cenario.Fundo;
 import main.entidades.cenario.LimiteCenario;
 import main.entidades.cenario.estaticos.LataLixo;
@@ -8,15 +9,12 @@ import main.entidades.cenario.estaticos.plataformas.CanoEsgoto;
 import main.entidades.cenario.estaticos.plataformas.Plataforma;
 import main.entidades.cenario.estaticos.portas.EscadaEsgoto;
 import main.entidades.cenario.estaticos.portas.Portao;
-import main.DadosGame;
-import entidades.cenario.limitescenario.LimiteDeCenarioAbismo;
-import entidades.cenario.limitescenario.ParedeInvisivel;
 import main.entidades.cenario.iluminacao.Ilminacao;
 import main.entidades.cenario.iluminacao.Poste;
 import main.entidades.players.Player;
 import main.enums.TipoIluminacao;
-import main.utils.Spritesheet;
 import main.processamento.GerenciadorEntidades;
+import main.utils.Spritesheet;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

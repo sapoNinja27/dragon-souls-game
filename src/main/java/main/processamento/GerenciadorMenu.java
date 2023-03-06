@@ -1,11 +1,10 @@
 package main.processamento;
 
-import main.interfaces.mouse.Mouse;
 import main.DadosGame;
 import main.enums.TipoMenu;
-import main.interfaces.menu.*;
 import main.interfaces.menu.Menu;
-import main.menu.*;
+import main.interfaces.menu.*;
+import main.interfaces.mouse.Mouse;
 
 import java.awt.*;
 import java.util.HashMap;

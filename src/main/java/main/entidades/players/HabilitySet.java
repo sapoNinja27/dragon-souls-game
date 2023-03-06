@@ -1,7 +1,5 @@
 package main.entidades.players;
 
-import main.entidades.players.habilidades.Habilidade;
-import entidades.players.habilidades.*;
 import main.entidades.players.habilidades.*;
 import main.utils.MatematicaUtils;
 

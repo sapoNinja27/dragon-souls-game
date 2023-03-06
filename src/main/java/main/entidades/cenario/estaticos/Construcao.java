@@ -1,10 +1,9 @@
 package main.entidades.cenario.estaticos;
 
-import main.entidades.cenario.estaticos.portas.Porta;
 import main.DadosGame;
 import main.entidades.Entidade;
 import main.entidades.Mascara;
-import entidades.cenario.limitescenario.ParedeInvisivel;
+import main.entidades.cenario.estaticos.portas.Porta;
 import main.utils.Spritesheet;
 
 import java.awt.*;
@@ -16,7 +15,7 @@ public class Construcao extends Entidade {
     BufferedImage[] paredes = new BufferedImage[10];
     BufferedImage elevador;
     private Spritesheet predios;
-    ParedeInvisivel paredeInvisivel;
+//    ParedeInvisivel paredeInvisivel;
 
     public Construcao(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -70,7 +69,7 @@ public class Construcao extends Entidade {
         adicionarMascara(Mascara.builder().build());
 //        porta.tick();
         if (dentro) {
-            paredeInvisivel.tick(dadosGame);
+//            paredeInvisivel.tick(dadosGame);
         }
     }
 
