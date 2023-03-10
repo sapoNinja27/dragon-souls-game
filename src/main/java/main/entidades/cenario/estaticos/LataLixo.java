@@ -19,7 +19,6 @@ public class LataLixo extends Entidade {
     public LataLixo(int x, int y, Spritesheet spt, DadosGame dadosGame) {
         super(x, y, 0, 0);
         int tileSize = dadosGame.getTileSize();
-        depth = 2;
 //        adicionarMascara(new MascaraHitBox(-25, -20, 46, 80));
         for (int i = 0; i < 2; i++) {
             lata[i] = spt.getSprite((4 + i) * tileSize, tileSize, tileSize, tileSize);

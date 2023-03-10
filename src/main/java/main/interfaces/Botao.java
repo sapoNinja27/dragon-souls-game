@@ -28,8 +28,6 @@ public class Botao {
     private int arcHeight;
     private Color cor;
     private String texto;
-    @Builder.Default
-    private State state = STANDART;
     private int borda;
     private int spacingX, spacingY;
     private int mx, my;
@@ -38,6 +36,10 @@ public class Botao {
     private BufferedImage image;
     private Polygon mascara;
     private Runnable acao;
+    @Builder.Default
+    private int font = 19;
+    @Builder.Default
+    private State state = STANDART;
 
     private void changeState(State state) {
         if (OVER_PRESSED.equals(this.state)) {
@@ -101,7 +103,7 @@ public class Botao {
             }
             g.fillRoundRect(x - borda, y - borda, width + borda * 2, height + borda * 2, arcWidth, arcHeight);
             g.setColor(Color.black);
-            g.setFont(Fontes.CrimsonText(TipoFonte.BOLD, 19));
+            g.setFont(Fontes.CrimsonText(TipoFonte.BOLD, font));
             g.drawString(Optional.ofNullable(texto).orElse(""), x + spacingX, y + spacingY);
         } else {
             g.drawImage(image, x, y, width, height, null);

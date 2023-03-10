@@ -23,6 +23,10 @@ public class MenuOpcoes extends Menu {
 //            new Botao(720 / 2 - 9, 170, 90, 30, "On", Color.green, 2, 5, 20, 30, 50)
     };
 
+    public MenuOpcoes(String titulo, int width, int height) {
+        super(titulo, width, height);
+    }
+
     @Override
     public void tick(DadosGame dadosGame, Mouse mouse) {
         boolean isPrincipal = dadosGame.getLastEstadoMenu().equals(TipoMenu.INICIAL);

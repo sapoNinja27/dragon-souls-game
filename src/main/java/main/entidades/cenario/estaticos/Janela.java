@@ -10,7 +10,6 @@ public class Janela extends Entidade {
 
 	public Janela(int x, int y, BufferedImage img) {
 		super(x, y, 0, 0);
-		depth = 1;
 //		adicionarMascara(new MascaraHitBox(-25, -20, 46, 80));
 		this.img = img;
 	}

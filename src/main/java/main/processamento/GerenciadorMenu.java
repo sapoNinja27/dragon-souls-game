@@ -14,10 +14,10 @@ import static main.enums.TipoMenu.*;
 public class GerenciadorMenu {
     private final HashMap<TipoMenu, Menu> menus = new HashMap<TipoMenu, Menu>() {{
         put(INICIAL, new MenuPrincipal());
-        put(OPCOES, new MenuOpcoes());
-        put(LOAD, new MenuCarregamento());
-        put(HABILIDADES,new MenuHabilidades());
-        put(INVENTARIO,new MenuInventario());
+        put(OPCOES, new MenuOpcoes("Configurações", 1300, 535));
+        put(LOAD, new MenuCarregamento("Carregar Jogo", 1300, 534));
+        put(HABILIDADES,new MenuHabilidades("Habilidades", 1000, 535));
+        put(INVENTARIO,new MenuInventario("Inventário", 1000, 535));
     }};
 
     public void tick(DadosGame dadosGame, Mouse mouse) {

@@ -29,8 +29,7 @@ public class Player extends Entidade {
     private final GerenciadorMovimentos gerenciadorMovimentos = new GerenciadorMovimentos();
     private final UI ui = new UI();
     private final HabilitySet habilidades = new HabilitySet();
-    private int posicao = 0;
-    private double speed = 5;
+    private final double speed = 5;
     protected Spritesheet spritesheet;
 
     private int nivel = 1;
@@ -42,13 +41,53 @@ public class Player extends Entidade {
     private int defesa = 10;
     private int resistencia = 1;
 
-    @Setter
-    private boolean firstSpawn;
-    private boolean dentro;
+    @Override
+    public String toString() {
+        return "{" +
+                "x:" + x +
+                "y:" + y +
+                "nivel:" + nivel +
+                "xp:" + xp +
+                "pontosHabilidade:" + pontosHabilidade +
+                "vida:" + vida +
+                "vidaMaxima:" + vidaMaxima +
+                "mana:" + mana +
+                "manaMaxima:" + manaMaxima +
+                "defesa:" + defesa +
+                "resistencia:" + resistencia +
+                "}";
+    }
 
-    //Atributos de execu??o de a??o de dire??o
-    private boolean cima;
-    private int frames = 0;
+
+    public Player(
+            int x,
+            int y,
+            int width,
+            int height,
+            int nivel,
+            int xp,
+            int pontosHabilidade,
+            int vida,
+            int vidaMaxima,
+            int mana,
+            int manaMaxima,
+            int defesa,
+            int resistencia
+    ) {
+        super(x, y, width, height);
+        this.nivel = nivel;
+        this.vidaMaxima = vidaMaxima;
+        this.pontosHabilidade = pontosHabilidade;
+        this.vida = vida;
+        this.mana = mana;
+        this.manaMaxima = manaMaxima;
+        this.defesa = defesa;
+        this.resistencia = resistencia;
+        this.xp = xp;
+
+        depth = 14;
+        adicionarMascaras();
+    }
 
     public Player(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -98,7 +137,7 @@ public class Player extends Entidade {
         if (dadosGame.getEstadoGame().equals(TipoGame.NORMAL)) {
             tileSize = tileSize / 2;
             ui.render(g, this);
-            x = this.getX() + posicao - Camera.x;
+            x = this.getX() - Camera.x;
             y = this.getY() - Camera.y;
         }
         final int fx = x;
@@ -217,5 +256,9 @@ public class Player extends Entidade {
 
     public List<Habilidade> getHabilidades() {
         return habilidades.getHabilidades();
+    }
+
+    public boolean disponivelParaGerar() {
+        return gerenciadorMovimentos.getAcaoAtual().equals(RESPIRANDO);
     }
 }

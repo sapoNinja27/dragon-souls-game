@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface HasInteraction {
 
-    public boolean applyInteraction(DadosGame dadosGame, List<Entidade> list);
+    boolean applyInteraction(DadosGame dadosGame, List<Entidade> list);
 }

@@ -9,5 +9,6 @@ public class ObjetosComMovimento extends Entidade {
 
     public ObjetosComMovimento(int x, int y) {
         super(x, y, 0, 0);
+        depth = 10;
     }
 }

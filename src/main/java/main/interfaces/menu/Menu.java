@@ -1,29 +1,39 @@
 package main.interfaces.menu;
 
+import main.enums.TipoFonte;
 import main.interfaces.mouse.Mouse;
 import main.DadosGame;
 import main.enums.TipoMenu;
+import main.utils.Fontes;
 import main.utils.Spritesheet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static java.util.Objects.nonNull;
 import static main.utils.ImageUtils.draw;
 import static main.utils.ImageUtils.fill;
 
 public class Menu {
     protected final Color bordaMenu;
     protected final Color fundoMenu;
-
+    protected final int x = 60;
+    protected final int y = 100;
+    private final int width;
+    private final int height;
     protected BufferedImage fundo;
+    protected BufferedImage[] img;
+    private int posx = 0;
+    private final String titulo;
 
-    int posx = 0;
-
-    public Menu() {
+    public Menu(String titulo, int width, int height) {
         bordaMenu = new Color(173, 8, 0);
         fundoMenu = new Color(173, 8, 0, 34);
+        this.width = width;
+        this.height = height;
+        this.titulo = titulo;
         Spritesheet spritesheet = new Spritesheet("/menus/background.png");
-        fundo = spritesheet.getSprite();
+        this.fundo = spritesheet.getSprite();
     }
 
     private void atualizarFundo() {
@@ -33,14 +43,14 @@ public class Menu {
         }
     }
 
-    protected void desenharFundoMenu(int x, int y, Graphics g) {
+    protected void desenharFundoMenu(int x, int y, int width, int height, Graphics g) {
         g.setColor(fundoMenu);
-        g.fillRect(x, y + 30, 1000, 535);
+        g.fillRect(x, y + 30, width, height);
     }
 
-    protected void desenharBordaFundoMenu(int x, int y, Graphics g) {
+    protected void desenharBordaFundoMenu(int x, int y, int width, int height, Graphics g) {
         g.setColor(bordaMenu);
-        g.drawRect(x, y + 30, 1000, 535);
+        g.drawRect(x, y + 30, width, height);
     }
 
     protected void desenharLayoutDescricao(int x, int y, Graphics g, DadosGame dadosGame) {
@@ -58,6 +68,12 @@ public class Menu {
 
     public void render(Graphics g, DadosGame dadosGame) {
         backgroundTela(g, dadosGame);
+        g.setColor(Color.WHITE);
+        Font font = Fontes.CrimsonText(TipoFonte.REGULAR, 35);
+        g.setFont(font);
+        g.drawString(titulo, x, y - 40);
+        desenharBordaFundoMenu(x, y, width, height, g);
+        desenharFundoMenu(x, y, width, height, g);
     }
 
     private void backgroundTela(Graphics g, DadosGame dadosGame) {

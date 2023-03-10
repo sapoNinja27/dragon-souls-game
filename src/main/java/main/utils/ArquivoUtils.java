@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import static java.util.Objects.nonNull;
 
-public class ListUtils {
+public class ArquivoUtils {
 
     public static <T, R> T findOne(Collection<T> collection, R object, String declaredField) {
         return collection

@@ -20,6 +20,7 @@ public class MenuPrincipal extends Menu {
     private final int heigthLogo = 153;
 
     public MenuPrincipal() {
+        super("", 0, 0);
         Spritesheet spritesheet = new Spritesheet("/menus/logo compacto.png");
         logo = spritesheet.getSprite(0, 0, widthLogo, heigthLogo);
         fundo = new Spritesheet("/menus/fundo.png").getSprite();
@@ -59,18 +60,13 @@ public class MenuPrincipal extends Menu {
                                 Loading.start(dadosGame);
                                 Loading.stop();
                                 dadosGame.jogar();
-                                //TODO verificar o por que disso
-                                //				Game.player.visivel = true;
-                                //				Game.player.Hudvisivel = true;
-                                //				Game.player.depth = 7;
-                                //				Game.cen.CenaStart(0);
                             }).build(),
                     Botao.builder().x(posicaoMeioTela + 103).y(posicaoY)
                             .width(91).height(30)
                             .texto("Continuar").cor(Color.red).borda(2)
                             .spacingX(3).spacingY(20)
                             .arcWidth(30).arcHeight(50)
-                            .acao(dadosGame::carregarJogo).build(),
+                            .acao(dadosGame::menuLoad).build(),
                     Botao.builder().x(posicaoMeioTela + 206).y(posicaoY)
                             .width(91).height(30)
                             .texto("Opções").cor(Color.red).borda(2)

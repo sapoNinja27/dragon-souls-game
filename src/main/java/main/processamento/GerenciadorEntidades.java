@@ -1,5 +1,6 @@
 package main.processamento;
 
+import lombok.Getter;
 import main.entidades.Entidade;
 import main.entidades.cenario.estaticos.HasInteraction;
 import main.entidades.cenario.estaticos.Plataforma;
@@ -16,13 +17,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.awt.event.KeyEvent.*;
 import static java.util.Objects.nonNull;
 
 public class GerenciadorEntidades {
 
     private boolean actionButtonClicked;
 
-    private final List<Entidade> entities = new ArrayList<>();
+    @Getter
+    private List<Entidade> entities = new ArrayList<>();
 
     //    public void checkCollisionEnemy() {
 //        for (int i = 0; i < enemies.size(); i++) {
@@ -95,7 +98,7 @@ public class GerenciadorEntidades {
         drawDistance = drawDistance.stream().filter(entidade -> entities instanceof ObjetosComMovimento).collect(Collectors.toList());
         TipoAmbiente local = dadosGame.getLocal();
         Entidade obj = local.gerarEntidade(dadosGame, drawDistance);
-        if (nonNull(obj)) {
+        if (nonNull(obj) && dadosGame.getPlayer().disponivelParaGerar()) {
             entities.add(obj);
         }
     }
@@ -138,8 +141,8 @@ public class GerenciadorEntidades {
             }
         } else {
             entidade.atualizarColisao(dadosGame.getPlayer());
-            if(HasInteraction.class.isAssignableFrom(entidade.getClass())){
-                if(actionButtonClicked){
+            if (HasInteraction.class.isAssignableFrom(entidade.getClass())) {
+                if (actionButtonClicked) {
                     actionButtonClicked = ((HasInteraction) entidade).applyInteraction(dadosGame, entities);
                 }
             }
@@ -170,17 +173,16 @@ public class GerenciadorEntidades {
                 .collect(Collectors.toList());
     }
 
-    public void addEntidade(Entidade entidade) {
-        this.entities.add(entidade);
-    }
-
     public void acaoPlayer(AcaoPlayer acaoPlayer, Player player) {
         player.executarAcao(acaoPlayer);
     }
 
     public void tick(DadosGame dadosGame) {
+        if(entities.isEmpty()){
+            entities =  dadosGame.getEntities();
+        }
         Player player = dadosGame.getPlayer();
-        if (player.isDentro()) {
+        if (dadosGame.getLocal().equals(TipoAmbiente.INTERNO)) {
             //renderiza dentro
         }
         List<Entidade> tickDistance = getDrawDistance(dadosGame);

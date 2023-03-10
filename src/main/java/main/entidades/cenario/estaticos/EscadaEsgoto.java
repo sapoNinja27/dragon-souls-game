@@ -5,7 +5,9 @@ import main.entidades.Entidade;
 import main.entidades.Mascara;
 import main.entidades.players.Player;
 import main.enums.TipoAmbiente;
+import main.enums.TipoFonte;
 import main.enums.TipoMascara;
+import main.utils.Fontes;
 import main.utils.Spritesheet;
 import main.world.Camera;
 
@@ -63,7 +65,7 @@ public class EscadaEsgoto extends Entidade implements HasInteraction{
         g.drawImage(img[0], this.getX() - Camera.x - 27, this.getY() - Camera.y, tileSize * 2, tileSize, null);
         if (colidindo) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
-            g.setFont(new Font("Cambria Math", Font.PLAIN, 20));
+            g.setFont(Fontes.CrimsonText(TipoFonte.REGULAR, 20));
             g.setColor(Color.white);
             g.drawString("Cidade", this.getX() - Camera.x + 5, this.getY() - Camera.y - 20);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

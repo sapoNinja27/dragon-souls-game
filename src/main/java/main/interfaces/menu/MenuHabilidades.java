@@ -16,42 +16,34 @@ import static main.utils.ImageUtils.draw;
 
 public class MenuHabilidades extends Menu {
 
-    private final Spritesheet fundo = new Spritesheet("/menus/background.png");
-
-    private BufferedImage[] img;
-
-    private Spritesheet tema;
-
-    int posx = 0;
-
-    public MenuHabilidades() {
+    public MenuHabilidades(String titulo, int width, int height) {
+        super(titulo, width, height);
         Spritesheet cenario = new Spritesheet("/cenario/cenario.png");
         img = new BufferedImage[]{
-                (cenario).getSprite(0, 3 * 64,
+                cenario.getSprite(0, 3 * 64,
                         64, 64),
-                (cenario).getSprite((2) * 64, 3 * 64,
+                cenario.getSprite((2) * 64, 3 * 64,
                         64, 64)
         };
     }
 
     @Override
     public void tick(DadosGame dadosGame, Mouse mouse) {
-        super.tick(dadosGame, mouse);
         for (Habilidade habilidade : dadosGame.getPlayer().getHabilidades()) {
             habilidade.tick(mouse);
         }
+        super.tick(dadosGame, mouse);
     }
 
     @Override
     public void render(Graphics g, DadosGame dadosGame) {
-        super.render(g, dadosGame);
-        int x = 60;
-        int y = 100;
+
         desenharTextosInfo(x, y, g, dadosGame);
-        desenharBordaFundoMenu(x, y, g);
-        desenharFundoMenu(x, y, g);
+        desenharBordaFundoMenu(x, y, 1000, 535, g);
+        desenharFundoMenu(x, y, 1000, 535, g);
         desenharInfo(x, y, g, dadosGame);
         drawHabilidades(x, y, g, dadosGame);
+        super.render(g, dadosGame);
     }
 
     private void desenharTextosInfo(int x, int y, Graphics g, DadosGame dadosGame) {
@@ -59,7 +51,6 @@ public class MenuHabilidades extends Menu {
         g.setColor(Color.WHITE);
         Font font = Fontes.CrimsonText(TipoFonte.REGULAR, 35);
         g.setFont(font);
-        g.drawString("Habilidades", x, y - 40);
 
         g.setFont(font.deriveFont(25f));
         g.drawString(String.format(

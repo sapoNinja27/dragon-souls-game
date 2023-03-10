@@ -56,8 +56,8 @@ public class Portao extends Entidade {
 //			g.drawString(Configuracao.nextRota(), this.getX() - Camera.x, this.getY() - Camera.y);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
-        g.drawImage(img[0], this.getX() - Camera.x - 29, this.getY() - Camera.y + 3, width, height, null);
-        g.drawImage(img[1], this.getX() - Camera.x - 29 + 64, this.getY() - Camera.y + 3, width, height, null);
+        g.drawImage(img[0], this.getX() - Camera.x - 29, this.getY() - Camera.y + 3, getWidth(), getHeight(), null);
+        g.drawImage(img[1], this.getX() - Camera.x - 29 + 64, this.getY() - Camera.y + 3, getWidth(), getHeight(), null);
         super.render(g, dadosGame);
     }
 }

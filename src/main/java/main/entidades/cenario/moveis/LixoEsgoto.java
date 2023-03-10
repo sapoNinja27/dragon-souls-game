@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 import main.DadosGame;
@@ -12,11 +13,10 @@ import main.utils.ImageUtils;
 import main.world.Camera;
 
 public class LixoEsgoto extends ObjetosComMovimento {
-    private BufferedImage img;
+    private final BufferedImage img;
 
     public LixoEsgoto(int x, int y, Spritesheet spt) {
         super(x, y);
-        depth = 10;
         Random random = new Random();
         img = spt.getSprite(
                 64 + (32 * random.nextInt(2)),

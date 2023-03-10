@@ -1,5 +1,6 @@
 package main.entidades;
 
+import lombok.Setter;
 import main.entidades.cenario.Fundo;
 import main.entidades.cenario.LimiteCenario;
 import main.entidades.cenario.moveis.ObjetosComMovimento;
@@ -24,22 +25,24 @@ import static main.enums.TipoMascara.*;
 
 @Getter
 public class Entidade {
-    protected double x;
-    protected double y;
-    protected int width;
-    protected int height;
+    private final int width;
+    private final int height;
     protected int depth;
+    private final List<Mascara> mascaras = new ArrayList<>(0);
+    @Setter
+    protected double x;
+    @Setter
+    protected double y;
 
     protected int sombreamento = 180;
     protected int sombras = 30;
     protected boolean colidindo;
     protected Entidade entidadeColisora;
-    protected List<Mascara> mascaras = new ArrayList<>(0);
-    protected DirecaoPlayer direcao = DirecaoPlayer.DIREITA;
-    protected boolean parado;
-    protected int drawLimitX = 1000;
-    protected int drawLimitY = 500;
     protected boolean moved;
+
+    protected DirecaoPlayer direcao = DirecaoPlayer.DIREITA;
+    protected final int drawLimitX = 1000;
+    protected final int drawLimitY = 500;
     protected final Random rand = new Random();
 
     public Entidade(int x, int y, int width, int height) {
@@ -63,14 +66,6 @@ public class Entidade {
         this.x = x;
     }
 
-    public void setX(int newX) {
-        this.x = newX;
-    }
-
-    public void setY(int newY) {
-        this.y = newY;
-    }
-
     public int getX() {
         return (int) this.x;
     }
@@ -81,10 +76,6 @@ public class Entidade {
 
     public int getY() {
         return (int) this.y;
-    }
-
-    public void setParado(boolean parado) {
-        this.parado = parado;
     }
 
     public DirecaoPlayer getDirecao() {
@@ -120,7 +111,7 @@ public class Entidade {
     }
 
     public void atualizarGravidade(Plataforma chaoMaisProximo) {
-        if (this instanceof Player && y != chaoMaisProximo.y - height) {
+        if (this instanceof Player && y != chaoMaisProximo.getY() - height) {
             Player player = (Player) this;
             if (!player.getGerenciadorMovimentos().getAcaoAtual().equals(MovimentoPlayer.SUBINDO)) {
                 player.getGerenciadorMovimentos().setarAnimacao(MovimentoPlayer.CAINDO);

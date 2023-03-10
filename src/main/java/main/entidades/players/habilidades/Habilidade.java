@@ -1,5 +1,6 @@
 package main.entidades.players.habilidades;
 
+import com.google.gson.annotations.Expose;
 import main.interfaces.Botao;
 import main.interfaces.mouse.Mouse;
 import lombok.Getter;
