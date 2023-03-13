@@ -4,10 +4,7 @@ import lombok.Getter;
 import main.enums.MovimentoPlayer;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +18,7 @@ public class GerenciadorMovimentos {
     private MovimentoPlayer acaoAtual = RESPIRANDO;
 
     private final Set<MovimentoPlayer> acoesEmCooldown = new HashSet<>(0);
-    boolean processando = false;
+    private final HashMap<MovimentoPlayer, Boolean> processos = new HashMap<>(0);
 
     public void tick() {
         atualizarCooldown();
@@ -29,13 +26,13 @@ public class GerenciadorMovimentos {
     }
 
     private void atualizarCooldown() {
-        if (processando) return;
-        MovimentoPlayer acao = acoesEmCooldown.stream().findAny().orElse(null);
+        MovimentoPlayer acao = acoesEmCooldown.stream().sorted(Comparator.comparingInt(n0 -> (int) n0.getInitialCooldown())).findAny().orElse(null);
+        if (nonNull(processos.get(acao)) && processos.get(acao)) return;
         if (nonNull(acao)) {
-            processando = true;
+            processos.put(acao, true);
             esperar(acao.getInitialCooldown(), () -> {
                 acoesEmCooldown.remove(acao);
-                processando = false;
+                processos.remove(acao);
             });
         }
     }
@@ -61,6 +58,10 @@ public class GerenciadorMovimentos {
                 break;
         }
         return acoes.toArray(new Runnable[0]);
+    }
+
+    public boolean frameDano() {
+        return getAcaoAtual().equals(HABILIDADE_POSTURA_OFENSIVA) || getAcaoAtual().equals(ATACANDO) && getAcaoAtual().getAnimacao().frameFinal();
     }
 
     public void setarAnimacao(MovimentoPlayer movimento, int coolDownReduction) {
@@ -106,5 +107,9 @@ public class GerenciadorMovimentos {
 
     public boolean noAr() {
         return acaoAtual.equals(SUBINDO) || acaoAtual.equals(CAINDO);
+    }
+
+    public boolean inCoolDown(MovimentoPlayer movimentoPlayer) {
+        return acoesEmCooldown.contains(movimentoPlayer);
     }
 }

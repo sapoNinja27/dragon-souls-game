@@ -46,11 +46,13 @@ public class Poste extends Entidade {
         g.drawImage(lampada[2], this.getX() - Camera.x - tileSize + 30,
                 this.getY() - Camera.y - tileSize + 3, tileSize * 2,
                 tileSize, null);
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillOval(this.getX() - Camera.x + 40 + rand.nextInt(25) + (10),
-                this.getY() - Camera.y + rand.nextInt(20) - 140, 3, 3);
-        g.fillOval(this.getX() - Camera.x + 40 + rand.nextInt(25) - 50,
-                this.getY() - Camera.y + rand.nextInt(20) - 140, 3, 3);
+        if (!dadosGame.isDia()) {
+            g.setColor(Color.LIGHT_GRAY);
+            g.fillOval(this.getX() - Camera.x + 40 + rand.nextInt(25) + (10),
+                    this.getY() - Camera.y + rand.nextInt(20) - 140, 3, 3);
+            g.fillOval(this.getX() - Camera.x + 40 + rand.nextInt(25) - 50,
+                    this.getY() - Camera.y + rand.nextInt(20) - 140, 3, 3);
+        }
         super.render(g, dadosGame);
     }
 }

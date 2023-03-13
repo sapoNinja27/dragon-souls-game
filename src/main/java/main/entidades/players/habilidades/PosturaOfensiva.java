@@ -3,12 +3,13 @@ package main.entidades.players.habilidades;
 import main.enums.MovimentoPlayer;
 import main.utils.Spritesheet;
 
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class PosturaOfensiva extends Habilidade {
 
     public PosturaOfensiva(int x, int y, int width, int heigth) {
-        super(x, y, width, heigth, titulo(), descricao(), custo(), icone(), movimentoPlayer(), basica());
+        super(x, y, width, heigth, titulo(), descricao(), custo(), icone(), movimentoPlayer(), basica(), KeyEvent.VK_1);
     }
 
     private static String titulo() {
@@ -42,6 +43,6 @@ public class PosturaOfensiva extends Habilidade {
     }
 
     private static boolean basica() {
-        return true;
+        return false;
     }
 }

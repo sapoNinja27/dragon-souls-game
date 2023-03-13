@@ -5,6 +5,7 @@ import main.entidades.Entidade;
 import main.entidades.cenario.estaticos.HasInteraction;
 import main.entidades.cenario.estaticos.Plataforma;
 import main.entidades.cenario.moveis.ObjetosComMovimento;
+import main.entidades.inimigos.Inimigo;
 import main.entidades.players.Player;
 import main.DadosGame;
 import main.enums.AcaoPlayer;
@@ -95,7 +96,7 @@ public class GerenciadorEntidades {
     }
 
     private void gerarEntidadesCenario(DadosGame dadosGame, List<Entidade> drawDistance) {
-        drawDistance = drawDistance.stream().filter(entidade -> entities instanceof ObjetosComMovimento).collect(Collectors.toList());
+        drawDistance = drawDistance.stream().filter(entidade -> entities instanceof Inimigo).collect(Collectors.toList());
         TipoAmbiente local = dadosGame.getLocal();
         Entidade obj = local.gerarEntidade(dadosGame, drawDistance);
         if (nonNull(obj) && dadosGame.getPlayer().disponivelParaGerar()) {
@@ -167,6 +168,7 @@ public class GerenciadorEntidades {
     }
 
     private List<Entidade> getDrawDistance(DadosGame dadosGame) {
+        entities = entities.stream().filter(entidade -> !entidade.isMorto()).collect(Collectors.toList());
         return entities
                 .stream()
                 .filter(e -> e.drawDistance(dadosGame.getPlayer()))

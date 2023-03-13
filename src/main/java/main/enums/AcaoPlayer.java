@@ -9,6 +9,7 @@ public enum AcaoPlayer {
     HABILIDADE_1,
     ULTIMATE,
     SOCO_FRACO,
+    HUD_HELP,
     PARAR,
     PARAR_PULO
 }

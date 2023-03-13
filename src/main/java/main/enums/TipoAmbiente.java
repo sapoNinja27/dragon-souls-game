@@ -4,6 +4,7 @@ import main.entidades.Entidade;
 import main.entidades.cenario.moveis.LixoEsgoto;
 import main.entidades.cenario.moveis.ObjetosComMovimento;
 import main.entidades.cenario.moveis.Transito;
+import main.entidades.inimigos.Inimigo;
 import main.entidades.players.Player;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,21 +24,21 @@ public enum TipoAmbiente {
         DadosGame dadosGame = dto.getDadosGame();
         List<Entidade> drawDistance = dto.getDrawList();
         if (dadosGame.isDia()) {
-            if (rand.nextInt(25) == 0) {
-                ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5), dadosGame, new Spritesheet("/cenario/cenario.png"));
-                am.setSpeed(rand.nextInt(13));
-                if (drawDistance.size() < rand.nextInt(3)) {
-                    return am;
-                }
-            }
+//            if (rand.nextInt(25) == 0) {
+//                ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5), dadosGame, new Spritesheet("/cenario/cenario.png"));
+//                am.setSpeed(rand.nextInt(13));
+//                if (drawDistance.size() < rand.nextInt(3)) {
+//                    return am;
+//                }
+//            }
         } else {
-            if (rand.nextInt(100) == 0) {
-                ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5), dadosGame, new Spritesheet("/cenario/cenario.png"));
-                am.setSpeed(rand.nextInt(13));
-                if (drawDistance.size() < rand.nextInt(2)) {
-                    return am;
-                }
-            }
+//            if (rand.nextInt(100) == 0) {
+//                ObjetosComMovimento am = new Transito(player.getX() - 1100, player.getY() + 64 + rand.nextInt(5), dadosGame, new Spritesheet("/cenario/cenario.png"));
+//                am.setSpeed(rand.nextInt(13));
+//                if (drawDistance.size() < rand.nextInt(2)) {
+//                    return am;
+//                }
+//            }
         }
         return null;
     }),
@@ -52,9 +53,13 @@ public enum TipoAmbiente {
         DadosGame dadosGame = dto.getDadosGame();
         List<Entidade> drawDistance = dto.getDrawList();
         if (rand.nextInt(50) == 0) {
-            ObjetosComMovimento am = new LixoEsgoto(player.getX() + 500, player.getY() + 58 + rand.nextInt(2) * 32, new Spritesheet("/cenario/cenario.png"));
-            am.setSpeed(rand.nextInt(3));
-            if (drawDistance.size() < rand.nextInt(10)) {
+//            ObjetosComMovimento am = new LixoEsgoto(player.getX() + 500, player.getY() + 58 + rand.nextInt(2) * 32, new Spritesheet("/cenario/cenario.png"));
+//            am.setSpeed(rand.nextInt(3));
+//            if (drawDistance.size() < rand.nextInt(10)) {
+//                return am;
+//            }
+            Inimigo am = new Inimigo(player.getX() + (rand.nextBoolean() ? 500 : -500), player.getY(), dadosGame.getTileSize(), dadosGame.getTileSize());
+            if (drawDistance.size() < rand.nextInt(3)) {
                 return am;
             }
         }
@@ -74,6 +79,7 @@ public enum TipoAmbiente {
                 .drawList(drawDistance)
                 .build());
     }
+
     @Getter
     @Builder
     static

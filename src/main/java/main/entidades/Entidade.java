@@ -8,6 +8,7 @@ import main.entidades.cenario.moveis.Transito;
 import main.DadosGame;
 import main.entidades.cenario.estaticos.Plataforma;
 import main.entidades.cenario.iluminacao.ObjetoLuminoso;
+import main.entidades.inimigos.Inimigo;
 import main.entidades.players.Player;
 import main.enums.DirecaoPlayer;
 import main.enums.MovimentoPlayer;
@@ -45,6 +46,10 @@ public class Entidade {
     protected final int drawLimitY = 500;
     protected final Random rand = new Random();
 
+    protected double vida;
+    protected int vidaMaxima;
+
+    private boolean morto = false;
     public Entidade(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -178,7 +183,24 @@ public class Entidade {
     }
 
     public void tick(DadosGame dadosGame) {
-
+        if (dadosGame.getEstadoGame().equals(TipoGame.NORMAL)) {
+            lifesistem(dadosGame);
+        }
+    }
+    public void lifesistem(DadosGame dadosGame) {
+        if (vida <= 0) {
+            if(this instanceof Player){
+                vida = getVidaMaxima();
+            } else {
+                if(this instanceof Inimigo){
+                    morto = true;
+                }
+            }
+//            dadosGame.gameOver();
+        }
+        if(this instanceof Player){
+            vida += 0.1;
+        }
     }
 
     public boolean temMascara() {
@@ -205,5 +227,9 @@ public class Entidade {
 
     public boolean isObjetoComMovimento() {
         return this instanceof ObjetosComMovimento;
+    }
+
+    public int getVida() {
+        return (int) vida;
     }
 }

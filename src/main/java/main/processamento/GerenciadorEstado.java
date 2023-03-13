@@ -107,6 +107,9 @@ public class GerenciadorEstado {
                     case VK_Q:
                         gerenciadorEntidades.acaoPlayer(AcaoPlayer.SOCO_FRACO, dadosGame.getPlayer());
                         break;
+                    case VK_H:
+                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.HUD_HELP, dadosGame.getPlayer());
+                        break;
                 }
                 //TODO ajustar
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {

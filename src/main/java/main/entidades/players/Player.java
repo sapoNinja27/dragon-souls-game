@@ -4,6 +4,7 @@ import main.entidades.Entidade;
 import main.entidades.Mascara;
 import main.entidades.cenario.estaticos.Plataforma;
 import main.entidades.players.habilidades.Habilidade;
+import main.utils.MatematicaUtils;
 import main.utils.Spritesheet;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import static java.lang.Math.max;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static main.enums.MovimentoPlayer.*;
@@ -36,10 +38,16 @@ public class Player extends Entidade {
     private int xp = 64;
     private int pontosHabilidade = 2;
 
-    private int vida = 958, vidaMaxima = 1000;
-    private int mana = 500, manaMaxima = 1000;
-    private int defesa = 10;
-    private int resistencia = 1;
+    private int mana = 0, manaMaxima = 1000;
+    private int danoBase = 30;
+    private int dano;
+    private boolean exausto = false;
+    private int defesaBase = 7;
+    private int defesa;
+    private int resistenciaBase = 1;
+    private int resistencia;
+
+    private boolean showHudHelp = false;
 
     @Override
     public String toString() {
@@ -92,6 +100,8 @@ public class Player extends Entidade {
     public Player(int x, int y, int width, int height) {
         super(x, y, width, height);
         depth = 14;
+        vida = 1000;
+        vidaMaxima = 1000;
         adicionarMascaras();
     }
 
@@ -121,11 +131,12 @@ public class Player extends Entidade {
 
     @Override
     public void tick(DadosGame dadosGame) {
+        super.tick(dadosGame);
         verificarAcao(dadosGame);
         gerenciadorMovimentos.tick();
         updateCamera(dadosGame);
         if (dadosGame.getEstadoGame().equals(TipoGame.NORMAL)) {
-            lifesistem(dadosGame);
+            furiaSistem();
         }
     }
 
@@ -149,22 +160,6 @@ public class Player extends Entidade {
 
     protected BufferedImage spriteAtual() {
         return direcao.equals(DirecaoPlayer.DIREITA) ? gerenciadorMovimentos.getSprite() : ImageUtils.inverter(gerenciadorMovimentos.getSprite());
-    }
-
-    public void teleportar(int x, int y) {
-//        if (!isPlayerDois) {
-//            setX(x);
-//            setY(y);
-//        } else {
-//            if (this.direcaoPlayer.equals(DirecaoPlayer.ESQUERDA)) {
-//                setX(x + 20);
-//                setY(y);
-//            }
-//            if (this.direcaoPlayer.equals(DirecaoPlayer.DIREITA)) {
-//                setX(x - 20);
-//                setY(y);
-//            }
-//        }
     }
 
     private boolean colidindoCom(Class<?> clazz) {
@@ -230,7 +225,12 @@ public class Player extends Entidade {
         }
 
         if (acaoPlayer.equals(AcaoPlayer.HABILIDADE_1)) {
+            mana += 30;
             gerenciadorMovimentos.setarAnimacao(HABILIDADE_POSTURA_OFENSIVA);
+        }
+
+        if (acaoPlayer.equals(AcaoPlayer.HUD_HELP)) {
+            showHudHelp = !showHudHelp;
         }
 
         if (acaoPlayer.equals(AcaoPlayer.PARAR_PULO)) {
@@ -240,11 +240,21 @@ public class Player extends Entidade {
         }
     }
 
-    public void lifesistem(DadosGame dadosGame) {
-        if (vida <= 0) {
-            vida = 0;
-            dadosGame.gameOver();
+    public void furiaSistem() {
+        if (exausto) {
+            mana--;
+            if (mana <= 0) {
+                mana = 0;
+                exausto = false;
+            }
         }
+        if (mana >= manaMaxima) {
+            mana = manaMaxima;
+            exausto = true;
+        }
+        defesa = defesaBase + MatematicaUtils.porcentagem(mana, 25);
+        resistencia = resistenciaBase + MatematicaUtils.porcentagem(mana, 5);
+        dano = danoBase + MatematicaUtils.porcentagem(mana, 15);
     }
 
     public void adicionarMascaras() {
@@ -260,5 +270,14 @@ public class Player extends Entidade {
 
     public boolean disponivelParaGerar() {
         return gerenciadorMovimentos.getAcaoAtual().equals(RESPIRANDO);
+    }
+
+    public void sofrerDano(int dano) {
+        boolean critico = rand.nextInt(100) < 45;
+        final int danoFinal = Math.max(dano - MatematicaUtils.porcentagem(dano, resistencia) - defesa, 10);
+        if (!exausto) {
+            mana += dano - danoFinal;
+        }
+        vida -= critico ? danoFinal * 3.5 : danoFinal;
     }
 }

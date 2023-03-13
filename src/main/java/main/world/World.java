@@ -12,6 +12,7 @@ import main.entidades.cenario.estaticos.EscadaEsgoto;
 import main.entidades.cenario.estaticos.Portao;
 import main.entidades.cenario.iluminacao.Ilminacao;
 import main.entidades.cenario.iluminacao.Poste;
+import main.entidades.inimigos.Inimigo;
 import main.entidades.players.Player;
 import main.enums.TipoIluminacao;
 import main.processamento.GerenciadorEntidades;
@@ -128,6 +129,10 @@ public class World {
     }
 
     private void player(int pixelAtual, int x, int y, List<Entidade> entidades, DadosGame dadosGame) {
+        if(pixelAtual == 0xFFC1FFE2){
+            Inimigo inimigo = new Inimigo(x * tileSize, y * tileSize, tileSize, tileSize);
+            entidades.add(inimigo);
+        }
         if (pixelAtual == 0xFF0026FF) {
             if (dadosGame.isLoaded()) {
                 entidades.add(dadosGame.getPlayer());

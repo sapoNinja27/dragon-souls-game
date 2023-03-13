@@ -6,4 +6,8 @@ public class MatematicaUtils {
         int parteOff = tamanhoTela - tamanhoObj;
         return parteOff / 2;
     }
+
+    public static int porcentagem(int total, double porcentagem) {
+       return (int)(total * (porcentagem / 100.0));
+    }
 }

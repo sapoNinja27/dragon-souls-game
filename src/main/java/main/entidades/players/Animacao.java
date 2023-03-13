@@ -3,6 +3,9 @@ package main.entidades.players;
 import lombok.RequiredArgsConstructor;
 
 import java.awt.image.BufferedImage;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 public class Animacao {
@@ -12,6 +15,9 @@ public class Animacao {
     private final int frameMaximo;
     private final BufferedImage[] sprite;
 
+    public boolean frameFinal(){
+        return index == sprite.length - 1;
+    }
     public void tick(Runnable... aditionalAction) {
         frames++;
         if (frames >= frameMaximo) {

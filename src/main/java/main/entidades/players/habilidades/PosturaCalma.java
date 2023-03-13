@@ -3,12 +3,13 @@ package main.entidades.players.habilidades;
 import main.enums.MovimentoPlayer;
 import main.utils.Spritesheet;
 
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class PosturaCalma extends Habilidade {
 
     public PosturaCalma(int x, int y, int width, int heigth) {
-        super(x, y, width, heigth, titulo(), descricao(), custo(), icone(), movimentoPlayer(), basica());
+        super(x, y, width, heigth, titulo(), descricao(), custo(), icone(), movimentoPlayer(), basica(), KeyEvent.VK_3);
     }
 
     private static String titulo() {
