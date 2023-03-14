@@ -76,6 +76,7 @@ public class EscadaEsgoto extends Entidade implements HasInteraction{
     @Override
     public boolean applyInteraction(DadosGame dadosGame, List<Entidade> list) {
         Player player = dadosGame.getPlayer();
+        if(!colidindoComPlayer(player)) return false;
         Bueiro alvo = list
                 .stream()
                 .filter(e -> e instanceof Bueiro)

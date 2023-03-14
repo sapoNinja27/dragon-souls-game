@@ -72,6 +72,7 @@ public class Bueiro extends Plataforma implements HasInteraction{
     @Override
     public boolean applyInteraction(DadosGame dadosGame, List<Entidade> list) {
         Player player = dadosGame.getPlayer();
+        if(!colidindoComPlayer(player)) return false;
         EscadaEsgoto alvo = list
                 .stream()
                 .filter(e -> e instanceof EscadaEsgoto)
