@@ -162,11 +162,6 @@ public class Player extends Entidade {
         return direcao.equals(DirecaoPlayer.DIREITA) ? gerenciadorMovimentos.getSprite() : ImageUtils.inverter(gerenciadorMovimentos.getSprite());
     }
 
-    private boolean colidindoCom(Class<?> clazz) {
-        if (isNull(entidadeColisora)) return false;
-        return entidadeColisora.isColidindo() && isClasseRelativa(clazz, entidadeColisora.getClass());
-    }
-
     private void verificarAcao(DadosGame dadosGame) {
         if (moved) {
 //            if (isFreeY()) {
@@ -188,12 +183,6 @@ public class Player extends Entidade {
         }
         if (gerenciadorMovimentos.getAcaoAtual().equals(CAINDO)) {
             y += 6;
-            if (colidindoCom(Plataforma.class)) {
-                gerenciadorMovimentos.setarAnimacao(POUSANDO);
-                y = entidadeColisora.getY() - dadosGame.getTileSize();
-                entidadeColisora = null;
-                colidindo = false;
-            }
         }
     }
 
@@ -258,7 +247,7 @@ public class Player extends Entidade {
     }
 
     public void adicionarMascaras() {
-        Mascara padrao = Mascara.builder().tipoMascara(TipoMascara.HURTBOX).x(20).y(11).height(52).width(20).build();
+        Mascara padrao = Mascara.builder().alias("corpo").x(20).y(11).height(52).width(20).build();
 //		MascaraHitBox padrao = new MascaraHitBox("padrao", 20, 11, 20 ,52);
         adicionarMascara(padrao);
 

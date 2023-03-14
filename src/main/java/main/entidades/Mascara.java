@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.awt.*;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -16,5 +18,6 @@ public class Mascara {
     private int y;
     private int height;
     private int width;
-    private TipoMascara tipoMascara;
+    private String alias;
+
 }

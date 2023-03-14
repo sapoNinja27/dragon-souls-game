@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>groupId</groupId>
-    <artifactId>Game_01</artifactId>
+    <artifactId>dragon-souls-game</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

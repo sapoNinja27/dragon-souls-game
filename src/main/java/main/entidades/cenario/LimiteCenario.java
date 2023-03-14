@@ -9,6 +9,8 @@ import main.enums.TipoMascara;
 
 import java.awt.*;
 
+import static java.util.Objects.nonNull;
+
 public class LimiteCenario extends Entidade {
 
     private final TipoLimite tipo;
@@ -17,13 +19,13 @@ public class LimiteCenario extends Entidade {
         super(x, y, width, height);
         depth = 30;
         this.tipo = TipoLimite.fromInt(tipo);
-        adicionarMascara(Mascara.builder().tipoMascara(TipoMascara.HITBOX).x(tipo == 1 ? 0 : 62).y(y).height(height).width(width).build());
+        adicionarMascara(Mascara.builder().alias("limiteCenario" + tipo).x(tipo == 1 ? 0 : 62).y(y).height(height).width(width).build());
     }
 
     @Override
     public void tick(DadosGame dadosGame) {
         Player player = dadosGame.getPlayer();
-        if (colidindo) {
+        if (colidindoComPlayer(dadosGame.getPlayer())) {
             switch (tipo) {
                 case DIREITO:
                     if (player.getDirecao().equals(DirecaoPlayer.DIREITA)) {

@@ -27,7 +27,7 @@ public class Bueiro extends Plataforma implements HasInteraction{
         this.img = img;
         depth = 3;
         adicionarMascara(Mascara.builder()
-                .tipoMascara(TipoMascara.HITBOX)
+                .alias("bueiro")
                 .x(17)
                 .y(-15)
                 .height(40)
@@ -37,7 +37,7 @@ public class Bueiro extends Plataforma implements HasInteraction{
 
     @Override
     public void tick(DadosGame dadosGame) {
-        if (colidindo) {
+        if (colidindoComPlayer(dadosGame.getPlayer())) {
             frames++;
             if (frames >= 10) {
                 if (op < 0.9f) {
@@ -48,13 +48,14 @@ public class Bueiro extends Plataforma implements HasInteraction{
             frames = 0;
             op = 0.1f;
         }
+        super.tick(dadosGame);
     }
 
     @Override
     public void render(Graphics g, DadosGame dadosGame) {
         int posX = getX() - Camera.x;
         int posY = getY() - Camera.y;
-        if (colidindo) {
+        if (colidindoComPlayer(dadosGame.getPlayer())) {
             g.drawImage(img[1], posX, posY, null);
             Graphics2D g2 = (Graphics2D) g;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));

@@ -30,7 +30,7 @@ public class EscadaEsgoto extends Entidade implements HasInteraction{
         int tileSize = dadosGame.getTileSize();
         depth = 10;
         adicionarMascara(Mascara.builder()
-                .tipoMascara(TipoMascara.HITBOX)
+                .alias("escadaEsgoto")
                 .x(17)
                 .y(-100)
                 .height(200)
@@ -42,7 +42,7 @@ public class EscadaEsgoto extends Entidade implements HasInteraction{
 
     @Override
     public void tick(DadosGame dadosGame) {
-        if (colidindo) {
+        if (colidindoComPlayer(dadosGame.getPlayer())) {
             frames++;
             if (frames >= 10) {
                 if (op < 0.9f) {
@@ -63,7 +63,7 @@ public class EscadaEsgoto extends Entidade implements HasInteraction{
             g.drawImage(img[1], this.getX() - Camera.x - 27, this.getY() - Camera.y - tileSize - (tileSize * i), tileSize * 2, tileSize, null);
         }
         g.drawImage(img[0], this.getX() - Camera.x - 27, this.getY() - Camera.y, tileSize * 2, tileSize, null);
-        if (colidindo) {
+        if (colidindoComPlayer(dadosGame.getPlayer())) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
             g.setFont(Fontes.CrimsonText(TipoFonte.REGULAR, 20));
             g.setColor(Color.white);

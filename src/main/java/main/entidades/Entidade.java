@@ -22,6 +22,8 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static main.enums.TipoMascara.*;
 
 @Getter
@@ -37,8 +39,8 @@ public class Entidade {
 
     protected int sombreamento = 180;
     protected int sombras = 30;
-    protected boolean colidindo;
-    protected Entidade entidadeColisora;
+
+    protected final Set<Colisao> colisoes = new HashSet<>(0);
     protected boolean moved;
 
     protected DirecaoPlayer direcao = DirecaoPlayer.DIREITA;
@@ -50,6 +52,7 @@ public class Entidade {
     protected int vidaMaxima;
 
     private boolean morto = false;
+
     public Entidade(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -58,6 +61,15 @@ public class Entidade {
     }
 
     public static final Comparator<Entidade> nodeSorter = Comparator.comparingInt(n0 -> n0.depth);
+
+    protected Entidade entidadeColisora(String alias) {
+        return colisoes
+                .stream()
+                .filter(colisao -> colisao.getAlvo().equals(alias))
+                .map(colisao -> colisao.getEntidadeAlvo())
+                .findFirst()
+                .orElse(null);
+    }
 
     public void limparMascaras() {
         this.mascaras.clear();
@@ -111,10 +123,6 @@ public class Entidade {
         }
     }
 
-    public void atualizarColisao(Entidade alvo) {
-        attColisao(buscarColisao(alvo), alvo);
-    }
-
     public void atualizarGravidade(Plataforma chaoMaisProximo) {
         if (this instanceof Player && y != chaoMaisProximo.getY() - height) {
             Player player = (Player) this;
@@ -124,27 +132,23 @@ public class Entidade {
         }
     }
 
-    private boolean verificarColisao(Entidade entidade, TipoMascara mAtual, TipoMascara mAlvo) {
-        boolean colidindo = false;
-        for (Rectangle atual : getMascaras(mAtual)) {
-            for (Rectangle alvo : entidade.getMascaras(mAlvo)) {
-                colidindo = atual.intersects(alvo);
-                if (colidindo) {
-                    break;
+    public void verificarColisao(Entidade entidade) {
+        for (Mascara atual : mascaras) {
+            for (Mascara alvo : entidade.mascaras) {
+                Rectangle rectangleAtual = new Rectangle(
+                        getX() + atual.getX(), getY() + atual.getY(),
+                        atual.getWidth(), atual.getHeight());
+                Rectangle rectangleAlvo = new Rectangle(
+                        entidade.getX() + alvo.getX(), alvo.getY() + entidade.getY(),
+                        alvo.getWidth(), alvo.getHeight());
+            Colisao colisao = Colisao.builder().entidadeAlvo(entidade).alvo(alvo.getAlias()).atual(atual.getAlias()).build();
+                if(rectangleAtual.intersects(rectangleAlvo)){
+                    colisoes.add(colisao);
+                } else{
+                    colisoes.remove(colisao);
                 }
             }
         }
-        return colidindo;
-    }
-
-    public boolean buscarColisao(Entidade alvo) {
-        return verificarColisao(alvo, HITBOX, HURTBOX) ||
-                verificarColisao(alvo, HITBOX, HITBOX);
-    }
-
-    private void attColisao(boolean colidindo, Entidade entidadeColisora) {
-        this.colidindo = colidindo;
-        this.entidadeColisora = entidadeColisora;
     }
 
     public double distanciaX(int destino) {
@@ -169,17 +173,11 @@ public class Entidade {
         }
         return isClasseRelativa(this.getClass(), alvo);
     }
-
+protected boolean colidindoComPlayer(Player player){
+        return colisoes.stream().anyMatch(colisao -> colisao.getEntidadeAlvo().equals(player));
+}
     public boolean dependeControleDePosicaoPlayer() {
         return false;
-    }
-
-    private List<Rectangle> getMascaras(TipoMascara... tipo) {
-        return mascaras
-                .stream()
-                .filter(mascara -> Arrays.asList(tipo).contains(mascara.getTipoMascara()))
-                .map(mascara -> new Rectangle(getX() + mascara.getX(), getY() + mascara.getY(), mascara.getWidth(), mascara.getHeight()))
-                .collect(Collectors.toList());
     }
 
     public void tick(DadosGame dadosGame) {
@@ -187,18 +185,19 @@ public class Entidade {
             lifesistem(dadosGame);
         }
     }
+
     public void lifesistem(DadosGame dadosGame) {
         if (vida <= 0) {
-            if(this instanceof Player){
+            if (this instanceof Player) {
                 vida = getVidaMaxima();
             } else {
-                if(this instanceof Inimigo){
+                if (this instanceof Inimigo) {
                     morto = true;
                 }
             }
 //            dadosGame.gameOver();
         }
-        if(this instanceof Player){
+        if (this instanceof Player) {
             vida += 0.1;
         }
     }

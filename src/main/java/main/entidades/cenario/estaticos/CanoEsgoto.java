@@ -8,14 +8,14 @@ import main.DadosGame;
 import main.entidades.Entidade;
 import main.world.Camera;
 
-public class CanoEsgoto extends Entidade {
+public class CanoEsgoto extends Plataforma {
 	private int index;
 	private int ciclo;
 	private final BufferedImage[] img;
 	private int frames = 0;
 	private final int[] rand = new int[3];
 	public CanoEsgoto(int x, int y, BufferedImage[] img) {
-		super(x, y, 0, 0);
+		super(x, y, null);
 		this.img = img;
 		depth = 3;
         Random random = new Random();
@@ -27,6 +27,7 @@ public class CanoEsgoto extends Entidade {
 
     @Override
 	public void tick(DadosGame dadosGame) {
+        super.tick(dadosGame);
         frames++;
         if (index == 1) {
             if (frames >= rand[ciclo] + 50) {

@@ -94,10 +94,8 @@ public class World {
         } else if (pixelAtual == 0xFFE5E5E5) {
             // chao de esgoto com canos
             BufferedImage[] img = {(cenario).getSprite(3 * tileSize, 3 * tileSize, tileSize, tileSize), (cenario).getSprite(4 * tileSize, 3 * tileSize, tileSize, tileSize)};
-            Plataforma plat = new Plataforma(x * tileSize, y * tileSize, null);
             CanoEsgoto pack = new CanoEsgoto(x * tileSize, y * tileSize, img);
             entidades.add(pack);
-            entidades.add(plat);
         } else if (pixelAtual == 0xFFAA004A) {
             // bueiro
             int posPost = dadosGame.getPlayer().getRand().nextInt(2) == 1 ? -tileSize / (dadosGame.getPlayer().getRand().nextInt(4) + 1) : tileSize / (dadosGame.getPlayer().getRand().nextInt(4) + 1);

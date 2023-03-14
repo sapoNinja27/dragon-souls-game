@@ -131,17 +131,16 @@ public class GerenciadorEntidades {
 
     private void avaliarColisaoSimples(Entidade entidade, DadosGame dadosGame) {
         if (entidade instanceof Player) {
-            Entidade target = entities
+            Entidade target = getDrawDistance(dadosGame)
                     .stream()
                     .filter(e -> !(e instanceof Player))
-                    .filter(e -> e.buscarColisao(entidade))
                     .findFirst()
                     .orElse(null);
             if (nonNull(target)) {
-                entidade.atualizarColisao(target);
+                entidade.verificarColisao(target);
             }
         } else {
-            entidade.atualizarColisao(dadosGame.getPlayer());
+            entidade.verificarColisao(dadosGame.getPlayer());
             if (HasInteraction.class.isAssignableFrom(entidade.getClass())) {
                 if (actionButtonClicked) {
                     actionButtonClicked = ((HasInteraction) entidade).applyInteraction(dadosGame, entities);

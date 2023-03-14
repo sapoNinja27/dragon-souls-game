@@ -9,6 +9,8 @@ import main.entidades.Entidade;
 import main.utils.Spritesheet;
 import main.world.Camera;
 
+import static java.util.Objects.nonNull;
+
 public class Portao extends Entidade {
     private float op = 0.1f;
     private int frames = 0;
@@ -29,9 +31,9 @@ public class Portao extends Entidade {
             img[i] = spt.getSprite((i) * width, 5 * height, width, height);
         }
     }
-
-    public void tick() {
-        if (colidindo) {
+@Override
+    public void tick(DadosGame dadosGame) {
+        if (colidindoComPlayer(dadosGame.getPlayer())) {
             frames++;
             if (frames >= 10) {
                 if (op < 0.9f) {
@@ -48,7 +50,7 @@ public class Portao extends Entidade {
     @Override
     public void render(Graphics g, DadosGame dadosGame) {
         Graphics2D g2 = (Graphics2D) g;
-        if (colidindo) {
+        if (colidindoComPlayer(dadosGame.getPlayer())) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, op));
             g.setFont(new Font("Cambria Math", Font.PLAIN, 15));
             g.setColor(Color.blue);

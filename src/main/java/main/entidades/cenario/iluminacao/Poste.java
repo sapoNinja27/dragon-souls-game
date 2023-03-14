@@ -19,7 +19,7 @@ public class Poste extends Entidade {
         depth = 13;
         adicionarMascara(
                 Mascara.builder()
-                        .tipoMascara(TipoMascara.HURTBOX)
+                        .alias("poste")
                         .x(25)
                         .y(-100)
                         .height(100)
