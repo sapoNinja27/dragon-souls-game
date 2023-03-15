@@ -28,14 +28,16 @@ import static main.enums.TipoMascara.*;
 
 @Getter
 public class Entidade {
-    private final int width;
-    private final int height;
-    protected int depth;
-    private final List<Mascara> mascaras = new ArrayList<>(0);
-    @Setter
+    protected final int width;
+    protected final int height;
+    protected final int depth;
+    protected final double speed;
+    protected double vida;
+    protected int vidaMaxima;
     protected double x;
-    @Setter
     protected double y;
+
+    protected final List<Mascara> mascaras = new ArrayList<>(0);
 
     protected int sombreamento = 180;
     protected int sombras = 30;
@@ -48,19 +50,19 @@ public class Entidade {
     protected final int drawLimitY = 500;
     protected final Random rand = new Random();
 
-    protected double vida;
-    protected int vidaMaxima;
+    protected boolean morto = false;
+    public static final Comparator<Entidade> nodeSorter = Comparator.comparingInt(n0 -> n0.depth);
 
-    private boolean morto = false;
-
-    public Entidade(int x, int y, int width, int height) {
+    public Entidade(int x, int y, int width, int height, int depth, double speed, int vidaMaxima) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.depth = depth;
+        this.speed = speed;
+        this.vidaMaxima = vidaMaxima;
+        this.vida = vidaMaxima;
     }
-
-    public static final Comparator<Entidade> nodeSorter = Comparator.comparingInt(n0 -> n0.depth);
 
     protected Entidade entidadeColisora(String alias) {
         return colisoes
@@ -75,28 +77,16 @@ public class Entidade {
         this.mascaras.clear();
     }
 
-    public void adicionarMascara(Mascara mascara) {
+    protected void adicionarMascara(Mascara mascara) {
         this.mascaras.add(mascara);
-    }
-
-    public void mover(double x) {
-        this.x = x;
     }
 
     public int getX() {
         return (int) this.x;
     }
 
-    public double xDouble() {
-        return this.x;
-    }
-
     public int getY() {
         return (int) this.y;
-    }
-
-    public DirecaoPlayer getDirecao() {
-        return direcao;
     }
 
     public boolean drawDistance(Player player) {
@@ -141,10 +131,10 @@ public class Entidade {
                 Rectangle rectangleAlvo = new Rectangle(
                         entidade.getX() + alvo.getX(), alvo.getY() + entidade.getY(),
                         alvo.getWidth(), alvo.getHeight());
-            Colisao colisao = Colisao.builder().entidadeAlvo(entidade).alvo(alvo.getAlias()).atual(atual.getAlias()).build();
-                if(rectangleAtual.intersects(rectangleAlvo)){
+                Colisao colisao = Colisao.builder().entidadeAlvo(entidade).alvo(alvo.getAlias()).atual(atual.getAlias()).build();
+                if (rectangleAtual.intersects(rectangleAlvo)) {
                     colisoes.add(colisao);
-                } else{
+                } else {
                     colisoes.remove(colisao);
                 }
             }
@@ -173,11 +163,9 @@ public class Entidade {
         }
         return isClasseRelativa(this.getClass(), alvo);
     }
-protected boolean colidindoComPlayer(Player player){
+
+    protected boolean colidindoComPlayer(Player player) {
         return colisoes.stream().anyMatch(colisao -> colisao.getEntidadeAlvo().equals(player));
-}
-    public boolean dependeControleDePosicaoPlayer() {
-        return false;
     }
 
     public void tick(DadosGame dadosGame) {
@@ -186,20 +174,21 @@ protected boolean colidindoComPlayer(Player player){
         }
     }
 
-    public void lifesistem(DadosGame dadosGame) {
+    private void lifesistem(DadosGame dadosGame) {
         if (vida <= 0) {
             if (this instanceof Player) {
                 vida = getVidaMaxima();
-            } else {
-                if (this instanceof Inimigo) {
-                    morto = true;
-                }
             }
+            acaoMorte();
 //            dadosGame.gameOver();
         }
         if (this instanceof Player) {
             vida += 0.1;
         }
+    }
+
+    protected void acaoMorte() {
+
     }
 
     public boolean temMascara() {
@@ -228,7 +217,8 @@ protected boolean colidindoComPlayer(Player player){
         return this instanceof ObjetosComMovimento;
     }
 
-    public int getVida() {
-        return (int) vida;
+    public void move(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 }

@@ -14,9 +14,8 @@ public class Poste extends Entidade {
     private final BufferedImage[] lampada = new BufferedImage[3];
 
     public Poste(int x, int y, Spritesheet spt, DadosGame dadosGame) {
-        super(x, y, 0, 0);
+        super(x, y, 0, 0, 13, 0, 1);
         int tileSize = dadosGame.getTileSize();
-        depth = 13;
         adicionarMascara(
                 Mascara.builder()
                         .alias("poste")

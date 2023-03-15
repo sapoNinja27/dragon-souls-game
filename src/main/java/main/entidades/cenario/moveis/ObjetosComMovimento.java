@@ -5,10 +5,7 @@ import lombok.Setter;
 
 @Setter
 public class ObjetosComMovimento extends Entidade {
-    protected int speed = 10;
-
     public ObjetosComMovimento(int x, int y) {
-        super(x, y, 0, 0);
-        depth = 10;
+        super(x, y, 0, 0, 10, 10, 1);
     }
 }

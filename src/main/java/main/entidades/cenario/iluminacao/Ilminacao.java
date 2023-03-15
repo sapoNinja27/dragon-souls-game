@@ -8,8 +8,7 @@ import java.awt.*;
 
 public class Ilminacao extends ObjetoLuminoso {
     public Ilminacao(int x, int y, int width, int height, TipoIluminacao tipoIluminacao) {
-        super(x, y, width, height, tipoIluminacao);
-        depth = 15;
+        super(x, y, width, height, tipoIluminacao, 15);
     }
 
     @Override

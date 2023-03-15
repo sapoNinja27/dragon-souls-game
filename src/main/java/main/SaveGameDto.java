@@ -30,7 +30,12 @@ public class SaveGameDto {
         int nivel;
         int xp;
         int pontosHabilidade;
-        int vida, vidaMaxima, mana, defesa, manaMaxima, resistencia;
+        double vida;
+        int vidaMaxima;
+        int mana;
+        int defesa;
+        int manaMaxima;
+        int resistencia;
 
         PlayerDto(Player player) {
             this.x = player.getX();

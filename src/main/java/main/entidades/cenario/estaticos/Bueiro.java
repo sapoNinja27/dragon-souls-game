@@ -23,9 +23,8 @@ public class Bueiro extends Plataforma implements HasInteraction{
     private float op = 0.1f;
 
     public Bueiro(int x, int y, BufferedImage[] img) {
-        super(x, y, null);
+        super(x, y, img[0], 3);
         this.img = img;
-        depth = 3;
         adicionarMascara(Mascara.builder()
                 .alias("bueiro")
                 .x(17)
@@ -80,8 +79,7 @@ public class Bueiro extends Plataforma implements HasInteraction{
                 .min(Comparator.comparingInt(e -> (int) e.distanciaX(player.getX())))
                 .orElse(null);
         if(nonNull(alvo)){
-            player.setX(alvo.getX());
-            player.setY(alvo.getY());
+            player.move(alvo.getX(), alvo.getY());
             dadosGame.setLocal(ESGOTOS);
         }
         return false;

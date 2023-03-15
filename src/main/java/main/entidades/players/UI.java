@@ -46,7 +46,7 @@ public class UI {
 		/*
 			Barra de vida e de mana
 		 */
-        desenharBarra(g, 95, 45, player.getVida(), player.getVidaMaxima(), corBarraVida, corBarraVidaVazia);
+        desenharBarra(g, 95, 45, (int) player.getVida(), player.getVidaMaxima(), corBarraVida, corBarraVidaVazia);
         desenharBarra(g, 95, 63, player.getMana(), player.getManaMaxima(), corBarraMana, corBarraManaVazia);
 		/*
 			Icone

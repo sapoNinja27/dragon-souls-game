@@ -16,8 +16,7 @@ public class LimiteCenario extends Entidade {
     private final TipoLimite tipo;
 
     public LimiteCenario(int x, int y, int tipo, int width, int height) {
-        super(x, y, width, height);
-        depth = 30;
+        super(x, y, width, height, 30, 0, 1);
         this.tipo = TipoLimite.fromInt(tipo);
         adicionarMascara(Mascara.builder().alias("limiteCenario" + tipo).x(tipo == 1 ? 0 : 62).y(y).height(height).width(width).build());
     }
@@ -29,12 +28,12 @@ public class LimiteCenario extends Entidade {
             switch (tipo) {
                 case DIREITO:
                     if (player.getDirecao().equals(DirecaoPlayer.DIREITA)) {
-                        player.setX(player.getX() - 5);
+                        player.move(player.getX() - 5, player.getY());
                     }
                     break;
                 case ESQUERDO:
                     if (player.getDirecao().equals(DirecaoPlayer.ESQUERDA)) {
-                        player.setX(player.getX() + 5);
+                        player.move(player.getX() + 5, player.getY());
                     }
                     break;
             }

@@ -12,8 +12,7 @@ public class Fundo extends Entidade {
     private final BufferedImage fundo;
 
     public Fundo(int x, int y, int width, int height) {
-        super(x, y, width, height);
-        depth = 0;
+        super(x, y, width, height, 0, 0, 1);
         Spritesheet spritesheet = new Spritesheet("/bg_test_2.png");
         fundo = spritesheet.getSprite();
     }

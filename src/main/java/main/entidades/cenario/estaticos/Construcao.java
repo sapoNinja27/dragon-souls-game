@@ -17,7 +17,7 @@ public class Construcao extends Entidade {
 //    ParedeInvisivel paredeInvisivel;
 
     public Construcao(int x, int y, int width, int height) {
-        super(x, y, width, height);
+        super(x, y, width, height, 10, 0, 1);
 //		drawLimitX = this.getWidth() * Configuracao.TILE_SIZE + Configuracao.TILE_SIZE * 2 + 400;
 //		drawLimitY = this.getHeight() * Configuracao.TILE_SIZE + Configuracao.TILE_SIZE;
 //		this.predios = predios;

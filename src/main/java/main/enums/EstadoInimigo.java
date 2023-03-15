@@ -11,7 +11,9 @@ import java.util.List;
 public enum EstadoInimigo {
     ATAQUE_1(0, createAnimacao(8, "/inimigos/inimigo/ataque1.png")),
     ATAQUE_2(1, createAnimacao(12, "/inimigos/inimigo/ataque2.png")),
-    ANDANDO(0, createAnimacao(6, "/inimigos/inimigo/correndo.png"));
+    ANDANDO(0, createAnimacao(6, "/inimigos/inimigo/correndo.png")),
+    HURTED(0, createAnimacao(6, "/inimigos/inimigo/hurted.png")),
+    MORRENDO(0, createAnimacao(6, "/inimigos/inimigo/dead.png"));
 
 
     @Getter

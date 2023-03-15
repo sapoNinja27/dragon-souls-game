@@ -26,9 +26,8 @@ public class EscadaEsgoto extends Entidade implements HasInteraction{
     private int frames = 0;
 
     public EscadaEsgoto(int x, int y, Spritesheet spt, DadosGame dadosGame) {
-        super(x, y, 0, 0);
+        super(x, y, 0, 0, 10, 0,1);
         int tileSize = dadosGame.getTileSize();
-        depth = 10;
         adicionarMascara(Mascara.builder()
                 .alias("escadaEsgoto")
                 .x(17)
@@ -84,8 +83,7 @@ public class EscadaEsgoto extends Entidade implements HasInteraction{
                 .min(Comparator.comparingInt(e -> (int) e.distanciaX(player.getX())))
                 .orElse(null);
         if(nonNull(alvo)){
-            player.setX(alvo.getX());
-            player.setY(alvo.getY());
+            player.move(alvo.getX(), alvo.getY());
             dadosGame.setLocal(CIDADE_DE_BAIXO);
         }
         return false;

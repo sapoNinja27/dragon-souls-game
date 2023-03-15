@@ -31,7 +31,6 @@ public class Player extends Entidade {
     private final GerenciadorMovimentos gerenciadorMovimentos = new GerenciadorMovimentos();
     private final UI ui = new UI();
     private final HabilitySet habilidades = new HabilitySet();
-    private final double speed = 5;
     protected Spritesheet spritesheet;
 
     private int nivel = 1;
@@ -75,14 +74,14 @@ public class Player extends Entidade {
             int nivel,
             int xp,
             int pontosHabilidade,
-            int vida,
+            double vida,
             int vidaMaxima,
             int mana,
             int manaMaxima,
             int defesa,
             int resistencia
     ) {
-        super(x, y, width, height);
+        super(x, y, width, height, 14, 5, vidaMaxima);
         this.nivel = nivel;
         this.vidaMaxima = vidaMaxima;
         this.pontosHabilidade = pontosHabilidade;
@@ -92,16 +91,11 @@ public class Player extends Entidade {
         this.defesa = defesa;
         this.resistencia = resistencia;
         this.xp = xp;
-
-        depth = 14;
         adicionarMascaras();
     }
 
     public Player(int x, int y, int width, int height) {
-        super(x, y, width, height);
-        depth = 14;
-        vida = 1000;
-        vidaMaxima = 1000;
+        super(x, y, width, height, 14, 5, 1000);
         adicionarMascaras();
     }
 
@@ -167,7 +161,7 @@ public class Player extends Entidade {
 //            if (isFreeY()) {
             gerenciadorMovimentos.setarAnimacao(ANDANDO);
 //            }
-            mover(direcao.equals(DirecaoPlayer.DIREITA) ? xDouble() + speed : xDouble() - speed);
+            x += direcao.equals(DirecaoPlayer.DIREITA) ? speed : -speed;
         } else {
             if (
                 //isFreeY() &&
@@ -176,7 +170,7 @@ public class Player extends Entidade {
             }
         }
         if (gerenciadorMovimentos.getAcaoAtual().equals(PARANDO)) {
-            mover(direcao.equals(DirecaoPlayer.DIREITA) ? xDouble() + speed / 2 : xDouble() - speed / 2);
+            x += direcao.equals(DirecaoPlayer.DIREITA) ? speed / 2 : -speed / 2;
         }
         if (gerenciadorMovimentos.getAcaoAtual().equals(SUBINDO)) {
             y -= 4;

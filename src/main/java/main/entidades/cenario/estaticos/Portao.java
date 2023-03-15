@@ -17,8 +17,7 @@ public class Portao extends Entidade {
     private final BufferedImage[] img = new BufferedImage[2];
 
     public Portao(int x, int y, Spritesheet spt, int width, int height) {
-        super(x, y, width, height);
-        depth = 4;
+        super(x, y, width, height, 4, 0, 1);
         adicionarMascara(Mascara
                 .builder()
                 .x(0)
@@ -31,7 +30,8 @@ public class Portao extends Entidade {
             img[i] = spt.getSprite((i) * width, 5 * height, width, height);
         }
     }
-@Override
+
+    @Override
     public void tick(DadosGame dadosGame) {
         if (colidindoComPlayer(dadosGame.getPlayer())) {
             frames++;

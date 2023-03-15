@@ -25,7 +25,6 @@ public class Transito extends ObjetosComMovimento {
     @Override
     public void tick(DadosGame dadosGame) {
         x += speed + 5;
-        depth = 20;
     }
 
     @Override

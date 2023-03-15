@@ -17,7 +17,7 @@ public class LataLixo extends Entidade {
     private final BufferedImage[] lata = new BufferedImage[2];
 
     public LataLixo(int x, int y, Spritesheet spt, DadosGame dadosGame) {
-        super(x, y, 0, 0);
+        super(x, y, 0, 0, 10, 0, 1);
         int tileSize = dadosGame.getTileSize();
 //        adicionarMascara(new MascaraHitBox(-25, -20, 46, 80));
         for (int i = 0; i < 2; i++) {

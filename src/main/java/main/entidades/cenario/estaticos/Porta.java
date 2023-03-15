@@ -7,22 +7,21 @@ import main.entidades.Entidade;
 import main.DadosGame;
 
 public class Porta extends Entidade {
-	public boolean emFrente;
-	private int frames = 0;
-	private float op = 0.f;
-	private BufferedImage[] porta;
-	private int id;
-	private boolean dentro;
-	private String acao;
+    public boolean emFrente;
+    private int frames = 0;
+    private float op = 0.f;
+    private BufferedImage[] porta;
+    private int id;
+    private boolean dentro;
+    private String acao;
 
-	public Porta(int x, int y, BufferedImage[] porta) {
-		super(x, y, 0, 0);
-		this.porta = porta;
-		depth = 1;
+    public Porta(int x, int y, BufferedImage[] porta) {
+        super(x, y, 0, 0, 1, 0, 1);
+        this.porta = porta;
 //		adicionarMascara(new MascaraHitBox(- 25, -20, 46, 80));
-	}
+    }
 
-	public void tick() {
+    public void tick() {
         if (emFrente) {
             frames++;
             if (frames >= 10) {
@@ -35,11 +34,11 @@ public class Porta extends Entidade {
             frames = 0;
             op = 0.1f;
         }
-	}
+    }
 
-	@Override
-	public void render(Graphics g, DadosGame dadosGame) {
-		Graphics2D g2 = (Graphics2D) g;
+    @Override
+    public void render(Graphics g, DadosGame dadosGame) {
+        Graphics2D g2 = (Graphics2D) g;
 //		if (!colidindo) {
 //			g.drawImage(porta[0], this.getX() - Camera.x - Configuracao.TILE_SIZE,
 //					this.getY() - Camera.y - Configuracao.TILE_SIZE, Configuracao.TILE_SIZE * 2,
@@ -55,5 +54,5 @@ public class Porta extends Entidade {
 //			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 //		}
 
-	}
+    }
 }

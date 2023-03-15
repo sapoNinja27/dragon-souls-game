@@ -85,11 +85,11 @@ public class World {
 
     private void plataformas(int pixelAtual, int x, int y, List<Entidade> entidades, DadosGame dadosGame) {
         if (pixelAtual == 0xFFFFFFFF) {
-            Plataforma pack = new Plataforma(x * tileSize, y * tileSize, cenario.getSprite((2) * tileSize, 3 * tileSize, tileSize, tileSize));
+            Plataforma pack = new Plataforma(x * tileSize, y * tileSize, cenario.getSprite((2) * tileSize, 3 * tileSize, tileSize, tileSize), 1);
             entidades.add(pack);
         } else if (pixelAtual == 0xFFF2F2F2) {
             // chao de esgoto
-            Plataforma pack = new Plataforma(x * tileSize, y * tileSize, (cenario).getSprite((5) * tileSize, 3 * tileSize, tileSize, tileSize));
+            Plataforma pack = new Plataforma(x * tileSize, y * tileSize, (cenario).getSprite((5) * tileSize, 3 * tileSize, tileSize, tileSize), 1);
             entidades.add(pack);
         } else if (pixelAtual == 0xFFE5E5E5) {
             // chao de esgoto com canos
@@ -109,7 +109,7 @@ public class World {
             entidades.add(pack);
         } else if (pixelAtual == 0xFFD8D8D8) {
             // Telhado
-            Plataforma pack = new Plataforma(x * tileSize, y * tileSize, null);
+            Plataforma pack = new Plataforma(x * tileSize, y * tileSize, null, 1);
             entidades.add(pack);
         }
 
