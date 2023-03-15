@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import main.DadosGame;
 import main.entidades.Entidade;
+import main.enums.DirecaoPlayer;
 import main.enums.EstadoInimigo;
 import main.utils.ImageUtils;
 import main.world.Camera;
@@ -12,7 +13,6 @@ import main.world.Camera;
 public class Inimigo extends Entidade {
 
     private double speed = 1.5;
-    private BufferedImage[] sprites = new BufferedImage[2];
     private EstadoInimigo estadoInimigo = EstadoInimigo.ANDANDO;
 
     public Inimigo(int x, int y, int width, int height) {
@@ -43,9 +43,11 @@ public class Inimigo extends Entidade {
             if (estadoInimigo.equals(EstadoInimigo.ANDANDO)) {
                 estadoInimigo = rand.nextInt(2) == 1 ? EstadoInimigo.ATAQUE_1 : EstadoInimigo.ATAQUE_2;
             }
-            estadoInimigo.getAnimacao().tick(()-> dadosGame.getPlayer().sofrerDano(30));
-            if(dadosGame.getPlayer().getGerenciadorMovimentos().frameDano()){
-                vida -= (double) dadosGame.getPlayer().getDano() / 5;
+            estadoInimigo.getAnimacao().tick(() -> dadosGame.getPlayer().sofrerDano(30));
+            if (dadosGame.getPlayer().getGerenciadorMovimentos().frameDano()) {
+                vida -= dadosGame.getPlayer().getDano();
+                //TODO adicionar movimento damaged com essa ação
+                x += dadosGame.getPlayer().getDirecao().equals(DirecaoPlayer.ESQUERDA) ? -50 : +50;
             }
         }
     }

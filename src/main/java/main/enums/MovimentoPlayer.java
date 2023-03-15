@@ -16,7 +16,7 @@ public enum MovimentoPlayer {
     PARANDO(0, createAnimacao(0, "/personagens/tai/parando.png")),
     RESPIRANDO(0, createAnimacao(15, "/personagens/tai/respirando.png")),
     RESPIRANDO_EM_COMBATE(0, createAnimacao(15, "/personagens/tai/respirando_combat.png")),
-    ATACANDO(1, createAnimacao(7, "/personagens/tai/atacando.png")),
+    ATACANDO(0.2, createAnimacao(5, "/personagens/tai/atacando.png")),
     INVESTINDO(5, createAnimacao(15, "/personagens/tai/dash.png")),
 
     HABILIDADE_POSTURA_OFENSIVA(20, createAnimacao(10, "/personagens/tai/postura_ofensiva.png")),
