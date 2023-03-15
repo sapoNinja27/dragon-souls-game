@@ -23,7 +23,7 @@ public class Bueiro extends Plataforma implements HasInteraction{
     private float op = 0.1f;
 
     public Bueiro(int x, int y, BufferedImage[] img) {
-        super(x, y, img[0], 3);
+        super(x, y, null, 3);
         this.img = img;
         adicionarMascara(Mascara.builder()
                 .alias("bueiro")
