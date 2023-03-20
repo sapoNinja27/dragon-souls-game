@@ -43,6 +43,7 @@ public class Entidade {
     protected int sombras = 30;
 
     protected final Set<Colisao> colisoes = new HashSet<>(0);
+    @Setter
     protected boolean moved;
 
     protected DirecaoPlayer direcao = DirecaoPlayer.DIREITA;
@@ -89,6 +90,9 @@ public class Entidade {
         return (int) this.y;
     }
 
+    protected double getSpeed(){
+        return direcao.equals(DirecaoPlayer.DIREITA) ? speed : -speed;
+    }
     public boolean drawDistance(Player player) {
         return (distanciaX(player.getX()) < getDrawLimitX() && distanciaY(player.getY()) < getDrawLimitY()) ||
                 this instanceof Player ||
@@ -184,6 +188,9 @@ public class Entidade {
         }
         if (this instanceof Player) {
             vida += 0.1;
+            if(vida >= vidaMaxima){
+                vida = vidaMaxima;
+            }
         }
     }
 

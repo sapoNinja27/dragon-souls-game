@@ -116,6 +116,39 @@ public class ImageUtils {
         return (newImage);
     }
 
+    public static BufferedImage aplicarColoracao(BufferedImage image, Color coloracao, Color corParametro, boolean restringirCorParametro) {
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        int[] imageP = new int[image.getWidth() * image.getHeight()];
+        image.getRGB(0, 0, image.getWidth(), image.getHeight(), imageP, 0, image.getWidth());
+        for (int xx = 0; xx < newImage.getWidth(); xx++) {
+            for (int yy = 0; yy < newImage.getHeight(); yy++) {
+                int pixelAtual = imageP[xx + (yy * image.getWidth())];
+                boolean condicao = restringirCorParametro == (pixelAtual == corParametro.getRGB());
+                if (pixelAtual != 0 && condicao) {
+                    imageP[xx + (yy * image.getWidth())] = mix(new Color(pixelAtual), coloracao).getRGB();
+                }
+            }
+        }
+        newImage.setRGB(0, 0, image.getWidth(), image.getHeight(), imageP, 0, image.getWidth());
+        return (newImage);
+    }
+
+    private static Color mix(Color corExistente, Color novaCor) {
+        int redExistente = corExistente.getRed();
+        int greenExistente = corExistente.getGreen();
+        int blueExistente = corExistente.getBlue();
+        int alphaExistente = corExistente.getAlpha() - novaCor.getAlpha();
+        int redNovo = novaCor.getRed();
+        int greenNovo = novaCor.getGreen();
+        int blueNovo = novaCor.getBlue();
+        int alphaNovo = novaCor.getAlpha();
+        int red = (int) ((redExistente * alphaExistente / 255.0) + (redNovo * alphaNovo * (255 - alphaExistente) / (255.0 * 255)));
+        int green = (int) ((greenExistente * alphaExistente / 255.0) + (greenNovo * alphaNovo * (255 - alphaExistente) / (255.0 * 255)));
+        int blue = (int) ((blueExistente * alphaExistente / 255.0) + (blueNovo * alphaNovo * (255 - alphaExistente) / (255.0 * 255)));
+        int alpha = (int) (alphaExistente + (alphaNovo * (255 - alphaExistente) / 255.0));
+        return new Color(red, green, blue, alpha);
+    }
+
     public static void applySombreamento
             (Graphics g,
              BufferedImage sprite,

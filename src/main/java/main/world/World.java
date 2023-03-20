@@ -45,7 +45,7 @@ public class World {
 //	};
 
     private void fundo(List<Entidade> entidades, DadosGame dadosGame) {
-        Fundo fundo = new Fundo(0, 0, dadosGame.getWordWidth(), dadosGame.getWordHeight());
+        Fundo fundo = new Fundo(0, 0, dadosGame.getWidth(), dadosGame.getHeight() + dadosGame.getTileSize(), dadosGame.getWordWidth() * dadosGame.getTileSize());
         entidades.add(fundo);
     }
 
@@ -127,7 +127,7 @@ public class World {
     }
 
     private void player(int pixelAtual, int x, int y, List<Entidade> entidades, DadosGame dadosGame) {
-        if(pixelAtual == 0xFFC1FFE2){
+        if (pixelAtual == 0xFFC1FFE2) {
             Inimigo inimigo = new Inimigo(x * tileSize, y * tileSize, tileSize, tileSize);
             entidades.add(inimigo);
         }

@@ -1,13 +1,11 @@
 package main.processamento;
 
 
-import main.interfaces.mouse.Mouse;
 import main.DadosGame;
-import main.enums.AcaoPlayer;
+import main.Loading;
 import main.enums.TipoAcao;
 import main.enums.TipoGame;
-import main.Loading;
-import main.world.World;
+import main.interfaces.mouse.Mouse;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -15,6 +13,9 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import static java.awt.event.KeyEvent.*;
+import static main.enums.DirecaoPlayer.DIREITA;
+import static main.enums.DirecaoPlayer.ESQUERDA;
+import static main.enums.MovimentoPlayer.*;
 
 public class GerenciadorEstado {
 
@@ -29,7 +30,7 @@ public class GerenciadorEstado {
     }
 
     public void tick(Mouse mouse) {
-        if(gerenciadorEntidades.getEntities().isEmpty()){
+        if (gerenciadorEntidades.getEntities().isEmpty()) {
             gerenciadorEntidades.getEntities().addAll(dadosGame.getEntities());
         }
         Loading.tick();
@@ -67,7 +68,6 @@ public class GerenciadorEstado {
         }
     }
 
-
     private void pressionar(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             dadosGame.escPressed();
@@ -83,32 +83,33 @@ public class GerenciadorEstado {
                 break;
             case NORMAL:
                 switch (e.getKeyCode()) {
-                    case VK_X:
+                    case VK_E:
                         gerenciadorEntidades.interagir();
                         break;
                     case VK_1:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.HABILIDADE_1, dadosGame.getPlayer());
+                        dadosGame.getPlayer().getGerenciadorMovimentos().setarAnimacao(HABILIDADE_POSTURA_OFENSIVA);
                         break;
                     case VK_D:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.DIREITA, dadosGame.getPlayer());
-                        break;
-                    case VK_E:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.DASH, dadosGame.getPlayer());
+                        dadosGame.getPlayer().atualizarDirecao(DIREITA);
+                        dadosGame.getPlayer().getGerenciadorMovimentos().setarAnimacao(ANDANDO);
+                        dadosGame.getPlayer().setMoved(true);
                         break;
                     case VK_A:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.ESQUERDA, dadosGame.getPlayer());
+                        dadosGame.getPlayer().atualizarDirecao(ESQUERDA);
+                        dadosGame.getPlayer().getGerenciadorMovimentos().setarAnimacao(ANDANDO);
+                        dadosGame.getPlayer().setMoved(true);
                         break;
                     case VK_W:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.CIMA, dadosGame.getPlayer());
+                        dadosGame.getPlayer().getGerenciadorMovimentos().setarAnimacao(SUBINDO);
                         break;
                     case VK_R:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.ULTIMATE, dadosGame.getPlayer());
+                        dadosGame.getPlayer().getGerenciadorMovimentos().setarAnimacao(HABILIDADE_POSTURA_SELVAGEM);
                         break;
                     case VK_Q:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.SOCO_FRACO, dadosGame.getPlayer());
+                        dadosGame.getPlayer().getGerenciadorMovimentos().setarAnimacao(ATACANDO);
                         break;
                     case VK_H:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.HUD_HELP, dadosGame.getPlayer());
+                        dadosGame.getPlayer().attHudHelp();
                         break;
                 }
                 //TODO ajustar
@@ -125,13 +126,16 @@ public class GerenciadorEstado {
             case CUTSCENE:
                 break;
             case NORMAL:
-                switch (e.getKeyCode()){
+                switch (e.getKeyCode()) {
                     case VK_D:
                     case VK_A:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.PARAR, dadosGame.getPlayer());
+                        dadosGame.getPlayer().getGerenciadorMovimentos().setarAnimacao(PARANDO);
+                        dadosGame.getPlayer().setMoved(false);
                         break;
                     case VK_W:
-                        gerenciadorEntidades.acaoPlayer(AcaoPlayer.PARAR_PULO, dadosGame.getPlayer());
+                        if (dadosGame.getPlayer().getGerenciadorMovimentos().noAr()) {
+                            dadosGame.getPlayer().getGerenciadorMovimentos().setarAnimacao(CAINDO, 0.3);
+                        }
                         break;
                 }
 

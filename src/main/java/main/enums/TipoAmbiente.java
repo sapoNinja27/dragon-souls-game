@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 @AllArgsConstructor
 public enum TipoAmbiente {
-    PERIMETRO_SUPERIOR("Perimetro superior", (dto) -> {
+    PERIMETRO_SUPERIOR(2, "Perimetro superior", (dto) -> {
         Player player = dto.getDadosGame().getPlayer();
         Random rand = player.getRand();
         DadosGame dadosGame = dto.getDadosGame();
@@ -42,11 +42,11 @@ public enum TipoAmbiente {
         }
         return null;
     }),
-    CIDADE_DE_BAIXO("Cidade de baixo", (dto) -> {
+    CIDADE_DE_BAIXO(1, "Cidade de baixo", (dto) -> {
         //TODO cidade de baixo vai ter geracao de inimigos alem de obj com movimento
         return null;
     }),
-    ESGOTOS("Esgotos", (dto) -> {
+    ESGOTOS(0, "Esgotos", (dto) -> {
         //TODO esgho vai ter geracao de inimigos alem de obj com movimento
         Player player = dto.getDadosGame().getPlayer();
         Random rand = player.getRand();
@@ -65,7 +65,10 @@ public enum TipoAmbiente {
         }
         return null;
     }),
-    INTERNO("Ambiente interno", (dto) -> null);
+    INTERNO(3, "Ambiente interno", (dto) -> null);
+
+    @Getter
+    private final int index;
 
     @Getter
     private final String description;

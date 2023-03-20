@@ -1,25 +1,21 @@
 package main.entidades.players;
 
+import lombok.Getter;
+import main.DadosGame;
 import main.entidades.Entidade;
 import main.entidades.Mascara;
-import main.entidades.cenario.estaticos.Plataforma;
 import main.entidades.players.habilidades.Habilidade;
-import main.utils.MatematicaUtils;
-import main.utils.Spritesheet;
-import lombok.Getter;
-import lombok.Setter;
-import main.DadosGame;
 import main.enums.*;
 import main.utils.Fontes;
 import main.utils.ImageUtils;
+import main.utils.MatematicaUtils;
+import main.utils.Spritesheet;
 import main.world.Camera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import static java.lang.Math.max;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static main.enums.MovimentoPlayer.*;
 import static main.utils.ImageUtils.draw;
@@ -47,6 +43,7 @@ public class Player extends Entidade {
     private int resistencia;
 
     private boolean showHudHelp = false;
+    private boolean bordaMundo;
 
     @Override
     public String toString() {
@@ -158,19 +155,15 @@ public class Player extends Entidade {
 
     private void verificarAcao(DadosGame dadosGame) {
         if (moved) {
-//            if (isFreeY()) {
             gerenciadorMovimentos.setarAnimacao(ANDANDO);
-//            }
-            x += direcao.equals(DirecaoPlayer.DIREITA) ? speed : -speed;
+            x += getSpeed();
         } else {
-            if (
-                //isFreeY() &&
-                    gerenciadorMovimentos.getAcaoAtual().equals(ANDANDO)) {
+            if (gerenciadorMovimentos.getAcaoAtual().equals(ANDANDO)) {
                 gerenciadorMovimentos.setarAnimacao(PARANDO);
             }
         }
         if (gerenciadorMovimentos.getAcaoAtual().equals(PARANDO)) {
-            x += direcao.equals(DirecaoPlayer.DIREITA) ? speed / 2 : -speed / 2;
+            x += getSpeed() /2;
         }
         if (gerenciadorMovimentos.getAcaoAtual().equals(SUBINDO)) {
             y -= 4;
@@ -180,47 +173,12 @@ public class Player extends Entidade {
         }
     }
 
-    public void executarAcao(AcaoPlayer acaoPlayer) {
-        if (acaoPlayer.equals(AcaoPlayer.DIREITA)) {
-            direcao = DirecaoPlayer.DIREITA;
-            moved = true;
-        }
-        if (acaoPlayer.equals(AcaoPlayer.ESQUERDA)) {
-            direcao = DirecaoPlayer.ESQUERDA;
-            moved = true;
-        }
+    public void atualizarDirecao(DirecaoPlayer direcaoPlayer) {
+        direcao = direcaoPlayer;
+    }
 
-        if (acaoPlayer.equals(AcaoPlayer.PARAR)) {
-            moved = false;
-        }
-
-        if (acaoPlayer.equals(AcaoPlayer.DASH)) {
-            gerenciadorMovimentos.setarAnimacao(INVESTINDO);
-        }
-        if (acaoPlayer.equals(AcaoPlayer.CIMA)) {
-            gerenciadorMovimentos.setarAnimacao(SUBINDO);
-        }
-        if (acaoPlayer.equals(AcaoPlayer.ULTIMATE)) {
-            gerenciadorMovimentos.setarAnimacao(HABILIDADE_POSTURA_SELVAGEM);
-        }
-        if (acaoPlayer.equals(AcaoPlayer.SOCO_FRACO)) {
-            gerenciadorMovimentos.setarAnimacao(ATACANDO);
-        }
-
-        if (acaoPlayer.equals(AcaoPlayer.HABILIDADE_1)) {
-            mana += 30;
-            gerenciadorMovimentos.setarAnimacao(HABILIDADE_POSTURA_OFENSIVA);
-        }
-
-        if (acaoPlayer.equals(AcaoPlayer.HUD_HELP)) {
-            showHudHelp = !showHudHelp;
-        }
-
-        if (acaoPlayer.equals(AcaoPlayer.PARAR_PULO)) {
-            if (gerenciadorMovimentos.noAr()) {
-                gerenciadorMovimentos.setarAnimacao(CAINDO, 0.3);
-            }
-        }
+    public void attHudHelp(){
+        showHudHelp = !showHudHelp;
     }
 
     public void furiaSistem() {
@@ -262,5 +220,9 @@ public class Player extends Entidade {
             mana += dano - danoFinal;
         }
         vida -= critico ? danoFinal * 3.5 : danoFinal;
+    }
+
+    public void setBordaMundo(boolean bordaMundo) {
+        this.bordaMundo = bordaMundo;
     }
 }

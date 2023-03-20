@@ -40,7 +40,7 @@ public class DadosGame {
     private TipoMenu lastEstadoMenu = INICIAL;
     private TipoGame estadoGame = MENU;
     @Setter
-    private TipoAmbiente local = TipoAmbiente.PERIMETRO_SUPERIOR;
+    private TipoAmbiente local = TipoAmbiente.ESGOTOS;
     private boolean dia = true;
     private int rota = 1;
 
@@ -71,6 +71,10 @@ public class DadosGame {
 
     public int getTileSize(int multiplyer) {
         return tileSize * multiplyer;
+    }
+
+    public int getTileSize(double multiplyer) {
+        return (int) (tileSize * multiplyer);
     }
 
     public void escPressed() {

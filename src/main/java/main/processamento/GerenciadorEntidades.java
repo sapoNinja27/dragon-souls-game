@@ -1,24 +1,21 @@
 package main.processamento;
 
 import lombok.Getter;
+import main.DadosGame;
 import main.entidades.Entidade;
 import main.entidades.cenario.estaticos.HasInteraction;
 import main.entidades.cenario.estaticos.Plataforma;
 import main.entidades.cenario.moveis.ObjetosComMovimento;
 import main.entidades.inimigos.Inimigo;
 import main.entidades.players.Player;
-import main.DadosGame;
-import main.enums.AcaoPlayer;
 import main.enums.TipoAmbiente;
 
 import java.awt.*;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.awt.event.KeyEvent.*;
 import static java.util.Objects.nonNull;
 
 public class GerenciadorEntidades {
@@ -100,7 +97,7 @@ public class GerenciadorEntidades {
         TipoAmbiente local = dadosGame.getLocal();
         Entidade obj = local.gerarEntidade(dadosGame, drawDistance);
         if (nonNull(obj) && dadosGame.getPlayer().disponivelParaGerar()) {
-            entities.add(obj);
+//            entities.add(obj);
         }
     }
 
@@ -172,10 +169,6 @@ public class GerenciadorEntidades {
                 .stream()
                 .filter(e -> e.drawDistance(dadosGame.getPlayer()))
                 .collect(Collectors.toList());
-    }
-
-    public void acaoPlayer(AcaoPlayer acaoPlayer, Player player) {
-        player.executarAcao(acaoPlayer);
     }
 
     public void tick(DadosGame dadosGame) {
